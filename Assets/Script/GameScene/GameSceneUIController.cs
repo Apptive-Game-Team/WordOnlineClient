@@ -15,8 +15,6 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private GameObject lowerBar;
-    
-
 
     private void Awake()
     {

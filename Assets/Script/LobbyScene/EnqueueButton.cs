@@ -6,8 +6,17 @@ public class EnqueueButton : MonoBehaviour
 {
     [SerializeField] StompConnector StompConnector;
 
+    private StompConnector GetStompConnector()
+    {
+        if (StompConnector == null)
+        {
+            StompConnector = FindObjectOfType<StompConnector>();
+        }
+        return StompConnector;
+    }
+    
     public void OnClickButton()
     {
-        StompConnector.ConnectToServer("ws://localhost:8080/ws");
+        GetStompConnector().ConnectToServer("ws://localhost:8080/ws");
     }
 }

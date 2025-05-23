@@ -15,6 +15,11 @@ public class SceneContext : MonoBehaviour
         get; set;
     }
 
+    public static string MatchResult
+    {
+        get; set;
+    }
+
     private void Start()
     {
         DontDestroyOnLoad(this);

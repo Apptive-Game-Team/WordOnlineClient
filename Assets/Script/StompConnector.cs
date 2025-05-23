@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using Script.GameScene;
+using UnityEngine.SceneManagement;
 
 public class StompConnector : MonoBehaviour
 {
@@ -227,6 +228,19 @@ public class StompConnector : MonoBehaviour
                 }
                 CardInputSender.inputRequestDict.Remove(magicValid.id);
                 return;
+            case "result":
+                ResultInfo result = JsonUtility.FromJson<ResultInfo>(json);
+                if (SceneContext.UserID == SceneContext.MatchInfo.leftUserId)
+                {
+                    SceneContext.MatchResult = result.leftPlayer;
+                }
+                else
+                {
+                    SceneContext.MatchResult = result.rightPlayer;
+                }
+                SceneManager.LoadScene("ResultScene");
+
+                break;
         }
         
     }
