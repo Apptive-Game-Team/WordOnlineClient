@@ -67,15 +67,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Shoot
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 798a9152159fe4eb1ac04250bf6f64d8, type: 2}
+  m_sharedMaterial: {fileID: -3822564597673967843, guid: 798a9152159fe4eb1ac04250bf6f64d8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -202,8 +202,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300022, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6c92868251a97cf4e914a24b79d3b510, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -227,6 +227,9 @@ MonoBehaviour:
   cardNameText: {fileID: 6377028756291647707}
   activeCardImage: {fileID: 21300020, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
   inactiveCardImage: {fileID: 21300022, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  cardSound: {fileID: 0}
+  typeSprite: {fileID: 21300000, guid: 6c92868251a97cf4e914a24b79d3b510, type: 3}
+  magicSprite: {fileID: 21300000, guid: 1dbae31419ba1d5489dc8fa1439370cc, type: 3}
 --- !u!114 &-5344989155896131315
 MonoBehaviour:
   m_ObjectHideFlags: 0

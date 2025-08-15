@@ -38,6 +38,7 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
+            SystemMessageUI.Instance.ShowMessage($"덱 리스트 로드 실패: {www.error}");
             Debug.LogError($"덱 리스트 로드 실패: {www.error}");
             yield break;
         }
@@ -87,10 +88,12 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
+            SystemMessageUI.Instance.ShowMessage($"덱 선택 실패: {www.responseCode} / {www.error}");
             Debug.LogError($"덱 선택 실패: {www.responseCode} / {www.error}");
         }
         else
         {
+            SystemMessageUI.Instance.ShowMessage("덱 선택 성공: " + www.downloadHandler.text);
             Debug.Log("덱 선택 성공: " + www.downloadHandler.text);
         }
     }

@@ -93,6 +93,7 @@ public class StompConnector : MonoBehaviour
     // 연결 종료 처리
     public void OnDisconnected(string message)
     {
+        SystemMessageUI.Instance.ShowMessage("STOMP 연결 종료: " + message);
         Debug.Log("STOMP 연결 종료: " + message);
         isConnected = false;
     }
@@ -100,6 +101,7 @@ public class StompConnector : MonoBehaviour
     // 연결 실패 처리
     public void OnError(string error)
     {
+        SystemMessageUI.Instance.ShowMessage("STOMP 에러: " + error);
         Debug.LogError("STOMP 에러: " + error);
     }
 
@@ -130,6 +132,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
+            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -145,6 +148,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
+            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -160,6 +164,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
+            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -175,6 +180,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
+            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -240,7 +246,7 @@ public class StompConnector : MonoBehaviour
                     {
                         cardUI.SetCardActive(false);
                     }
-                    GameSceneUIController.Instance.Announce("유효한 움직임이 아닙니다!");
+                    SystemMessageUI.Instance.ShowMessage("유효한 움직임이 아닙니다!");
                     Debug.Log("유효한 움직임이 아닙니다!");
                 }
                 CardInputSender.inputRequestDict.Remove(magicValid.id);

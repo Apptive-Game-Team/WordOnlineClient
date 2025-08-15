@@ -288,10 +288,12 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
                 Debug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공: {www.downloadHandler.text}");
                 Debug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }
@@ -345,10 +347,12 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
                 Debug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공: {www.downloadHandler.text}");
                 Debug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }

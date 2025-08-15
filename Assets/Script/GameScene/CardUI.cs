@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,10 @@ namespace Script.GameScene
         [SerializeField] private Sprite inactiveCardImage;
         [SerializeField] private AudioSource cardSound;
         
+        string[] typeArray = { "fire", "water", "lightning", "rock", "leaf" };
+        string[] magicArray = { "shoot", "spawn", "summon", "explode" };
+        [SerializeField] private Sprite typeSprite;
+        [SerializeField] private Sprite magicSprite;
         private void Awake()
         {
             cardSound = gameObject.GetComponent<AudioSource>();
@@ -28,6 +33,14 @@ namespace Script.GameScene
         public void Init(string name)
         {
             cardNameText.text = name;
+            if (typeArray.Contains(name))
+            {
+                GetComponent<Image>().sprite = typeSprite;
+            }
+            else if (magicArray.Contains(name))
+            {
+                GetComponent<Image>().sprite = magicSprite;
+            }
         }
 
         public void SetCardActive(bool isActive)
