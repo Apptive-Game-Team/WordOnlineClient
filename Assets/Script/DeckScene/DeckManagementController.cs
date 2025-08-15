@@ -256,9 +256,19 @@ namespace Script.DeckScene
             Debug.Log($"Submit Try - cards : {deck.cards.Length} type : {typeCount} magic : {magicCount}");
             
             
-            if (deck.cards.Length != 10 || typeCount < 2 || magicCount < 2)
+            if (deck.cards.Length != 10)
             {
-                Debug.LogError("invalid deck");
+                SystemMessageUI.Instance.ShowMessage("덱에 카드가 10장 있어야 합니다!");
+                yield break;
+            }
+            else if (typeCount < 2)
+            {
+                SystemMessageUI.Instance.ShowMessage("덱에 속성이 2종류 이상 있어야 합니다!");
+                yield break;
+            }
+            else if (magicCount < 2)
+            {
+                SystemMessageUI.Instance.ShowMessage("덱에 마법이 2종류 이상 있어야 합니다!");
                 yield break;
             }
             
@@ -288,12 +298,12 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
-                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패!");
                 Debug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공: {www.downloadHandler.text}");
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공!");
                 Debug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }
@@ -315,9 +325,19 @@ namespace Script.DeckScene
             Debug.Log($"Submit Try - cards : {deck.cards.Length} type : {typeCount} magic : {magicCount}");
             
             
-            if (deck.cards.Length != 10 || typeCount < 2 || magicCount < 2)
+            if (deck.cards.Length != 10)
             {
-                Debug.LogError("invalid deck");
+                SystemMessageUI.Instance.ShowMessage("덱에 카드가 10장 있어야 합니다!");
+                yield break;
+            }
+            else if (typeCount < 2)
+            {
+                SystemMessageUI.Instance.ShowMessage("덱에 속성이 2종류 이상 있어야 합니다!");
+                yield break;
+            }
+            else if (magicCount < 2)
+            {
+                SystemMessageUI.Instance.ShowMessage("덱에 마법이 2종류 이상 있어야 합니다!");
                 yield break;
             }
             
@@ -347,12 +367,12 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
-                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 실패!");
                 Debug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공: {www.downloadHandler.text}");
+                SystemMessageUI.Instance.ShowMessage($"덱 수정 성공!");
                 Debug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }

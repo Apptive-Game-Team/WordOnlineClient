@@ -26,6 +26,7 @@ public class LoginButton : ButtonBase
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage("Error: " + webRequest.error);
                 yield break;
             }
             

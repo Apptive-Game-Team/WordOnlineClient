@@ -1,4 +1,5 @@
 using System.Collections;
+using Script.Data;
 using Script.GameScene;
 using TMPro;
 using UnityEngine;
@@ -70,9 +71,9 @@ public class GameSceneUIController : MonoBehaviour
         manaSlider.value = mana;
     }
 
-    public void AddCard(string cardname)
+    public void AddCard(CardType cardname)
     {
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
-        cardUI.Init(cardname);
+        cardUI.Init(cardname.ToString());
     }
 }

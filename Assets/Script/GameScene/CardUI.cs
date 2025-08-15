@@ -1,4 +1,5 @@
 using System.Linq;
+using Script.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +9,8 @@ namespace Script.GameScene
     public class CardUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
-        [SerializeField] private Sprite activeCardImage;
-        [SerializeField] private Sprite inactiveCardImage;
         [SerializeField] private AudioSource cardSound;
         
-        string[] typeArray = { "fire", "water", "lightning", "rock", "leaf" };
-        string[] magicArray = { "shoot", "spawn", "summon", "explode" };
         [SerializeField] private Sprite typeSprite;
         [SerializeField] private Sprite magicSprite;
         private void Awake()
@@ -33,11 +30,11 @@ namespace Script.GameScene
         public void Init(string name)
         {
             cardNameText.text = name;
-            if (typeArray.Contains(name))
+            if (LocalMagicData.GetMagicData(name).type.Equals("type"))
             {
                 GetComponent<Image>().sprite = typeSprite;
             }
-            else if (magicArray.Contains(name))
+            else if (LocalMagicData.GetMagicData(name).type.Equals("magic"))
             {
                 GetComponent<Image>().sprite = magicSprite;
             }
@@ -46,7 +43,7 @@ namespace Script.GameScene
         public void SetCardActive(bool isActive)
         {
             this.isActive = isActive;
-            GetComponent<Image>().sprite = isActive ? activeCardImage : inactiveCardImage;
+            GetComponent<Image>().color = isActive ? Color.gray : Color.white;
         }
         
         public void OnCardClicked()
@@ -60,7 +57,6 @@ namespace Script.GameScene
             else
             {
                 FindObjectOfType<CardInputSender>().TryUseCard(this);   
-                GetComponent<Image>().sprite = activeCardImage;
                 SetCardActive(true);
             }
         }

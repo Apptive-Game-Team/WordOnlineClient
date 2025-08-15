@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Script.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,9 +10,7 @@ public class CardItemUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI cardCountText;
-
-    string[] typeArray = { "fire", "water", "lightning", "rock", "leaf" };
-    string[] magicArray = { "shoot", "spawn", "summon", "explode" };
+    
     [SerializeField] private Sprite typeSprite;
     [SerializeField] private Sprite magicSprite;
     
@@ -19,11 +18,11 @@ public class CardItemUI : MonoBehaviour
     {
         cardNameText.text = cName;
         cardCountText.text = $" X {count.ToString()}" ;
-        if (typeArray.Contains(cName))
+        if(LocalMagicData.GetMagicData(cName).type.Equals("type"))
         {
             GetComponent<Image>().sprite = typeSprite;
         }
-        else if (magicArray.Contains(cName))
+        else if (LocalMagicData.GetMagicData(cName).type.Equals("magic"))
         {
             GetComponent<Image>().sprite = magicSprite;
         }
