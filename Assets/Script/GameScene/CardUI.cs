@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,9 +8,18 @@ namespace Script.GameScene
 {
     public class CardUI : MonoBehaviour
     {
+        private static HashSet<String> MagicCards = new HashSet<String>
+        {
+            "shoot", "explode", "summon", "spawn",
+        };
+        private static HashSet<String> TypeCards = new HashSet<String>
+        {
+            "water", "fire", "lighting", "leaf", "rock",
+        };
+        
         [SerializeField] private TextMeshProUGUI cardNameText;
-        [SerializeField] private Sprite activeCardImage;
-        [SerializeField] private Sprite inactiveCardImage;
+        [SerializeField] private Sprite magicCardImage;
+        [SerializeField] private Sprite typeCardImage;
         [SerializeField] private AudioSource cardSound;
         
         private void Awake()
@@ -28,12 +39,30 @@ namespace Script.GameScene
         public void Init(string name)
         {
             cardNameText.text = name;
+            if (MagicCards.Contains(name.ToLower()))
+            {
+                GetComponent<Image>().sprite = magicCardImage;
+            }
+            else if (TypeCards.Contains(name.ToLower()))
+            {
+                GetComponent<Image>().sprite = typeCardImage;
+            }
         }
 
         public void SetCardActive(bool isActive)
         {
             this.isActive = isActive;
-            GetComponent<Image>().sprite = isActive ? activeCardImage : inactiveCardImage;
+            Color color = GetComponent<Image>().color;
+            if (isActive)
+            {
+                color = Color.white * 0.5f;
+                
+            }
+            else
+            {
+                color = Color.white;
+            }
+            GetComponent<Image>().color = color;
         }
         
         public void OnCardClicked()
@@ -47,7 +76,6 @@ namespace Script.GameScene
             else
             {
                 FindObjectOfType<CardInputSender>().TryUseCard(this);   
-                GetComponent<Image>().sprite = activeCardImage;
                 SetCardActive(true);
             }
         }

@@ -53,6 +53,9 @@ public class GameSceneUIController : MonoBehaviour
         leftUserIDText.text = SceneContext.MatchInfo.leftUser.name;
         rightUserIDText.text = SceneContext.MatchInfo.rightUser.name;
 #endif
+        
+        AddCard("Shoot");
+        AddCard("Fire");
     }
     
     public void UpdateUserHps(int leftUserHp, int rightUserHp)
