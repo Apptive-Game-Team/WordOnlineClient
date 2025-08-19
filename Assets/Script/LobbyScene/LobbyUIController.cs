@@ -17,6 +17,7 @@ public class LobbyUIController : MonoBehaviour
     {
         Debug.Log("LobbyUIController Start");
 
+        deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
         StartCoroutine(LoadUserInfo());
     }
     
@@ -30,7 +31,7 @@ public class LobbyUIController : MonoBehaviour
 
     public IEnumerator FetchDecks()
     {
-        string url = $"{SceneContext.ServerUrl}/api/users/mine/decks";
+        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
         www.downloadHandler = new DownloadHandlerBuffer();
@@ -38,13 +39,14 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            SystemMessageUI.Instance.ShowMessage($"덱 리스트 로드 실패: {www.error}");
+            SystemMessageUI.Instance.ShowMessage("덱 리스트 로드 실패");
             Debug.LogError($"덱 리스트 로드 실패: {www.error}");
             yield break;
         }
 
         // JsonHelper 는 이전에 정의한 generic 래퍼 유틸리티
         userDecks = JsonHelper.FromJson<DeckResponseDto>(www.downloadHandler.text);
+        
         PopulateDropdown();
         //sessiontracking 테스트
         StartCoroutine(StatusTracker.GetUserStatus());
@@ -75,14 +77,16 @@ public class LobbyUIController : MonoBehaviour
     // 3) 드랍다운에서 선택 바뀌었을 때
     public void OnDropdownChanged(int newIndex)
     {
+        
         var selected = userDecks[newIndex];
         DeckSceneContext.CurrentDeck = selected;     // 컨텍스트 갱신
+        Debug.Log($"index: {newIndex} 선택된 덱: {selected.name} (ID: {selected.id})");
         UpdateCaption(selected.name);                // 상단 텍스트 갱신
         StartCoroutine(SelectDeckCoroutine(DeckSceneContext.CurrentDeck.id));
     }
     private IEnumerator SelectDeckCoroutine(long deckId)
     {
-        string url = $"{SceneContext.ServerUrl}/api/users/mine/decks/{deckId}";
+        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks/{deckId}";
         using var www = UnityWebRequest.Post(url, new WWWForm());
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
 
@@ -90,12 +94,12 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            SystemMessageUI.Instance.ShowMessage($"덱 선택 실패: {www.responseCode} / {www.error}");
+            SystemMessageUI.Instance.ShowMessage("덱 선택 실패");
             Debug.LogError($"덱 선택 실패: {www.responseCode} / {www.error}");
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("덱 선택 성공: " + www.downloadHandler.text);
+            SystemMessageUI.Instance.ShowMessage("덱 선택 성공");
             Debug.Log("덱 선택 성공: " + www.downloadHandler.text);
         }
     }

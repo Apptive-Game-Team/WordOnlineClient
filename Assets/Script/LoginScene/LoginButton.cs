@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class LoginButton : ButtonBase
+public class LoginButton : AsyncButtonBase
 {
     [SerializeField] private TMP_InputField emailInputField;
     [SerializeField] private TMP_InputField passwordInputField;
@@ -14,7 +15,7 @@ public class LoginButton : ButtonBase
     {
         string jsonData = JsonUtility.ToJson(loginRequestDto);
         
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.ServerUrl + "/api/users/login", "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/login", "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -26,7 +27,8 @@ public class LoginButton : ButtonBase
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Error: " + webRequest.error);
-                SystemMessageUI.Instance.ShowMessage("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
+                ResetButton();
                 yield break;
             }
             

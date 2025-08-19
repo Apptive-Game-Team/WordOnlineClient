@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEngine;
 using Script.Data;
 using Script.GameScene;
 using UnityEngine.SceneManagement;
@@ -100,7 +100,7 @@ public class StompConnector : MonoBehaviour
     // 연결 실패 처리
     public void OnError(string error)
     {
-        SystemMessageUI.Instance.ShowMessage("STOMP 에러: " + error);
+        SystemMessageUI.Instance.ShowMessage("서버와 연결에 실패했습니다. [껐다 켜주세요]");
         Debug.LogError("STOMP 에러: " + error);
     }
 
@@ -130,7 +130,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -146,7 +146,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -216,8 +216,12 @@ public class StompConnector : MonoBehaviour
                 GameSceneUIController.Instance.UpdateUserHps(info.leftPlayerHp, info.rightPlayerHp);
                 //
                 // // 카드 추가
-                foreach (CardType cardName in info.cards.added)
-                    GameSceneUIController.Instance.AddCard(cardName);
+                foreach (string cardName in info.cards.added)
+                {
+                    CardType cardType = (CardType)Enum.Parse(typeof(CardType), cardName, true);
+                    GameSceneUIController.Instance.AddCard(cardType);
+                }
+                    
                 //
                 // // 생성된 오브젝트 배치
                 foreach (var created in info.objects.create)

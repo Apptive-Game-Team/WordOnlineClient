@@ -23,6 +23,7 @@ public class GameSceneUIController : MonoBehaviour
     [SerializeField] private GameObject textObject;
     [SerializeField] private TextMeshProUGUI textSystemMsg;
 
+    [SerializeField] private CardImageMapper cardImageMapper;
 
     public void Announce(string text)
     {
@@ -74,6 +75,7 @@ public class GameSceneUIController : MonoBehaviour
     public void AddCard(CardType cardname)
     {
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
+        cardUI.transform.GetChild(1).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname.ToString());
     }
 }

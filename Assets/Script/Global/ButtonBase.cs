@@ -15,7 +15,7 @@ public abstract class ButtonBase : MonoBehaviour
 
     protected abstract void OnClickButton();
 
-    public void ButtonEvent()
+    public virtual void ButtonEvent()
     {
         PlayUISound();
         OnClickButton();

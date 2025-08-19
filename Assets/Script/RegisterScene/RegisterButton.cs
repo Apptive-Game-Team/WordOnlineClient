@@ -1,11 +1,12 @@
 using System.Collections;
+using Script.Global;
 using Script.RegisterScene;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class RegisterButton : ButtonBase
+public class RegisterButton : AsyncButtonBase
 {
     [SerializeField] private TMP_InputField nameInputField;
     [SerializeField] private TMP_InputField emailInputField;
@@ -15,7 +16,7 @@ public class RegisterButton : ButtonBase
     {
         string jsonData = JsonUtility.ToJson(registerRequestDto);
         
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.ServerUrl + "/api/users", "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users", "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -27,7 +28,8 @@ public class RegisterButton : ButtonBase
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Error: " + webRequest.error);
-                SystemMessageUI.Instance.ShowMessage("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
+                ResetButton();
                 yield break;
             }
             

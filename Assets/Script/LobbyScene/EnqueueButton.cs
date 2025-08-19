@@ -1,11 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Script.Global;
 using UnityEngine;
 
-public class EnqueueButton : ButtonBase
+public class EnqueueButton : AsyncButtonBase
 {
     protected override void OnClickButton()
     {
-        StompConnector.Instance.StartMatchingFlow();
+        try
+        {
+            StompConnector.Instance.StartMatchingFlow();
+        }
+        catch (Exception e)
+        {
+            ResetButton();
+        }
     }
 }

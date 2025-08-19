@@ -6,5 +6,6 @@ namespace Script.Data
         public string name;
         public long id;
         public string email;
+        public long selectedDeckId;
     }
 }

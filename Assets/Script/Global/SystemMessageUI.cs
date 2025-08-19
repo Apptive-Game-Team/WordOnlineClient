@@ -18,7 +18,7 @@ public class SystemMessageUI : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        messageText.gameObject.SetActive(false);
+        messageText.transform.parent.gameObject.SetActive(false);
     }
 
     public void ShowMessage(string msg)
@@ -47,11 +47,11 @@ public class SystemMessageUI : MonoBehaviour
     {
         currentMessage = msg;
         messageText.text = msg;
-        messageText.gameObject.SetActive(true);
+        messageText.transform.parent.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(duration);
 
-        messageText.gameObject.SetActive(false);
+        messageText.transform.parent.gameObject.SetActive(false);
         currentMessage = "";
         displayRoutine = null;
     }

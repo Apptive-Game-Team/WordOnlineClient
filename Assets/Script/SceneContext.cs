@@ -12,10 +12,18 @@ public class SceneContext : MonoBehaviour
     {
         get; set;
     }
-    
-    public static string ServerIp = "localhost";
-    public static int ServerPort = 7777;
-    public static string ServerUrl = $"http://{ServerIp}:{ServerPort}";
+
+    public static Server CurrentServer = ServerList.servers[0];
+    public static void SetServer(int index)
+    {
+        if (index < 0 || index >= ServerList.servers.Count)
+        {
+            Debug.LogError("Invalid server index: " + index);
+            return;
+        }
+        CurrentServer = ServerList.servers[index];
+        Debug.Log("Current server set to: " + CurrentServer.name);
+    }
     
     public static long UserID
     {
