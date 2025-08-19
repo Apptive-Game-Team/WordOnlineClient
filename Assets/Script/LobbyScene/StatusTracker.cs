@@ -14,7 +14,7 @@ public static class StatusTracker
 
     public static IEnumerator GetUserStatus()
     {
-        var url = SceneContext.ServerUrl + "/api/users/me/status";
+        var url = SceneContext.ServerUrl + "/api/users/mine/status";
 
         using var www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -22,7 +22,7 @@ public static class StatusTracker
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"[GetUserStatus] fail: {www.responseCode}");
+            Debug.LogError($"[GetUserStatus] fail: {www.responseCode} / {www.error}");
             yield break;
         }
 
@@ -42,25 +42,20 @@ public static class StatusTracker
 
         switch (dto.status)
         {
-            case "Idle":
+            case "Online":
                 yield break;
 
             case "OnMatching":
-                StompConnector.Instance.SubscribeToTopic(
-                    $"/queue/match-status/{SceneContext.UserID}",
-                    "OnMessageReceived",
-                    "match-sub"
-                );
+                StompConnector.Instance.ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+                StompConnector.Instance.StartMatchingFlow();
                 yield break;
 
-            case "InGame":
-                StompConnector.Instance.SubscribeToTopic($"/game/{SceneContext.MatchInfo.sessionId}/frameInfos/{SceneContext.UserID}",
-                    "OnFrameInfoReceived",
-                    "frame-sub");
-                
+            case "OnPlaying":
+                StompConnector.Instance.ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+                StompConnector.Instance.StartMatchingFlow();
                 SceneManager.LoadScene("GameScene"); 
                 
-                var snapUrl = $"{SceneContext.ServerUrl}/api/games/{SceneContext.MatchInfo.sessionId}/snapshot";
+                var snapUrl = $"{SceneContext.ServerUrl}/game/{SceneContext.MatchInfo.sessionId}/snapshot";
                 using (var snapReq = UnityWebRequest.Get(snapUrl))
                 {
                     snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -73,6 +68,7 @@ public static class StatusTracker
                     }
                     //
                     // // 네 쪽 렌더러/팩토리에 그대로 넘겨서 생성/갱신
+                    Debug.Log(snapReq.downloadHandler.text);
                     // ApplySnapshotJson(snapReq.downloadHandler.text);
                 }
                 yield break;
@@ -82,7 +78,10 @@ public static class StatusTracker
                 yield break;
         }
     }
-    
 
-    // private static void ApplySnapshotJson(string json);
+
+    private static void ApplySnapshotJson(string json)
+    {
+        
+    }
 }

@@ -21,6 +21,7 @@ public class StompConnector : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this);
+        ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -41,23 +42,24 @@ public class StompConnector : MonoBehaviour
     private static extern void DisconnectStomp();
     #endif
 
+    public void StartMatchingFlow()
+    {
+        UnsubscribeFromTopic("frame-sub");
+        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
+        SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
+    }
+
+    public void StartInGameFlow(string sessionId)
+    {
+        UnsubscribeFromTopic("match-sub");
+        SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
+    }
+    
     // 연결 상태 처리
     public void OnConnected(string frame)
     {
         Debug.Log("STOMP 연결됨: " + frame);
         isConnected = true;
-        
-        // 예: 메시지 오면 OnMessageReceived 호출됨
-        SubscribeToTopic(
-            $"/queue/match-status/{SceneContext.UserID}",
-            "OnMessageReceived",
-            "match-sub"
-        );
-        // 예: 서버로 JSON 메시지 전송
-        SendMessageToServer(
-            "/app/game/match/queue",
-            SceneContext.UserID.ToString()
-        );
     }
     
     // 메시지 수신 처리
@@ -71,12 +73,8 @@ public class StompConnector : MonoBehaviour
         if (!string.IsNullOrEmpty(matchInfo.sessionId))
         {
             Debug.Log("매칭 완료! 세션 ID: " + matchInfo.sessionId);
-
-            // 씬 전환 (예: GameScene)
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
-            SubscribeToTopic($"/game/{SceneContext.MatchInfo.sessionId}/frameInfos/{SceneContext.UserID}",
-                "OnFrameInfoReceived",
-                "frame-sub");
+            SceneManager.LoadScene("GameScene");
+            StartInGameFlow(matchInfo.sessionId);
         }
         else
         {
@@ -118,7 +116,6 @@ public class StompConnector : MonoBehaviour
         else
         {
             Debug.LogWarning("이미 연결되어 있습니다.");
-            OnConnected("이미 연결됨");
         }
     }
 
