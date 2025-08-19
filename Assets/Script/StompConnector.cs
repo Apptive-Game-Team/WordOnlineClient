@@ -21,7 +21,8 @@ public class StompConnector : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this);
-        ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+        ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
+
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -216,10 +217,9 @@ public class StompConnector : MonoBehaviour
                 GameSceneUIController.Instance.UpdateUserHps(info.leftPlayerHp, info.rightPlayerHp);
                 //
                 // // 카드 추가
-                foreach (string cardName in info.cards.added)
+                foreach (CardType cardName in info.cards.added)
                 {
-                    CardType cardType = (CardType)Enum.Parse(typeof(CardType), cardName, true);
-                    GameSceneUIController.Instance.AddCard(cardType);
+                    GameSceneUIController.Instance.AddCard(cardName);
                 }
                     
                 //

@@ -25,7 +25,7 @@ public class UserInfoGetter
     
     public static IEnumerator GetUserStatus()
     {
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.ServerUrl + "/api/users/mine", "GET"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/mine", "GET"))
         {
             webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
             webRequest.downloadHandler = new DownloadHandlerBuffer();

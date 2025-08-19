@@ -14,7 +14,7 @@ public static class StatusTracker
 
     public static IEnumerator GetUserStatus()
     {
-        var url = SceneContext.ServerUrl + "/api/users/mine/status";
+        var url = SceneContext.CurrentServer.url + "/api/users/mine/status";
 
         using var www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -46,16 +46,16 @@ public static class StatusTracker
                 yield break;
 
             case "OnMatching":
-                StompConnector.Instance.ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+                StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
                 StompConnector.Instance.StartMatchingFlow();
                 yield break;
 
             case "OnPlaying":
-                StompConnector.Instance.ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+                StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
                 StompConnector.Instance.StartMatchingFlow();
                 SceneManager.LoadScene("GameScene"); 
                 
-                var snapUrl = $"{SceneContext.ServerUrl}/game/{SceneContext.MatchInfo.sessionId}/snapshot";
+                var snapUrl = $"{SceneContext.CurrentServer.url}/game/{SceneContext.MatchInfo.sessionId}/snapshot";
                 using (var snapReq = UnityWebRequest.Get(snapUrl))
                 {
                     snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
