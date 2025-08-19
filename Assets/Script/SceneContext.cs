@@ -13,9 +13,9 @@ public class SceneContext : MonoBehaviour
         get; set;
     }
     
-    public static string ServerIp = "www.monolong.shop";
+    public static string ServerIp = "localhost";
     public static int ServerPort = 7777;
-    public static string ServerUrl = $"https://{ServerIp}:{ServerPort}";
+    public static string ServerUrl = $"http://{ServerIp}:{ServerPort}";
     
     public static long UserID
     {

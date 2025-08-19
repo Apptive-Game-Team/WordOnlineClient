@@ -17,6 +17,6 @@ public class EnqueueButton : ButtonBase
     
     protected override void OnClickButton()
     {
-        GetStompConnector().ConnectToServer($"wss://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
+        GetStompConnector().ConnectToServer($"ws://{SceneContext.ServerIp}:{SceneContext.ServerPort}/ws?token=" + SceneContext.JwtToken);
     }
 }
