@@ -21,7 +21,7 @@ public class StompConnector : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this);
-        ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
+        ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}");
 
     }
 
@@ -50,6 +50,12 @@ public class StompConnector : MonoBehaviour
         SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
     }
 
+    public void StartReMatchingFlow()
+    {
+        UnsubscribeFromTopic("frame-sub");
+        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
+    }
+    
     public void StartInGameFlow(string sessionId)
     {
         UnsubscribeFromTopic("match-sub");

@@ -38,9 +38,9 @@ public class RegisterButton : AsyncButtonBase
             AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
             SceneContext.JwtToken = authResponseDto.jwtToken;
+                    
+            SceneManager.LoadScene("LobbyScene");
         }
-        
-        SceneManager.LoadScene("LobbyScene");
     }
 
     protected override void OnClickButton()

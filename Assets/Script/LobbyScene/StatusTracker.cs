@@ -47,15 +47,15 @@ public static class StatusTracker
 
             case "OnMatching":
                 StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
-                StompConnector.Instance.StartMatchingFlow();
+                StompConnector.Instance.StartReMatchingFlow();
                 yield break;
 
             case "OnPlaying":
                 StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
-                StompConnector.Instance.StartMatchingFlow();
+                // StompConnector.Instance.StartInGameFlow();
                 SceneManager.LoadScene("GameScene"); 
                 
-                var snapUrl = $"{SceneContext.CurrentServer.url}/game/{SceneContext.MatchInfo.sessionId}/snapshot";
+                var snapUrl = $"{SceneContext.CurrentServer.url}/sessions/{SceneContext.MatchInfo.sessionId}/snapshot";
                 using (var snapReq = UnityWebRequest.Get(snapUrl))
                 {
                     snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
