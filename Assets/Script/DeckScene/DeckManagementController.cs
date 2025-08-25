@@ -65,10 +65,14 @@ namespace Script.DeckScene
         public Button submitDeckButton;        // 덱 제출 버튼
         public TMP_InputField deckNameInputField; // 덱 이름 입력 필드
         
-        private DeckResponseDto[] userDecks;
-        private CardDto[] ownedCards;
+        private static DeckResponseDto[] userDecks;
+        private static CardDto[] ownedCards;
 
         void Start() {
+            if (userDecks != null && userDecks.Length > 0) {
+                PopulateDeckList();
+                PopulateOwnedCardsList();
+            }
             StartCoroutine(LoadAll());
         }
 
@@ -129,6 +133,10 @@ namespace Script.DeckScene
             Debug.Log(userDecks.Length);
         
             PopulateDeckList();
+            PopulateOwnedCardsList();
+        }
+        
+        void PopulateOwnedCardsList() {
             var summary = ownedCards
                 .GroupBy(c => c.name)                
                 .Select(g => new { 
@@ -148,8 +156,6 @@ namespace Script.DeckScene
                 );
                 ui.Init(card.Name,card.Count);
             }
-
-            yield return null;
         }
 
         void PopulateDeckList() {

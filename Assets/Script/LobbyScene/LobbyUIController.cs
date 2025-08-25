@@ -11,7 +11,7 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] LobbyUserNameUI lobbyUserNameUI;
     [SerializeField] private TMP_Dropdown deckDropdown;
     [SerializeField] private Button arrowButton;
-    private DeckResponseDto[] userDecks;
+    private static DeckResponseDto[] userDecks;
 
     private void Start()
     {
@@ -23,7 +23,10 @@ public class LobbyUIController : MonoBehaviour
     
     private IEnumerator LoadUserInfo()
     {
-        yield return UserInfoGetter.GetUserInfo();
+        if (SceneContext.User == null)
+        {
+            yield return UserInfoGetter.GetUserInfo();
+        }
         
         lobbyUserNameUI.SetUserName(SceneContext.User.name);
         yield return FetchDecks();
@@ -31,6 +34,11 @@ public class LobbyUIController : MonoBehaviour
 
     public IEnumerator FetchDecks()
     {
+        if (userDecks != null && userDecks.Length > 0)
+        {
+            PopulateDropdown();
+        }
+        
         string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
