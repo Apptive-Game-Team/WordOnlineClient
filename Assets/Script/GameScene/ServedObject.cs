@@ -34,7 +34,7 @@ namespace Script.GameScene
             transform.position = new Vector3(
                 updatedObjectDto.position.x, 
                 updatedObjectDto.position.y, 
-                0);
+                updatedObjectDto.position.z);
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
