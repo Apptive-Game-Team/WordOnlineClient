@@ -31,7 +31,9 @@ public class ZVisualizer : MonoBehaviour
     {
         Color shadowColor = ShadowSpriteRenderer.color;
         shadowColor.a = SHADOW_DEFAULT_ALPHA * (1 - Z); 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         Debug.Log("Z: " + Z + ", Alpha: " + shadowColor.a);
+#endif
         ShadowSpriteRenderer.color = shadowColor;
     }
 
