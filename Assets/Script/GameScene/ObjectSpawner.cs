@@ -21,7 +21,7 @@ namespace Script.GameScene
             Vector3 position = new Vector3(
                 createdObjectDto.position.x, 
                 createdObjectDto.position.y, 
-                0);
+                createdObjectDto.position.z);
             GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
             GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
