@@ -139,7 +139,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6801074658125409523}
-  - component: {fileID: 60284753874675442}
   - component: {fileID: 4998524859626871858}
   m_Layer: 0
   m_Name: ElectricSlime
@@ -164,23 +163,6 @@ Transform:
   - {fileID: 7781976097280193234}
   m_Father: {fileID: 3266057772248420530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &60284753874675442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7256847568714885410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9482239f4c014f10aeca01a34a0235a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: 2ef2fcbc5959b4321ab7ef00e4444bb4, type: 3}
-  - {fileID: 21300000, guid: f2ab75e7c1f974d1ead3df17d8fa3be0, type: 3}
-  - {fileID: 21300000, guid: 8aab5f640790846ecbc810370da65300, type: 3}
-  - {fileID: 21300000, guid: f2ab75e7c1f974d1ead3df17d8fa3be0, type: 3}
 --- !u!212 &4998524859626871858
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -222,7 +204,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: b09318e9c01f748c69f7e3d3da6c7b5d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 68ea8c9eb531a4ccc8d2743138e8b0ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

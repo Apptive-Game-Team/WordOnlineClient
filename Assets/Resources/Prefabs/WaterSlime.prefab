@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8078300412823900925}
   - component: {fileID: 6329974403789230943}
-  - component: {fileID: 1189943528851843778}
   m_Layer: 0
   m_Name: WaterSlime
   m_TagString: Untagged
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 2ee52e6482e1b4e0e99329c99b9f1ea7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8317c3cdb09694887afe62655b4f6930, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,23 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1189943528851843778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3312592529438038809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9482239f4c014f10aeca01a34a0235a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: f27551c071f00463b87b01b0cfc2a269, type: 3}
-  - {fileID: 21300000, guid: 05862dfeca01a4d499beb745601f75cf, type: 3}
-  - {fileID: 21300000, guid: 9f9984975a2be44439d715ed9c28c8ff, type: 3}
-  - {fileID: 21300000, guid: 05862dfeca01a4d499beb745601f75cf, type: 3}
 --- !u!1 &6537584572895163592
 GameObject:
   m_ObjectHideFlags: 0
