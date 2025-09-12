@@ -15,14 +15,14 @@ namespace Script.GameScene
             this.master = master;
             if (!SceneContext.Me.Equals(master))
             {
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 0.5f, 1f);
+                gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 0.5f, 0.5f, 1f);
             }
             
             if (master.Equals("RightPlayer"))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
-                    gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                    gameObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
                     return;
                 }
                 gameObject.transform.Rotate(0, 180, 0);
