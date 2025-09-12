@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3632793050788502734}
   - component: {fileID: 6294209296427915767}
-  - component: {fileID: 2825548106997404364}
   - component: {fileID: 737759428226846977}
   m_Layer: 0
   m_Name: RockExplode
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 12
-  m_Sprite: {fileID: 751265383, guid: 94cfe50d79cb1984e8e2ca6260a63456, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8ed52e7f2ccc240099182f389b2d0425, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,27 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2825548106997404364
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4491772784460150989}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1ec122a89c4624fa79ff83867ccd54e9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!82 &737759428226846977
 AudioSource:
   m_ObjectHideFlags: 0

@@ -376,7 +376,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2812391193651574560}
   - component: {fileID: 6147520711017510888}
-  - component: {fileID: 2226257316805154103}
   m_Layer: 0
   m_Name: LeafSlime
   m_TagString: Untagged
@@ -441,7 +440,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: ebcc6e43235d043a89a683288e5619ea, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4b51ccdc3607746f3b048eccaa932154, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -452,23 +451,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2226257316805154103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415606905852551812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9482239f4c014f10aeca01a34a0235a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: ae94fadcae7534b51a3eaac998a8f41f, type: 3}
-  - {fileID: 21300000, guid: 8d5424e98d5184740a86d1fa20b81f68, type: 3}
-  - {fileID: 21300000, guid: f32001d6d0a424f58a5368fe2c7f53ba, type: 3}
-  - {fileID: 21300000, guid: 8d5424e98d5184740a86d1fa20b81f68, type: 3}
 --- !u!1 &6107735050722624684
 GameObject:
   m_ObjectHideFlags: 0
