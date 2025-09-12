@@ -13,7 +13,7 @@ namespace Script.GameScene
         public void SetMaster(string master)
         {
             this.master = master;
-            if (!SceneContext.Me.Equals(master))
+            if (!SceneContext.Me.Equals(master) && master != "None")
             {
                 gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 0.5f, 0.5f, 1f);
             }
