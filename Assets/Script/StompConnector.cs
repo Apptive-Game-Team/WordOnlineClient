@@ -223,7 +223,7 @@ public class StompConnector : MonoBehaviour
                 GameSceneUIController.Instance.UpdateUserHps(info.leftPlayerHp, info.rightPlayerHp);
                 //
                 // // 카드 추가
-                foreach (CardType cardName in info.cards.added)
+                foreach (string cardName in info.cards.added)
                 {
                     GameSceneUIController.Instance.AddCard(cardName);
                 }
