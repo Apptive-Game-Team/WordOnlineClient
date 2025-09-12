@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 433710728614067552}
   - component: {fileID: 3519057840079595696}
-  - component: {fileID: 6131518583080884821}
   - component: {fileID: -8905534507698651028}
   m_Layer: 0
   m_Name: FireExplode
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 12
-  m_Sprite: {fileID: -367236432, guid: 5add7396dfe684b4a995120aab3ea01c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28281ad5f82dc44f5bf039c301a5e460, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,27 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &6131518583080884821
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096117181755158265}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3fa32374e5761415b9cf8488d96d2e2e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!82 &-8905534507698651028
 AudioSource:
   m_ObjectHideFlags: 0

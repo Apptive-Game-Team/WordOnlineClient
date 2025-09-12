@@ -56,7 +56,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7314263550066847231}
   - component: {fileID: 2713035769184733891}
-  - component: {fileID: 837655783289539174}
   m_Layer: 0
   m_Name: RockSlime
   m_TagString: Untagged
@@ -121,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 4e3637a715a5049419e37e2a32dc5806, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eb6d15dd1370140ec9c21546e2dda468, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,23 +131,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &837655783289539174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2582310894112009323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9482239f4c014f10aeca01a34a0235a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: 882b1be015b144349a51c6da1338bd7d, type: 3}
-  - {fileID: 21300000, guid: 5de5c1f62414746988b706bb99487e8d, type: 3}
-  - {fileID: 21300000, guid: cb8fbce9a48a84cc5be5b7fef40b2069, type: 3}
-  - {fileID: 21300000, guid: 5de5c1f62414746988b706bb99487e8d, type: 3}
 --- !u!1 &3086526654110985940
 GameObject:
   m_ObjectHideFlags: 0
