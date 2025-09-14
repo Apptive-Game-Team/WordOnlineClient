@@ -72,7 +72,7 @@ public class GameSceneUIController : MonoBehaviour
         manaSlider.value = mana;
     }
 
-    public void AddCard(CardType cardname)
+    public void AddCard(string cardname)
     {
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(1).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);

@@ -15,6 +15,7 @@ namespace Script.Data
         Lightning,
         Rock,
         Leaf,
+        Wind,
     }
     public class MagicData
     {
@@ -36,15 +37,16 @@ namespace Script.Data
     {
         public static List<MagicData> dataList = new List<MagicData>()
         {
-            new MagicData("Shoot",25,1f, "magic"),
-            new MagicData("Summon",15,1/3f, "magic"),
-            new MagicData("Spawn",15,1/3f, "magic"),
-            new MagicData("Explode",40,1/2f, "magic"),
-            new MagicData("Fire",0,1/4f, "type"),
-            new MagicData("Water",0,1/4f, "type"),
-            new MagicData("Leaf",0,1/4f, "type"),
-            new MagicData("Lightning",0,1/4f, "type"),
-            new MagicData("Rock",0,1/4f, "type"),
+            new MagicData("Shoot",15,1f, "magic"),
+            new MagicData("Summon",30,1/3f, "magic"),
+            new MagicData("Spawn",20,1/3f, "magic"),
+            new MagicData("Explode",10,1/2f, "magic"),
+            new MagicData("Fire",10,1/4f, "type"),
+            new MagicData("Water",10,1/4f, "type"),
+            new MagicData("Leaf",10,1/4f, "type"),
+            new MagicData("Lightning",10,1/4f, "type"),
+            new MagicData("Rock",10,1/4f, "type"),
+            new MagicData("Wind",10,1/4f, "type"),
         };
 
         public static MagicData GetMagicData(string name)

@@ -22,4 +22,21 @@ public class UserInfoGetter
             SceneContext.User = JsonUtility.FromJson<User>(webRequest.downloadHandler.text);
         }
     }
+    
+    public static IEnumerator GetUserStatus()
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/mine", "GET"))
+        {
+            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            yield return webRequest.SendWebRequest();
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                yield break;
+            }
+            
+            SceneContext.User = JsonUtility.FromJson<User>(webRequest.downloadHandler.text);
+        }
+    }
 }
