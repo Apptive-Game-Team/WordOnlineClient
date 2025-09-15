@@ -11,9 +11,11 @@ public class CardInputSender : MonoBehaviour
     private List<CardUI> _currentCardList = new List<CardUI>();
     
     public bool CanSelectField => _currentCardList.Count >= 2;
-    
+    public bool IsFieldSelectMode { get; private set; } = false;
+
     public void CancelUseCard(CardUI cardObj)
     {
+        Debug.Log($"CancelUseCard: {cardObj.CardName}");
         if (_currentCardNameList.Contains(cardObj.CardName))
         {
             _currentCardNameList.Remove(cardObj.CardName);
@@ -23,25 +25,32 @@ public class CardInputSender : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1) && CanSelectField)
+        if (Input.GetMouseButtonDown(1) && IsFieldSelectMode)
         {
             CancelAll();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && CanSelectField)
+        {
+            IsFieldSelectMode = true;
         }
     }
 
     public string GetMagicName()
     {
-        return _currentCardNameList.Find(cardName => cardName.Contains("Shoot") || cardName.Contains("Spawn") || cardName.Contains("Summon") || cardName.Contains("Explode"));
+        return _currentCardNameList.Find(cardName => cardName.Contains("Shoot") || cardName.Contains("Spawn") || cardName.Contains("Build") || cardName.Contains("Explode"));
     }
     
     private void CancelAll()
     {
+        Debug.Log("CancelAll");
         foreach (var card in _currentCardList)
         {
             card.SetCardActive(false);
         }
         _currentCardList.Clear();
         _currentCardNameList.Clear();
+        IsFieldSelectMode = false;
     }
 
     public void TryUseCard(CardUI cardObj)
@@ -59,11 +68,13 @@ public class CardInputSender : MonoBehaviour
         inputRequestDict.Add(input.id, new List<CardUI>(_currentCardList)) ;
         _currentCardNameList.Clear();
         _currentCardList.Clear();
+        IsFieldSelectMode = false;
     }
     
     
     public void AddCardList(CardUI card)
     {
+        Debug.Log("AddCardList: " + card.CardName);
         _currentCardNameList.Add(card.CardName);
         _currentCardList.Add(card);
     }

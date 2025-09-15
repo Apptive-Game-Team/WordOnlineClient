@@ -26,7 +26,7 @@ public class FieldSelector : MonoBehaviour
 
     void Update()
     {
-        if (cardInputSender.CanSelectField)
+        if (cardInputSender.IsFieldSelectMode)
         {
             if (!currentAimObj.activeSelf)
             {
@@ -58,29 +58,29 @@ public class FieldSelector : MonoBehaviour
                     currentSkillIndicator.SetActive(true);
                 }
             }
-            if (SceneContext.Me.Equals("RightPlayer"))
-            {
-                currentRangeObj.transform.position = new Vector3(17, 5, 0);
-            }
-            else
-            {
-                currentRangeObj.transform.position = new Vector3(1, 5, 0);
-            }            
+            // if (SceneContext.Me.Equals("RightPlayer"))
+            // {
+            //     currentRangeObj.transform.position = new Vector3(17, 5, 0);
+            // }
+            // else
+            // {
+            //     currentRangeObj.transform.position = new Vector3(1, 5, 0);
+            // }            
             
-            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            currentAimObj.transform.position = mouseWorldPos;
+            // Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // currentAimObj.transform.position = mouseWorldPos;
 
 
 
             if (EventSystem.current.IsPointerOverGameObject()) return;
             
-            if (Input.GetMouseButtonDown(0))
-            {
-                cardInputSender.SendInput(mouseWorldPos);
-                currentAimObj.SetActive(false);
-                currentRangeObj.SetActive(false);
-                currentSkillIndicator.SetActive(false);
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     cardInputSender.SendInput(mouseWorldPos);
+            //     currentAimObj.SetActive(false);
+            //     currentRangeObj.SetActive(false);
+            //     currentSkillIndicator.SetActive(false);
+            // }
         } else {
             if (currentAimObj.activeSelf)
             {
