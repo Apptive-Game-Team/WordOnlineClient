@@ -38,7 +38,12 @@ public class CardInputSender : MonoBehaviour
 
     public string GetMagicName()
     {
-        return _currentCardNameList.Find(cardName => cardName.Contains("Shoot") || cardName.Contains("Spawn") || cardName.Contains("Build") || cardName.Contains("Explode"));
+        string result =
+            _currentCardNameList.Find(c => c.Contains("Build")) ??
+            _currentCardNameList.Find(c => c.Contains("Spawn")) ??
+            _currentCardNameList.Find(c => c.Contains("Explode")) ??
+            _currentCardNameList.Find(c => c.Contains("Shoot"));
+        return result;
     }
     
     private void CancelAll()
