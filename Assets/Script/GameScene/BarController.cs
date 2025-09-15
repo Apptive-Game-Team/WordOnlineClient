@@ -17,7 +17,7 @@ public class BarController : MonoBehaviour
 
     private void Update()
     {
-        if (CheckMouseOverBar() && !cardInputSender.CanSelectField)
+        if (CheckMouseOverBar() && !cardInputSender.IsFieldSelectMode)
         {
             isActive = true;
         }
