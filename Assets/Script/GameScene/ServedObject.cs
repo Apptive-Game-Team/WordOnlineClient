@@ -1,15 +1,28 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace Script.GameScene
 {
     public class ServedObject : MonoBehaviour
     {
+        private const float BounceScale = 1.3f;
+        private const float SquashScale = 0.8f;
+        private const float Duration = 0.2f;
+
+        private Vector3 originalScale;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
         public int maxHp;
         private string master;
-        
+
+        private int lastHp = -1;
+
+        private void Awake()
+        {
+            originalScale = transform.localScale;
+        }
+
         public void SetMaster(string master)
         {
             this.master = master;
@@ -45,6 +58,7 @@ namespace Script.GameScene
             else
             // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
+            HandleDamageEffect();
         }
         
         private void SetEffect(string effect)
@@ -71,6 +85,37 @@ namespace Script.GameScene
             }
             _effectInstance = Instantiate(effectPrefab, transform.position, Quaternion.identity);
             _effectInstance.transform.SetParent(transform);
+        }
+        
+        private void HandleDamageEffect()
+        {
+            if (hp < lastHp)
+            {
+                SetSelfDestroyEffect("HitEffect");
+                PlayBounce();
+            }
+            lastHp = hp;
+        }
+        
+        private void PlayBounce()
+        {
+            Sequence seq = DOTween.Sequence();
+            seq.Append(transform.DOScale(new Vector3(originalScale.x * SquashScale, originalScale.y * BounceScale, originalScale.z), Duration / 2)
+                .SetEase(Ease.OutQuad));
+            seq.Append(transform.DOScale(originalScale, Duration / 2).SetEase(Ease.InQuad));
+        }
+        
+        private void SetSelfDestroyEffect(string effect)
+        {
+            GameObject effectPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{effect}");
+            
+            if (effectPrefab == null)
+            {
+                Debug.LogWarning($"Effect prefab '{effect}' not found.");
+                return;
+            }
+            
+            Instantiate(effectPrefab, transform.position, Quaternion.identity);
         }
     }
 }
