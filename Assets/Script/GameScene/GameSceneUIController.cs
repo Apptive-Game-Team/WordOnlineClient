@@ -75,7 +75,7 @@ public class GameSceneUIController : MonoBehaviour
     public void AddCard(string cardname)
     {
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
-        cardUI.transform.GetChild(1).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
+        cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname.ToString());
     }
 }
