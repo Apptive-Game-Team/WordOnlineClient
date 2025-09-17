@@ -45,18 +45,22 @@ public class DOTweenFeedbackTester : MonoBehaviour
         {
             DOTweenAction.Bounce(obj1, bounce.originScale, bounce.squashScale, bounce.bounceScale, bounce.duration);
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W))
         {
             DOTweenAction.Swing(obj2, swing.angle, swing.duration);
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             DOTweenAction.Bounce(playerObj, bounce.originScale, bounce.squashScale, bounce.bounceScale, bounce.duration);
             DOTweenAction.Rotate(playerObj,swing.angle, swing.duration, RotateMode.LocalAxisAdd);
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             DOTweenAction.Rotate(playerObj,0, swing.duration);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            DOTweenAction.CrawlMob(obj1.transform);
         }
     }
 }

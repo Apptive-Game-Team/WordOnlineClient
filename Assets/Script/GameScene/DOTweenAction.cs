@@ -16,21 +16,28 @@ public static class DOTweenAction
         public float duration;
     }
     
-    private static BounceParameters _mobBounce = new BounceParameters
+    private static BounceParameters _mobBounceParam = new BounceParameters
     {
         originScale = Vector3.one,
         squashScale = 0.8f,
         bounceScale = 1.2f,
         duration    = 0.2f
     };
+    private static BounceParameters _mobCrawlParam = new BounceParameters
+    {
+        originScale = Vector3.one,
+        squashScale = 0.7f,
+        bounceScale = 1.3f,
+        duration    = 0.5f
+    };
     
-    private static SwingParameters _mobAttackSwing = new ()
+    private static SwingParameters _mobAttackParam = new ()
     {
         angle = 30f,
         duration  = 0.4f
     };
 
-    private static SwingParameters _playerCardUseSwing = new()
+    private static SwingParameters _playerCardUseParam = new()
     {
 
         angle = 25f,
@@ -45,13 +52,22 @@ public static class DOTweenAction
             .Append(tr.DOScale(originScale, duration / 2).SetEase(Ease.InQuad));
     }
 
+    public static void Crawl(Transform tr, Vector3 originScale, float stretchScale, float squashScale, float duration)
+    {
+            Sequence seq = DOTween.Sequence();
+            seq.Append(tr.DOScale(new Vector3(originScale.x * stretchScale, originScale.y * squashScale, originScale.z),
+                    duration / 2).SetEase(Ease.OutQuad))
+                .Append(tr.DOScale(originScale, duration / 2).SetEase(Ease.InOutQuad));
+            seq.SetLoops(-1);
+    }
+    
     public static void Swing(Transform tr, float angle, float duration)
     {
         Sequence seq = DOTween.Sequence();
         DOTween.Sequence()
-            .Append(tr.DOLocalRotate(new Vector3(0, 0, +angle), duration * 0.2f, RotateMode.Fast)
+            .Append(tr.DOLocalRotate(new Vector3(0, 0, +angle), duration * 0.3f, RotateMode.Fast)
                 .SetEase(Ease.OutBack))
-            .AppendInterval(duration * 0.4f)
+            .AppendInterval(duration * 0.3f)
             .Append(tr.DOLocalRotate(new Vector3(0, 0, -angle), duration * 0.2f, RotateMode.Fast)
                 .SetEase(Ease.OutCubic))
             .Append(tr.DOLocalRotate(new Vector3(0, 0, 0), duration * 0.2f, RotateMode.Fast)
@@ -68,16 +84,21 @@ public static class DOTweenAction
 
     public static void BounceMob(Transform tr)
     {
-        Bounce(tr, _mobBounce.originScale, _mobBounce.squashScale,_mobBounce.bounceScale, _mobBounce.duration);
+        Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);
     }
 
+    public static void CrawlMob(Transform tr)
+    {
+        Crawl(tr, _mobCrawlParam.originScale, _mobCrawlParam.bounceScale, _mobCrawlParam.squashScale, _mobCrawlParam.duration);
+    }
+    
     public static void SwingMobAttack(Transform tr)
     {
-        Swing(tr, _mobAttackSwing.angle, _mobAttackSwing.duration);
+        Swing(tr, _mobAttackParam.angle, _mobAttackParam.duration);
     }
 
     public static void SwingPlayerUseCard(Transform tr)
     {
-        Rotate(tr, _playerCardUseSwing.angle, _playerCardUseSwing.duration);
+        Rotate(tr, _playerCardUseParam.angle, _playerCardUseParam.duration);
     }
 }
