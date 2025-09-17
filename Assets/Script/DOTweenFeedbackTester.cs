@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class DOTweenFeedbackTester : MonoBehaviour
 {
     [SerializeField] private Transform obj1;
     [SerializeField] private Transform obj2;
-    [SerializeField] private Transform obj3;
+    [SerializeField] private Transform playerObj;
 
     struct BounceTesterParameters
     {
@@ -42,11 +43,20 @@ public class DOTweenFeedbackTester : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            DOTweenAction.DOBounce(obj1, bounce.originScale, bounce.squashScale, bounce.bounceScale, bounce.duration);
+            DOTweenAction.Bounce(obj1, bounce.originScale, bounce.squashScale, bounce.bounceScale, bounce.duration);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            DOTweenAction.DOSwing(obj2, swing.angle, swing.duration);
+            DOTweenAction.Swing(obj2, swing.angle, swing.duration);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            DOTweenAction.Bounce(playerObj, bounce.originScale, bounce.squashScale, bounce.bounceScale, bounce.duration);
+            DOTweenAction.Rotate(playerObj,swing.angle, swing.duration, RotateMode.LocalAxisAdd);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            DOTweenAction.Rotate(playerObj,0, swing.duration);
         }
     }
 }

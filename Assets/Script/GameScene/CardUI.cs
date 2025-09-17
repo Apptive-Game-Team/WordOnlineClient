@@ -48,7 +48,7 @@ namespace Script.GameScene
         
         public void OnCardClicked()
         {
-            cardSound.Play();   
+            cardSound.Play();
             if (isActive)
             {
                 FindObjectOfType<CardInputSender>().CancelUseCard(this);

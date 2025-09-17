@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -36,6 +37,6 @@ public class PlayerFeedbackController : MonoBehaviour
     public void PlayCardSelectFeedback()
     {
         Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
-        Sequence seq = DOTween.Sequence();
+        DOTweenAction.SwingPlayerUseCard(spriteTr);
     }
 }

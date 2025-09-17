@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj1: {fileID: 1737906661}
   obj2: {fileID: 1471989953}
-  obj3: {fileID: 96543763}
+  playerObj: {fileID: 96543763}
 --- !u!4 &54661613
 Transform:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 96543763}
   - component: {fileID: 96543762}
   m_Layer: 0
-  m_Name: Obj1 (2)
+  m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,7 +227,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8317c3cdb09694887afe62655b4f6930, type: 3}
+  m_Sprite: {fileID: 21300000, guid: baf25865d1f604ec7ad764b4dc36a5f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
