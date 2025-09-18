@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class CardItemUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI cardNameText;
+    [SerializeField] private TextMeshProUGUI cardManaText;
     [SerializeField] private TextMeshProUGUI cardCountText;
     [SerializeField] private CardImageMapper cardImageMapper;
     
@@ -20,14 +21,22 @@ public class CardItemUI : MonoBehaviour
     {
         cardNameText.text = cName;
         cardCountText.text = $" X {count.ToString()}" ;
-        transform.GetChild(1).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cName);
-        if(LocalMagicData.GetMagicData(cName).type.Equals("type"))
+        transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cName);
+        
+        MagicData magicData = LocalMagicData.GetMagicData(cName);
+        cardManaText.text = magicData.mana.ToString();
+
+        switch (magicData.type)
         {
-            GetComponent<Image>().sprite = typeSprite;
-        }
-        else if (LocalMagicData.GetMagicData(cName).type.Equals("magic"))
-        {
-            GetComponent<Image>().sprite = magicSprite;
+            case "type":
+                GetComponent<Image>().sprite = typeSprite;
+                break;
+            case "magic":
+                GetComponent<Image>().sprite = magicSprite;
+                break;
+            default:
+                Debug.LogError($"Unknown magic type: {magicData.type}");
+                break;
         }
     }
 }

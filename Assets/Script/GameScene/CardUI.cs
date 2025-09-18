@@ -9,6 +9,7 @@ namespace Script.GameScene
     public class CardUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
+        [SerializeField] private TextMeshProUGUI cardManaText;
         [SerializeField] private AudioSource cardSound;
         
         [SerializeField] private Sprite typeSprite;
@@ -30,13 +31,19 @@ namespace Script.GameScene
         public void Init(string name)
         {
             cardNameText.text = name;
-            if (LocalMagicData.GetMagicData(name).type.Equals("type"))
+            MagicData magicData = LocalMagicData.GetMagicData(name);
+            cardManaText.text = magicData.mana.ToString();
+            switch (magicData.type)
             {
-                GetComponent<Image>().sprite = typeSprite;
-            }
-            else if (LocalMagicData.GetMagicData(name).type.Equals("magic"))
-            {
-                GetComponent<Image>().sprite = magicSprite;
+                case "type":
+                    GetComponent<Image>().sprite = typeSprite;
+                    break;
+                case "magic":
+                    GetComponent<Image>().sprite = magicSprite;
+                    break;
+                default:
+                    Debug.LogError($"Unknown magic type: {magicData.type}");
+                    break;
             }
         }
 

@@ -16,7 +16,7 @@ MonoBehaviour:
   - CardType: 1
     cardImage: {fileID: 21300000, guid: 0b7c6abec9b0d4dae9be5160986aa594, type: 3}
   - CardType: 3
-    cardImage: {fileID: 21300000, guid: 312cdeb08472b4b91bef7d59c3679331, type: 3}
+    cardImage: {fileID: 21300000, guid: 933b94872d7c9457ba3c60924804395a, type: 3}
   - CardType: 4
     cardImage: {fileID: 21300000, guid: cc283e11eff5a4908a1049b282bbf235, type: 3}
   - CardType: 5
@@ -26,8 +26,10 @@ MonoBehaviour:
   - CardType: 7
     cardImage: {fileID: 21300000, guid: ec37433472c8c4e98903d1b0ed4d871b, type: 3}
   - CardType: 8
-    cardImage: {fileID: 21300000, guid: 21356d9a42b3a4c1b81bf69f97795f5c, type: 3}
+    cardImage: {fileID: 21300000, guid: a9b3524408fb640e49e46997bb83d378, type: 3}
   - CardType: 9
     cardImage: {fileID: 21300000, guid: 5b2cb034a40854991a46fe5e7d31dfd0, type: 3}
   - CardType: 10
-    cardImage: {fileID: 21300000, guid: 29556c61b10704f8f8e1a3799f53fe45, type: 3}
+    cardImage: {fileID: 21300000, guid: 151f02740d8734432aa0f74632a7f455, type: 3}
+  - CardType: 11
+    cardImage: {fileID: 21300000, guid: d02546fb0f38145e98a56f47dc2d6852, type: 3}
