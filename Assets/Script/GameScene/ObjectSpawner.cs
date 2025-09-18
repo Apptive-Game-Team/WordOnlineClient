@@ -6,10 +6,6 @@ namespace Script.GameScene
     public class ObjectSpawner : MonoBehaviour
     {
         public static ObjectSpawner Instance { get; private set; }
-        
-        [SerializeField] private PlayerAnimationTrigger leftPlayerAnimationTrigger;
-        [SerializeField] private PlayerAnimationTrigger rightPlayerAnimationTrigger;
-        
 
         private void Awake()
         {
@@ -29,15 +25,14 @@ namespace Script.GameScene
 
             switch (createdObjectDto.master)
             {
-                case "RightPlayer":
-                    rightPlayerAnimationTrigger.UseMagic();   
-                    break;
-                case "LeftPlayer":
-                    leftPlayerAnimationTrigger.UseMagic();
-                    break;
                 default:
                     Debug.LogWarning($"Unknown master: {createdObjectDto.master}");
                     break;
+            }
+
+            if (createdObjectDto.type.Contains("Slime"))
+            {
+                DOTweenAction.CrawlMob(spawnedObject.transform.GetChild(0));
             }
             
             servedObject.id = createdObjectDto.id;

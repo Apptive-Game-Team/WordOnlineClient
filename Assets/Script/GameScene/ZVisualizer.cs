@@ -6,6 +6,7 @@ using UnityEngine;
 public class ZVisualizer : MonoBehaviour
 {
     private const float SHADOW_DEFAULT_ALPHA = 0.8f;
+    private const float SHADOW_CONSTANT = 5f;
     
     private GameObject visualGameObject;
     private SpriteRenderer ShadowSpriteRenderer;
@@ -30,7 +31,7 @@ public class ZVisualizer : MonoBehaviour
     private void UpdateShadowGameObject()
     {
         Color shadowColor = ShadowSpriteRenderer.color;
-        shadowColor.a = Mathf.Clamp(SHADOW_DEFAULT_ALPHA * (1 - Z), 0f, 1f);
+        shadowColor.a = Mathf.Clamp((SHADOW_CONSTANT - Z) / SHADOW_CONSTANT, 0.1f, SHADOW_DEFAULT_ALPHA);
         ShadowSpriteRenderer.color = shadowColor;
     }
 

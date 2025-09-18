@@ -55,6 +55,11 @@ namespace Script.GameScene
                 ObjectContainer.Instance.UnregisterObject(this);
                 Destroy(gameObject);
             }
+            else if (updatedObjectDto.status.Equals("Attack"))
+            {
+                //feedback_ATTACK
+                DOTweenAction.SwingMobAttack(transform.GetChild(0));
+            }
             else
             // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
