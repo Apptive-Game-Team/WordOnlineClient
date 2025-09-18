@@ -32,7 +32,7 @@ namespace Script.GameScene
 
             if (createdObjectDto.type.Contains("Slime"))
             {
-                DOTweenAction.CrawlMob(prefab.transform.GetChild(0));
+                DOTweenAction.CrawlMob(spawnedObject.transform.GetChild(0));
             }
             
             servedObject.id = createdObjectDto.id;
