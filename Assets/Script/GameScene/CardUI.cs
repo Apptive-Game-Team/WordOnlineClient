@@ -51,11 +51,13 @@ namespace Script.GameScene
             cardSound.Play();
             if (isActive)
             {
+                PlayerFeedbackController.Instance.CancelCardSelectFeedback();
                 FindObjectOfType<CardInputSender>().CancelUseCard(this);
                 SetCardActive(false);
             }
             else
             {
+                PlayerFeedbackController.Instance.PlayCardSelectFeedback();
                 FindObjectOfType<CardInputSender>().TryUseCard(this);   
                 SetCardActive(true);
             }

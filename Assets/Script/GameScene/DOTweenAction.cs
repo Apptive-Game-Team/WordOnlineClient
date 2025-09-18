@@ -60,6 +60,15 @@ public static class DOTweenAction
                 .Append(tr.DOScale(originScale, duration / 2).SetEase(Ease.InOutQuad));
             seq.SetLoops(-1);
     }
+
+    //Has ZVisual Issue
+    public static void Hover(Transform tr, float zPos, float duration)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(tr.DOMoveZ(zPos, duration/2 ).SetEase(Ease.InOutSine))
+            .Append(tr.DOMoveZ(0, duration/2).SetEase(Ease.InOutSine))
+            .SetLoops(-1, LoopType.Yoyo);
+    }
     
     public static void Swing(Transform tr, float angle, float duration)
     {
@@ -97,8 +106,17 @@ public static class DOTweenAction
         Swing(tr, _mobAttackParam.angle, _mobAttackParam.duration);
     }
 
-    public static void SwingPlayerUseCard(Transform tr)
+    public static void RotatePlayerUseCard(Transform tr)
     {
-        Rotate(tr, _playerCardUseParam.angle, _playerCardUseParam.duration);
+        Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);
+        Rotate(tr, _playerCardUseParam.angle, _playerCardUseParam.duration, RotateMode.LocalAxisAdd);
+    }
+    public static void RotatePlayerCancelCard(Transform tr)
+    {
+        Rotate(tr, -_playerCardUseParam.angle, _playerCardUseParam.duration, RotateMode.LocalAxisAdd);
+    }
+    public static void RotatePlayerUseMagic(Transform tr)
+    {
+        Rotate(tr, 0, _playerCardUseParam.duration);
     }
 }

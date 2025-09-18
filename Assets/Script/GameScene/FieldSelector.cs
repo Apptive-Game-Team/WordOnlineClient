@@ -77,7 +77,7 @@ public class FieldSelector : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 cardInputSender.SendInput(mouseWorldPos);
-                //feedback_Magic
+                PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
                 currentSkillIndicator.SetActive(false);

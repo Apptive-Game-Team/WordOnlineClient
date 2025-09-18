@@ -31,7 +31,7 @@ public class ZVisualizer : MonoBehaviour
     private void UpdateShadowGameObject()
     {
         Color shadowColor = ShadowSpriteRenderer.color;
-        shadowColor.a = Mathf.Clamp(SHADOW_DEFAULT_ALPHA * (SHADOW_CONSTANT - Z), 0.1f, 1f);
+        shadowColor.a = Mathf.Clamp((SHADOW_CONSTANT - Z) / SHADOW_CONSTANT, 0.1f, SHADOW_DEFAULT_ALPHA);
         ShadowSpriteRenderer.color = shadowColor;
     }
 

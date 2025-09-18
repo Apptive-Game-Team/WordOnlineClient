@@ -29,6 +29,11 @@ namespace Script.GameScene
                     Debug.LogWarning($"Unknown master: {createdObjectDto.master}");
                     break;
             }
+
+            if (createdObjectDto.type.Contains("Slime"))
+            {
+                DOTweenAction.CrawlMob(prefab.transform.GetChild(0));
+            }
             
             servedObject.id = createdObjectDto.id;
             try

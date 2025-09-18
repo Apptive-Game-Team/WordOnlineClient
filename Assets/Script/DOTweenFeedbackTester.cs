@@ -9,6 +9,7 @@ public class DOTweenFeedbackTester : MonoBehaviour
     [SerializeField] private Transform obj1;
     [SerializeField] private Transform obj2;
     [SerializeField] private Transform playerObj;
+    [SerializeField] private Transform gameObj;
 
     struct BounceTesterParameters
     {
@@ -37,8 +38,12 @@ public class DOTweenFeedbackTester : MonoBehaviour
         angle = 30f,
         duration  = 0.4f
     };
-    
-    
+
+    private void Awake()
+    {
+        DOTweenAction.CrawlMob(gameObj.GetChild(0)); 
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -61,6 +66,10 @@ public class DOTweenFeedbackTester : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             DOTweenAction.CrawlMob(obj1.transform);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            DOTweenAction.Hover(obj2.transform,0.5f,2f);
         }
     }
 }

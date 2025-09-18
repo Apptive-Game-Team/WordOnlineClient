@@ -6,6 +6,20 @@ using UnityEngine;
 
 public class PlayerFeedbackController : MonoBehaviour
 {
+    
+    public static PlayerFeedbackController Instance;
+    
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+    
     private GameObject playerObject;
 
     public GameObject PlayerObject
@@ -14,7 +28,7 @@ public class PlayerFeedbackController : MonoBehaviour
         {
             if (playerObject == null)
             {
-                GetPlayerObject();
+                playerObject = GetPlayerObject();
             }
             return playerObject;
         }
@@ -37,6 +51,17 @@ public class PlayerFeedbackController : MonoBehaviour
     public void PlayCardSelectFeedback()
     {
         Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
-        DOTweenAction.SwingPlayerUseCard(spriteTr);
+        DOTweenAction.RotatePlayerUseCard(spriteTr);
+    }
+    public void CancelCardSelectFeedback()
+    {
+        Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
+        DOTweenAction.RotatePlayerCancelCard(spriteTr);
+    }
+
+    public void UseMagicFeedback()
+    {
+        Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
+        DOTweenAction.RotatePlayerUseMagic(spriteTr);
     }
 }
