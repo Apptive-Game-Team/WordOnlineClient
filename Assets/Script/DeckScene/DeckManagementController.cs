@@ -137,6 +137,11 @@ namespace Script.DeckScene
         }
         
         void PopulateOwnedCardsList() {
+            foreach (Transform child in ownedCardsContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            
             var summary = ownedCards
                 .GroupBy(c => c.name)                
                 .Select(g => new { 
@@ -159,6 +164,11 @@ namespace Script.DeckScene
         }
 
         void PopulateDeckList() {
+            foreach (Transform child in deckListContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            
             foreach (var deck in userDecks) {
                 var deckObject = Instantiate(deckPrefab, deckListContainer);
                 var btn = deckObject.GetComponent<Button>();
