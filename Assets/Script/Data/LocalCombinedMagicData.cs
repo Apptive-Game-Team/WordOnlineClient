@@ -44,7 +44,7 @@ namespace Script.Data
             new (){magicName = "Rock Explosion", recipe = new () { CardType.Build , CardType.Rock}, spritePath = "Game/explode/rock_explode"},
             new (){magicName = "Wind Explosion", recipe = new () { CardType.Build , CardType.Wind}, spritePath = "Game/explode/wind_explode"},
             new (){magicName = "Cannon", recipe = new () { CardType.Build , CardType.Shoot, CardType.Rock}, spritePath = "Game/build/ground_cannon"},
-            new (){magicName = "Tower", recipe = new () { CardType.Build , CardType.Explode, CardType.Rock}, spritePath = "Game/build/anti_air_turret"},
+            new (){magicName = "Tower", recipe = new () { CardType.Build , CardType.Explode, CardType.Rock}, spritePath = "Game/build/ground_tower"},
             new (){magicName = "Mana Well", recipe = new () { CardType.Build , CardType.Lightning, CardType.Nature}, spritePath = "Game/build/mana_well"},
             new (){magicName = "Aqua Archer", recipe = new () { CardType.Spawn , CardType.Shoot, CardType.Water}, spritePath = "Game/spawn/aqua_archer"},
             new (){magicName = "Rock Golem", recipe = new () { CardType.Spawn , CardType.Rock, CardType.Rock}, spritePath = "Game/spawn/rock_golem"},
