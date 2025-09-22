@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3266057772248420530}
   - component: {fileID: 3993205275972432279}
+  - component: {fileID: 4774249601393043717}
   m_Layer: 0
   m_Name: ElectricSlime
   m_TagString: Untagged
@@ -130,6 +131,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4774249601393043717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5240085377417572486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42101c1db2194fc0a1a4f2ad54b57413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  appliedTransform: {fileID: 6801074658125409523}
 --- !u!1 &7256847568714885410
 GameObject:
   m_ObjectHideFlags: 0

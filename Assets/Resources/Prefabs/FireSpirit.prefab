@@ -295,6 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6655567343181033169}
   - component: {fileID: 3087850017726281988}
+  - component: {fileID: 214550687397679346}
   m_Layer: 0
   m_Name: FireSpirit
   m_TagString: Untagged
@@ -331,6 +332,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &214550687397679346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751139892093205351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42101c1db2194fc0a1a4f2ad54b57413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  appliedTransform: {fileID: 8967637500567416408}
 --- !u!1 &7241415870044317604
 GameObject:
   m_ObjectHideFlags: 0
