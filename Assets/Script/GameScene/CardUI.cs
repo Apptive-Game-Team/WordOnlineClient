@@ -56,18 +56,20 @@ namespace Script.GameScene
         public void OnCardClicked()
         {
             cardSound.Play();
+            CardInputSender cardInputSender = FindObjectOfType<CardInputSender>();
             if (isActive)
             {
                 PlayerFeedbackController.Instance.CancelCardSelectFeedback();
-                FindObjectOfType<CardInputSender>().CancelUseCard(this);
+                cardInputSender.CancelUseCard(this);
                 SetCardActive(false);
             }
             else
             {
                 PlayerFeedbackController.Instance.PlayCardSelectFeedback();
-                FindObjectOfType<CardInputSender>().TryUseCard(this);   
+                cardInputSender.TryUseCard(this);   
                 SetCardActive(true);
             }
+            cardInputSender.SetExpectedMagicUI(); 
         }
     }
 }

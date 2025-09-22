@@ -81,6 +81,7 @@ public class FieldSelector : MonoBehaviour
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
                 currentSkillIndicator.SetActive(false);
+                cardInputSender.SetExpectedMagicUI(); 
             }
         } else {
             if (currentAimObj.activeSelf)
