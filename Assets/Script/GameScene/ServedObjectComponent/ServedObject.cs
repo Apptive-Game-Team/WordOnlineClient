@@ -96,31 +96,10 @@ namespace Script.GameScene
         {
             if (hp < lastHp)
             {
-                SetSelfDestroyEffect("HitEffect");
-                PlayBounce();
+                DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
+                DOTweenAction.BounceMob(transform);
             }
             lastHp = hp;
-        }
-        
-        private void PlayBounce()
-        {
-            Sequence seq = DOTween.Sequence();
-            seq.Append(transform.DOScale(new Vector3(originalScale.x * SquashScale, originalScale.y * BounceScale, originalScale.z), Duration / 2)
-                .SetEase(Ease.OutQuad));
-            seq.Append(transform.DOScale(originalScale, Duration / 2).SetEase(Ease.InQuad));
-        }
-        
-        private void SetSelfDestroyEffect(string effect)
-        {
-            GameObject effectPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{effect}");
-            
-            if (effectPrefab == null)
-            {
-                Debug.LogWarning($"Effect prefab '{effect}' not found.");
-                return;
-            }
-            
-            Instantiate(effectPrefab, transform.position, Quaternion.identity);
         }
     }
 }
