@@ -15,6 +15,12 @@ public static class DOTweenAction
         public float angle;
         public float duration;
     }
+
+    public struct HoverParameters
+    {
+        public float zDistance;
+        public float duration;
+    }
     
     private static BounceParameters _mobBounceParam = new BounceParameters
     {
@@ -41,6 +47,12 @@ public static class DOTweenAction
     {
 
         angle = 25f,
+        duration = 0.5f
+    };
+
+    private static HoverParameters _mobHoverParam = new()
+    {
+        zDistance = 1f,
         duration = 0.5f
     };
     
@@ -94,6 +106,11 @@ public static class DOTweenAction
     public static void BounceMob(Transform tr)
     {
         Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);
+    }
+
+    public static void HoverMob(Transform tr)
+    {
+        Hover(tr, _mobHoverParam.zDistance, _mobHoverParam.duration);
     }
 
     public static void CrawlMob(Transform tr)
