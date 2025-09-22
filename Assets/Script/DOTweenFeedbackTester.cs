@@ -67,9 +67,5 @@ public class DOTweenFeedbackTester : MonoBehaviour
         {
             DOTweenAction.CrawlMob(obj1.transform);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            DOTweenAction.Hover(obj2.transform,0.5f,2f);
-        }
     }
 }

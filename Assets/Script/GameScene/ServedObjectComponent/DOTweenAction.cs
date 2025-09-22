@@ -52,8 +52,8 @@ public static class DOTweenAction
 
     private static HoverParameters _mobHoverParam = new()
     {
-        zDistance = 1f,
-        duration = 0.5f
+        zDistance = 0.5f,
+        duration = 1f
     };
     
     public static void Bounce(Transform tr, Vector3 originScale, float squashScale, float bounceScale, float duration)
@@ -74,11 +74,11 @@ public static class DOTweenAction
     }
 
     //Has ZVisual Issue
-    public static void Hover(Transform tr, float zPos, float duration)
+    public static void Hover(Transform tr, float zDistance, float duration)
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(tr.DOMoveZ(zPos, duration/2 ).SetEase(Ease.InOutSine))
-            .Append(tr.DOMoveZ(0, duration/2).SetEase(Ease.InOutSine))
+        seq.Append(tr.DOLocalMoveZ(zDistance, duration/2 ).SetEase(Ease.InOutSine))
+            .Append(tr.DOLocalMoveZ(0, duration/2).SetEase(Ease.InOutSine))
             .SetLoops(-1, LoopType.Yoyo);
     }
     
