@@ -15,6 +15,12 @@ public static class DOTweenAction
         public float angle;
         public float duration;
     }
+
+    public struct HoverParameters
+    {
+        public float zDistance;
+        public float duration;
+    }
     
     private static BounceParameters _mobBounceParam = new BounceParameters
     {
@@ -43,6 +49,12 @@ public static class DOTweenAction
         angle = 25f,
         duration = 0.5f
     };
+
+    private static HoverParameters _mobHoverParam = new()
+    {
+        zDistance = 0.5f,
+        duration = 1f
+    };
     
     public static void Bounce(Transform tr, Vector3 originScale, float squashScale, float bounceScale, float duration)
     {
@@ -62,11 +74,11 @@ public static class DOTweenAction
     }
 
     //Has ZVisual Issue
-    public static void Hover(Transform tr, float zPos, float duration)
+    public static void Hover(Transform tr, float zDistance, float duration)
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(tr.DOMoveZ(zPos, duration/2 ).SetEase(Ease.InOutSine))
-            .Append(tr.DOMoveZ(0, duration/2).SetEase(Ease.InOutSine))
+        seq.Append(tr.DOLocalMoveZ(zDistance, duration/2 ).SetEase(Ease.InOutSine))
+            .Append(tr.DOLocalMoveZ(0, duration/2).SetEase(Ease.InOutSine))
             .SetLoops(-1, LoopType.Yoyo);
     }
     
@@ -94,6 +106,11 @@ public static class DOTweenAction
     public static void BounceMob(Transform tr)
     {
         Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);
+    }
+
+    public static void HoverMob(Transform tr)
+    {
+        Hover(tr, _mobHoverParam.zDistance, _mobHoverParam.duration);
     }
 
     public static void CrawlMob(Transform tr)

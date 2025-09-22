@@ -59,9 +59,22 @@ public class GameSceneUIController : MonoBehaviour
     
     public void UpdateUserHps(int leftUserHp, int rightUserHp)
     {
+        if (leftUserHpSlider.value > leftUserHp)
+        {
+            Transform leftPlayerTr = GameObject.Find("LeftPlayer").transform;
+            DOTweenAction.BounceMob(leftPlayerTr);
+            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",leftPlayerTr);
+        }
+        else if (rightUserHpSlider.value > rightUserHp)
+        {
+            Transform rightPlayerTr = GameObject.Find("RightPlayer").transform;
+            DOTweenAction.BounceMob(rightPlayerTr);
+            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",rightPlayerTr);
+        }
+        
         leftUserHpSlider.value = leftUserHp;
         rightUserHpSlider.value = rightUserHp;
-
+        
         leftUserIDText.text = $"{SceneContext.MatchInfo.leftUser.name}\n HP: {leftUserHp}";
         rightUserIDText.text = $"{SceneContext.MatchInfo.rightUser.name}\n HP: {rightUserHp}";
     }
