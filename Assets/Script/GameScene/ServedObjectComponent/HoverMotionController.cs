@@ -4,7 +4,7 @@ namespace Script.GameScene
     {
         protected override void Awake()
         {
-           DOTweenAction.HoverMob(appliedTransform);  
+           DOTweenAction.HoverMob(appliedTransform);
         }
     }
 }
