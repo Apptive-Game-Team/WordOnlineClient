@@ -9,6 +9,30 @@
     <link rel="manifest" href="manifest.webmanifest">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+      <style>
+          html, body {
+              margin: 0;
+              padding: 0;
+              height: 100%;
+              width: 100%;
+              background-color: white;       /* 여백 흰색 */
+              overflow: hidden;
+              touch-action: none;
+          }
+
+          #unity-container {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;      /* 캔버스 중앙 배치 */
+              background-color: white;
+          }
+
+          #unity-canvas {
+              background-color: #000000;     /* 실제 게임 캔버스 배경색 */
+          }
+      </style>
   </head>
   <body>
     <div id="unity-container">
@@ -114,6 +138,33 @@
         });
       };
       document.body.appendChild(script);
+    </script>
+  
+    <script>
+        function resizeCanvas() {
+            const canvas = document.getElementById("unity-canvas");
+            const targetRatio = 16 / 9;   // 원하는 캔버스 비율
+            const windowRatio = window.innerWidth / window.innerHeight;
+
+            let width, height;
+
+            if (windowRatio > targetRatio) {
+                // 화면이 너무 넓으면 높이에 맞춤
+                height = window.innerHeight;
+                width = height * targetRatio;
+            } else {
+                // 화면이 너무 좁으면 너비에 맞춤
+                width = window.innerWidth;
+                height = width / targetRatio;
+            }
+
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("orientationchange", resizeCanvas);
+        resizeCanvas();
     </script>
   </body>
 </html>
