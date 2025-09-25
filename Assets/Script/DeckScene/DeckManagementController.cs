@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -63,7 +62,7 @@ namespace Script.DeckScene
         public GameObject cardInDeckItemPrefab;        // 덱 카드 UI 프리팹
         public GameObject createDeckPrefab;        // 덱 생성 UI 프리팹
         public Button submitDeckButton;        // 덱 제출 버튼
-        public TMP_InputField deckNameInputField; // 덱 이름 입력 필드
+        public InputField deckNameInputField; // 덱 이름 입력 필드
         
         private static DeckResponseDto[] userDecks;
         private static CardDto[] ownedCards;

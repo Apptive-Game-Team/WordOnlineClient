@@ -1,16 +1,16 @@
 using System.Collections;
 using Script.Global;
 using Script.RegisterScene;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RegisterButton : AsyncButtonBase
 {
-    [SerializeField] private TMP_InputField nameInputField;
-    [SerializeField] private TMP_InputField emailInputField;
-    [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private InputField nameInputField;
+    [SerializeField] private InputField emailInputField;
+    [SerializeField] private InputField passwordInputField;
     
     private IEnumerator RegisterCoroutine(RegisterRequestDto registerRequestDto)
     {
