@@ -22,7 +22,8 @@ public class LoginButton : AsyncButtonBase
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
-
+            webRequest.timeout = 10;
+            
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -38,9 +39,9 @@ public class LoginButton : AsyncButtonBase
             AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
             SceneContext.JwtToken = authResponseDto.jwtToken;
+            
+            SceneManager.LoadScene("LobbyScene");
         }
-        
-        SceneManager.LoadScene("LobbyScene");
     }
 
     protected override void OnClickButton()

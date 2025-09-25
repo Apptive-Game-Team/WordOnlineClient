@@ -21,8 +21,7 @@ public class StompConnector : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this);
-        ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}");
-
+        ConnectToServer();
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -45,6 +44,8 @@ public class StompConnector : MonoBehaviour
 
     public void StartMatchingFlow()
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("frame-sub");
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
@@ -52,14 +53,29 @@ public class StompConnector : MonoBehaviour
 
     public void StartReMatchingFlow()
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("frame-sub");
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
     }
     
     public void StartInGameFlow(string sessionId)
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
+    }
+    
+    private void CheckConnection()
+    {
+        if (!isConnected)
+        {
+            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            OnError("Not connected");
+            throw new Exception("Not connected");
+        }
     }
     
     // 연결 상태 처리
@@ -107,13 +123,17 @@ public class StompConnector : MonoBehaviour
     // 연결 실패 처리
     public void OnError(string error)
     {
-        SystemMessageUI.Instance.ShowMessage("서버와 연결에 실패했습니다. [껐다 켜주세요]");
+        SystemMessageUI.Instance.ShowMessage("서버와 연결이 지연되고 있습니다..");
         Debug.LogError("STOMP 에러: " + error);
+        isConnected = false;
+        
+        Invoke(nameof(ConnectToServer), 1);
     }
 
     // WebSocket 서버에 연결
-    public void ConnectToServer(string url)
+    public void ConnectToServer()
     {
+        string url = $"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}";
         if (!isConnected)
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
@@ -147,6 +167,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
+            Debug.Log("Subscribe to topic: " + topic + " with subscriptionId: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             SubscribeStomp(topic, callback, subscriptionId);
             #endif
@@ -163,6 +184,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
+            Debug.Log("Unsubscribe from topic: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             UnsubscribeStomp(subscriptionId);
             #endif

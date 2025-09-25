@@ -68,6 +68,7 @@ namespace Script.DeckScene
         private static CardDto[] ownedCards;
 
         void Start() {
+            LoadingPage.Instance.IsLoading = true;
             if (userDecks != null && userDecks.Length > 0) {
                 PopulateDeckList();
                 PopulateOwnedCardsList();
@@ -133,6 +134,8 @@ namespace Script.DeckScene
         
             PopulateDeckList();
             PopulateOwnedCardsList();
+            
+            LoadingPage.Instance.IsLoading = false;
         }
         
         void PopulateOwnedCardsList() {

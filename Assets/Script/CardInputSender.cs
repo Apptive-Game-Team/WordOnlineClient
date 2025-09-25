@@ -25,16 +25,33 @@ public class CardInputSender : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1) && IsFieldSelectMode)
+        if (Input.GetMouseButtonDown(1))
+        {
+            Cancel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Confirm();
+        }
+    }
+
+    public void Cancel()
+    {
+        if (IsFieldSelectMode)
         {
             CancelAll();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space) && CanSelectField)
+    }
+    
+    public void Confirm()
+    {
+        if (CanSelectField)
         {
             IsFieldSelectMode = true;
         }
     }
+    
 
     public string GetMagicName()
     {

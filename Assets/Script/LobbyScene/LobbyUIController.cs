@@ -16,7 +16,7 @@ public class LobbyUIController : MonoBehaviour
     private void Start()
     {
         Debug.Log("LobbyUIController Start");
-
+        LoadingPage.Instance.IsLoading = true;
         deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
         StartCoroutine(LoadUserInfo());
     }
@@ -55,6 +55,13 @@ public class LobbyUIController : MonoBehaviour
         // JsonHelper 는 이전에 정의한 generic 래퍼 유틸리티
         userDecks = JsonHelper.FromJson<DeckResponseDto>(www.downloadHandler.text);
         
+        if (userDecks == null || userDecks.Length == 0)
+        {
+            SystemMessageUI.Instance.ShowMessage("덱이 하나도 없습니다. 덱을 생성해주세요.");
+            Debug.LogWarning("덱이 하나도 없습니다.");
+            yield break;
+        }
+        
         PopulateDropdown();
         //sessiontracking 테스트
         StartCoroutine(StatusTracker.GetUserStatus());
@@ -69,17 +76,20 @@ public class LobbyUIController : MonoBehaviour
         // 드랍다운 옵션 클리어 후 추가
         deckDropdown.ClearOptions();
         deckDropdown.AddOptions(names);
-
+        
         // 현재 선택된 덱 인덱스 찾아 세팅
         int idx = userDecks
             .Select(d => d.id)
             .ToList()
-            .IndexOf(DeckSceneContext.CurrentDeck.id);
+            .IndexOf(SceneContext.User.selectedDeckId);
         idx = Mathf.Clamp(idx, 0, names.Count - 1);
 
         deckDropdown.value = idx;
         deckDropdown.RefreshShownValue();
+        
         UpdateCaption(names[idx]);
+        
+        LoadingPage.Instance.IsLoading = false;
     }
 
     // 3) 드랍다운에서 선택 바뀌었을 때

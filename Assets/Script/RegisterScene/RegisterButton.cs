@@ -22,6 +22,7 @@ public class RegisterButton : AsyncButtonBase
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
+            webRequest.timeout = 10;
 
             yield return webRequest.SendWebRequest();
 

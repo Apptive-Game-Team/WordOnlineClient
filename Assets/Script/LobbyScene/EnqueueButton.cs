@@ -12,7 +12,7 @@ public class EnqueueButton : AsyncButtonBase
         {
             StompConnector.Instance.StartMatchingFlow();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             ResetButton();
         }
