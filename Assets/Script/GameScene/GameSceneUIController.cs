@@ -64,13 +64,13 @@ public class GameSceneUIController : MonoBehaviour
         if (leftUserHpSlider.value > leftUserHp)
         {
             Transform leftPlayerTr = GameObject.Find("LeftPlayer").transform;
-            DOTweenAction.BounceMob(leftPlayerTr);
+            DOTweenAction.BounceMob(leftPlayerTr.GetChild(0));
             DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",leftPlayerTr);
         }
         else if (rightUserHpSlider.value > rightUserHp)
         {
             Transform rightPlayerTr = GameObject.Find("RightPlayer").transform;
-            DOTweenAction.BounceMob(rightPlayerTr);
+            DOTweenAction.BounceMob(rightPlayerTr.GetChild(0));
             DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",rightPlayerTr);
         }
         
