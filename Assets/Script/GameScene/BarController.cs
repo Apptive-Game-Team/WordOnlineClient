@@ -48,7 +48,7 @@ public class BarController : MonoBehaviour
     private bool CheckMouseOverBar()
     {
         Vector3 mousePos = Input.mousePosition;
-        return mousePos.y < 300f;
+        return mousePos.y < 230f;
     }
     
     private IEnumerator MoveBar(bool up, float duration = 0.5f)
