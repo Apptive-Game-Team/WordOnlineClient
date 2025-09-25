@@ -59,7 +59,8 @@ mergeInto(LibraryManager.library, {
     client.send(topic, {}, message);
   },
 
-  UnsubscribeStomp: function (subscriptionId) {
+  UnsubscribeStomp: function (subscriptionIdPtr) {
+    const subscriptionId = UTF8ToString(subscriptionIdPtr);
     console.log("Unsubscribing from subscription ID:", subscriptionId);
     client.unsubscribe(subscriptionId);
   },

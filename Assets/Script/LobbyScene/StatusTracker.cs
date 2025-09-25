@@ -52,12 +52,12 @@ public static class StatusTracker
                 yield break;
 
             case "OnMatching":
-                StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");
+                StompConnector.Instance.ConnectToServer();
                 StompConnector.Instance.StartReMatchingFlow();
                 yield break;
 
             case "OnPlaying":
-                StompConnector.Instance.ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}+ {SceneContext.JwtToken}");  
+                StompConnector.Instance.ConnectToServer();  
                 
                 var getIDUrl = $"{SceneContext.CurrentServer.url}/sessions/mine";
                 

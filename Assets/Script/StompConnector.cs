@@ -21,8 +21,7 @@ public class StompConnector : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this);
-        ConnectToServer($"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}");
-
+        ConnectToServer();
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -109,11 +108,14 @@ public class StompConnector : MonoBehaviour
     {
         SystemMessageUI.Instance.ShowMessage("서버와 연결에 실패했습니다. [껐다 켜주세요]");
         Debug.LogError("STOMP 에러: " + error);
+        
+        Invoke("ConnectToServer", 1);
     }
 
     // WebSocket 서버에 연결
-    public void ConnectToServer(string url)
+    public void ConnectToServer()
     {
+        string url = $"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}";
         if (!isConnected)
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
@@ -147,6 +149,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
+            Debug.Log("Subscribe to topic: " + topic + " with subscriptionId: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             SubscribeStomp(topic, callback, subscriptionId);
             #endif
@@ -163,6 +166,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
+            Debug.Log("Unsubscribe from topic: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             UnsubscribeStomp(subscriptionId);
             #endif
