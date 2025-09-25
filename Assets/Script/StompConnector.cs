@@ -44,6 +44,8 @@ public class StompConnector : MonoBehaviour
 
     public void StartMatchingFlow()
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("frame-sub");
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
@@ -51,14 +53,29 @@ public class StompConnector : MonoBehaviour
 
     public void StartReMatchingFlow()
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("frame-sub");
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
     }
     
     public void StartInGameFlow(string sessionId)
     {
+        CheckConnection();
+        
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
+    }
+    
+    private void CheckConnection()
+    {
+        if (!isConnected)
+        {
+            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            OnError("Not connected");
+            throw new Exception("Not connected");
+        }
     }
     
     // 연결 상태 처리
@@ -108,8 +125,9 @@ public class StompConnector : MonoBehaviour
     {
         SystemMessageUI.Instance.ShowMessage("서버와 연결이 지연되고 있습니다..");
         Debug.LogError("STOMP 에러: " + error);
+        isConnected = false;
         
-        Invoke("ConnectToServer", 1);
+        Invoke(nameof(ConnectToServer), 1);
     }
 
     // WebSocket 서버에 연결
