@@ -8,6 +8,7 @@ namespace Script
         private void Start()
         {
             WebGLInput.mobileKeyboardSupport = true;
+            WebGLInput.captureAllKeyboardInput = false;
         }
     }
 }
