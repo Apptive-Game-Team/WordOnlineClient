@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Script.Data;
 using Script.GameScene;
 using TMPro;
@@ -25,6 +26,7 @@ public class GameSceneUIController : MonoBehaviour
 
     [SerializeField] private CardImageMapper cardImageMapper;
 
+    [SerializeField] private ExpectedMagicUI expectedMagicUI;
     public void Announce(string text)
     {
         textSystemMsg.text = text;
@@ -90,5 +92,16 @@ public class GameSceneUIController : MonoBehaviour
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname.ToString());
+    }
+
+    public void TrySetExpectedMagicUI(IList<CardType> recipe)
+    {
+        CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
+        if (data != null)
+        {
+            expectedMagicUI.SetImage(data.GetSprite());
+            return;
+        }
+        expectedMagicUI.SetImage(null);
     }
 }
