@@ -27,6 +27,9 @@ self.addEventListener('install', function (e) {
 
 #if USE_DATA_CACHING
 self.addEventListener('fetch', function (e) {
+    if (e.request.url.endsWith("index.html")) {
+        e.respondWith(fetch(e.request));
+    }
     e.respondWith((async function () {
       let response = await caches.match(e.request);
       console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
