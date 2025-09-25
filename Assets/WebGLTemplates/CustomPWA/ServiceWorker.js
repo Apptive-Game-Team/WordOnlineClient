@@ -25,6 +25,11 @@ self.addEventListener('install', (e) => {
 
 #if USE_DATA_CACHING
 self.addEventListener('fetch', (e) => {
+  
+  if (e.request.url.endsWith("index.html")) {
+        e.respondWith(fetch(e.request));
+    }
+  
   const req = e.request;
   if (req.method !== 'GET') return;
 
