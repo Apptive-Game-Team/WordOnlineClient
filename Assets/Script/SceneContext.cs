@@ -82,4 +82,14 @@ public class SceneContext : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
     }
+    
+    public static void ClearContext()
+    {
+        JwtToken = null;
+        _user = null;
+        MatchInfo = null;
+        MatchResult = null;
+        SelectedDeck = null;
+        OwnedCards = null;
+    }
 }
