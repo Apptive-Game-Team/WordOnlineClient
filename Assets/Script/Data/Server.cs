@@ -48,9 +48,7 @@ namespace Script.Data
     {
         public static List<Server> servers = new()
         {
-            new Server("시드니", "www.monolong.shop", 7777, true),
-            new Server("미국-서부-mn", "game.monolong.shop", 7777, true),
-            new Server("미국-서부-ys", "google.yunseong.shop", 7777, true),
+            new Server("춘천", "www.monolong.shop", 7777, true),
             new Server("로컬", "localhost", 7777)
         };
     }
