@@ -92,10 +92,11 @@ public static class StatusTracker
                     Debug.LogError("[EnterInGameByMine] sessionId empty");
                     yield break;
                 }
-
+                SystemMessageUI.Instance.ShowMessage("세션이 복구되어 진행 중인 게임에 연결했습니다.");
                 // 컨텍스트에 저장(선택)
                 if (SceneContext.MatchInfo == null) SceneContext.MatchInfo = new MatchedInfoDto();
                 SceneContext.MatchInfo.sessionId = sessionDto.sessionId;
+                SceneContext.
 
                 // 인게임 플로우로 전환
                 StompConnector.Instance.StartInGameFlow(sessionDto.sessionId);
@@ -106,7 +107,6 @@ public static class StatusTracker
                 {
                     snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
                     yield return snapReq.SendWebRequest();
-
                     if (snapReq.result != UnityWebRequest.Result.Success)
                     {
                         Debug.LogError($"[GetUserStatus] snapshot fail: {snapReq.responseCode} / {snapReq.error}\n{snapReq.downloadHandler.text}");
