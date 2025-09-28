@@ -52,8 +52,10 @@ public static class StatusTracker
                 yield break;
 
             case "OnMatching":
+                SystemMessageUI.Instance.ShowMessage("세션이 복구되어 매칭 탐색을 재개했습니다.");
+                GameObject.FindObjectOfType<EnqueueButton>().ButtonEvent();
                 StompConnector.Instance.ConnectToServer();
-                StompConnector.Instance.StartReMatchingFlow();
+                StompConnector.Instance.StartMatchingFlow();
                 yield break;
 
             case "OnPlaying":
