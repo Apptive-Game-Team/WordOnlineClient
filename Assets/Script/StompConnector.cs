@@ -50,14 +50,6 @@ public class StompConnector : MonoBehaviour
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
     }
-
-    public void StartReMatchingFlow()
-    {
-        CheckConnection();
-        
-        UnsubscribeFromTopic("frame-sub");
-        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
-    }
     
     public void StartInGameFlow(string sessionId)
     {
@@ -75,6 +67,10 @@ public class StompConnector : MonoBehaviour
             Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
             OnError("Not connected");
             throw new Exception("Not connected");
+        }
+        else
+        {
+            
         }
     }
     

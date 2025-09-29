@@ -63,6 +63,12 @@ public class SceneContext : MonoBehaviour
     {
         get; set;
     }
+
+    public static string RejoinSyncJson
+    {
+        get; set;
+    }
+    
     public static string SelectedDeck
     {
         get; set;
