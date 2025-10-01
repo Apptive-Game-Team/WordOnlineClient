@@ -24,7 +24,6 @@ public class LineSkillIndicator : MonoBehaviour
 
         Vector3 direction = mouseWorld - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        angle -= 90f;
         
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
