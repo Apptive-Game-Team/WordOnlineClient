@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Script.Data;
 using Script.Global;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class LoginButton : AsyncButtonBase
     {
         string jsonData = JsonUtility.ToJson(loginRequestDto);
         
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/login", "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/login", "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -38,7 +39,7 @@ public class LoginButton : AsyncButtonBase
             
             AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
-            SceneContext.JwtToken = authResponseDto.jwtToken;
+            SceneContext.JwtToken = authResponseDto.jwt;
             
             SceneManager.LoadScene("LobbyScene");
         }

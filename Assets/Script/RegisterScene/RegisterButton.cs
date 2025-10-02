@@ -1,4 +1,5 @@
 using System.Collections;
+using Script.Data;
 using Script.Global;
 using Script.RegisterScene;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class RegisterButton : AsyncButtonBase
     {
         string jsonData = JsonUtility.ToJson(registerRequestDto);
         
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users", "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members", "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -28,7 +29,7 @@ public class RegisterButton : AsyncButtonBase
 
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                Debug.LogError("Error: " + webRequest.downloadHandler.text);
                 SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
                 ResetButton();
                 yield break;
@@ -38,7 +39,7 @@ public class RegisterButton : AsyncButtonBase
             
             AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
-            SceneContext.JwtToken = authResponseDto.jwtToken;
+            SceneContext.JwtToken = authResponseDto.jwt;
                     
             SceneManager.LoadScene("LobbyScene");
         }

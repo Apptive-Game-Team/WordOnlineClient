@@ -5,11 +5,11 @@ using System;
 public class LoginRequestDto
 {
     public string email;
-    public string passwordPlain;
+    public string password;
 
     public LoginRequestDto(string email, string password)
     {
         this.email = email;
-        this.passwordPlain = password;
+        this.password = password;
     }
 }

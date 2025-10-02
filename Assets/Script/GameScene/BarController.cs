@@ -48,7 +48,7 @@ public class BarController : MonoBehaviour
     private bool CheckMouseOverBar()
     {
         Vector3 mousePos = Input.mousePosition;
-        return mousePos.y < 230f;
+        return mousePos.y < 150f;
     }
     
     private IEnumerator MoveBar(bool up, float duration = 0.5f)
@@ -56,8 +56,8 @@ public class BarController : MonoBehaviour
         
         Vector2 startPosition = _rectTransform.anchoredPosition;
         Vector2 endPosition = up ? 
-                new Vector2(0, 0) : 
-                new Vector2(0, -300f);
+                new Vector2(0, 540) : 
+                new Vector2(0, 240);
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)

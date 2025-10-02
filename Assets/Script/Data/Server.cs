@@ -51,5 +51,7 @@ namespace Script.Data
             new Server("춘천", "www.monolong.shop", 7777, true),
             new Server("로컬", "localhost", 7777)
         };
+        
+        public static Server AccountServer = new Server("춘천", "www.monolong.shop", 6203, true);
     }
 }
