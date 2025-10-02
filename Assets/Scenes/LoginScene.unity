@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 407253100}
   - component: {fileID: 407253099}
   m_Layer: 5
-  m_Name: EmailInputField
+  m_Name: NameInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1239,6 +1239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06288d9e78db412d80465bb915af7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userName: {fileID: 407253099}
 --- !u!1 &1167636967
 GameObject:
   m_ObjectHideFlags: 0
