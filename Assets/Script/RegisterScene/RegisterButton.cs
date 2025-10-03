@@ -41,7 +41,7 @@ public class RegisterButton : AsyncButtonBase
             
             SceneContext.JwtToken = authResponseDto.jwt;
                     
-            SceneManager.LoadScene("LobbyScene");
+            SceneManager.LoadScene("TutorialScene");
         }
     }
 
