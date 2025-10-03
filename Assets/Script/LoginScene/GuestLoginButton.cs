@@ -60,7 +60,7 @@ public class GuestLoginButton : AsyncButtonBase
             
             SceneContext.JwtToken = authResponseDto.jwt;
             
-            SceneManager.LoadScene("LobbyScene");
+            SceneManager.LoadScene("TutorialScene");
         }
     }
 
