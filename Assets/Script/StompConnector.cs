@@ -50,6 +50,14 @@ public class StompConnector : MonoBehaviour
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
     }
+
+    public void StartPracticeFlow()
+    {
+        CheckConnection();
+        
+        UnsubscribeFromTopic("frame-sub");
+        SendMessageToServer("/app/game/practice", SceneContext.UserID.ToString());
+    }
     
     public void StartInGameFlow(string sessionId)
     {
@@ -58,6 +66,8 @@ public class StompConnector : MonoBehaviour
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
     }
+
+    
     
     private void CheckConnection()
     {
