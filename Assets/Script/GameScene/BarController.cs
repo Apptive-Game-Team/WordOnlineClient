@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BarController : MonoBehaviour
 {
     
     private RectTransform _rectTransform;
     [SerializeField] private bool isActive = false;
+    [SerializeField] private Button manaBarButton;
+    [SerializeField] private Button fieldButton;
     private bool lastActive = false;
 
     [SerializeField] private CardInputSender cardInputSender;
@@ -13,18 +16,25 @@ public class BarController : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        
+        manaBarButton.onClick.AddListener(() =>
+        {
+            isActive = true;
+        });
+        fieldButton.onClick.AddListener(() =>
+        {
+            isActive = false;
+        });
     }
 
     private void Update()
     {
-        if (CheckMouseOverBar() && !cardInputSender.IsFieldSelectMode)
-        {
-            isActive = true;
-        }
-        else
+        if (cardInputSender.IsFieldSelectMode)
         {
             isActive = false;
         }
+        
+        fieldButton.gameObject.SetActive(isActive);
         
         if (lastActive != isActive)
         {
@@ -45,11 +55,7 @@ public class BarController : MonoBehaviour
         }
     }
 
-    private bool CheckMouseOverBar()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        return mousePos.y < 150f;
-    }
+
     
     private IEnumerator MoveBar(bool up, float duration = 0.5f)
     {

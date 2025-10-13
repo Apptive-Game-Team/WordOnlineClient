@@ -36,12 +36,20 @@ public class LoginButton : AsyncButtonBase
             }
             
             Debug.Log("Response: " + webRequest.downloadHandler.text);
+
+            try
+            {
+                AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
-            AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
+                SceneContext.JwtToken = authResponseDto.jwt;
             
-            SceneContext.JwtToken = authResponseDto.jwt;
-            
-            SceneManager.LoadScene("LobbyScene");
+                SceneManager.LoadScene("LobbyScene");
+            } catch (System.Exception e)
+            {
+                Debug.LogError("Parsing Error: " + e.Message);
+                SystemMessageUI.Instance.ShowMessage("로그인 응답 처리 중 오류가 발생했습니다.");
+                ResetButton();
+            }
         }
     }
 
