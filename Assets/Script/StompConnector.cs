@@ -56,6 +56,7 @@ public class StompConnector : MonoBehaviour
         CheckConnection();
         
         UnsubscribeFromTopic("frame-sub");
+        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/practice", SceneContext.UserID.ToString());
     }
     
