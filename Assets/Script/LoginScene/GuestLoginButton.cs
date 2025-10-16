@@ -17,13 +17,6 @@ public class GuestLoginButton : AsyncButtonBase
             webRequest.SetRequestHeader("Content-Type", "application/json");
             
             yield return webRequest.SendWebRequest();
-
-            Debug.Log("Request Headers:"); 
-            Debug.Log(webRequest.GetRequestHeader("Content-Type"));
-            
-
-            Debug.Log("Request Upload Content:");
-            Debug.Log(System.Text.Encoding.UTF8.GetString(webRequest.uploadHandler.data));
             
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
