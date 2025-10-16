@@ -1,5 +1,6 @@
 using System.Linq;
 using Script.Data;
+using Script.Data.Sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ namespace Script.GameScene
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
             cardSound.clip = SoundAssets.DrawCard;
+            cardSound.volume = SoundData.gameVolume / 100f;
         }
 
         private bool isActive = false;
