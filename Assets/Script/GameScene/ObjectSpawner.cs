@@ -23,7 +23,7 @@ namespace Script.GameScene
             GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
             AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
-            if (audioSource != null && audioSource.Length != 0)
+            if (audioSource.Length > 0)
             {
                 foreach (var source in audioSource)
                 {
