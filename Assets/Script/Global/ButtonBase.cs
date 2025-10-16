@@ -1,3 +1,4 @@
+using Script.Data.Sound;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,7 @@ public abstract class ButtonBase : MonoBehaviour
     private void PlayUISound()
     {
         audioSource.clip = SoundAssets.ClickButton;
+        audioSource.volume = SoundData.uiVolume / 100f;
         audioSource.Play();
     }
 }
