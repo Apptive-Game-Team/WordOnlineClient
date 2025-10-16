@@ -1,40 +1,19 @@
-using System;
+
 using System.Collections;
-using System.Collections.Generic;
 using Script.Data;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GuestLoginButton : AsyncButtonBase
 {
-    
-    [SerializeField] private InputField userName;
-    
-    [Serializable]
-    private class GuestRequestDto
-    {
-        public string name;
-        
-        public GuestRequestDto(string name)
-        {
-            this.name = name;
-        }
-    }
-    
     private IEnumerator GuestLoginCoroutine()
     {
-        Debug.Log("GuestLoginCoroutine Start UserName: " + userName.text);
-        
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/guest", "POST"))
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.timeout = 10;
-            webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new GuestRequestDto(userName.text))
-            ));
             webRequest.SetRequestHeader("Content-Type", "application/json");
             
             yield return webRequest.SendWebRequest();
