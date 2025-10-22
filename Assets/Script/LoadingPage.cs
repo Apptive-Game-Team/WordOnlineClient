@@ -1,4 +1,5 @@
 using Script.Data;
+using Script.Global;
 using UnityEngine;
 
 public class LoadingPage : MonoBehaviour
@@ -20,7 +21,7 @@ public class LoadingPage : MonoBehaviour
         {
             isLoading = value;
             loadingIndicator.SetActive(isLoading);
-            Debug.Log("Loading state changed: " + isLoading);
+            WDebug.Log("Loading state changed: " + isLoading);
         }
     }
     

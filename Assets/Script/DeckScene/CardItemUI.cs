@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Script.Data;
 using Script.GameScene;
+using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,7 +36,7 @@ public class CardItemUI : MonoBehaviour
                 GetComponent<Image>().sprite = magicSprite;
                 break;
             default:
-                Debug.LogError($"Unknown magic type: {magicData.type}");
+                WDebug.LogError($"Unknown magic type: {magicData.type}");
                 break;
         }
     }

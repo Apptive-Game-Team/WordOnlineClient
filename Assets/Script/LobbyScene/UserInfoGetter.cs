@@ -1,6 +1,7 @@
 
 using System.Collections;
 using Script.Data;
+using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -17,7 +18,7 @@ public class UserInfoGetter
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                WDebug.LogError("Error: " + webRequest.error);
                 yield break;
             }
             
@@ -31,7 +32,7 @@ public class UserInfoGetter
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                WDebug.LogError("Error: " + webRequest.error);
                 yield break;
             }
             
@@ -51,7 +52,7 @@ public class UserInfoGetter
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                WDebug.LogError("Error: " + webRequest.error);
                 yield break;
             }
             

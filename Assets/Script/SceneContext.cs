@@ -1,4 +1,5 @@
 using Script.Data;
+using Script.Global;
 using UnityEngine;
 
 public class SceneContext : MonoBehaviour
@@ -18,11 +19,11 @@ public class SceneContext : MonoBehaviour
     {
         if (index < 0 || index >= ServerList.servers.Count)
         {
-            Debug.LogError("Invalid server index: " + index);
+            WDebug.LogError("Invalid server index: " + index);
             return;
         }
         CurrentServer = ServerList.servers[index];
-        Debug.Log("Current server set to: " + CurrentServer.name);
+        WDebug.Log("Current server set to: " + CurrentServer.name);
     }
     
     public static long UserID
@@ -37,7 +38,7 @@ public class SceneContext : MonoBehaviour
         get { return _user; }
         set
         {
-            Debug.Log("Setting User: " + value.name + ", ID: " + value.id);
+            WDebug.Log("Setting User: " + value.name + ", ID: " + value.id);
             _user = value;
         }
     }

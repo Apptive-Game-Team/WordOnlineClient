@@ -1,3 +1,4 @@
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene
@@ -10,7 +11,7 @@ namespace Script.GameScene
             
             if (effectPrefab == null)
             {
-                Debug.LogWarning($"Effect prefab '{effect}' not found.");
+                WDebug.LogWarning($"Effect prefab '{effect}' not found.");
                 return;
             }
             

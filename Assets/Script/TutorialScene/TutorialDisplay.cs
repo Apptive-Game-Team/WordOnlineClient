@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Script.Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,7 @@ public class TutorialDisplay : MonoBehaviour
     {
         if (tutorialPanel.Count == 0)
         {
-            Debug.LogWarning("No tutorial panels assigned.");
+            WDebug.LogWarning("No tutorial panels assigned.");
             return;
         }
         
@@ -26,7 +27,7 @@ public class TutorialDisplay : MonoBehaviour
         currentIndex = 0;
         while (currentIndex < tutorialPanel.Count)
         {
-            Debug.Log(currentIndex + 1 + " / " + tutorialPanel.Count);
+            WDebug.Log(currentIndex + 1 + " / " + tutorialPanel.Count);
             ShowPanel(currentIndex);
             currentIndex++;
             yield return new WaitForSeconds(0.5f);

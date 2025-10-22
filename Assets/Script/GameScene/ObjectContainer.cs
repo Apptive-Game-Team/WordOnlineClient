@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Script.GameScene.Exception;
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene
@@ -39,7 +40,7 @@ namespace Script.GameScene
             
             if (!objects.Remove(obj.id))
             {
-                Debug.LogWarning($"Object with ID {obj.id} not found in container.");
+                WDebug.LogWarning($"Object with ID {obj.id} not found in container.");
             }
         }
         

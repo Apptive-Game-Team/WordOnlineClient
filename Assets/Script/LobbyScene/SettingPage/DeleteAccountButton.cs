@@ -27,14 +27,14 @@ namespace Script.LobbyScene.SettingPage
 
             if (requestToServer.result == UnityWebRequest.Result.Success && requestToAccount.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Account deleted successfully.");
+                WDebug.Log("Account deleted successfully.");
                 SceneContext.ClearContext();
                 SystemMessageUI.Instance.ShowMessage("성공적으로 탈퇴되었습니다.\n초기 화면으로 이동합니다.");
                 yield return new WaitForSeconds(2f);
                 SceneManager.LoadScene("LoginScene");
                 yield break;
             }
-            Debug.LogError($"Error deleting account: {requestToServer.error}");
+            WDebug.LogError($"Error deleting account: {requestToServer.error}");
             ResetButton();
         }
     }

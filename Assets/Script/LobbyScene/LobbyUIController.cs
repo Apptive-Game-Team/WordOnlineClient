@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using Script.DeckScene;
+using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -15,7 +16,7 @@ public class LobbyUIController : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("LobbyUIController Start");
+        WDebug.Log("LobbyUIController Start");
         LoadingPage.Instance.IsLoading = true;
         deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
         StartCoroutine(LoadUserInfo());
@@ -48,7 +49,7 @@ public class LobbyUIController : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             SystemMessageUI.Instance.ShowMessage("덱 리스트 로드 실패");
-            Debug.LogError($"덱 리스트 로드 실패: {www.error}");
+            WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
             yield break;
         }
 
@@ -58,7 +59,7 @@ public class LobbyUIController : MonoBehaviour
         if (userDecks == null || userDecks.Length == 0)
         {
             SystemMessageUI.Instance.ShowMessage("덱이 하나도 없습니다. 덱을 생성해주세요.");
-            Debug.LogWarning("덱이 하나도 없습니다.");
+            WDebug.LogWarning("덱이 하나도 없습니다.");
             yield break;
         }
         
@@ -98,7 +99,7 @@ public class LobbyUIController : MonoBehaviour
         
         var selected = userDecks[newIndex];
         DeckSceneContext.CurrentDeck = selected;     // 컨텍스트 갱신
-        Debug.Log($"index: {newIndex} 선택된 덱: {selected.name} (ID: {selected.id})");
+        WDebug.Log($"index: {newIndex} 선택된 덱: {selected.name} (ID: {selected.id})");
         UpdateCaption(selected.name);                // 상단 텍스트 갱신
         StartCoroutine(SelectDeckCoroutine(DeckSceneContext.CurrentDeck.id));
     }
@@ -113,12 +114,12 @@ public class LobbyUIController : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             SystemMessageUI.Instance.ShowMessage("덱 선택 실패");
-            Debug.LogError($"덱 선택 실패: {www.responseCode} / {www.error}");
+            WDebug.LogError($"덱 선택 실패: {www.responseCode} / {www.error}");
         }
         else
         {
             SystemMessageUI.Instance.ShowMessage("덱 선택 성공");
-            Debug.Log("덱 선택 성공: " + www.downloadHandler.text);
+            WDebug.Log("덱 선택 성공: " + www.downloadHandler.text);
         }
     }
     private void UpdateCaption(string deckName)
