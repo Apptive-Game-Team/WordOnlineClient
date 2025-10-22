@@ -1,3 +1,4 @@
+using Script.Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ public class SceneLoadButton : ButtonBase
     {
         if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogError("Scene name is not set.");
+            WDebug.LogError("Scene name is not set.");
             return;
         }
         SceneManager.LoadScene(sceneName);

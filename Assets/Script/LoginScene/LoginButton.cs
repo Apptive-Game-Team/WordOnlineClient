@@ -29,13 +29,13 @@ public class LoginButton : AsyncButtonBase
 
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                WDebug.LogError("Error: " + webRequest.error);
                 SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
                 ResetButton();
                 yield break;
             }
             
-            Debug.Log("Response: " + webRequest.downloadHandler.text);
+            WDebug.Log("Response: " + webRequest.downloadHandler.text);
 
             try
             {
@@ -46,7 +46,7 @@ public class LoginButton : AsyncButtonBase
                 SceneManager.LoadScene("LobbyScene");
             } catch (System.Exception e)
             {
-                Debug.LogError("Parsing Error: " + e.Message);
+                WDebug.LogError("Parsing Error: " + e.Message);
                 SystemMessageUI.Instance.ShowMessage("로그인 응답 처리 중 오류가 발생했습니다.");
                 ResetButton();
             }

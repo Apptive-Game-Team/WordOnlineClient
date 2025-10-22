@@ -29,13 +29,13 @@ public class RegisterButton : AsyncButtonBase
 
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.downloadHandler.text);
+                WDebug.LogError("Error: " + webRequest.downloadHandler.text);
                 SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
                 ResetButton();
                 yield break;
             }
             
-            Debug.Log("Response: " + webRequest.downloadHandler.text);
+            WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
             AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             

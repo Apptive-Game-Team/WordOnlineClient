@@ -1,5 +1,6 @@
 using Script.Data.Sound;
 using Script.GameScene.Exception;
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene
@@ -23,7 +24,7 @@ namespace Script.GameScene
             GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
             AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
-            if (audioSource != null && audioSource.Length != 0)
+            if (audioSource.Length > 0)
             {
                 foreach (var source in audioSource)
                 {
@@ -36,7 +37,7 @@ namespace Script.GameScene
             switch (createdObjectDto.master)
             {
                 default:
-                    Debug.LogWarning($"Unknown master: {createdObjectDto.master}");
+                    WDebug.LogWarning($"Unknown master: {createdObjectDto.master}");
                     break;
             }
             
@@ -46,7 +47,7 @@ namespace Script.GameScene
                 ObjectContainer.Instance.RegisterObject(servedObject);
             } catch (DuplicatedException e)
             {
-                Debug.LogError($"Failed to register object: {e.Message}");
+                WDebug.LogError($"Failed to register object: {e.Message}");
                 Destroy(spawnedObject);
             }
         }

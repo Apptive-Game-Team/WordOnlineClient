@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Script.Data;
+using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -31,7 +32,7 @@ public static class StatusTracker
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"[GetUserStatus] fail: {www.responseCode} / {www.error}");
+            WDebug.LogError($"[GetUserStatus] fail: {www.responseCode} / {www.error}");
             yield break;
         }
 
@@ -39,13 +40,13 @@ public static class StatusTracker
         try { dto = JsonUtility.FromJson<StatusDto>(www.downloadHandler.text); }
         catch (Exception e)
         {
-            Debug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
+            WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
             yield break;
         }
 
         if (dto == null || string.IsNullOrEmpty(dto.status))
         {
-            Debug.LogWarning("[GetUserStatus] empty status");
+            WDebug.LogWarning("[GetUserStatus] empty status");
             yield break;
         }
 
@@ -78,13 +79,13 @@ public static class StatusTracker
 
                 if (getSessionReq.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogError($"[EnterInGameByMine] fail: {getSessionReq.responseCode} / {getSessionReq.error}\n{getSessionReq.downloadHandler.text}");
+                    WDebug.LogError($"[EnterInGameByMine] fail: {getSessionReq.responseCode} / {getSessionReq.error}\n{getSessionReq.downloadHandler.text}");
                     yield break;
                 }
 
                 if (getSessionReq.responseCode == 404)
                 {
-                    Debug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
+                    WDebug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
                     yield break;
                 }
 
@@ -93,12 +94,12 @@ public static class StatusTracker
                 try { sessionDto = JsonUtility.FromJson<SessionDto>(getSessionReq.downloadHandler.text); }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
+                    WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
                     yield break;
                 }
                 if (sessionDto == null || string.IsNullOrEmpty(sessionDto.sessionId))
                 {
-                    Debug.LogError("[EnterInGameByMine] sessionId empty");
+                    WDebug.LogError("[EnterInGameByMine] sessionId empty");
                     yield break;
                 }
                 SystemMessageUI.Instance.ShowMessage("세션이 복구되어 진행 중인 게임에 연결했습니다.");
@@ -115,12 +116,12 @@ public static class StatusTracker
                     yield return snapReq.SendWebRequest();
                     if (snapReq.result != UnityWebRequest.Result.Success)
                     {
-                        Debug.LogError($"[GetUserStatus] snapshot fail: {snapReq.responseCode} / {snapReq.error}\n{snapReq.downloadHandler.text}");
+                        WDebug.LogError($"[GetUserStatus] snapshot fail: {snapReq.responseCode} / {snapReq.error}\n{snapReq.downloadHandler.text}");
                         yield break;
                     }
                     //
                     // // 네 쪽 렌더러/팩토리에 그대로 넘겨서 생성/갱신
-                    Debug.Log($"[snapshot] snapshot:{snapReq.downloadHandler.text}");
+                    WDebug.Log($"[snapshot] snapshot:{snapReq.downloadHandler.text}");
                     SceneContext.RejoinSyncJson = snapReq.downloadHandler.text;
                     
                     // 인게임 플로우로 전환
@@ -130,7 +131,7 @@ public static class StatusTracker
                 yield break;
 
             default:
-                Debug.LogWarning($"[GetUserStatus] unknown status: {dto.status}");
+                WDebug.LogWarning($"[GetUserStatus] unknown status: {dto.status}");
                 yield break;
             
             

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene
@@ -81,7 +82,7 @@ namespace Script.GameScene
             GameObject effectPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{effect}");
             if (effectPrefab == null)
             {
-                Debug.LogWarning($"Effect prefab '{effect}' not found.");
+                WDebug.LogWarning($"Effect prefab '{effect}' not found.");
                 return;
             }
             if (_effectInstance != null)
