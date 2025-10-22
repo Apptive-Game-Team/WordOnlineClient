@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using Script.Data;
 using UnityEngine;
 using Script.GameScene;              // ServedObject, ObjectContainer 등
-using Script.GameScene.Exception;    // DuplicatedException
+using Script.GameScene.Exception;
+using Script.Global; // DuplicatedException
 using UnityEngine.UI;
 
 public class RejoinSyncHelper : MonoBehaviour
@@ -47,7 +48,7 @@ public class RejoinSyncHelper : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Rejoin] Snapshot JSON parse error: {e}\n{json}");
+            WDebug.LogError($"[Rejoin] Snapshot JSON parse error: {e}\n{json}");
             yield break;
         }
         

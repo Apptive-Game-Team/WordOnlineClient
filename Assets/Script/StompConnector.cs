@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using Script.Data;
 using Script.GameScene;
+using Script.Global;
 using UnityEngine.SceneManagement;
 
 public class StompConnector : MonoBehaviour
@@ -75,7 +76,7 @@ public class StompConnector : MonoBehaviour
         if (!isConnected)
         {
             SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
-            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
             OnError("Not connected");
             throw new Exception("Not connected");
         }
@@ -88,21 +89,21 @@ public class StompConnector : MonoBehaviour
     // 연결 상태 처리
     public void OnConnected(string frame)
     {
-        Debug.Log("STOMP 연결됨: " + frame);
+        WDebug.Log("STOMP 연결됨: " + frame);
         isConnected = true;
     }
     
     // 메시지 수신 처리
     public void OnMessageReceived(string message)
     {
-        Debug.Log("매칭 메시지 수신: " + message);
+        WDebug.Log("매칭 메시지 수신: " + message);
 
         var matchInfo = JsonUtility.FromJson<MatchedInfoDto>(message);
         SceneContext.MatchInfo = matchInfo;
 
         if (!string.IsNullOrEmpty(matchInfo.sessionId))
         {
-            Debug.Log("매칭 완료! 세션 ID: " + matchInfo.sessionId);
+            WDebug.Log("매칭 완료! 세션 ID: " + matchInfo.sessionId);
             SceneManager.LoadScene("GameScene");
             StartInGameFlow(matchInfo.sessionId);
         }
@@ -123,7 +124,7 @@ public class StompConnector : MonoBehaviour
     public void OnDisconnected(string message)
     {
         SystemMessageUI.Instance.ShowMessage("STOMP 연결 종료: " + message);
-        Debug.Log("STOMP 연결 종료: " + message);
+        WDebug.Log("STOMP 연결 종료: " + message);
         isConnected = false;
     }
 
@@ -131,7 +132,7 @@ public class StompConnector : MonoBehaviour
     public void OnError(string error)
     {
         SystemMessageUI.Instance.ShowMessage("서버와 연결이 지연되고 있습니다..");
-        Debug.LogError("STOMP 에러: " + error);
+        WDebug.LogError("STOMP 에러: " + error);
         isConnected = false;
         
         Invoke(nameof(ConnectToServer), 1);
@@ -149,7 +150,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("이미 연결되어 있습니다.");
+            WDebug.LogWarning("이미 연결되어 있습니다.");
         }
     }
 
@@ -165,7 +166,7 @@ public class StompConnector : MonoBehaviour
         else
         {
             SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
-            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
 
@@ -174,7 +175,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
-            Debug.Log("Subscribe to topic: " + topic + " with subscriptionId: " + subscriptionId);
+            WDebug.Log("Subscribe to topic: " + topic + " with subscriptionId: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             SubscribeStomp(topic, callback, subscriptionId);
             #endif
@@ -182,7 +183,7 @@ public class StompConnector : MonoBehaviour
         else
         {
             SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
-            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
 
@@ -191,7 +192,7 @@ public class StompConnector : MonoBehaviour
     {
         if (isConnected)
         {
-            Debug.Log("Unsubscribe from topic: " + subscriptionId);
+            WDebug.Log("Unsubscribe from topic: " + subscriptionId);
             #if UNITY_WEBGL && !UNITY_EDITOR
             UnsubscribeStomp(subscriptionId);
             #endif
@@ -199,7 +200,7 @@ public class StompConnector : MonoBehaviour
         else
         {
             SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
-            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
 
@@ -215,7 +216,7 @@ public class StompConnector : MonoBehaviour
         else
         {
             SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
-            Debug.LogError("STOMP 서버에 연결되지 않았습니다.");
+            WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
 
@@ -236,7 +237,7 @@ public class StompConnector : MonoBehaviour
     
     public void OnFrameInfoReceived(string json)
     {
-        Debug.Log("FrameInfo 수신: " + json);
+        WDebug.Log("FrameInfo 수신: " + json);
 
         TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
 
@@ -284,7 +285,7 @@ public class StompConnector : MonoBehaviour
                         cardUI.SetCardActive(false);
                     }
                     SystemMessageUI.Instance.ShowMessage("유효한 움직임이 아닙니다!");
-                    Debug.Log("유효한 움직임이 아닙니다!");
+                    WDebug.Log("유효한 움직임이 아닙니다!");
                 }
                 CardInputSender.inputRequestDict.Remove(magicValid.id);
                 return;

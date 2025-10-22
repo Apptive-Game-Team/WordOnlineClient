@@ -1,3 +1,4 @@
+using Script.Global;
 using TMPro;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class ResultSceneUIController : MonoBehaviour
         
         if (resultInfo == null)
         {
-            Debug.LogError("ResultInfo is null. Cannot display result.");
+            WDebug.LogError("ResultInfo is null. Cannot display result.");
             SetResultText("No result available.");
             return;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Script.Data;
 using Script.GameScene;
+using Script.Global;
 using UnityEngine;
 
 public class CardInputSender : MonoBehaviour
@@ -15,7 +16,7 @@ public class CardInputSender : MonoBehaviour
 
     public void CancelUseCard(CardUI cardObj)
     {
-        Debug.Log($"CancelUseCard: {cardObj.CardName}");
+        WDebug.Log($"CancelUseCard: {cardObj.CardName}");
         if (_currentCardNameList.Contains(cardObj.CardName))
         {
             _currentCardNameList.Remove(cardObj.CardName);
@@ -65,7 +66,7 @@ public class CardInputSender : MonoBehaviour
     
     private void CancelAll()
     {
-        Debug.Log("CancelAll");
+        WDebug.Log("CancelAll");
         foreach (var card in _currentCardList)
         {
             card.SetCardActive(false);
@@ -98,7 +99,7 @@ public class CardInputSender : MonoBehaviour
     
     public void AddCardList(CardUI card)
     {
-        Debug.Log("AddCardList: " + card.CardName);
+        WDebug.Log("AddCardList: " + card.CardName);
         _currentCardNameList.Add(card.CardName);
         _currentCardList.Add(card);
     }
@@ -124,7 +125,7 @@ public class CardInputSender : MonoBehaviour
             if (TryMapToCardType(c.CardName, out var t))
                 list.Add(t);
             else
-                Debug.LogWarning($"[CardInputSender] Unknown CardName → CardType map: {c.CardName}");
+                WDebug.LogWarning($"[CardInputSender] Unknown CardName → CardType map: {c.CardName}");
         }
         return list;
     }

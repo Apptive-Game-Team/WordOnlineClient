@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -94,14 +95,14 @@ namespace Script.DeckScene
 
             // 6) 결과 체크
             if (wwwPool.result != UnityWebRequest.Result.Success) {
-                Debug.LogError(
+                WDebug.LogError(
                     $"보유 카드 풀 로드 실패: {wwwPool.responseCode} / {wwwPool.error}\n{wwwPool.downloadHandler.text}"
                 );
                 yield break;
             }
 
             // 7) 파싱
-            Debug.Log($"보유 카드 리스트: {wwwPool.downloadHandler.text}");
+            WDebug.Log($"보유 카드 리스트: {wwwPool.downloadHandler.text}");
             var poolDto = JsonUtility.FromJson<CardPoolDto>(wwwPool.downloadHandler.text);
             ownedCards = poolDto.cards ?? Array.Empty<CardDto>();
             
@@ -121,16 +122,16 @@ namespace Script.DeckScene
 
             // 6) 결과 체크
             if (wwwDecks.result != UnityWebRequest.Result.Success) {
-                Debug.LogError(
+                WDebug.LogError(
                     $"유저 덱 리스트 로드 실패: {wwwDecks.responseCode} / {wwwDecks.error}\n{wwwDecks.downloadHandler.text}"
                 );
                 yield break;
             }
 
             // 7) 파싱
-            Debug.Log($"유저 덱 리스트: {wwwDecks.downloadHandler.text}");
+            WDebug.Log($"유저 덱 리스트: {wwwDecks.downloadHandler.text}");
             userDecks = JsonHelper.FromJson<DeckResponseDto>(wwwDecks.downloadHandler.text);
-            Debug.Log(userDecks.Length);
+            WDebug.Log(userDecks.Length);
         
             PopulateDeckList();
             PopulateOwnedCardsList();
@@ -209,7 +210,7 @@ namespace Script.DeckScene
         }
         
         void OnDeckSelected(DeckResponseDto deck) {
-            Debug.Log($"OnDeckSelected: {deck.name} (ID: {deck.id})");
+            WDebug.Log($"OnDeckSelected: {deck.name} (ID: {deck.id})");
             
             //DeckContext에 현재 덱 저장
             DeckSceneContext.CurrentDeck = deck;
@@ -221,7 +222,7 @@ namespace Script.DeckScene
             submitDeckButton.onClick.AddListener(() => OnDeckSubmit());
         }
         void OnNewDeckSelected() {
-            Debug.Log("OnNewDeckSelected");
+            WDebug.Log("OnNewDeckSelected");
             DeckResponseDto deck = new DeckResponseDto(){id = -1, name = "새 덱", cards = Array.Empty<CardDto>()};
             
             foreach (Transform t in deckCardsContainer) Destroy(t.gameObject);
@@ -236,12 +237,12 @@ namespace Script.DeckScene
 
         void OnOwnedCardSelected(CardDto card)
         {
-            Debug.Log($"OnOwnedCardSelected: {card.name} (ID: {card.id})");
+            WDebug.Log($"OnOwnedCardSelected: {card.name} (ID: {card.id})");
             if (DeckSceneContext.CurrentDeck.cards.Length < 10  && 
                 DeckSceneContext.CurrentDeck.cards.Count(c => c.id == card.id)
                 < ownedCards.Count(c => c.id == card.id))
             {
-                Debug.Log($"Adding card to deck: {card.name} (ID: {card.id})");
+                WDebug.Log($"Adding card to deck: {card.name} (ID: {card.id})");
                 var cardList = DeckSceneContext.CurrentDeck.cards.ToList();
                 cardList.Add(card);
                 DeckSceneContext.CurrentDeck.cards = cardList.ToArray();
@@ -261,12 +262,12 @@ namespace Script.DeckScene
         
         public void OnDeckSubmit()
         {
-            Debug.Log("OnDeckSubmit");
+            WDebug.Log("OnDeckSubmit");
             StartCoroutine(PutDeckCoroutine(DeckSceneContext.CurrentDeck));
         }
         public void OnNewDeckSubmit()
         {
-            Debug.Log("OnNewDeckSubmit");
+            WDebug.Log("OnNewDeckSubmit");
             StartCoroutine(PostDeckCoroutine(DeckSceneContext.CurrentDeck));
         }
         
@@ -283,7 +284,7 @@ namespace Script.DeckScene
             };
             
             string json = JsonUtility.ToJson(reqDto);
-            Debug.Log("POST 덱 페이로드: " + json);
+            WDebug.Log("POST 덱 페이로드: " + json);
 
             // 2) 요청 생성
             string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
@@ -304,12 +305,12 @@ namespace Script.DeckScene
             if (www.result != UnityWebRequest.Result.Success)
             {
                 SystemMessageUI.Instance.ShowMessage("덱 생성 실패!");
-                Debug.LogError($"덱 생성 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
+                WDebug.LogError($"덱 생성 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
                 SystemMessageUI.Instance.ShowMessage("덱 생성 성공!");
-                Debug.Log($"덱 생성 성공: {www.downloadHandler.text}");
+                WDebug.Log($"덱 생성 성공: {www.downloadHandler.text}");
             }
         }
         
@@ -326,7 +327,7 @@ namespace Script.DeckScene
             };
             
             string json = JsonUtility.ToJson(reqDto);
-            Debug.Log("PUT 덱 페이로드: " + json);
+            WDebug.Log("PUT 덱 페이로드: " + json);
 
             // 2) 요청 생성
             string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks/{deck.id}";
@@ -347,13 +348,13 @@ namespace Script.DeckScene
             if (www.result != UnityWebRequest.Result.Success)
             {
                 SystemMessageUI.Instance.ShowMessage("덱 수정 실패!");
-                Debug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
+                WDebug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name); // reload
             }
             else
             {
                 SystemMessageUI.Instance.ShowMessage("덱 수정 성공!");
-                Debug.Log($"덱 수정 성공: {www.downloadHandler.text}");
+                WDebug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }
 
@@ -370,7 +371,7 @@ namespace Script.DeckScene
                 .Distinct()
                 .Count();
 
-            Debug.Log($"Submit Try - cards : {deck.cards.Length} type : {typeCount} magic : {magicCount}");
+            WDebug.Log($"Submit Try - cards : {deck.cards.Length} type : {typeCount} magic : {magicCount}");
             
             
             if (deck.cards.Length != 10)

@@ -1,6 +1,7 @@
 using System.Linq;
 using Script.Data;
 using Script.Data.Sound;
+using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ namespace Script.GameScene
                     GetComponent<Image>().sprite = magicSprite;
                     break;
                 default:
-                    Debug.LogError($"Unknown magic type: {magicData.type}");
+                    WDebug.LogError($"Unknown magic type: {magicData.type}");
                     break;
             }
         }
