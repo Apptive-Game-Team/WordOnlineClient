@@ -52,6 +52,7 @@ public class CardInputSender : MonoBehaviour
             if (!CombinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
             {
                 WDebug.Log("Cannot resolve the current recipe.");
+                PlayerFeedbackController.Instance.UseMagicFeedback();
                 SendInput(Vector2.zero);
                 return;
             }
