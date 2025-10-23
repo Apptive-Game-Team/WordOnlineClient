@@ -11,7 +11,7 @@ public class CardInputSender : MonoBehaviour
     private List<string> _currentCardNameList = new List<string>();
     private List<CardUI> _currentCardList = new List<CardUI>();
     
-    public bool CanSelectField => _currentCardList.Count >= 2;
+    public bool CanSelectField => _currentCardList.Count >= 1;
     public bool IsFieldSelectMode { get; private set; } = false;
 
     public void CancelUseCard(CardUI cardObj)
