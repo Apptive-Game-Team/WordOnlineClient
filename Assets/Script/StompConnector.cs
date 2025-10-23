@@ -230,9 +230,11 @@ public class StompConnector : MonoBehaviour
     public class MagicValidInfo
     {
         public string type;
+        public string message;
         public bool valid;
         public int updateMana;
         public int id;
+        public int magicId;
     }
     
     public void OnFrameInfoReceived(string json)
@@ -277,6 +279,11 @@ public class StompConnector : MonoBehaviour
                     {
                         Destroy(cardUI.gameObject);
                     }
+
+                    if (magicValid.magicId == -1)
+                    {
+                        // 마법 파사삭
+                    }
                 }
                 else
                 {
@@ -284,8 +291,8 @@ public class StompConnector : MonoBehaviour
                     {
                         cardUI.SetCardActive(false);
                     }
-                    SystemMessageUI.Instance.ShowMessage("유효한 움직임이 아닙니다!");
-                    WDebug.Log("유효한 움직임이 아닙니다!");
+                    SystemMessageUI.Instance.ShowMessage(magicValid.message);
+                    WDebug.Log("[Magic Valid]" + magicValid.message);
                 }
                 CardInputSender.inputRequestDict.Remove(magicValid.id);
                 return;

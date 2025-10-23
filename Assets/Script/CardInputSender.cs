@@ -49,6 +49,13 @@ public class CardInputSender : MonoBehaviour
     {
         if (CanSelectField)
         {
+            if (!CombinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
+            {
+                WDebug.Log("Cannot resolve the current recipe.");
+                SendInput(Vector2.zero);
+                return;
+            }
+            
             IsFieldSelectMode = true;
         }
     }

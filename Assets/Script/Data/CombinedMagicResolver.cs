@@ -4,6 +4,18 @@ using Script.Data;
 
 public static class CombinedMagicResolver
 {
+    public static bool CanResolve(IList<CardType> recipe)
+    {
+        foreach (var d in LocalCombinedMagicData.dataList)
+        {
+            if (AreSameMultiset(d.recipe, recipe))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public static bool TryResolve(IList<CardType> recipe, out CombinedMagicData data)
     {
         foreach (var d in LocalCombinedMagicData.dataList)
