@@ -11,7 +11,7 @@ public class CardInputSender : MonoBehaviour
     private List<string> _currentCardNameList = new List<string>();
     private List<CardUI> _currentCardList = new List<CardUI>();
     
-    public bool CanSelectField => _currentCardList.Count >= 2;
+    public bool CanSelectField => _currentCardList.Count >= 1;
     public bool IsFieldSelectMode { get; private set; } = false;
 
     public void CancelUseCard(CardUI cardObj)
@@ -49,6 +49,14 @@ public class CardInputSender : MonoBehaviour
     {
         if (CanSelectField)
         {
+            if (!CombinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
+            {
+                WDebug.Log("Cannot resolve the current recipe.");
+                PlayerFeedbackController.Instance.UseMagicFeedback();
+                SendInput(Vector2.zero);
+                return;
+            }
+            
             IsFieldSelectMode = true;
         }
     }
