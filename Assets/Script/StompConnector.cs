@@ -283,6 +283,7 @@ public class StompConnector : MonoBehaviour
                     if (magicValid.magicId == -1)
                     {
                         // 마법 파사삭
+                        GameSceneUIController.Instance.PlayMagicFailEffect();
                     }
                 }
                 else

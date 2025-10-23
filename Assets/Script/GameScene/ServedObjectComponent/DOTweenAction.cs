@@ -102,6 +102,18 @@ public static class DOTweenAction
             .Append(tr.DOLocalRotate(new Vector3(0, 0, angle), duration, mode)
                 .SetEase(Ease.OutBack));
     }
+    
+    public static void Pop(Transform tr, float duration = 0.5f)
+    {
+        tr.localScale = Vector3.zero;
+    
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(tr.DOScale(Vector3.one, duration * 0.4f)
+                .SetEase(Ease.OutBack))
+            .Append(tr.DOScale(Vector3.zero, duration * 0.6f)
+                .SetEase(Ease.InBack));
+    }
 
     public static void BounceMob(Transform tr)
     {

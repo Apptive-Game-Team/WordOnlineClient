@@ -27,6 +27,10 @@ public class GameSceneUIController : MonoBehaviour
     [SerializeField] private CardImageMapper cardImageMapper;
 
     [SerializeField] private ExpectedMagicUI expectedMagicUI;
+    
+    [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
+    [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
+    
     public void Announce(string text)
     {
         textSystemMsg.text = text;
@@ -103,5 +107,17 @@ public class GameSceneUIController : MonoBehaviour
             return;
         }
         expectedMagicUI.SetImage(null);
+    }
+    
+    public void PlayMagicFailEffect()
+    {
+        if (SceneContext.Me == "LeftPlayer")
+        {
+            leftUserMagicFailEffecter.Trigger();
+        }
+        else if (SceneContext.Me == "RightPlayer")
+        {
+            rightUserMagicFailEffecter.Trigger();
+        }
     }
 }
