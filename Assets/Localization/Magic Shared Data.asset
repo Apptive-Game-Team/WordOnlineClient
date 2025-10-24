@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Magic Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Magic
+  m_TableCollectionNameGuidString: d7500d66b69754baeb18f584e2d7063d
+  m_Entries:
+  - m_Id: 237392355328
+    m_Key: fireSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 293310816256
+    m_Key: waterSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 333865541632
+    m_Key: lightningSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373132615680
+    m_Key: natureSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 404673781760
+    m_Key: rockSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 445094289408
+    m_Key: windSlimeSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 471228997632
+    m_Key: fireShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 532172234752
+    m_Key: waterShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 594889662464
+    m_Key: lightningShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 639269593088
+    m_Key: natureShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 709708734464
+    m_Key: rockShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 732320227328
+    m_Key: windShot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 775492198400
+    m_Key: fireSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 798737031168
+    m_Key: waterSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 833906270208
+    m_Key: lightningSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 862725332992
+    m_Key: natureSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 863098626048
+    m_Key: rockSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 954085662720
+    m_Key: windSlimeNest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 984037187584
+    m_Key: fireExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1011958669312
+    m_Key: waterExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1050990862336
+    m_Key: lightningExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1076966187008
+    m_Key: natureExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1119341240320
+    m_Key: rockExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1142862897152
+    m_Key: windExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1178443177984
+    m_Key: cannon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1217806721024
+    m_Key: tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1261490397184
+    m_Key: manaWell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1306658856960
+    m_Key: aquaArcher
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1359733579776
+    m_Key: rockGolem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401391407104
+    m_Key: stormRider
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1438020263936
+    m_Key: thunderSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1473030119424
+    m_Key: fireSpirit
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4497699099158773868
+  references:
+    version: 2
+    RefIds:
+    - rid: 4497699099158773868
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1761303747397

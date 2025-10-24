@@ -1,27 +1,26 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Script.Data;
 using UnityEngine;
-using Script.GameScene;
 using Script.GameScene.Dto; // ServedObject, ObjectContainer 등
-using Script.GameScene.Exception;
 using Script.GameScene.Object;
-using Script.Global; // DuplicatedException
-using UnityEngine.UI;
+using Script.Global;
+using UnityEngine.Localization; // DuplicatedException
 
 public class RejoinSyncHelper : MonoBehaviour
 {
+    
+    public LocalizedString rejoinSuccessMessage;
+    
     private void Start()
     {
         if (!string.IsNullOrEmpty(SceneContext.RejoinSyncJson))
             StartCoroutine(ApplySnapshotJson(SceneContext.RejoinSyncJson));
     }
-    
+
     private IEnumerator ApplySnapshotJson(string json)
     {
         yield return null;
-    
+
         SnapshotDto dto = null;
         try
         {
@@ -51,7 +50,7 @@ public class RejoinSyncHelper : MonoBehaviour
         }
     
         SceneContext.RejoinSyncJson = null;
-        SystemMessageUI.Instance.ShowMessage("이전 게임 세션에 재접속했습니다.");
+        SystemMessageUI.Instance.ShowMessage(rejoinSuccessMessage);
     }
     
     private void SpawnObject(SnapshotObjectDto o)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Script.Data;
+using Script.Data.Localization;
 using Script.GameScene;
 using Script.Global;
 using TMPro;
@@ -18,9 +19,8 @@ public class CardItemUI : MonoBehaviour
     [SerializeField] private Sprite typeSprite;
     [SerializeField] private Sprite magicSprite;
     
-    public void Init(string cName, int count)
+    public async void Init(string cName, int count)
     {
-        cardNameText.text = cName;
         cardCountText.text = $" X {count.ToString()}" ;
         transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cName);
         
@@ -39,5 +39,6 @@ public class CardItemUI : MonoBehaviour
                 WDebug.LogError($"Unknown magic type: {magicData.type}");
                 break;
         }
+        cardNameText.text = await LocaleUtils.GetStringAsync("Card", cName);
     }
 }

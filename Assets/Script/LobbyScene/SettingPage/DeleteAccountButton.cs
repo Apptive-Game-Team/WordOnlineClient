@@ -2,6 +2,7 @@ using System.Collections;
 using Script.Data;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,9 @@ namespace Script.LobbyScene.SettingPage
 {
     public class DeleteAccountButton : AsyncButtonBase
     {
+        
+        public LocalizedString confirmationMessage;
+        
         protected override void OnClickButton()
         {
             StartCoroutine(DeleteAccount());
@@ -29,7 +33,7 @@ namespace Script.LobbyScene.SettingPage
             {
                 WDebug.Log("Account deleted successfully.");
                 SceneContext.ClearContext();
-                SystemMessageUI.Instance.ShowMessage("성공적으로 탈퇴되었습니다.\n초기 화면으로 이동합니다.");
+                SystemMessageUI.Instance.ShowMessage(confirmationMessage);
                 yield return new WaitForSeconds(2f);
                 SceneManager.LoadScene("LoginScene");
                 yield break;

@@ -4,6 +4,7 @@ using Script.Data;
 using Script.Global;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ public class LoginButton : AsyncButtonBase
 {
     [SerializeField] private InputField emailInputField;
     [SerializeField] private InputField passwordInputField;
+
+    public LocalizedString loginErrorProcessingResponse;
     
     private IEnumerator LoginCoroutine(LoginRequestDto loginRequestDto)
     {
@@ -47,7 +50,7 @@ public class LoginButton : AsyncButtonBase
             } catch (System.Exception e)
             {
                 WDebug.LogError("Parsing Error: " + e.Message);
-                SystemMessageUI.Instance.ShowMessage("로그인 응답 처리 중 오류가 발생했습니다.");
+                SystemMessageUI.Instance.ShowMessage(loginErrorProcessingResponse);
                 ResetButton();
             }
         }

@@ -4,6 +4,7 @@ using Script.DeckScene;
 using Script.Global;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -14,6 +15,11 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] private Button arrowButton;
     private static DeckResponseDto[] userDecks;
 
+    public LocalizedString deckLoadFailed;
+    public LocalizedString noDecksAvailable;
+    public LocalizedString deckSelectionFailed;
+    public LocalizedString deckSelectionSuccess;
+    
     private void Start()
     {
         WDebug.Log("LobbyUIController Start");
@@ -48,7 +54,7 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            SystemMessageUI.Instance.ShowMessage("덱 리스트 로드 실패");
+            SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
             WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
             yield break;
         }
@@ -58,7 +64,7 @@ public class LobbyUIController : MonoBehaviour
         
         if (userDecks == null || userDecks.Length == 0)
         {
-            SystemMessageUI.Instance.ShowMessage("덱이 하나도 없습니다. 덱을 생성해주세요.");
+            SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
             WDebug.LogWarning("덱이 하나도 없습니다.");
             yield break;
         }
@@ -113,12 +119,12 @@ public class LobbyUIController : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success)
         {
-            SystemMessageUI.Instance.ShowMessage("덱 선택 실패");
+            SystemMessageUI.Instance.ShowMessage(deckSelectionFailed);
             WDebug.LogError($"덱 선택 실패: {www.responseCode} / {www.error}");
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("덱 선택 성공");
+            SystemMessageUI.Instance.ShowMessage(deckSelectionSuccess);
             WDebug.Log("덱 선택 성공: " + www.downloadHandler.text);
         }
     }

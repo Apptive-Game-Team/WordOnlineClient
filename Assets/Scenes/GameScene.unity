@@ -3256,6 +3256,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97354e542dca7ae43a7227418b70bd66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rejoinSuccessMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4272048562176
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &1968478013
 Transform:
   m_ObjectHideFlags: 0
