@@ -29,10 +29,11 @@ namespace Script.GameScene
 
         private bool isActive = false;
     
-        public string CardName => cardNameText.text;
+        public string CardName;
 
         public async void Init(string name)
         {
+            CardName = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
             cardManaText.text = magicData.mana.ToString();
             switch (magicData.type)
