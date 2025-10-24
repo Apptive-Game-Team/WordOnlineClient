@@ -18,7 +18,14 @@ MonoBehaviour:
   m_GUID: 9ad735d1fa9e74672bdfd2b1a0ce9160
   m_SerializeEntries:
   - m_GUID: 83d61fc8302ba4a37a804c077dbf5dd8
-    m_Address: UI_ko-KR
+    m_Address: Login_ko-KR
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ko-KR
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82a7c5a1bf38543488d9694f9c7ee5f4
+    m_Address: LobbyUI_ko-KR
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-ko-KR

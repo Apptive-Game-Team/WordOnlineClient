@@ -17,7 +17,53 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3c47a636d3d4a4d6aad778789441531a, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 34501287936
+    m_Localized: Match Queue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2169947283456
+    m_Localized: Magic Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2251874623488
+    m_Localized: Practice Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2384909557760
+    m_Localized: 'Setting
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2430828797952
+    m_Localized: Manage Deck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2821259780096
+    m_Localized: 'Queue:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5653622939648
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5869478600704
+    m_Localized: Go to Lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6081425170432
+    m_Localized: Deck Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6474787971072
+    m_Localized: Delete Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7565302816768
+    m_Localized: Go To Tutorial
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

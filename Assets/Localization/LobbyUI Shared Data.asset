@@ -13,8 +13,52 @@ MonoBehaviour:
   m_Name: LobbyUI Shared Data
   m_EditorClassIdentifier: 
   m_TableCollectionName: LobbyUI
-  m_TableCollectionNameGuidString: 00000000000000000000000000000000
-  m_Entries: []
+  m_TableCollectionNameGuidString: 3c47a636d3d4a4d6aad778789441531a
+  m_Entries:
+  - m_Id: 34501287936
+    m_Key: Match Queue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2169947283456
+    m_Key: Magic Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2251874623488
+    m_Key: Practice Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2384909557760
+    m_Key: Setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2430828797952
+    m_Key: Manage Deck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2821259780096
+    m_Key: Queue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5653622939648
+    m_Key: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5869478600704
+    m_Key: Go to Lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6081425170432
+    m_Key: Deck Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6474787971072
+    m_Key: Delete Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7565302816768
+    m_Key: Go To Tutorial
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
