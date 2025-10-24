@@ -1,4 +1,6 @@
 using Script.Data;
+using Script.Data.Localization;
+using Script.Data.Util;
 using Script.GameScene;
 using TMPro;
 using UnityEngine;
@@ -14,9 +16,8 @@ namespace Script.MagicBookScene
         
         [SerializeField] private CardImageMapper mapper;
 
-        public void Init(CombinedMagicData data)
+        public async void Init(CombinedMagicData data)
         {
-            nameText.text = data.magicName;
             magicImage.sprite = data.GetSprite();
             foreach (Transform child in cardsParent)
             {
@@ -30,6 +31,7 @@ namespace Script.MagicBookScene
                 img.rectTransform.sizeDelta = new Vector2(50, 50);
                 cardObj.transform.SetParent(cardsParent, false);
             }
+            nameText.text = await LocaleUtils.GetStringAsync("Magic",StringUtils.ToCamelCase(data.magicName));
         }
     }
 }

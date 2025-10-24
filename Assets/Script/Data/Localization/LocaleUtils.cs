@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -9,6 +10,25 @@ namespace Script.Data.Localization
 {
     public class LocaleUtils
     {
+        public static async Task<string> GetStringAsync(string tableName, string entryName)
+        {
+            try
+            {
+                await LocalizationSettings.InitializationOperation.Task;
+                var localizedString = new LocalizedString
+                {
+                    TableReference = tableName,
+                    TableEntryReference = entryName
+                };
+                return await localizedString.GetLocalizedStringAsync().Task;
+            }
+            catch (Exception e)
+            {
+                WDebug.LogError(e);
+                return "";
+            }
+        }
+        
         public static async void SetLanguageAsync(string localeCode)
         {
             try

@@ -1,4 +1,5 @@
 using Script.Data;
+using Script.Data.Localization;
 using Script.Data.Sound;
 using Script.Global;
 using TMPro;
@@ -30,9 +31,8 @@ namespace Script.GameScene
     
         public string CardName => cardNameText.text;
 
-        public void Init(string name)
+        public async void Init(string name)
         {
-            cardNameText.text = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
             cardManaText.text = magicData.mana.ToString();
             switch (magicData.type)
@@ -47,6 +47,7 @@ namespace Script.GameScene
                     WDebug.LogError($"Unknown magic type: {magicData.type}");
                     break;
             }
+            cardNameText.text = await LocaleUtils.GetStringAsync("Card", name);
         }
 
         public void SetCardActive(bool isActive)
