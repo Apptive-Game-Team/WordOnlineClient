@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Script.GameScene.Dto;
 using Script.GameScene.Object;
 
@@ -13,11 +15,11 @@ namespace Script.GameScene.Handler
             GameSceneUIController.Instance.UpdateUserHps(syncFrameInfo.leftPlayerHp, syncFrameInfo.rightPlayerHp);
             
             // // 카드 추가
-            foreach (string cardName in syncFrameInfo.snapshotResponseDto.myCards)
-            {
-                GameSceneUIController.Instance.AddCard(cardName);
-            }
-                    
+            List<string> existedCards = GameSceneUIController.Instance.GetAllCards();
+            List<string> cardData = syncFrameInfo.snapshotResponseDto.myCards.ToList<string>();
+            existedCards.ForEach(x => cardData.Remove(x));
+            cardData.ForEach(x => GameSceneUIController.Instance.AddCard(x));
+ 
             // 동기화
             ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects);
         }

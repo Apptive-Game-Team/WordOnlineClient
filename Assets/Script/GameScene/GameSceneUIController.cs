@@ -98,6 +98,16 @@ public class GameSceneUIController : MonoBehaviour
         cardUI.Init(cardname.ToString());
     }
 
+    public List<string> GetAllCards()
+    {
+        List<string> cardNames = new List<string>();
+        foreach (Transform child in lowerBar.transform)
+        {
+            cardNames.Add(child.GetComponent<CardUI>().CardName);
+        }
+        return cardNames;
+    } 
+
     public void TrySetExpectedMagicUI(IList<CardType> recipe)
     {
         CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
