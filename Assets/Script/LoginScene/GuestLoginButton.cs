@@ -1,3 +1,4 @@
+
 using System.Collections;
 using Script.Data;
 using Script.Global;
@@ -7,17 +8,16 @@ using UnityEngine.SceneManagement;
 
 public class GuestLoginButton : AsyncButtonBase
 {
-    
     private IEnumerator GuestLoginCoroutine()
     {
-        
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/guest", "POST"))
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.timeout = 10;
+            webRequest.SetRequestHeader("Content-Type", "application/json");
             
             yield return webRequest.SendWebRequest();
-
+            
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
