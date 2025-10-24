@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Localization;
 
 public class SystemMessageUI : MonoBehaviour
 {
@@ -21,6 +22,14 @@ public class SystemMessageUI : MonoBehaviour
         messageText.transform.parent.gameObject.SetActive(false);
     }
 
+    public void ShowMessage(LocalizedString localizedString)
+    {
+        localizedString.GetLocalizedStringAsync().Completed += handle =>
+        {
+            ShowMessage(handle.Result);
+        };
+    }
+    
     public void ShowMessage(string msg)
     {
         if (msg == currentMessage) return;

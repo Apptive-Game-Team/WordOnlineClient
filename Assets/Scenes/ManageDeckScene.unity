@@ -3180,6 +3180,81 @@ MonoBehaviour:
   createDeckPrefab: {fileID: 2206886970295234043, guid: ddc10a1af089fed4d8a8547866d40073, type: 3}
   submitDeckButton: {fileID: 812343961}
   deckNameInputField: {fileID: 1379006795}
+  newDeck:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3962689282048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckCreationFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3989990006784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckCreationSuccess:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4035988938752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckUpdateFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4079861358592
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckUpdateSuccess:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4125742850048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  errorCardCount:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4155870535680
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  errorAttributeCount:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4207498223616
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  errorMagicCount:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4240255737856
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2065755164
 MonoBehaviour:
   m_ObjectHideFlags: 0

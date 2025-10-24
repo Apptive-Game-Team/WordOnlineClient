@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SystemMessageUI_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 8d48c82df41cc46e1af6de4a9b33e57b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3707671404544
+    m_Localized: Failed to load deck list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3810121474048
+    m_Localized: No decks available. Please create a deck.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3863250722816
+    m_Localized: Deck selection failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3914773553152
+    m_Localized: Deck selected successfully
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3962689282048
+    m_Localized: New Deck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3989990006784
+    m_Localized: Deck creation failed!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4035988938752
+    m_Localized: Deck created successfully!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4079861358592
+    m_Localized: Deck update failed!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4125742850048
+    m_Localized: Deck updated successfully!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4155870535680
+    m_Localized: Deck must contain 10 cards!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4207498223616
+    m_Localized: Deck must contain at least 2 attribute types!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4240255737856
+    m_Localized: Deck must contain at least 2 magic types!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4272048562176
+    m_Localized: Reconnected to the previous game session.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318542422016
+    m_Localized: Session restored. Resuming matchmaking.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4366781112320
+    m_Localized: Session restored. Connecting to the ongoing game.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4410385096704
+    m_Localized: Account successfully deleted.\nReturning to the title screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5395702603776
+    m_Localized: An error occurred while processing the login response.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5440099311616
+    m_Localized: Not connected to the server.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5478737240064
+    m_Localized: Matchmaking in progress...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5514766311424
+    m_Localized: Matchmaking failed! Please try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5549390290944
+    m_Localized: STOMP connection closed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6261704744960
+    m_Localized: Connection to the server is delayed..
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

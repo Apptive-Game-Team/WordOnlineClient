@@ -6911,6 +6911,45 @@ MonoBehaviour:
   lobbyUserNameUI: {fileID: 1346169579}
   deckDropdown: {fileID: 191327567}
   arrowButton: {fileID: 1362459989}
+  deckLoadFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3707671404544
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  noDecksAvailable:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3810121474048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckSelectionFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3863250722816
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deckSelectionSuccess:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 3914773553152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2065755163
 MonoBehaviour:
   m_ObjectHideFlags: 0

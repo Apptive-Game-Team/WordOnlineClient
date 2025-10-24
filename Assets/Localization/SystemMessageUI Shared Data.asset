@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: SystemMessageUI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: SystemMessageUI
+  m_TableCollectionNameGuidString: 8d48c82df41cc46e1af6de4a9b33e57b
+  m_Entries:
+  - m_Id: 3707671404544
+    m_Key: deckLoadFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3810121474048
+    m_Key: noDecksAvailable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3863250722816
+    m_Key: deckSelectionFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3914773553152
+    m_Key: deckSelectionSuccess
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3962689282048
+    m_Key: newDeck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3989990006784
+    m_Key: deckCreationFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4035988938752
+    m_Key: deckCreationSuccess
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4079861358592
+    m_Key: deckUpdateFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4125742850048
+    m_Key: deckUpdateSuccess
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4155870535680
+    m_Key: errorCardCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4207498223616
+    m_Key: errorAttributeCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4240255737856
+    m_Key: errorMagicCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4272048562176
+    m_Key: reconnectedSession
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318542422016
+    m_Key: sessionRestoredMatching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4366781112320
+    m_Key: sessionRestoredGame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4410385096704
+    m_Key: success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5395702603776
+    m_Key: errorProcessingResponse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5440099311616
+    m_Key: notConnectedToServer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5478737240064
+    m_Key: matchingInProgress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5514766311424
+    m_Key: matchingFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5549390290944
+    m_Key: connectionClosed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6261704744960
+    m_Key: connectionDelayed
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4497699099158773817
+  references:
+    version: 2
+    RefIds:
+    - rid: 4497699099158773817
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1761295510277

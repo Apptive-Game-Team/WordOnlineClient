@@ -5,7 +5,8 @@ using Script.Data;
 using UnityEngine;
 using Script.GameScene;              // ServedObject, ObjectContainer 등
 using Script.GameScene.Exception;
-using Script.Global; // DuplicatedException
+using Script.Global;
+using UnityEngine.Localization; // DuplicatedException
 using UnityEngine.UI;
 
 public class RejoinSyncHelper : MonoBehaviour
@@ -31,6 +32,8 @@ public class RejoinSyncHelper : MonoBehaviour
         public string effect;
     }
 
+    public LocalizedString rejoinSuccessMessage;
+    
     private void Start()
     {
         if (!string.IsNullOrEmpty(SceneContext.RejoinSyncJson))
@@ -70,7 +73,7 @@ public class RejoinSyncHelper : MonoBehaviour
         }
 
         SceneContext.RejoinSyncJson = null;
-        SystemMessageUI.Instance.ShowMessage("이전 게임 세션에 재접속했습니다.");
+        SystemMessageUI.Instance.ShowMessage(rejoinSuccessMessage);
     }
 
     private void SpawnObject(SnapshotObjectDto o)

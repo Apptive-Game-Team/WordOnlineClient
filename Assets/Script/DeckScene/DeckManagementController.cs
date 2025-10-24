@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -67,7 +68,16 @@ namespace Script.DeckScene
         
         private static DeckResponseDto[] userDecks;
         private static CardDto[] ownedCards;
-
+        
+        public LocalizedString newDeck;
+        public LocalizedString deckCreationFailed;
+        public LocalizedString deckCreationSuccess;
+        public LocalizedString deckUpdateFailed;
+        public LocalizedString deckUpdateSuccess;
+        public LocalizedString errorCardCount;
+        public LocalizedString errorAttributeCount;
+        public LocalizedString errorMagicCount;
+        
         void Start() {
             LoadingPage.Instance.IsLoading = true;
             if (userDecks != null && userDecks.Length > 0) {
@@ -221,9 +231,12 @@ namespace Script.DeckScene
             submitDeckButton.onClick.RemoveAllListeners();
             submitDeckButton.onClick.AddListener(() => OnDeckSubmit());
         }
-        void OnNewDeckSelected() {
+        async void OnNewDeckSelected() {
             WDebug.Log("OnNewDeckSelected");
-            DeckResponseDto deck = new DeckResponseDto(){id = -1, name = "새 덱", cards = Array.Empty<CardDto>()};
+
+            string newDeckString = await newDeck.GetLocalizedStringAsync().Task;
+            
+            DeckResponseDto deck = new DeckResponseDto(){id = -1, name = newDeckString, cards = Array.Empty<CardDto>()};
             
             foreach (Transform t in deckCardsContainer) Destroy(t.gameObject);
             
@@ -304,12 +317,12 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
-                SystemMessageUI.Instance.ShowMessage("덱 생성 실패!");
+                SystemMessageUI.Instance.ShowMessage(deckCreationFailed);
                 WDebug.LogError($"덱 생성 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage("덱 생성 성공!");
+                SystemMessageUI.Instance.ShowMessage(deckCreationSuccess);
                 WDebug.Log($"덱 생성 성공: {www.downloadHandler.text}");
             }
         }
@@ -347,13 +360,13 @@ namespace Script.DeckScene
             // 5) 결과 확인
             if (www.result != UnityWebRequest.Result.Success)
             {
-                SystemMessageUI.Instance.ShowMessage("덱 수정 실패!");
+                SystemMessageUI.Instance.ShowMessage(deckUpdateFailed);
                 WDebug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name); // reload
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage("덱 수정 성공!");
+                SystemMessageUI.Instance.ShowMessage(deckUpdateSuccess);
                 WDebug.Log($"덱 수정 성공: {www.downloadHandler.text}");
             }
         }
@@ -376,17 +389,17 @@ namespace Script.DeckScene
             
             if (deck.cards.Length != 10)
             {
-                SystemMessageUI.Instance.ShowMessage("덱에 카드가 10장 있어야 합니다!");
+                SystemMessageUI.Instance.ShowMessage(errorCardCount);
                 return false;
             }
             else if (typeCount < 2)
             {
-                SystemMessageUI.Instance.ShowMessage("덱에 속성이 2종류 이상 있어야 합니다!");
+                SystemMessageUI.Instance.ShowMessage(errorAttributeCount);
                 return false;
             }
             else if (magicCount < 2)
             {
-                SystemMessageUI.Instance.ShowMessage("덱에 마법이 2종류 이상 있어야 합니다!");
+                SystemMessageUI.Instance.ShowMessage(errorMagicCount);
                 return false;
             }
             return true;
