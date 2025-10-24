@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: tutorial_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: d001a424f0bbb49788a1cbb2c7cf88a4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 31254896640
+    m_Localized: Skip Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63110635520
+    m_Localized: 'Click the Mana Bar
+
+      to open the card window'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145272856576
+    m_Localized: 'There are Spell Cards (verbs)
+
+      and Attribute Cards (nouns)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190177075200
+    m_Localized: 'You can check the
+
+      mana cost for each card'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 224868163584
+    m_Localized: 'Select cards
+
+      (Hint: Spell + Attribute)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 282485317632
+    m_Localized: 'If the card combination is successful,
+
+      the spell appears
+      in the orb'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348331696128
+    m_Localized: Click the orb to combine the magic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 391205871616
+    m_Localized: 'Click an activated location
+
+      to cast the spell'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 440845459456
+    m_Localized: 'Reduce the opponent''s health
+
+      to achieve victory'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 486739533824
+    m_Localized: 'You can view the Magic Book
+
+      on the main screen'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 670076755968
+    m_Localized: 'In the Magic Book screen,
+
+      you can check the card combinations
+
+      for
+      each spell'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
