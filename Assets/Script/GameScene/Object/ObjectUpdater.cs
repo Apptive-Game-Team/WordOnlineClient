@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Script.GameScene
+namespace Script.GameScene.Object
 {
     public class ObjectUpdater : MonoBehaviour
     {

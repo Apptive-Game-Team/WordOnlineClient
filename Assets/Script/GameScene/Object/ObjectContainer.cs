@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using Script.GameScene.Exception;
 using Script.Global;
 using UnityEngine;
+using System.Linq;
 
-namespace Script.GameScene
+namespace Script.GameScene.Object
 {
     public class ObjectContainer : MonoBehaviour
     {
@@ -44,9 +45,19 @@ namespace Script.GameScene
             }
         }
         
+        public bool IsExist(int id)
+        {
+            return objects.ContainsKey(id);
+        }
+        
         public ServedObject FindById(int id)
         {
             return objects.GetValueOrDefault(id, null);
+        }
+
+        public List<int> GetIds()
+        {
+            return objects.Keys.ToList();
         }
     }
 }
