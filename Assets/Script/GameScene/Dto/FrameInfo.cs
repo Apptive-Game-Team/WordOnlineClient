@@ -1,5 +1,5 @@
 [System.Serializable]
-public class FrameInfo
+public class FrameInfoDto
 {
     public string type;
     public int updatedMana;

@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using Script.Data;
-using Script.GameScene;
+using Script.GameScene.Handler;
 using Script.Global;
 using UnityEngine.SceneManagement;
 
@@ -220,89 +219,12 @@ public class StompConnector : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public class TypeChecker
-    {
-        public string type;
-    }
-
-    [System.Serializable]
-    public class MagicValidInfo
-    {
-        public string type;
-        public string message;
-        public bool valid;
-        public int updateMana;
-        public int id;
-        public int magicId;
-    }
+    private IFrameInfoHandler<string> frameInfoHandler = new GeneralHandler();
     
     public void OnFrameInfoReceived(string json)
     {
         WDebug.Log("FrameInfo 수신: " + json);
-
-        TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
-
         
-        switch (infotype.type)
-        {
-            case "frame":
-                FrameInfo info = JsonUtility.FromJson<FrameInfo>(json);
-                
-                // 마나 UI 업데이트
-                GameSceneUIController.Instance.UpdateMana(info.updatedMana);
-                // 플레이어 HP 업데이트 
-                GameSceneUIController.Instance.UpdateUserHps(info.leftPlayerHp, info.rightPlayerHp);
-                //
-                // // 카드 추가
-                foreach (string cardName in info.cards.added)
-                {
-                    GameSceneUIController.Instance.AddCard(cardName);
-                }
-                    
-                //
-                // // 생성된 오브젝트 배치
-                foreach (var created in info.objects.create)
-                    ObjectSpawner.Instance.SpawnObject(created);
-        
-                // // 기존 오브젝트 업데이트
-                foreach (var updated in info.objects.update)
-                    ObjectUpdater.Instance.UpdateObject(updated);
-                
-                break;
-            case "magicValid":
-                MagicValidInfo magicValid = JsonUtility.FromJson<MagicValidInfo>(json);
-                //vaildCheck
-                if (magicValid.valid)
-                {
-                    foreach (var cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                    {
-                        Destroy(cardUI.gameObject);
-                    }
-
-                    if (magicValid.magicId == -1)
-                    {
-                        // 마법 파사삭
-                        GameSceneUIController.Instance.PlayMagicFailEffect();
-                    }
-                }
-                else
-                {
-                    foreach (var cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                    {
-                        cardUI.SetCardActive(false);
-                    }
-                    SystemMessageUI.Instance.ShowMessage(magicValid.message);
-                    WDebug.Log("[Magic Valid]" + magicValid.message);
-                }
-                CardInputSender.inputRequestDict.Remove(magicValid.id);
-                return;
-            case "result":
-                ResultInfo result = JsonUtility.FromJson<ResultInfo>(json);
-                SceneContext.MatchResult = result;
-                SceneManager.LoadScene("ResultScene");
-                break;
-        }
-        
+        frameInfoHandler.Handler(json);
     }
 }
