@@ -76,11 +76,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4410385096704
-    m_Key: success
+    m_Key: deleteAccountsuccess
     m_Metadata:
       m_Items: []
   - m_Id: 5395702603776
-    m_Key: errorProcessingResponse
+    m_Key: loginErrorProcessingResponse
     m_Metadata:
       m_Items: []
   - m_Id: 5440099311616

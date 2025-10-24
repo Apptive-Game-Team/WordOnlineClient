@@ -337,6 +337,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c75e3fc7f9a0e42ac0b1ea816f37e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notConnectedToServer:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 5440099311616
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  matchingInProgress:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 5478737240064
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  matchingFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 5514766311424
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  connectionClosed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 5549390290944
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  connectionDelayed:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 6261704744960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &72222818
 Transform:
   m_ObjectHideFlags: 0
@@ -6534,6 +6582,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a345ba97aa1249dab939ad0827c7b048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  confirmationMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 4410385096704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2038086428
 GameObject:
   m_ObjectHideFlags: 0

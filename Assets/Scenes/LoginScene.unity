@@ -3155,6 +3155,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailInputField: {fileID: 407253099}
   passwordInputField: {fileID: 326930060}
+  loginErrorProcessingResponse:
+    m_TableReference:
+      m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
+    m_TableEntryReference:
+      m_KeyId: 5395702603776
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2065755157
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,12 +3,20 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using Script.GameScene.Handler;
 using Script.Global;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
 public class StompConnector : MonoBehaviour
 {
     private static bool isConnected = false;
     public static StompConnector Instance;
+
+    public LocalizedString notConnectedToServer;
+    public LocalizedString matchingInProgress;
+    public LocalizedString matchingFailed;
+    public LocalizedString connectionClosed;
+    public LocalizedString connectionDelayed;
+    
     private void Awake()
     {
         gameObject.name = "StompConnector";
@@ -74,7 +82,7 @@ public class StompConnector : MonoBehaviour
     {
         if (!isConnected)
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
             OnError("Not connected");
             throw new Exception("Not connected");
@@ -110,10 +118,10 @@ public class StompConnector : MonoBehaviour
         {
             if (message.Contains("Successfully"))
             {
-                MatchingStatusTextUI.SetMatchingStatusText("매칭 대기 중...");
+                MatchingStatusTextUI.SetMatchingStatusText(matchingInProgress);
             } else if (message.Contains("Failed"))
             {
-                MatchingStatusTextUI.SetMatchingStatusText("매칭 실패! 다시 시도해주세요.");
+                MatchingStatusTextUI.SetMatchingStatusText(matchingFailed);
                 UnsubscribeFromTopic("match-sub");
             }
         }
@@ -122,7 +130,7 @@ public class StompConnector : MonoBehaviour
     // 연결 종료 처리
     public void OnDisconnected(string message)
     {
-        SystemMessageUI.Instance.ShowMessage("STOMP 연결 종료: " + message);
+        SystemMessageUI.Instance.ShowMessage(connectionClosed);
         WDebug.Log("STOMP 연결 종료: " + message);
         isConnected = false;
     }
@@ -130,7 +138,7 @@ public class StompConnector : MonoBehaviour
     // 연결 실패 처리
     public void OnError(string error)
     {
-        SystemMessageUI.Instance.ShowMessage("서버와 연결이 지연되고 있습니다..");
+        SystemMessageUI.Instance.ShowMessage(connectionDelayed);
         WDebug.LogError("STOMP 에러: " + error);
         isConnected = false;
         
@@ -164,7 +172,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -181,7 +189,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -198,7 +206,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -214,7 +222,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
