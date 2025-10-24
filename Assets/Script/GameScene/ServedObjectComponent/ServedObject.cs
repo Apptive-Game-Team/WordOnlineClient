@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Script.GameScene.Object;
 using Script.Global;
 using UnityEngine;
 
@@ -53,8 +54,7 @@ namespace Script.GameScene
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
-                ObjectContainer.Instance.UnregisterObject(this);
-                Destroy(gameObject);
+                DestroySelf();
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
@@ -101,6 +101,12 @@ namespace Script.GameScene
                 DOTweenAction.BounceMob(transform);
             }
             lastHp = hp;
+        }
+
+        public void DestroySelf()
+        {
+            ObjectContainer.Instance.UnregisterObject(this);
+            Destroy(gameObject);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Script.GameScene.Dto;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,4 +10,14 @@ public class UpdatedObjectDto
     public int maxHp;
     public string status;
     public string effect;
+
+    public UpdatedObjectDto(SnapshotObjectDto snapshotObjectDto)
+    {
+        id = snapshotObjectDto.id;
+        position = new Vector3(snapshotObjectDto.x, snapshotObjectDto.y, snapshotObjectDto.z);
+        hp = snapshotObjectDto.hp;
+        maxHp = snapshotObjectDto.maxHp;
+        status = snapshotObjectDto.status;
+        effect = snapshotObjectDto.effect;
+    }
 }

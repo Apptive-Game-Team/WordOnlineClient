@@ -1,4 +1,3 @@
-using System.Linq;
 using Script.Data;
 using Script.Data.Sound;
 using Script.Global;
@@ -73,6 +72,11 @@ namespace Script.GameScene
                 SetCardActive(true);
             }
             cardInputSender.SetExpectedMagicUI(); 
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
         }
     }
 }
