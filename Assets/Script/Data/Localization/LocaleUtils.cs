@@ -20,7 +20,11 @@ namespace Script.Data.Localization
                     TableReference = tableName,
                     TableEntryReference = entryName
                 };
-                return await localizedString.GetLocalizedStringAsync().Task;
+                var handle = localizedString.GetLocalizedStringAsync();
+                
+                await handle.Task.ConfigureAwait(false);
+
+                return handle.Result;
             }
             catch (Exception e)
             {
