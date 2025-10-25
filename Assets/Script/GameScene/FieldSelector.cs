@@ -69,7 +69,7 @@ public class FieldSelector : MonoBehaviour
 
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             cardInputSender.SendInput(mouseWorldPos);
             PlayerFeedbackController.Instance.UseMagicFeedback();

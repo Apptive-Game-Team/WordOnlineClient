@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -25, y: -66.5}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -11.333702, y: -77.14905}
+  m_SizeDelta: {x: -55.7327, y: -179.7019}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5668896113005992313
 CanvasRenderer:
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.4
+  m_fontSize: 20.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 42.50174, y: 95.278915, z: 22.970272, w: 73.31857}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -243,8 +243,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0, y: 33}
-  m_SizeDelta: {x: 150, y: 200}
+  m_AnchoredPosition: {x: 48.3, y: 20.5}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5745595111655318840
 CanvasRenderer:
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.1
+  m_fontSize: 25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 110.26867, y: 100.57706, z: 11.994144, w: 73.31857}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -440,6 +440,7 @@ MonoBehaviour:
   cardSound: {fileID: 0}
   typeSprite: {fileID: 21300000, guid: 7d4b1ff7616ed4e319ae4c32d16d6df0, type: 3}
   magicSprite: {fileID: 21300000, guid: aa143a60e471647e4bae9d6b44704497, type: 3}
+  CardName: 
 --- !u!114 &-5344989155896131315
 MonoBehaviour:
   m_ObjectHideFlags: 0
