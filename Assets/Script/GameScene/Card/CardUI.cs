@@ -4,11 +4,12 @@ using Script.Data.Sound;
 using Script.Global;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Script.GameScene
 {
-    public class CardUI : MonoBehaviour
+    public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
         [SerializeField] private TextMeshProUGUI cardManaText;
@@ -30,6 +31,8 @@ namespace Script.GameScene
         private bool isActive = false;
     
         public string CardName;
+        public string DisplayName => cardNameText.text;
+        public string Mana => cardManaText.text;
 
         public async void Init(string name)
         {
@@ -79,6 +82,16 @@ namespace Script.GameScene
         public void Destroy()
         {
             Destroy(gameObject);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            CardUIZoom.Instance.Show(this);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            CardUIZoom.Instance.Hide();
         }
     }
 }
