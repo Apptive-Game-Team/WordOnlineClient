@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: tutorial Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: tutorial
+  m_TableCollectionNameGuidString: d001a424f0bbb49788a1cbb2c7cf88a4
+  m_Entries:
+  - m_Id: 31254896640
+    m_Key: tutorial.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63110635520
+    m_Key: tutorial.clickManaBar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145272856576
+    m_Key: tutorial.cardTypes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190177075200
+    m_Key: tutorial.manaCost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 224868163584
+    m_Key: tutorial.selectCards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 282485317632
+    m_Key: tutorial.combinationSuccess
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348331696128
+    m_Key: tutorial.combineMagic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 391205871616
+    m_Key: tutorial.useMagic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 440845459456
+    m_Key: tutorial.goal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 486739533824
+    m_Key: tutorial.magicBookLocation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 670076755968
+    m_Key: tutorial.magicBookExplanation
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4497699099158773822
+  references:
+    version: 2
+    RefIds:
+    - rid: 4497699099158773822
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1761300192630

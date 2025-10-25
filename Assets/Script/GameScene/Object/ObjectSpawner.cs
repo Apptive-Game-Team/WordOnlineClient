@@ -3,7 +3,7 @@ using Script.GameScene.Exception;
 using Script.Global;
 using UnityEngine;
 
-namespace Script.GameScene
+namespace Script.GameScene.Object
 {
     public class ObjectSpawner : MonoBehaviour
     {

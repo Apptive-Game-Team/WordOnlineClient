@@ -3,6 +3,7 @@ using System.Collections;
 using Script.Data;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -21,7 +22,10 @@ public static class StatusTracker
         public User leftUser;
         public User rightUser;
     }
-    
+
+    private static LocalizedString sessionRestoredMatching = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredMatching" };
+    private static LocalizedString sessionRestoredGame = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredGame" };
+
     public static IEnumerator GetUserStatus()
     {
         var url = SceneContext.CurrentServer.url + "/api/users/mine/status";
@@ -56,7 +60,7 @@ public static class StatusTracker
                 yield break;
 
             case "OnMatching":
-                SystemMessageUI.Instance.ShowMessage("세션이 복구되어 매칭 탐색을 재개했습니다.");
+                SystemMessageUI.Instance.ShowMessage(sessionRestoredMatching);
                 StompConnector.Instance.ConnectToServer();
                 try
                 {
@@ -102,7 +106,7 @@ public static class StatusTracker
                     WDebug.LogError("[EnterInGameByMine] sessionId empty");
                     yield break;
                 }
-                SystemMessageUI.Instance.ShowMessage("세션이 복구되어 진행 중인 게임에 연결했습니다.");
+                SystemMessageUI.Instance.ShowMessage(sessionRestoredGame);
                 // 컨텍스트에 저장(선택)
                 if (SceneContext.MatchInfo == null) SceneContext.MatchInfo = new MatchedInfoDto();
                 SceneContext.MatchInfo.sessionId = sessionDto.sessionId;

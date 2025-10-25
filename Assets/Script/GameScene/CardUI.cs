@@ -1,5 +1,5 @@
-using System.Linq;
 using Script.Data;
+using Script.Data.Localization;
 using Script.Data.Sound;
 using Script.Global;
 using TMPro;
@@ -29,11 +29,11 @@ namespace Script.GameScene
 
         private bool isActive = false;
     
-        public string CardName => cardNameText.text;
+        public string CardName;
 
-        public void Init(string name)
+        public async void Init(string name)
         {
-            cardNameText.text = name;
+            CardName = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
             cardManaText.text = magicData.mana.ToString();
             switch (magicData.type)
@@ -48,6 +48,7 @@ namespace Script.GameScene
                     WDebug.LogError($"Unknown magic type: {magicData.type}");
                     break;
             }
+            cardNameText.text = await LocaleUtils.GetStringAsync("Card", name);
         }
 
         public void SetCardActive(bool isActive)
@@ -73,6 +74,11 @@ namespace Script.GameScene
                 SetCardActive(true);
             }
             cardInputSender.SetExpectedMagicUI(); 
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
         }
     }
 }

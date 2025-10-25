@@ -1,36 +1,16 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Script.Data;
 using UnityEngine;
-using Script.GameScene;              // ServedObject, ObjectContainer 등
-using Script.GameScene.Exception;
-using Script.Global; // DuplicatedException
-using UnityEngine.UI;
+using Script.GameScene.Dto; // ServedObject, ObjectContainer 등
+using Script.GameScene.Object;
+using Script.Global;
+using UnityEngine.Localization; // DuplicatedException
 
 public class RejoinSyncHelper : MonoBehaviour
 {
-    [Serializable]
-    private class SnapshotDto
-    {
-        public int frame;
-        public SnapshotObjectDto[] objects;
-        public string[] myCards;
-    }
-
-    [Serializable]
-    private class SnapshotObjectDto
-    {
-        public int id;
-        public string prefab;
-        public float x;
-        public float y;
-        public float z;
-        public string master;
-        public string status;
-        public string effect;
-    }
-
+    
+    public LocalizedString rejoinSuccessMessage;
+    
     private void Start()
     {
         if (!string.IsNullOrEmpty(SceneContext.RejoinSyncJson))
@@ -68,20 +48,14 @@ public class RejoinSyncHelper : MonoBehaviour
             }
             
         }
-
+    
         SceneContext.RejoinSyncJson = null;
-        SystemMessageUI.Instance.ShowMessage("이전 게임 세션에 재접속했습니다.");
+        SystemMessageUI.Instance.ShowMessage(rejoinSuccessMessage);
     }
-
+    
     private void SpawnObject(SnapshotObjectDto o)
     {
-        CreatedObjectDto createdObjectDto = new CreatedObjectDto()
-        {
-            id = o.id,
-            master = o.master,
-            position = new Vector3(o.x, o.y, o.z),
-            type = o.prefab
-        };
+        CreatedObjectDto createdObjectDto = new CreatedObjectDto(o);
         ObjectSpawner.Instance.SpawnObject(createdObjectDto);
     }
 }

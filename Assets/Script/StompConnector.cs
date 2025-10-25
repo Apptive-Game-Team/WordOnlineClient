@@ -1,15 +1,22 @@
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using Script.Data;
-using Script.GameScene;
+using Script.GameScene.Handler;
 using Script.Global;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
 public class StompConnector : MonoBehaviour
 {
     private static bool isConnected = false;
     public static StompConnector Instance;
+
+    public LocalizedString notConnectedToServer;
+    public LocalizedString matchingInProgress;
+    public LocalizedString matchingFailed;
+    public LocalizedString connectionClosed;
+    public LocalizedString connectionDelayed;
+    
     private void Awake()
     {
         gameObject.name = "StompConnector";
@@ -75,7 +82,7 @@ public class StompConnector : MonoBehaviour
     {
         if (!isConnected)
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
             OnError("Not connected");
             throw new Exception("Not connected");
@@ -111,10 +118,10 @@ public class StompConnector : MonoBehaviour
         {
             if (message.Contains("Successfully"))
             {
-                MatchingStatusTextUI.SetMatchingStatusText("매칭 대기 중...");
+                MatchingStatusTextUI.SetMatchingStatusText(matchingInProgress);
             } else if (message.Contains("Failed"))
             {
-                MatchingStatusTextUI.SetMatchingStatusText("매칭 실패! 다시 시도해주세요.");
+                MatchingStatusTextUI.SetMatchingStatusText(matchingFailed);
                 UnsubscribeFromTopic("match-sub");
             }
         }
@@ -123,7 +130,7 @@ public class StompConnector : MonoBehaviour
     // 연결 종료 처리
     public void OnDisconnected(string message)
     {
-        SystemMessageUI.Instance.ShowMessage("STOMP 연결 종료: " + message);
+        SystemMessageUI.Instance.ShowMessage(connectionClosed);
         WDebug.Log("STOMP 연결 종료: " + message);
         isConnected = false;
     }
@@ -131,7 +138,7 @@ public class StompConnector : MonoBehaviour
     // 연결 실패 처리
     public void OnError(string error)
     {
-        SystemMessageUI.Instance.ShowMessage("서버와 연결이 지연되고 있습니다..");
+        SystemMessageUI.Instance.ShowMessage(connectionDelayed);
         WDebug.LogError("STOMP 에러: " + error);
         isConnected = false;
         
@@ -165,7 +172,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -182,7 +189,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -199,7 +206,7 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
@@ -215,94 +222,17 @@ public class StompConnector : MonoBehaviour
         }
         else
         {
-            SystemMessageUI.Instance.ShowMessage("STOMP 서버에 연결되지 않았습니다.");
+            SystemMessageUI.Instance.ShowMessage(notConnectedToServer);
             WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
         }
     }
 
-    [System.Serializable]
-    public class TypeChecker
-    {
-        public string type;
-    }
-
-    [System.Serializable]
-    public class MagicValidInfo
-    {
-        public string type;
-        public string message;
-        public bool valid;
-        public int updateMana;
-        public int id;
-        public int magicId;
-    }
+    private IFrameInfoHandler<string> frameInfoHandler = new GeneralHandler();
     
     public void OnFrameInfoReceived(string json)
     {
         WDebug.Log("FrameInfo 수신: " + json);
-
-        TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
-
         
-        switch (infotype.type)
-        {
-            case "frame":
-                FrameInfo info = JsonUtility.FromJson<FrameInfo>(json);
-                
-                // 마나 UI 업데이트
-                GameSceneUIController.Instance.UpdateMana(info.updatedMana);
-                // 플레이어 HP 업데이트 
-                GameSceneUIController.Instance.UpdateUserHps(info.leftPlayerHp, info.rightPlayerHp);
-                //
-                // // 카드 추가
-                foreach (string cardName in info.cards.added)
-                {
-                    GameSceneUIController.Instance.AddCard(cardName);
-                }
-                    
-                //
-                // // 생성된 오브젝트 배치
-                foreach (var created in info.objects.create)
-                    ObjectSpawner.Instance.SpawnObject(created);
-        
-                // // 기존 오브젝트 업데이트
-                foreach (var updated in info.objects.update)
-                    ObjectUpdater.Instance.UpdateObject(updated);
-                
-                break;
-            case "magicValid":
-                MagicValidInfo magicValid = JsonUtility.FromJson<MagicValidInfo>(json);
-                //vaildCheck
-                if (magicValid.valid)
-                {
-                    foreach (var cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                    {
-                        Destroy(cardUI.gameObject);
-                    }
-
-                    if (magicValid.magicId == -1)
-                    {
-                        // 마법 파사삭
-                        GameSceneUIController.Instance.PlayMagicFailEffect();
-                    }
-                }
-                else
-                {
-                    foreach (var cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                    {
-                        cardUI.SetCardActive(false);
-                    }
-                    SystemMessageUI.Instance.ShowMessage(magicValid.message);
-                    WDebug.Log("[Magic Valid]" + magicValid.message);
-                }
-                CardInputSender.inputRequestDict.Remove(magicValid.id);
-                return;
-            case "result":
-                ResultInfo result = JsonUtility.FromJson<ResultInfo>(json);
-                SceneContext.MatchResult = result;
-                SceneManager.LoadScene("ResultScene");
-                break;
-        }
-        
+        frameInfoHandler.Handler(json);
     }
 }

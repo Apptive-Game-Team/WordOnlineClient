@@ -95,8 +95,18 @@ public class GameSceneUIController : MonoBehaviour
     {
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
-        cardUI.Init(cardname.ToString());
+        cardUI.Init(cardname);
     }
+
+    public List<string> GetAllCards()
+    {
+        List<string> cardNames = new List<string>();
+        foreach (Transform child in lowerBar.transform)
+        {
+            cardNames.Add(child.GetComponent<CardUI>().CardName);
+        }
+        return cardNames;
+    } 
 
     public void TrySetExpectedMagicUI(IList<CardType> recipe)
     {
