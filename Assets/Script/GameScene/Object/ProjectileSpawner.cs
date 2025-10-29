@@ -6,6 +6,13 @@ namespace Script.GameScene.Object
 {
     public class ProjectileSpawner : MonoBehaviour
     {
+        public static ProjectileSpawner Instance;
+        
+        private void Awake()
+        {
+            Instance = this;
+        }
+        
         [SerializeField] private ObjectContainer objectContainer;
         
         public void Spawn(ProjectileDto dto)

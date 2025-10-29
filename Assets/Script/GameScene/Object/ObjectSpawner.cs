@@ -49,7 +49,6 @@ namespace Script.GameScene.Object
             } catch (DuplicatedException e)
             {
                 WDebug.LogError($"Failed to register object: {e.Message}");
-                Destroy(spawnedObject);
             }
         }
     }
