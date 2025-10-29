@@ -1,3 +1,4 @@
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene.Object
@@ -13,6 +14,7 @@ namespace Script.GameScene.Object
         
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
+            WDebug.Log("ObjectUpdater UpdateObject called for ID: " + updatedObjectDto.id);
             ServedObject servedObject = ObjectContainer.Instance.FindById(updatedObjectDto.id);
             if (servedObject != null)
             {

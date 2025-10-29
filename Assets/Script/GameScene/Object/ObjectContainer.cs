@@ -24,12 +24,10 @@ namespace Script.GameScene.Object
                 throw new System.ArgumentNullException(nameof(obj), "Object or ID cannot be null or empty.");
             }
             
-            if (objects.ContainsKey(obj.id))
+            if (!objects.TryAdd(obj.id, obj))
             {
                 throw new DuplicatedException($"Object with ID {obj.id} already exists.");
             }
-            
-            objects[obj.id] = obj;
         }
         
         public void UnregisterObject(ServedObject obj)

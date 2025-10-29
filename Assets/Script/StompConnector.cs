@@ -231,7 +231,7 @@ public class StompConnector : MonoBehaviour
     
     public void OnFrameInfoReceived(string json)
     {
-        WDebug.Log("FrameInfo 수신: " + json);
+        // WDebug.Log("FrameInfo 수신: " + json);
         
         frameInfoHandler.Handler(json);
     }

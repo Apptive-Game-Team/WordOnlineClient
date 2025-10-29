@@ -16,6 +16,7 @@ namespace Script.GameScene.Object
         
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
+            WDebug.Log($"Spawning object: {createdObjectDto.type}, id: {createdObjectDto.id}");
             Vector3 position = new Vector3(
                 createdObjectDto.position.x, 
                 createdObjectDto.position.y, 

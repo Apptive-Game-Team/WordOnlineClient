@@ -7,15 +7,16 @@ mergeInto(LibraryManager.library, {
     const url = UTF8ToString(urlPtr);
     const token = UTF8ToString(tokenPtr);
 
-    console.log("Connecting to STOMP at:", url);
+    // console.log("Connecting to STOMP at:", url);
 
     const socket = new WebSocket(url);
     client = Stomp.over(socket);
+    client.debug = null;
 
     client.connect({
         Authorization: `Bearer ${token}`
     }, function (frame) {
-      console.log("Connected:", frame);
+      // console.log("Connected:", frame);
       SendMessage("StompConnector", "OnConnected", JSON.stringify(frame.headers));
     }, function (error) {
       console.error("STOMP error:", error);
@@ -28,10 +29,10 @@ mergeInto(LibraryManager.library, {
     const callback = UTF8ToString(callbackPtr);
     const subscriptionId = UTF8ToString(subscriptionIdPtr);
 
-    console.log("Subscribing to topic:", topic, "with callback:", callback);
+    // console.log("Subscribing to topic:", topic, "with callback:", callback);
 
     client.subscribe(topic, function (message) {
-      console.log("Received message from", topic, ":", message.body);
+      // console.log("Received message from", topic, ":", message.body);
       let bodyStr = "";
       
         if (typeof message.body === "string") {
@@ -54,22 +55,22 @@ mergeInto(LibraryManager.library, {
     const topic = UTF8ToString(topicPtr);
     const message = UTF8ToString(messagePtr);
 
-    console.log("Sending message to topic:", topic, "Message:", message);
+    // console.log("Sending message to topic:", topic, "Message:", message);
 
     client.send(topic, {}, message);
   },
 
   UnsubscribeStomp: function (subscriptionIdPtr) {
     const subscriptionId = UTF8ToString(subscriptionIdPtr);
-    console.log("Unsubscribing from subscription ID:", subscriptionId);
+    // console.log("Unsubscribing from subscription ID:", subscriptionId);
     client.unsubscribe(subscriptionId);
   },
 
     DisconnectStomp: function () {
-        console.log("Disconnecting from STOMP");
+        // console.log("Disconnecting from STOMP");
         if (client) {
         client.disconnect(function () {
-          console.log("Disconnected from STOMP");
+          // console.log("Disconnected from STOMP");
           SendMessage("StompConnector", "OnDisconnected", "Disconnected");
         });
         }

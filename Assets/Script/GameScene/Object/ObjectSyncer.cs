@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Script.GameScene.Dto;
 using UnityEngine;
 using System.Linq;
-using Unity.VisualScripting;
+using Script.Global;
 
 namespace Script.GameScene.Object
 {
@@ -17,6 +17,7 @@ namespace Script.GameScene.Object
 
         public void Sync(SnapshotObjectDto[] snapshotObjects)
         {
+            WDebug.Log("ObjectSyncer Sync called with " + snapshotObjects.Length + " objects.");
             foreach (var snapshotObject in snapshotObjects)
             {
                 if (ObjectContainer.Instance.IsExist(snapshotObject.id))
