@@ -47,6 +47,8 @@ namespace Script.GameScene.Object
             
             GameObject projectileObject = Instantiate(prefabs, GetPosition(dto.start), GetRotation(dto));
 
+            Destroy(projectileObject, dto.duration);
+            
             switch (dto.end.targetType)
             {
                 case "position":
@@ -58,8 +60,6 @@ namespace Script.GameScene.Object
                     MoveTo(projectileObject, targetObject.transform, dto.duration);
                     break;
             }
-            
-            Destroy(projectileObject, dto.duration);
         }
 
         private Quaternion GetRotation(ProjectileDto dto)
@@ -95,9 +95,15 @@ namespace Script.GameScene.Object
         private void MoveTo(GameObject gameObject, Transform target, float duration)
         {
             Vector3 startPos = gameObject.transform.position;
+            Vector3 endPos = target != null ? target.position : startPos;
+
             DOTween.To(() => 0f, v =>
                 {
-                    gameObject.transform.position = Vector3.Lerp(startPos, target.position, v);
+                    if (target != null)
+                    {
+                        endPos = target.position;
+                    }
+                    gameObject.transform.position = Vector3.Lerp(startPos, endPos, v);
                 }, 1f, duration)
                 .SetEase(Ease.Linear);
         }
