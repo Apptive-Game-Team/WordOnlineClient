@@ -17,10 +17,10 @@ namespace Script.GameScene.Object
 
         public void Sync(SnapshotObjectDto[] snapshotObjects)
         {
-            WDebug.Log("ObjectSyncer Sync called with " + snapshotObjects.Length + " objects.");
+            WDebug.Log("ObjectSyncer Sync called with " + string.Join(" | ", snapshotObjects.Select(dto => $"id: {dto.id}, {dto.prefab}")) + " objects.");
             foreach (var snapshotObject in snapshotObjects)
             {
-                if (ObjectContainer.Instance.IsExist(snapshotObject.id))
+                if (!ObjectContainer.Instance.IsExist(snapshotObject.id))
                 {
                     // create
                     ObjectSpawner.Instance.SpawnObject(new CreatedObjectDto(snapshotObject));

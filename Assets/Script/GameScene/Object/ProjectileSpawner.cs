@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Script.GameScene.Dto.Projectile;
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene.Object
@@ -13,10 +14,34 @@ namespace Script.GameScene.Object
             Instance = this;
         }
         
+        private void Start()
+        {
+            Spawn(new ProjectileDto()
+            {
+                type = "ElectricShot",
+                duration = 5.0f,
+                start = new ProjectileTarget()
+                {
+                    targetType = "position",
+                    x = 0,
+                    y = 0,
+                    z = 0
+                },
+                end = new ProjectileTarget()
+                {
+                    targetType = "position",
+                    x = 10,
+                    y = 10,
+                    z = 10
+                }
+            });
+        }
+        
         [SerializeField] private ObjectContainer objectContainer;
         
         public void Spawn(ProjectileDto dto)
         {
+            WDebug.Log("ProjectileSpawner Spawn called for type: " + dto.type);
             GameObject prefabs = GetPrefab(dto.type);
             if (prefabs == null) return;
             
@@ -25,14 +50,15 @@ namespace Script.GameScene.Object
             switch (dto.end.targetType)
             {
                 case "position":
-                    projectileObject.transform.DOMove(dto.end.GetVector3(), 0.2f);
-                    MoveTo(projectileObject, null, dto.duration);
+                    projectileObject.transform.DOMove(dto.end.GetVector3(), dto.duration)
+                        .SetEase(Ease.Linear);
                     break;
                 case "object":
                     ServedObject targetObject = objectContainer.FindById(dto.end.id);
                     MoveTo(projectileObject, targetObject.transform, dto.duration);
                     break;
             }
+            Destroy(this, dto.duration);
         }
 
         private Quaternion GetRotation(ProjectileDto dto)
@@ -43,7 +69,7 @@ namespace Script.GameScene.Object
             
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             
-            return Quaternion.Euler(0, 0, angle + 180f);
+            return Quaternion.Euler(0, 0, angle);
         }
 
         private Vector3 GetPosition(ProjectileTarget target)

@@ -1,4 +1,5 @@
 using Script.GameScene.Object;
+using Script.Global;
 
 namespace Script.GameScene.Handler
 {
@@ -19,6 +20,7 @@ namespace Script.GameScene.Handler
                     
             //
             // // 생성된 오브젝트 배치
+            WDebug.Log(data.objects.create);
             foreach (var created in data.objects.create)
                 ObjectSpawner.Instance.SpawnObject(created);
         
