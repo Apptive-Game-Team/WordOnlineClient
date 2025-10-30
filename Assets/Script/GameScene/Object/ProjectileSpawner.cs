@@ -14,28 +14,28 @@ namespace Script.GameScene.Object
             Instance = this;
         }
         
-        private void Start()
-        {
-            Spawn(new ProjectileDto()
-            {
-                type = "ElectricShot",
-                duration = 5.0f,
-                start = new ProjectileTarget()
-                {
-                    targetType = "position",
-                    x = 0,
-                    y = 0,
-                    z = 0
-                },
-                end = new ProjectileTarget()
-                {
-                    targetType = "position",
-                    x = 10,
-                    y = 10,
-                    z = 10
-                }
-            });
-        }
+        // private void Start()
+        // {
+        //     Spawn(new ProjectileDto()
+        //     {
+        //         type = "ElectricShot",
+        //         duration = 5.0f,
+        //         start = new ProjectileTarget()
+        //         {
+        //             targetType = "position",
+        //             x = 0,
+        //             y = 0,
+        //             z = 0
+        //         },
+        //         end = new ProjectileTarget()
+        //         {
+        //             targetType = "position",
+        //             x = 10,
+        //             y = 10,
+        //             z = 10
+        //         }
+        //     });
+        // }
         
         [SerializeField] private ObjectContainer objectContainer;
         
@@ -53,7 +53,7 @@ namespace Script.GameScene.Object
                     projectileObject.transform.DOMove(dto.end.GetVector3(), dto.duration)
                         .SetEase(Ease.Linear);
                     break;
-                case "object":
+                case "reference":
                     ServedObject targetObject = objectContainer.FindById(dto.end.id);
                     MoveTo(projectileObject, targetObject.transform, dto.duration);
                     break;
@@ -78,7 +78,7 @@ namespace Script.GameScene.Object
             {
                 case "position":
                     return new Vector3(target.x, target.y, target.z);
-                case "object":
+                case "reference":
                     ServedObject servedObject = objectContainer.FindById(target.id);
                     if (servedObject != null)
                     {
