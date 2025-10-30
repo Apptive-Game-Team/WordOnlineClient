@@ -58,7 +58,8 @@ namespace Script.GameScene.Object
                     MoveTo(projectileObject, targetObject.transform, dto.duration);
                     break;
             }
-            Destroy(this, dto.duration);
+            
+            Destroy(projectileObject, dto.duration);
         }
 
         private Quaternion GetRotation(ProjectileDto dto)
@@ -96,7 +97,7 @@ namespace Script.GameScene.Object
             Vector3 startPos = gameObject.transform.position;
             DOTween.To(() => 0f, v =>
                 {
-                    transform.position = Vector3.Lerp(startPos, target.position, v);
+                    gameObject.transform.position = Vector3.Lerp(startPos, target.position, v);
                 }, 1f, duration)
                 .SetEase(Ease.Linear);
         }
