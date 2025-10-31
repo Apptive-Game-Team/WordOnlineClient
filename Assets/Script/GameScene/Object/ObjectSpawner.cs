@@ -5,14 +5,10 @@ using UnityEngine;
 
 namespace Script.GameScene.Object
 {
-    public class ObjectSpawner : MonoBehaviour
+    public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {
-        public static ObjectSpawner Instance { get; private set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
+        
+        
         
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
@@ -22,6 +18,13 @@ namespace Script.GameScene.Object
                 createdObjectDto.position.y, 
                 createdObjectDto.position.z);
             GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
+            
+            if (prefab == null)
+            {
+                WDebug.LogWarning($"Prefab not found for type: {createdObjectDto.type}");
+                return;
+            }
+            
             GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
             AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
@@ -34,13 +37,6 @@ namespace Script.GameScene.Object
             }
             
             servedObject.SetMaster(createdObjectDto.master);
-
-            switch (createdObjectDto.master)
-            {
-                default:
-                    WDebug.LogWarning($"Unknown master: {createdObjectDto.master}");
-                    break;
-            }
             
             servedObject.id = createdObjectDto.id;
             try
@@ -49,7 +45,7 @@ namespace Script.GameScene.Object
             } catch (DuplicatedException e)
             {
                 WDebug.LogError($"Failed to register object: {e.Message}");
-                servedObject.DestroySelf();
+                Destroy(servedObject);
             }
         }
     }

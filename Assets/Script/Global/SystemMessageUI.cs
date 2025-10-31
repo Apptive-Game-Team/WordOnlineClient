@@ -1,13 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic;
+using Script.Global;
 using UnityEngine.Localization;
 
-public class SystemMessageUI : MonoBehaviour
+public class SystemMessageUI : LocalSingletonObject<SystemMessageUI>
 {
-    public static SystemMessageUI Instance;
-
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private float duration = 5f; 
     [SerializeField] private float replaceDelay = 1f; 
@@ -16,9 +14,9 @@ public class SystemMessageUI : MonoBehaviour
     private Coroutine displayRoutine;
     private Coroutine replaceRoutine;
 
-    void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
         messageText.transform.parent.gameObject.SetActive(false);
     }
 

@@ -59,6 +59,7 @@ namespace Script.GameScene
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
                 DestroySelf();
+                return;
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
@@ -91,7 +92,7 @@ namespace Script.GameScene
         
         private void SetEffect(string effect)
         {
-            if (effect.Equals("None"))
+            if (effect.Equals("None") || string.IsNullOrEmpty(effect))
             {
                 if (_effectInstance != null)
                 {
@@ -127,8 +128,8 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
-            ObjectContainer.Instance.UnregisterObject(this);
             Destroy(gameObject);
+            ObjectContainer.Instance.UnregisterObject(this);
         }
     }
 }

@@ -3,14 +3,8 @@ using UnityEngine;
 
 namespace Script.GameScene.Object
 {
-    public class ObjectUpdater : MonoBehaviour
+    public class ObjectUpdater : LocalSingletonObject<ObjectUpdater>
     {
-        public static ObjectUpdater Instance { get; private set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
         
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {

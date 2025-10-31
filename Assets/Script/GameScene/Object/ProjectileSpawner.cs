@@ -5,14 +5,8 @@ using UnityEngine;
 
 namespace Script.GameScene.Object
 {
-    public class ProjectileSpawner : MonoBehaviour
+    public class ProjectileSpawner : LocalSingletonObject<ProjectileSpawner>
     {
-        public static ProjectileSpawner Instance;
-        
-        private void Awake()
-        {
-            Instance = this;
-        }
         
         // private void Start()
         // {

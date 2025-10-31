@@ -19,17 +19,20 @@ namespace Script.GameScene.Object
         
         public void RegisterObject(ServedObject obj)
         {
-            if (obj == null)
+            if (!obj)
             {
                 throw new System.ArgumentNullException(nameof(obj), "Object or ID cannot be null or empty.");
             }
-            
-            if (objects.ContainsKey(obj.id))
-            {
-                throw new DuplicatedException($"Object with ID {obj.id} already exists.");
-            }
-            
+
+
             objects[obj.id] = obj;
+        }
+        
+        public void UnregisterObject(int id)
+        {
+            ServedObject servedObject = FindById(id);
+            Destroy(servedObject);
+            UnregisterObject(servedObject);
         }
         
         public void UnregisterObject(ServedObject obj)

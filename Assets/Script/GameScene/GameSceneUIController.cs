@@ -75,7 +75,7 @@ public class GameSceneUIController : MonoBehaviour
         {
             Transform rightPlayerTr = GameObject.Find("RightPlayer").transform;
             DOTweenAction.BounceMob(rightPlayerTr.GetChild(0));
-            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",rightPlayerTr);
+            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", rightPlayerTr);
         }
         
         leftUserHpSlider.value = leftUserHp;
