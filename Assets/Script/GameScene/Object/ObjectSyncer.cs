@@ -19,9 +19,11 @@ namespace Script.GameScene.Object
                     // create
                     ObjectSpawner.Instance.SpawnObject(new CreatedObjectDto(snapshotObject));
                 }
-          
-                // update
-                ObjectUpdater.Instance.UpdateObject(new UpdatedObjectDto(snapshotObject));
+                else
+                {
+                    // update
+                    ObjectUpdater.Instance.UpdateObject(new UpdatedObjectDto(snapshotObject));
+                }
             }
 
             List<int> ids = snapshotObjects.Select(snapshotObject => snapshotObject.id).ToList();

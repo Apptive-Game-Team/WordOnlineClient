@@ -17,7 +17,6 @@ namespace Script.GameScene.Object
                 throw new System.ArgumentNullException(nameof(obj), "Object or ID cannot be null or empty.");
             }
             
-            
             if (!objects.TryAdd(obj.id, obj))
             {
                 WDebug.Log("Attempted to register duplicate object with ID: " + obj.id + $" already exists. {objects[obj.id].id},  {objects[obj.id]}");
@@ -29,9 +28,23 @@ namespace Script.GameScene.Object
         
         public void UnregisterObject(int id)
         {
+            WDebug.Log($"UnregisterObject(id) called: {id}");
             ServedObject servedObject = FindById(id);
-            Destroy(servedObject);
+            WDebug.Log("servedObject is " + (servedObject == null ? "null" : servedObject.id.ToString()));
+            
+            if (servedObject == null)
+            {
+                objects.Remove(id);
+                WDebug.LogWarning($"Tried to unregister missing object (id={id}), removed key manually.");
+                return;
+            }
+            
             UnregisterObject(servedObject);
+            
+            if (servedObject.gameObject != null)
+            {
+                Destroy(servedObject.gameObject);
+            }
         }
         
         public void UnregisterObject(ServedObject obj)

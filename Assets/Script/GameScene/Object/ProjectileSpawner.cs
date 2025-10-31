@@ -31,8 +31,6 @@ namespace Script.GameScene.Object
         //     });
         // }
         
-        [SerializeField] private ObjectContainer objectContainer;
-        
         public void Spawn(ProjectileDto dto)
         {
             WDebug.Log("ProjectileSpawner Spawn called for type: " + dto.type);
@@ -50,7 +48,7 @@ namespace Script.GameScene.Object
                         .SetEase(Ease.Linear);
                     break;
                 case "reference":
-                    ServedObject targetObject = objectContainer.FindById(dto.end.id);
+                    ServedObject targetObject = ObjectContainer.Instance.FindById(dto.end.id);
                     MoveTo(projectileObject, targetObject.transform, dto.duration);
                     break;
             }
@@ -74,7 +72,7 @@ namespace Script.GameScene.Object
                 case "position":
                     return new Vector3(target.x, target.y, target.z);
                 case "reference":
-                    ServedObject servedObject = objectContainer.FindById(target.id);
+                    ServedObject servedObject = ObjectContainer.Instance.FindById(target.id);
                     if (servedObject != null)
                     {
                         return servedObject.transform.position;
