@@ -1,21 +1,14 @@
 using System.Collections.Generic;
 using Script.GameScene.Exception;
 using Script.Global;
-using UnityEngine;
 using System.Linq;
 
 namespace Script.GameScene.Object
 {
-    public class ObjectContainer : MonoBehaviour
+    public class ObjectContainer : LocalSingletonObject<ObjectContainer>
     {
-        public static ObjectContainer Instance { get; private set; }
         
-        private Dictionary<int, ServedObject> objects = new Dictionary<int, ServedObject>();
-        
-        private void Awake()
-        {
-            Instance = this;
-        }
+        private readonly Dictionary<int, ServedObject> objects = new Dictionary<int, ServedObject>();
         
         public void RegisterObject(ServedObject obj)
         {
@@ -23,9 +16,15 @@ namespace Script.GameScene.Object
             {
                 throw new System.ArgumentNullException(nameof(obj), "Object or ID cannot be null or empty.");
             }
-
-
-            objects[obj.id] = obj;
+            
+            
+            if (!objects.TryAdd(obj.id, obj))
+            {
+                WDebug.Log("Attempted to register duplicate object with ID: " + obj.id + $" already exists. {objects[obj.id].id},  {objects[obj.id]}");
+                throw new DuplicatedException($"Object with ID {obj.id} already exists.");
+            }
+            
+            WDebug.Log("Registered object with ID: " + obj.id);
         }
         
         public void UnregisterObject(int id)

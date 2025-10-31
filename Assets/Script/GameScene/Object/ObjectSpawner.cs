@@ -7,9 +7,6 @@ namespace Script.GameScene.Object
 {
     public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {
-        
-        
-        
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
             WDebug.Log($"Spawning object: {createdObjectDto.type}, id: {createdObjectDto.id}");
