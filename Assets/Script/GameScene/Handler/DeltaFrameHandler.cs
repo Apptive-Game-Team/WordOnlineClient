@@ -22,15 +22,15 @@ namespace Script.GameScene.Handler
             // // 생성된 오브젝트 배치
             foreach (var created in data.objects.create)
                 ObjectSpawner.Instance.SpawnObject(created);
-        
-            // // 기존 오브젝트 업데이트
-            foreach (var updated in data.objects.update)
-                ObjectUpdater.Instance.UpdateObject(updated);
-
+            
             foreach (var projectile in data.objects.projectile)
             {
                 ProjectileSpawner.Instance.Spawn(projectile);
             }
+        
+            // // 기존 오브젝트 업데이트
+            foreach (var updated in data.objects.update)
+                ObjectUpdater.Instance.UpdateObject(updated);
         }
     }
 }

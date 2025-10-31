@@ -15,14 +15,23 @@ namespace Script.GameScene.Object
                 createdObjectDto.position.y, 
                 createdObjectDto.position.z);
             GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
-            
-            if (prefab == null)
+            GameObject spawnedObject;
+            if (!prefab)
             {
-                WDebug.LogWarning($"Prefab not found for type: {createdObjectDto.type}");
-                return;
+                spawnedObject = new GameObject(createdObjectDto.type)
+                {
+                    transform =
+                    {
+                        position = position
+                    }
+                };
+            }
+            else 
+            {
+                spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
             }
             
-            GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
+            
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
             AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
             if (audioSource.Length > 0)
@@ -34,7 +43,6 @@ namespace Script.GameScene.Object
             }
             
             servedObject.SetMaster(createdObjectDto.master);
-            
             servedObject.id = createdObjectDto.id;
             try
             {
@@ -42,7 +50,7 @@ namespace Script.GameScene.Object
             } catch (DuplicatedException e)
             {
                 WDebug.LogError($"Failed to register object: {e.Message}");
-                Destroy(servedObject.gameObject);
+                Destroy(spawnedObject);
             }
         }
     }

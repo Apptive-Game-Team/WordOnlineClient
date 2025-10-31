@@ -77,7 +77,6 @@ namespace Script.GameScene.Object
                     {
                         return servedObject.transform.position;
                     }
-
                     return Vector3.zero;
                 default:
                     return Vector3.zero;
@@ -91,7 +90,7 @@ namespace Script.GameScene.Object
 
             DOTween.To(() => 0f, v =>
                 {
-                    if (target != null)
+                    if (target)
                     {
                         endPos = target.position;
                     }
