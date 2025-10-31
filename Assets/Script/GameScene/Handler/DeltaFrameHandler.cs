@@ -20,7 +20,7 @@ namespace Script.GameScene.Handler
                     
             //
             // // 생성된 오브젝트 배치
-            WDebug.Log(data.objects.create);
+            WDebug.Log(string.Join(", ", data.objects.create));
             foreach (var created in data.objects.create)
                 ObjectSpawner.Instance.SpawnObject(created);
         
