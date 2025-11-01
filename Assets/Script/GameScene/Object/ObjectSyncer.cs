@@ -27,6 +27,7 @@ namespace Script.GameScene.Object
             }
 
             List<int> ids = snapshotObjects.Select(snapshotObject => snapshotObject.id).ToList();
+            
             List<int> toRemove = ObjectContainer.Instance.GetIds()
                 .Where(id => !ids.Contains(id))
                 .ToList();

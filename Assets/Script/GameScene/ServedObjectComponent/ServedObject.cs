@@ -34,16 +34,23 @@ namespace Script.GameScene
         public void SetMaster(string master)
         {
             this.master = master;
+            SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
+            
+            if (renderer == null)
+            {
+                return;
+            }
+            
             if (!SceneContext.Me.Equals(master) && master != "None")
             {
-                gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 0.5f, 0.5f, 1f);
+                renderer.color = new Color(1f, 0.5f, 0.5f, 1f);
             }
             
             if (master.Equals("RightPlayer"))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
-                    gameObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
+                    renderer.flipX = true;
                     return;
                 }
                 gameObject.transform.Rotate(0, 180, 0);
@@ -128,8 +135,7 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
-            Destroy(gameObject);
-            ObjectContainer.Instance.UnregisterObject(this);
+            ObjectContainer.Instance.UnregisterObject(id);
         }
     }
 }
