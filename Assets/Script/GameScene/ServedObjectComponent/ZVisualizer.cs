@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ZVisualizer : MonoBehaviour
@@ -37,9 +34,14 @@ public class ZVisualizer : MonoBehaviour
 
     private void UpdateVisualGameObject()
     {
-        Vector3 visualPosition = transform.position;
-        visualPosition.y += Z / 2;
-        visualGameObject.transform.position = visualPosition;
+        visualGameObject.transform.position = CalculateZAppliedPosition(transform.position);
+    }
+
+    public static Vector3 CalculateZAppliedPosition(Vector3 position)
+    {
+        Vector3 visualPosition = position;
+        visualPosition.y += position.z / 2;
+        return visualPosition;
     }
 }
 

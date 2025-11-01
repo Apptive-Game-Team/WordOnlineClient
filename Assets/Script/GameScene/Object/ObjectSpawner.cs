@@ -5,23 +5,43 @@ using UnityEngine;
 
 namespace Script.GameScene.Object
 {
-    public class ObjectSpawner : MonoBehaviour
+    public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {
-        public static ObjectSpawner Instance { get; private set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
         
+        // private void Start()
+        // {
+        //     SpawnObject(new CreatedObjectDto
+        //     {
+        //         id = 0,
+        //         master = "None",
+        //         position = new Vector3(3, 3, 0),
+        //         type = "Player"
+        //     });
+        // }
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
+            WDebug.Log($"Spawning object: {createdObjectDto.type}, id: {createdObjectDto.id}");
             Vector3 position = new Vector3(
                 createdObjectDto.position.x, 
                 createdObjectDto.position.y, 
                 createdObjectDto.position.z);
             GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
-            GameObject spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
+            GameObject spawnedObject;
+            
+            WDebug.Log($"Spawning object: {createdObjectDto.type}, prefab found: {prefab != null}");
+            
+            if (!prefab)
+            {
+                spawnedObject = new GameObject(createdObjectDto.type);
+                spawnedObject.transform.position = position;
+            }
+            else 
+            {
+                spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
+            }
+            
+            WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {position}");
+            
             ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
             AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
             if (audioSource.Length > 0)
@@ -32,16 +52,12 @@ namespace Script.GameScene.Object
                 }
             }
             
-            servedObject.SetMaster(createdObjectDto.master);
-
-            switch (createdObjectDto.master)
-            {
-                default:
-                    WDebug.LogWarning($"Unknown master: {createdObjectDto.master}");
-                    break;
-            }
+            WDebug.Log($"Spawned object: {spawnedObject}, audio sources set: {audioSource.Length}");
             
+            servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
+            
+            WDebug.Log($"Spawned object: {spawnedObject}, master set to: {createdObjectDto.master}, id set to: {createdObjectDto.id}");
             try
             {
                 ObjectContainer.Instance.RegisterObject(servedObject);
@@ -50,6 +66,8 @@ namespace Script.GameScene.Object
                 WDebug.LogError($"Failed to register object: {e.Message}");
                 Destroy(spawnedObject);
             }
+            
+            WDebug.Log($"Spawned object: {createdObjectDto.type}, id: {createdObjectDto.id} at position {position}");
         }
     }
 }

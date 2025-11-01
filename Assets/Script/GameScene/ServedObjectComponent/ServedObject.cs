@@ -1,4 +1,6 @@
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using Script.GameScene.Object;
 using Script.Global;
 using UnityEngine;
@@ -10,6 +12,7 @@ namespace Script.GameScene
         private const float BounceScale = 1.3f;
         private const float SquashScale = 0.8f;
         private const float Duration = 0.2f;
+        private const float FRAME_DURATION = 0.1f;
 
         private Vector3 originalScale;
         public int id;
@@ -17,6 +20,9 @@ namespace Script.GameScene
         public int hp;
         public int maxHp;
         private string master;
+        
+        private Vector3? nextPosition = null;
+        private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
         private int lastHp = -1;
 
@@ -28,16 +34,23 @@ namespace Script.GameScene
         public void SetMaster(string master)
         {
             this.master = master;
+            SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
+            
+            if (renderer == null)
+            {
+                return;
+            }
+            
             if (!SceneContext.Me.Equals(master) && master != "None")
             {
-                gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 0.5f, 0.5f, 1f);
+                renderer.color = new Color(1f, 0.5f, 0.5f, 1f);
             }
             
             if (master.Equals("RightPlayer"))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
-                    gameObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
+                    renderer.flipX = true;
                     return;
                 }
                 gameObject.transform.Rotate(0, 180, 0);
@@ -46,15 +59,14 @@ namespace Script.GameScene
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
-            transform.position = new Vector3(
-                updatedObjectDto.position.x, 
-                updatedObjectDto.position.y, 
-                updatedObjectDto.position.z);
+            UpdatePosition(updatedObjectDto);
+            
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
                 DestroySelf();
+                return;
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
@@ -66,10 +78,28 @@ namespace Script.GameScene
             SetEffect(updatedObjectDto.effect);
             HandleDamageEffect();
         }
+
+        private void UpdatePosition(UpdatedObjectDto updatedObjectDto)
+        {
+            if (moveTween != null && moveTween.IsActive())
+            {
+                moveTween.Kill();
+            }
+            if (nextPosition.HasValue)
+            {
+                transform.position = nextPosition.Value;
+            }
+            
+            nextPosition = new Vector3(
+                updatedObjectDto.position.x, 
+                updatedObjectDto.position.y, 
+                updatedObjectDto.position.z);
+            moveTween = transform.DOMove(nextPosition.Value, FRAME_DURATION).SetEase(Ease.Linear);
+        }
         
         private void SetEffect(string effect)
         {
-            if (effect.Equals("None"))
+            if (effect.Equals("None") || string.IsNullOrEmpty(effect))
             {
                 if (_effectInstance != null)
                 {
@@ -105,8 +135,7 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
-            ObjectContainer.Instance.UnregisterObject(this);
-            Destroy(gameObject);
+            ObjectContainer.Instance.UnregisterObject(id);
         }
     }
 }
