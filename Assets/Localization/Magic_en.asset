@@ -146,6 +146,32 @@ MonoBehaviour:
     m_Localized: Fire Spirit
     m_Metadata:
       m_Items: []
+  - m_Id: 3203837090324480
+    m_Localized: 'Fire Rune
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204236169961472
+    m_Localized: Wind Rune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204165361721344
+    m_Localized: Rock Rune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204072403361792
+    m_Localized: Water Rune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204091349032960
+    m_Localized: Lightning Rune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204695999897600
+    m_Localized: Nature Rune
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

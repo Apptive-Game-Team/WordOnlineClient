@@ -143,6 +143,30 @@ MonoBehaviour:
     m_Key: fireSpirit
     m_Metadata:
       m_Items: []
+  - m_Id: 3203837090324480
+    m_Key: fireRune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204072403361792
+    m_Key: waterRune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204091349032960
+    m_Key: lightningRune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204165361721344
+    m_Key: rockRune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204236169961472
+    m_Key: windRune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3204695999897600
+    m_Key: natureRune
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
