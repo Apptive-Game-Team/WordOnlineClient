@@ -40,7 +40,7 @@ namespace Script.Data
         public static List<MagicData> dataList = new List<MagicData>()
         {
             new MagicData("Shoot",15,18, 0.5f, "magic"),
-            new MagicData("Build",30,6, 0.5f,"magic"),
+            new MagicData("Build",20,6, 0.5f,"magic"),
             new MagicData("Spawn",20,6, 0f,"magic"),
             new MagicData("Explode",10,9, 0.5f,"magic"),
             new MagicData("Fire",10,6, 0.5f,"type"),
