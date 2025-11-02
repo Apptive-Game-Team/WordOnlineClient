@@ -68,6 +68,7 @@ public class CardInputSender : MonoBehaviour
             _currentCardNameList.Find(c => c.Contains("Build")) ??
             _currentCardNameList.Find(c => c.Contains("Spawn")) ??
             _currentCardNameList.Find(c => c.Contains("Explode")) ??
+            _currentCardNameList.Find(c => c.Contains("Drop")) ??
             _currentCardNameList.Find(c => c.Contains("Shoot"));
         return result;
     }
