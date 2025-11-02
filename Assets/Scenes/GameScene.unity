@@ -1786,7 +1786,7 @@ GameObject:
   - component: {fileID: 1022832333}
   - component: {fileID: 1022832332}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: PingSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

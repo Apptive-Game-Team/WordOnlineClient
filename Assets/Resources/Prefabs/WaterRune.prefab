@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4631570083348749249
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3556665646527315276, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4dc56b4e6224c4d36885901a48c0c199, type: 3}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.763302
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2940407
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184897991674728735, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6734905167339069327, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
+      propertyPath: m_Name
+      value: WaterRune Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9fa2967b4c92e451290bb0ffc9f5d84b, type: 3}
