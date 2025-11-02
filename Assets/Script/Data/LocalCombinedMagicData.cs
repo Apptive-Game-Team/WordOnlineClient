@@ -51,12 +51,12 @@ namespace Script.Data
             new (){magicName = "Storm Rider", recipe = new () { CardType.Spawn , CardType.Water, CardType.Lightning}, spritePath = "Game/spawn/storm_rider"},
             new (){magicName = "Thunder Spirit", recipe = new () { CardType.Spawn , CardType.Lightning, CardType.Wind}, spritePath = "Game/spawn/thunder_spirit"},
             new (){magicName = "Fire Spirit", recipe = new () { CardType.Spawn , CardType.Wind, CardType.Fire}, spritePath = "Game/spawn/fire_spirit"},
-            new (){magicName = "Fire Drop", recipe = new () { CardType.Drop , CardType.Fire}, spritePath = "Game/spawn/fire_drop"},
-            new (){magicName = "Water Drop", recipe = new () { CardType.Drop , CardType.Water}, spritePath = "Game/spawn/water_drop"},
-            new (){magicName = "Lightning Drop", recipe = new () { CardType.Drop , CardType.Lightning}, spritePath = "Game/spawn/lightning_drop"},
-            new (){magicName = "Nature Drop", recipe = new () { CardType.Drop , CardType.Nature}, spritePath = "Game/spawn/leaf_drop"},
-            new (){magicName = "Rock Drop", recipe = new () { CardType.Drop , CardType.Rock}, spritePath = "Game/spawn/rock_drop"},
-            new (){magicName = "Wind Drop", recipe = new () { CardType.Drop , CardType.Wind}, spritePath = "Game/spawn/wind_drop"},
+            new (){magicName = "Fire Drop", recipe = new () { CardType.Drop , CardType.Fire}, spritePath = "Game/drop/fire_drop"},
+            new (){magicName = "Water Drop", recipe = new () { CardType.Drop , CardType.Water}, spritePath = "Game/drop/water_drop"},
+            new (){magicName = "Lightning Drop", recipe = new () { CardType.Drop , CardType.Lightning}, spritePath = "Game/drop/lightning_drop"},
+            new (){magicName = "Nature Drop", recipe = new () { CardType.Drop , CardType.Nature}, spritePath = "Game/drop/leaf_drop"},
+            new (){magicName = "Rock Drop", recipe = new () { CardType.Drop , CardType.Rock}, spritePath = "Game/drop/rock_drop"},
+            new (){magicName = "Wind Drop", recipe = new () { CardType.Drop , CardType.Wind}, spritePath = "Game/drop/wind_drop"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)
