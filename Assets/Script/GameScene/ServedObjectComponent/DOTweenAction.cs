@@ -42,6 +42,11 @@ public static class DOTweenAction
         angle = 30f,
         duration  = 0.4f
     };
+    private static SwingParameters _stormIdleParam = new ()
+    {
+        angle = 15f,
+        duration  = 2f
+    };
 
     private static SwingParameters _playerCardUseParam = new()
     {
@@ -94,10 +99,22 @@ public static class DOTweenAction
             .Append(tr.DOLocalRotate(new Vector3(0, 0, 0), duration * 0.2f, RotateMode.Fast)
                 .SetEase(Ease.OutQuad));
     }
+    public static void StumbleStorm(Transform tr, float angle, float duration)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(tr.DOLocalRotate(new Vector3(0, 0, +angle), duration * 0.25f, RotateMode.Fast)
+                .SetEase(Ease.OutSine))
+            .Append(tr.DOLocalRotate(new Vector3(0, 0, 0), duration * 0.25f, RotateMode.Fast)
+                .SetEase(Ease.InSine))
+            .Append(tr.DOLocalRotate(new Vector3(0, 0, -angle), duration * 0.25f, RotateMode.Fast)
+                .SetEase(Ease.OutSine))
+            .Append(tr.DOLocalRotate(new Vector3(0, 0, 0), duration * 0.25f, RotateMode.Fast)
+                .SetEase(Ease.InSine));
+        seq.SetLoops(-1);
+    }
     
     public static void Rotate(Transform tr, float angle, float duration, RotateMode mode = RotateMode.Fast)
     {
-        Sequence seq = DOTween.Sequence();
         DOTween.Sequence()
             .Append(tr.DOLocalRotate(new Vector3(0, 0, angle), duration, mode)
                 .SetEase(Ease.OutBack));
@@ -135,6 +152,11 @@ public static class DOTweenAction
         Swing(tr, _mobAttackParam.angle, _mobAttackParam.duration);
     }
 
+    public static void SwingStormIdle(Transform tr)
+    {
+        StumbleStorm(tr, _stormIdleParam.angle, _stormIdleParam.duration);
+    }
+    
     public static void RotatePlayerUseCard(Transform tr)
     {
         Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);

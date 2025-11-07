@@ -130,7 +130,7 @@ namespace Script.GameScene
                 DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
                 DOTweenAction.BounceMob(transform);
             }
-            if (hp > lastHp)
+            if (hp > lastHp && hp != maxHp)
             {
                 DamagedObjectEffect.SetSelfDestroyEffect("HealEffect",transform);
                 DOTweenAction.BounceMob(transform);

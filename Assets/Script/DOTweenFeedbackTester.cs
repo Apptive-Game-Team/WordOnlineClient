@@ -8,6 +8,7 @@ public class DOTweenFeedbackTester : MonoBehaviour
 {
     [SerializeField] private Transform obj1;
     [SerializeField] private Transform obj2;
+    [SerializeField] private Transform storm;
     [SerializeField] private Transform playerObj;
     [SerializeField] private Transform gameObj;
 
@@ -66,6 +67,10 @@ public class DOTweenFeedbackTester : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             DOTweenAction.CrawlMob(obj1.transform);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            DOTweenAction.SwingStormIdle(storm.transform);
         }
     }
 }

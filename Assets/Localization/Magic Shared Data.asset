@@ -167,6 +167,46 @@ MonoBehaviour:
     m_Key: natureRune
     m_Metadata:
       m_Items: []
+  - m_Id: 5032403860062208
+    m_Key: fireDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032450928541696
+    m_Key: waterDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032474274037760
+    m_Key: lightningDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032541521313792
+    m_Key: rockDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032557958791168
+    m_Key: natureDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032756592640000
+    m_Key: windDrop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032776519778304
+    m_Key: healingTotem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032797717790720
+    m_Key: magmaSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032821763735552
+    m_Key: chainLightning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032842789781504
+    m_Key: sandStorm
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
