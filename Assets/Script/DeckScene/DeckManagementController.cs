@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using Script.Data;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -93,6 +94,7 @@ namespace Script.DeckScene
             // 2) 요청 생성 (GET)
             string urlCards = SceneContext.CurrentServer.url + "/api/users/mine/cards";
             using var wwwPool = new UnityWebRequest(urlCards, "GET");
+            Server.SetAcceptLanguage(wwwPool);
         
             // 3) 헤더 설정
             wwwPool.SetRequestHeader("Authorization", "Bearer " + token);

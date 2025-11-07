@@ -13,6 +13,7 @@ public class GuestLoginButton : AsyncButtonBase
         
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/guest", "POST"))
         {
+            Server.SetAcceptLanguage(webRequest);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.timeout = 10;
             

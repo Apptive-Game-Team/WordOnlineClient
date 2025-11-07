@@ -31,6 +31,7 @@ public static class StatusTracker
         var url = SceneContext.CurrentServer.url + "/api/users/mine/status";
 
         using var www = UnityWebRequest.Get(url);
+        Server.SetAcceptLanguage(www);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
         yield return www.SendWebRequest();
 

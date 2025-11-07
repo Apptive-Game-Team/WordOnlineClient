@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
 namespace Script.Data
@@ -23,11 +24,16 @@ namespace Script.Data
         public string url => $"{(isSecure ? "https" : "http")}://{host}:{port}";
         public string webSocketUrl => $"{(isSecure ? "wss" : "ws")}://{host}:{port}/ws?token=";
         
+        public static void SetAcceptLanguage(UnityWebRequest req)
+        {
+            req.SetRequestHeader("Accept-Language", LocalizationSettings.SelectedLocale.Identifier.Code);
+        }
+        
         public IEnumerator GetPing(Action<int> callback)
         {
             Stopwatch stopwatch = new Stopwatch();
             using var www = new UnityWebRequest($"{url}/healthcheck", "GET");
-
+            
             stopwatch.Start();
             yield return www.SendWebRequest();
             stopwatch.Stop();

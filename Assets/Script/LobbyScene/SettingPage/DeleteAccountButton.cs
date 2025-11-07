@@ -22,6 +22,8 @@ namespace Script.LobbyScene.SettingPage
         {
             using UnityWebRequest requestToServer = UnityWebRequest.Delete($"{SceneContext.CurrentServer.url}/api/users/mine");
             using UnityWebRequest requestToAccount = UnityWebRequest.Delete($"{ServerList.AccountServer.url}/api/members/me");
+            Server.SetAcceptLanguage(requestToServer);
+            Server.SetAcceptLanguage(requestToAccount);
             
             requestToServer.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
             requestToAccount.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
