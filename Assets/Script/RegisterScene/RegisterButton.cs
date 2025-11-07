@@ -19,6 +19,7 @@ public class RegisterButton : AsyncButtonBase
         
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members", "POST"))
         {
+            Server.SetAcceptLanguage(webRequest);
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
             webRequest.downloadHandler = new DownloadHandlerBuffer();

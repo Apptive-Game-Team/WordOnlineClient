@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Script.Data;
 using Script.DeckScene;
 using Script.Global;
 using TMPro;
@@ -48,6 +49,7 @@ public class LobbyUIController : MonoBehaviour
         
         string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
+        Server.SetAcceptLanguage(www);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
         www.downloadHandler = new DownloadHandlerBuffer();
         yield return www.SendWebRequest();
