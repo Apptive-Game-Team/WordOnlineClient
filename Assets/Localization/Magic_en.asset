@@ -170,6 +170,46 @@ MonoBehaviour:
     m_Localized: Nature Rune
     m_Metadata:
       m_Items: []
+  - m_Id: 5032842789781504
+    m_Localized: Sand Storm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032821763735552
+    m_Localized: Chain Lightning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032797717790720
+    m_Localized: Magma Spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032776519778304
+    m_Localized: Healing Totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032756592640000
+    m_Localized: WInd Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032557958791168
+    m_Localized: Nature Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032541521313792
+    m_Localized: Rock Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032474274037760
+    m_Localized: Lightning Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032450928541696
+    m_Localized: Water Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032403860062208
+    m_Localized: Fire Drop
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

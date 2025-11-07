@@ -57,6 +57,10 @@ namespace Script.Data
             new (){magicName = "Nature Drop", recipe = new () { CardType.Drop , CardType.Nature}, spritePath = "Game/drop/leaf_drop"},
             new (){magicName = "Rock Drop", recipe = new () { CardType.Drop , CardType.Rock}, spritePath = "Game/drop/rock_drop"},
             new (){magicName = "Wind Drop", recipe = new () { CardType.Drop , CardType.Wind}, spritePath = "Game/drop/wind_drop"},
+            new (){magicName = "Magma Spirit", recipe = new () { CardType.Spawn , CardType.Explode, CardType.Fire, CardType.Fire, CardType.Rock}, spritePath = "Game/spawn/magma_spirit"},
+            new (){magicName = "Healing Totem", recipe = new () { CardType.Build , CardType.Nature, CardType.Water}, spritePath = "Game/build/healing_totem"},
+            new (){magicName = "Sand Storm", recipe = new () { CardType.Explode , CardType.Rock, CardType.Wind}, spritePath = "Game/explode/sand_storm"},
+            new (){magicName = "Chain Lightning", recipe = new () { CardType.Shoot , CardType.Lightning, CardType.Lightning, CardType.Lightning}, spritePath = "Game/shoot/chain_lightning"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)
