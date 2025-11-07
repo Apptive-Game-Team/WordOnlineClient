@@ -62,7 +62,7 @@ namespace Script.Data
             new (){magicName = "Sand Storm", recipe = new () { CardType.Explode , CardType.Rock, CardType.Wind}, spritePath = "Game/explode/sand_storm"},
             new (){magicName = "Chain Lightning", recipe = new () { CardType.Shoot , CardType.Lightning, CardType.Lightning, CardType.Lightning}, spritePath = "Game/shoot/chain_lightning"},
             new (){magicName = "Tornado Strike", recipe = new () { CardType.Spawn , CardType.Wind, CardType.Wind, CardType.Wind, CardType.Nature}, spritePath = "Game/spawn/tornado_strike"},
-            new (){magicName = "Meteor Storm", recipe = new () { CardType.Drop , CardType.Fire, CardType.Fire, CardType.Rock, CardType.Rock}, spritePath = "Game/drop/meteor_storm"},
+            new (){magicName = "Meteor Shower", recipe = new () { CardType.Drop , CardType.Fire, CardType.Fire, CardType.Rock, CardType.Rock}, spritePath = "Game/drop/meteor_shower"},
             new (){magicName = "Tide Call", recipe = new () { CardType.Shoot , CardType.Water, CardType.Nature}, spritePath = "Game/shoot/tide_call"},
         };
         
