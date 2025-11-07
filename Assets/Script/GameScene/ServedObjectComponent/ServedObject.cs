@@ -24,7 +24,7 @@ namespace Script.GameScene
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
-        private int lastHp = -1;
+        private int lastHp = 0;
 
         private void Awake()
         {
@@ -128,6 +128,11 @@ namespace Script.GameScene
             if (hp < lastHp)
             {
                 DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
+                DOTweenAction.BounceMob(transform);
+            }
+            if (hp > lastHp)
+            {
+                DamagedObjectEffect.SetSelfDestroyEffect("HealEffect",transform);
                 DOTweenAction.BounceMob(transform);
             }
             lastHp = hp;
