@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -24,6 +25,8 @@ namespace Script.GameScene
         
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
+
+        public Action OnAttack;
 
         private int lastHp = 0;
 
@@ -71,6 +74,7 @@ namespace Script.GameScene
             else if (updatedObjectDto.status.Equals("Attack"))
             {
                 //feedback_ATTACK
+                OnAttack?.Invoke();
                 DOTweenAction.SwingMobAttack(transform.GetChild(0));
             }
             else
