@@ -48,7 +48,7 @@ namespace Script.GameScene.Object
             {
                 foreach (var source in audioSource)
                 {
-                    source.volume = SoundData.gameVolume / 100f;
+                    source.volume = source.volume * SoundData.gameVolume / 100f;;
                 }
             }
             

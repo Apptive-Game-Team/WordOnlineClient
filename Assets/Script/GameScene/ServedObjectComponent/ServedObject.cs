@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -23,6 +25,8 @@ namespace Script.GameScene
         
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
+
+        public Action OnAttack;
 
         private int lastHp = 0;
 
@@ -65,12 +69,12 @@ namespace Script.GameScene
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
-                DestroySelf();
-                return;
+                DestroySelf(FRAME_DURATION);
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
                 //feedback_ATTACK
+                OnAttack?.Invoke();
                 DOTweenAction.SwingMobAttack(transform.GetChild(0));
             }
             else
@@ -140,6 +144,17 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
+            ObjectContainer.Instance.UnregisterObject(id);
+        }
+        
+        public void DestroySelf(float delay)
+        {
+            StartCoroutine(DelayedDestroySelfCoroutine(delay));
+        }
+        
+        private IEnumerator DelayedDestroySelfCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
             ObjectContainer.Instance.UnregisterObject(id);
         }
     }

@@ -11,27 +11,38 @@ namespace Script.LobbyScene.SettingPage
         [SerializeField] private Slider uiSlider;
         [SerializeField] private Slider gameSlider;
         
+        public static event Action OnSoundDataChanged;
+        
         private void Awake()
         {
-            initSlider();
-            initValueChangedListener();
+            InitSlider();
+            InitValueChangedListener();
         }
 
-        private void initValueChangedListener()
+        private void InitValueChangedListener()
         {
-            bgmSlider.onValueChanged.AddListener(
-                value => { SoundData.bgmVolume = Convert.ToInt32(value); }
+            bgmSlider.onValueChanged.AddListener(value =>
+                {
+                    SoundData.bgmVolume = Convert.ToInt32(value);
+                    OnSoundDataChanged?.Invoke();
+                }
                 );
-            uiSlider.onValueChanged.AddListener(
-                value => { SoundData.uiVolume = Convert.ToInt32(value); }
+            uiSlider.onValueChanged.AddListener(value =>
+                {
+                    SoundData.uiVolume = Convert.ToInt32(value);
+                    OnSoundDataChanged?.Invoke();
+                }
                 );
-            gameSlider.onValueChanged.AddListener(
-                value => { SoundData.gameVolume = Convert.ToInt32(value); }
+            gameSlider.onValueChanged.AddListener(value =>
+                {
+                    SoundData.gameVolume = Convert.ToInt32(value);
+                    OnSoundDataChanged?.Invoke();
+                }
                 );
         }
         
 
-        private void initSlider()
+        private void InitSlider()
         {
             bgmSlider.minValue = SoundData.MIN_VOLUME;
             bgmSlider.maxValue = SoundData.MAX_VOLUME;
