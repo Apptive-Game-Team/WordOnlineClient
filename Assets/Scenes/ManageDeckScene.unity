@@ -3273,11 +3273,11 @@ RectTransform:
   m_Children:
   - {fileID: 812343960}
   - {fileID: 744412853}
-  - {fileID: 678555492}
   - {fileID: 1379006794}
   - {fileID: 664978338}
   - {fileID: 53430958}
   - {fileID: 282030230}
+  - {fileID: 678555492}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

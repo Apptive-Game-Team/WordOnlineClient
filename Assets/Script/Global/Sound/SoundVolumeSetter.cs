@@ -1,4 +1,5 @@
 using Script.Data.Sound;
+using Script.LobbyScene.SettingPage;
 using UnityEngine;
 
 namespace Script.Global
@@ -8,10 +9,17 @@ namespace Script.Global
     
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private SoundType soundType;
+        
+        private float originalVolume = -1;
     
         public enum SoundType
         {
             UI, BGM, Game
+        }
+        
+        private void Awake()
+        {
+            SoundDataSetter.OnSoundDataChanged += SetVolume;
         }
     
         private void Start()
@@ -19,9 +27,18 @@ namespace Script.Global
             SetVolume();
         }
 
+        private void OnDestroy()
+        {
+            SoundDataSetter.OnSoundDataChanged -= SetVolume;
+        }
+
         private void SetVolume()
         {
-            audioSource.volume = audioSource.volume * GetVolumeByType(soundType) / 100f;
+            if (originalVolume < 0)
+            {
+                originalVolume = audioSource.volume;
+            }
+            audioSource.volume = originalVolume * GetVolumeByType(soundType) / 100f;
         }
     
         private float GetVolumeByType(SoundType type)
