@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -65,8 +66,7 @@ namespace Script.GameScene
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
-                DestroySelf();
-                return;
+                DestroySelf(FRAME_DURATION);
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
@@ -140,6 +140,17 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
+            ObjectContainer.Instance.UnregisterObject(id);
+        }
+        
+        public void DestroySelf(float delay)
+        {
+            StartCoroutine(DelayedDestroySelfCoroutine(delay));
+        }
+        
+        private IEnumerator DelayedDestroySelfCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
             ObjectContainer.Instance.UnregisterObject(id);
         }
     }
