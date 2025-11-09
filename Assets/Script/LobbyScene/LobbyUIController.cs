@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Linq;
 using Script.Data;
+using Script.Data.Deck;
 using Script.DeckScene;
 using Script.Global;
+using Script.Global.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
