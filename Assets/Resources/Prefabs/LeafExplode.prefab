@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 527266173196447051, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b37ba056c43f9494297d770723057684, type: 3}
     - target: {fileID: 2898933720311739919, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
       propertyPath: m_Name
-      value: LeafExplode Variant
+      value: LeafExplode
       objectReference: {fileID: 0}
     - target: {fileID: 3447803929152680402, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
       propertyPath: m_Sprite

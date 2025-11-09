@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 527266173196447051, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 862f95b72dac34fd8bbe327d8b374906, type: 3}
     - target: {fileID: 2898933720311739919, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
       propertyPath: m_Name
-      value: FireExplode Variant
+      value: FireExplode
       objectReference: {fileID: 0}
     - target: {fileID: 8804314480276434358, guid: 3ea489f78caac478f8581f3aca2553ff, type: 3}
       propertyPath: m_LocalPosition.x
