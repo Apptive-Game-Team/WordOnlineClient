@@ -235,13 +235,14 @@ namespace Script.DeckScene
             DeckSceneContext.CurrentDeck.cards = cardList.ToArray();
             OnDeckSelected(DeckSceneContext.CurrentDeck);
         }
-        
-        public void OnDeckSubmit()
+
+        private void OnDeckSubmit()
         {
             WDebug.Log("OnDeckSubmit");
             StartCoroutine(PutDeckCoroutine(DeckSceneContext.CurrentDeck));
         }
-        public void OnNewDeckSubmit()
+
+        private void OnNewDeckSubmit()
         {
             WDebug.Log("OnNewDeckSubmit");
             StartCoroutine(PostDeckCoroutine(DeckSceneContext.CurrentDeck));
@@ -287,6 +288,7 @@ namespace Script.DeckScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckCreationSuccess);
                 WDebug.Log($"덱 생성 성공: {www.downloadHandler.text}");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
         
@@ -325,12 +327,12 @@ namespace Script.DeckScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckUpdateFailed);
                 WDebug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name); // reload
             }
             else
             {
                 SystemMessageUI.Instance.ShowMessage(deckUpdateSuccess);
                 WDebug.Log($"덱 수정 성공: {www.downloadHandler.text}");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
