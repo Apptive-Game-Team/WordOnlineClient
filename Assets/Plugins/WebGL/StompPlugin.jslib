@@ -12,6 +12,8 @@ mergeInto(LibraryManager.library, {
     const socket = new WebSocket(url);
     client = Stomp.over(socket);
     client.debug = null;
+    client.reconnect_delay = 3000;
+    client.maxReconnectAttempts = 10; 
 
     client.connect({
         Authorization: `Bearer ${token}`
