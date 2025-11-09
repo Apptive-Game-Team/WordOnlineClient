@@ -1,3 +1,4 @@
+using Script.Data.Deck;
 using UnityEngine;
 
 namespace Script.DeckScene
