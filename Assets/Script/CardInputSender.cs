@@ -92,7 +92,7 @@ public class CardInputSender : MonoBehaviour
         AddCardList(cardObj);
     }
 
-    public void SendInput(Vector2 pos) //whenFieldSelect
+    public void SendInput(Vector3 pos) //whenFieldSelect
     {
         var input = new CardUseInput(new List<string>(_currentCardNameList), pos);
         string json = JsonUtility.ToJson(input);
