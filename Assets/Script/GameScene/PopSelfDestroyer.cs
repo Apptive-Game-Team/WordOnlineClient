@@ -2,20 +2,11 @@ using UnityEngine;
 
 namespace Script.GameScene
 {
-    public class PopSelfDestroyer : MonoBehaviour
+    public class PopSelfDestroyer : PopSelfController
     {
-    
-        private const float Duration = 0.5f;
-    
-        private void Awake()
+        protected override void Start()
         {
-            transform.localScale = Vector3.zero;
-        }
-    
-        private void Start()
-        {
-            DOTweenAction
-                .Pop(transform, Duration);
+            base.Start();
             Destroy(gameObject, Duration);
         }
     }
