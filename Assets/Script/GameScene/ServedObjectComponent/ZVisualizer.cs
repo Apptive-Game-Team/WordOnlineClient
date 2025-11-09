@@ -15,8 +15,8 @@ public class ZVisualizer : MonoBehaviour
 
     private void Awake()
     {
-        visualGameObject = transform.GetChild(0).gameObject;
-        ShadowSpriteRenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        visualGameObject = transform.GetChild(1).gameObject;
+        ShadowSpriteRenderer = transform.GetChild(2).GetComponent<SpriteRenderer>();
     }
 
     private void Update()

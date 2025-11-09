@@ -9,9 +9,9 @@ namespace Script.Data
         public string type = "useMagic";
         public List<string> cards;
         public int id = IDMaker.GetCardUseInputID();
-        public Vector2 position;
+        public Vector3 position;
         
-        public CardUseInput(List<string> selectedCards, Vector2 pos)
+        public CardUseInput(List<string> selectedCards, Vector3 pos)
         {
             cards = selectedCards;
             position = pos;
