@@ -7,7 +7,7 @@ namespace Script.GameScene
         protected override void Start()
         {
             base.Start();
-            Destroy(gameObject, Duration);
+            Destroy(gameObject, duration);
         }
     }
 }

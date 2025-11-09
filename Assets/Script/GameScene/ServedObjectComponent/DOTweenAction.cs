@@ -1,5 +1,8 @@
+using System;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 public static class DOTweenAction
 {
@@ -120,7 +123,7 @@ public static class DOTweenAction
                 .SetEase(Ease.OutBack));
     }
     
-    public static void Pop(Transform tr, float duration = 0.5f)
+    public static void Pop(Transform tr, float duration = 0.5f, Action onComplete = null)
     {
         tr.localScale = Vector3.zero;
     
@@ -129,7 +132,8 @@ public static class DOTweenAction
         seq.Append(tr.DOScale(Vector3.one, duration * 0.4f)
                 .SetEase(Ease.OutBack))
             .Append(tr.DOScale(Vector3.zero, duration * 0.6f)
-                .SetEase(Ease.InBack));
+                .SetEase(Ease.InBack))
+            .OnComplete(() => onComplete?.Invoke());
     }
 
     public static void BounceMob(Transform tr)

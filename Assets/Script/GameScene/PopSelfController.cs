@@ -5,7 +5,7 @@ namespace Script.GameScene
     public class PopSelfController : MonoBehaviour
     {
     
-        protected const float Duration = 0.5f;
+        [SerializeField] protected float duration = 0.5f;
     
         private void Awake()
         {
@@ -15,7 +15,10 @@ namespace Script.GameScene
         protected virtual void Start()
         {
             DOTweenAction
-                .Pop(transform, Duration);
+                .Pop(transform, duration, () =>
+                {
+                    transform.localScale = Vector3.zero;
+                });
         }
     }
 }
