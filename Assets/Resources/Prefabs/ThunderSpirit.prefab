@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 263219564477927176, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4.104
       objectReference: {fileID: 0}
     - target: {fileID: 263219564477927176, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3.453
       objectReference: {fileID: 0}
     - target: {fileID: 263219564477927176, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 263219564477927176, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -50,7 +50,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4133848519264727152, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_Name
-      value: AbstractAerialMob
+      value: ThunderSpirit
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969190966422247235, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969190966422247235, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

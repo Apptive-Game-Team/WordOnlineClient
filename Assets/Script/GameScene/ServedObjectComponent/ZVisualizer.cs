@@ -5,6 +5,8 @@ public class ZVisualizer : MonoBehaviour
     private const float SHADOW_DEFAULT_ALPHA = 0.8f;
     private const float SHADOW_CONSTANT = 5f;
     
+    
+    
     private GameObject visualGameObject;
     private SpriteRenderer ShadowSpriteRenderer;
 
@@ -36,7 +38,7 @@ public class ZVisualizer : MonoBehaviour
     {
         visualGameObject.transform.position = CalculateZAppliedPosition(transform.position);
     }
-
+    
     public static Vector3 CalculateZAppliedPosition(Vector3 position)
     {
         Vector3 visualPosition = position;
