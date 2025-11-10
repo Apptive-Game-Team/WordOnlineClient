@@ -5,6 +5,8 @@ public class SimpleZVisualizer : MonoBehaviour
     
     [SerializeField] protected GameObject visualGameObject;
     
+    public Transform ActualTransform => visualGameObject.transform;
+    
     private void Update()
     {
         UpdateVisualGameObject();

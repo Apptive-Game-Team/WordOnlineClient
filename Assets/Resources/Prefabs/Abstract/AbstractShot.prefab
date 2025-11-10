@@ -158,6 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualGameObject: {fileID: 5745790288218242455}
+  ShadowSpriteRenderer: {fileID: 1711364869096585375}
 --- !u!1 &5745790288218242455
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,6 +367,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
+--- !u!212 &1711364869096585375 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7760543578565574637, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
+  m_PrefabInstance: {fileID: 8938800850428708722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2396240664980708454 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}

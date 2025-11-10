@@ -277,6 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualGameObject: {fileID: 790713194785081376}
+  ShadowSpriteRenderer: {fileID: 4539336992273368013}
 --- !u!1001 &4420678522536806558
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public class FieldSelector : MonoBehaviour
 
     void Update()
     {
-        if (!cardInputSender.IsFieldSelectMode)
+        if (!cardInputSender.IsFieldSelectMode())
         {
             if (currentAimObj.activeSelf)
             {
