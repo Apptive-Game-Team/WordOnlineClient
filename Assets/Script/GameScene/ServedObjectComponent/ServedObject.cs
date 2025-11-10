@@ -132,10 +132,10 @@ namespace Script.GameScene
         
         private Transform GetActualTransform()
         {
-            var zVisualizer = GetComponent<ZVisualizer>();
-            if (zVisualizer != null)
+            var simpleZVisualizer = GetComponent<SimpleZVisualizer>();
+            if (simpleZVisualizer != null)
             {
-                return zVisualizer.ActualTransform;
+                return simpleZVisualizer.ActualTransform;
             }
             return transform;
         }
