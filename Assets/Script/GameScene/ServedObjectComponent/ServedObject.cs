@@ -4,6 +4,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Script.GameScene.Object;
+using Script.GameScene.ServedObjectComponent;
 using Script.Global;
 using UnityEngine;
 
@@ -123,8 +124,20 @@ namespace Script.GameScene
             {
                 Destroy(_effectInstance);
             }
-            _effectInstance = Instantiate(effectPrefab, transform.position, Quaternion.identity);
-            _effectInstance.transform.SetParent(transform);
+            
+            Transform actualTransform = GetActualTransform();
+            _effectInstance = Instantiate(effectPrefab, actualTransform.position, Quaternion.identity);
+            _effectInstance.transform.SetParent(actualTransform);
+        }
+        
+        private Transform GetActualTransform()
+        {
+            var zVisualizer = GetComponent<ZVisualizer>();
+            if (zVisualizer != null)
+            {
+                return zVisualizer.ActualTransform;
+            }
+            return transform;
         }
         
         private void HandleDamageEffect()

@@ -5,19 +5,13 @@ public class ZVisualizer : SimpleZVisualizer
     private const float SHADOW_DEFAULT_ALPHA = 0.8f;
     private const float SHADOW_CONSTANT = 5f;
     
-    private SpriteRenderer ShadowSpriteRenderer;
+    [SerializeField] private SpriteRenderer ShadowSpriteRenderer;
 
     private float Z
     {
         get { return transform.position.z; }
     }
-
-    private void Awake()
-    {
-        visualGameObject = transform.GetChild(1).gameObject;
-        ShadowSpriteRenderer = transform.GetChild(2).GetComponent<SpriteRenderer>();
-    }
-
+    
     private void Update()
     {
         UpdateVisualGameObject();

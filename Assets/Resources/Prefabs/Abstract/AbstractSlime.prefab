@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2594164038376950415}
   - component: {fileID: 3003403705979211347}
   m_Layer: 0
-  m_Name: AbstractMeleeMob
+  m_Name: AbstractSlime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,6 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualGameObject: {fileID: 2688331890862289096}
+  ShadowSpriteRenderer: {fileID: 5346230977396259881}
 --- !u!114 &3003403705979211347
 MonoBehaviour:
   m_ObjectHideFlags: 0
