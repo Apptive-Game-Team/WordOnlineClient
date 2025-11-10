@@ -29,7 +29,7 @@ public class BarController : MonoBehaviour
 
     private void Update()
     {
-        if (cardInputSender.IsFieldSelectMode)
+        if (cardInputSender.IsFieldSelectMode())
         {
             isActive = false;
         }

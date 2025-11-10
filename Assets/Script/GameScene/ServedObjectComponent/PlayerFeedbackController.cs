@@ -2,23 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Script.Global;
 using UnityEngine;
 
-public class PlayerFeedbackController : MonoBehaviour
+public class PlayerFeedbackController : LocalSingletonObject<PlayerFeedbackController> 
 {
-    
-    public static PlayerFeedbackController Instance;
-    
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
     
     private GameObject playerObject;
 
