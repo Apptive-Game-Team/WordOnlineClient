@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2415697954247846127
+--- !u!1001 &4358329895872734335
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,23 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 468314681180972983, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_Name
-      value: ElectricShot
+      value: AbstractProjectile Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 3221306574538961878, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-      propertyPath: visualGameObject
-      value: 
-      objectReference: {fileID: 1197159383070809998}
-    - target: {fileID: 3221306574538961878, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-      propertyPath: ShadowSpriteRenderer
-      value: 
-      objectReference: {fileID: 7693202820503631004}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 10.030777
       objectReference: {fileID: 0}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 7.7384624
       objectReference: {fileID: 0}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -60,18 +52,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5982256350504164619, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 30bfbc0134cc544d7820b1699953b844, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
---- !u!1 &1197159383070809998 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3538530097640421217, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-  m_PrefabInstance: {fileID: 2415697954247846127}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &7693202820503631004 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5424013223348296819, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-  m_PrefabInstance: {fileID: 2415697954247846127}
-  m_PrefabAsset: {fileID: 0}
