@@ -18,6 +18,7 @@ namespace Script.GameScene
         private const float FRAME_DURATION = 0.1f;
 
         private Vector3 originalScale;
+        private Transform _actualTransform = null;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
@@ -76,7 +77,7 @@ namespace Script.GameScene
             {
                 //feedback_ATTACK
                 OnAttack?.Invoke();
-                DOTweenAction.SwingMobAttack(transform.GetChild(0));
+                DOTweenAction.SwingMobAttack(GetActualTransform());
             }
             else
             // TODO - Add Logic for Animation, State, Effect Atc
@@ -132,12 +133,19 @@ namespace Script.GameScene
         
         private Transform GetActualTransform()
         {
+            if (_actualTransform != null)
+            {
+                return _actualTransform;
+            }
+            
             var simpleZVisualizer = GetComponentInChildren<SimpleZVisualizer>();
             if (simpleZVisualizer != null)
             {
-                return simpleZVisualizer.ActualTransform;
+                _actualTransform = simpleZVisualizer.ActualTransform;
+                return _actualTransform;
             }
-            return transform;
+            _actualTransform = transform;
+            return _actualTransform;
         }
         
         private void HandleDamageEffect()
