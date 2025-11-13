@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using Script.GameScene.Handler;
@@ -10,7 +11,23 @@ public class StompConnector : MonoBehaviour
 {
     private static bool isConnected = false;
     public static StompConnector Instance;
-
+    
+    private class ConnectionInfo
+    {
+        internal string topic;
+        internal string callback;
+        internal string subscriptionId;
+        
+        public ConnectionInfo(string topic, string callback, string subscriptionId)
+        {
+            this.topic = topic;
+            this.callback = callback;
+            this.subscriptionId = subscriptionId;
+        }
+    }
+    
+    private readonly List<ConnectionInfo> _connections = new List<ConnectionInfo>();
+    
     public LocalizedString notConnectedToServer;
     public LocalizedString matchingInProgress;
     public LocalizedString matchingFailed;
@@ -67,17 +84,15 @@ public class StompConnector : MonoBehaviour
         SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
         SendMessageToServer("/app/game/practice", SceneContext.UserID.ToString());
     }
-    
+
     public void StartInGameFlow(string sessionId)
     {
         CheckConnection();
-        
+
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
     }
 
-    
-    
     private void CheckConnection()
     {
         if (!isConnected)
@@ -154,10 +169,19 @@ public class StompConnector : MonoBehaviour
             #if UNITY_WEBGL && !UNITY_EDITOR
             ConnectStompSocket(url, SceneContext.JwtToken);
             #endif
+            Reconnect();
         }
         else
         {
             WDebug.LogWarning("이미 연결되어 있습니다.");
+        }
+    }
+
+    private void Reconnect()
+    {
+        foreach (var connection in _connections)
+        {
+            SubscribeToTopic(connection.topic, connection.callback, connection.subscriptionId);
         }
     }
 
@@ -186,6 +210,7 @@ public class StompConnector : MonoBehaviour
             #if UNITY_WEBGL && !UNITY_EDITOR
             SubscribeStomp(topic, callback, subscriptionId);
             #endif
+            _connections.Add(new ConnectionInfo(topic, callback, subscriptionId));
         }
         else
         {
@@ -203,6 +228,7 @@ public class StompConnector : MonoBehaviour
             #if UNITY_WEBGL && !UNITY_EDITOR
             UnsubscribeStomp(subscriptionId);
             #endif
+            _connections.Remove(_connections.Find(c => c.subscriptionId == subscriptionId));
         }
         else
         {
@@ -219,6 +245,7 @@ public class StompConnector : MonoBehaviour
             #if UNITY_WEBGL && !UNITY_EDITOR
             DisconnectStomp();
             #endif
+            _connections.Clear();
         }
         else
         {

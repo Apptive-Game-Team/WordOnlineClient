@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Script.Data;
 using Script.GameScene;
+using Script.GameScene.ServedObjectComponent;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,13 +31,6 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
     [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
-    
-    public void Announce(string text)
-    {
-        textSystemMsg.text = text;
-        textObject.SetActive(true);
-        StartCoroutine(SetTimer(3f));
-    }
 
     public IEnumerator SetTimer(float time)
     {

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using Script.Data;
+using Script.Data.Deck;
 using Script.Global;
+using Script.Global.Util;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
@@ -12,47 +14,6 @@ using UnityEngine.UI;
 
 namespace Script.DeckScene
 {
-    public static class JsonHelper {
-        public static T[] FromJson<T>(string json) {
-            string wrapped = "{\"Items\":" + json + "}";
-            var wrapper = JsonUtility.FromJson<Wrapper<T>>(wrapped);
-            return wrapper.Items;
-        }
-        [System.Serializable]
-        private class Wrapper<T> {
-            public T[] Items;
-        }
-    }
-    [System.Serializable]
-    public enum Type
-    {
-        Magic,
-        Type
-    }
-
-    [System.Serializable]
-    public class CardDto {
-        public long id;
-        public string name;
-        public string type;
-    }
-
-    [System.Serializable]
-    public class DeckResponseDto {
-        public long id;
-        public string name;
-        public CardDto[] cards;
-    }
-    [Serializable]
-    public class DeckRequestDto
-    {
-        public string   name;
-        public long[]   cardIds;
-    }
-    [System.Serializable]
-    public class CardPoolDto {
-        public CardDto[] cards;
-    }
 
     public class DeckManagementController : MonoBehaviour
     {
@@ -274,13 +235,14 @@ namespace Script.DeckScene
             DeckSceneContext.CurrentDeck.cards = cardList.ToArray();
             OnDeckSelected(DeckSceneContext.CurrentDeck);
         }
-        
-        public void OnDeckSubmit()
+
+        private void OnDeckSubmit()
         {
             WDebug.Log("OnDeckSubmit");
             StartCoroutine(PutDeckCoroutine(DeckSceneContext.CurrentDeck));
         }
-        public void OnNewDeckSubmit()
+
+        private void OnNewDeckSubmit()
         {
             WDebug.Log("OnNewDeckSubmit");
             StartCoroutine(PostDeckCoroutine(DeckSceneContext.CurrentDeck));
@@ -326,6 +288,7 @@ namespace Script.DeckScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckCreationSuccess);
                 WDebug.Log($"덱 생성 성공: {www.downloadHandler.text}");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
         
@@ -364,12 +327,12 @@ namespace Script.DeckScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckUpdateFailed);
                 WDebug.LogError($"덱 수정 실패: {www.responseCode} / {www.error}\n{www.downloadHandler.text}");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name); // reload
             }
             else
             {
                 SystemMessageUI.Instance.ShowMessage(deckUpdateSuccess);
                 WDebug.Log($"덱 수정 성공: {www.downloadHandler.text}");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 

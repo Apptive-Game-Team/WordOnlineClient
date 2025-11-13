@@ -1,7 +1,7 @@
 using Script.Global;
 using UnityEngine;
 
-namespace Script.GameScene
+namespace Script.GameScene.ServedObjectComponent
 {
     public static class DamagedObjectEffect
     {
@@ -15,7 +15,7 @@ namespace Script.GameScene
                 return;
             }
             
-            GameObject.Instantiate(effectPrefab, tr.position, Quaternion.identity);
+            UnityEngine.Object.Instantiate(effectPrefab, tr.position, Quaternion.identity);
         }
     }
 }

@@ -7,6 +7,7 @@ public class CardUIZoom : MonoBehaviour
     public static CardUIZoom Instance { get; private set; }
     
     [SerializeField] private ZoomedCardUI zoomedCardUI;
+    [SerializeField] private AudioSource audioSource;
     
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class CardUIZoom : MonoBehaviour
     {
         Debug.Log($"Showing zoomed card for {cardUI.CardName} at position {cardUI.transform.position}, {Screen.width / 2}");
         zoomedCardUI.Show(cardUI);
+        audioSource.Play();
     }
     
     public void Hide()

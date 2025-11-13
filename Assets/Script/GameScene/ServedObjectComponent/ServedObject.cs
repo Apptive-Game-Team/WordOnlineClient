@@ -1,7 +1,10 @@
+using System;
+using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Script.GameScene.Object;
+using Script.GameScene.ServedObjectComponent;
 using Script.Global;
 using UnityEngine;
 
@@ -15,6 +18,7 @@ namespace Script.GameScene
         private const float FRAME_DURATION = 0.1f;
 
         private Vector3 originalScale;
+        private Transform _actualTransform = null;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
@@ -23,6 +27,8 @@ namespace Script.GameScene
         
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
+
+        public Action OnAttack;
 
         private int lastHp = 0;
 
@@ -65,13 +71,13 @@ namespace Script.GameScene
             maxHp = updatedObjectDto.maxHp;
             if (updatedObjectDto.status.Equals("Destroyed"))
             {
-                DestroySelf();
-                return;
+                DestroySelf(FRAME_DURATION);
             }
             else if (updatedObjectDto.status.Equals("Attack"))
             {
                 //feedback_ATTACK
-                DOTweenAction.SwingMobAttack(transform.GetChild(0));
+                OnAttack?.Invoke();
+                DOTweenAction.SwingMobAttack(GetActualTransform());
             }
             else
             // TODO - Add Logic for Animation, State, Effect Atc
@@ -119,8 +125,27 @@ namespace Script.GameScene
             {
                 Destroy(_effectInstance);
             }
-            _effectInstance = Instantiate(effectPrefab, transform.position, Quaternion.identity);
-            _effectInstance.transform.SetParent(transform);
+            
+            Transform actualTransform = GetActualTransform();
+            _effectInstance = Instantiate(effectPrefab, actualTransform.position, Quaternion.identity);
+            _effectInstance.transform.SetParent(actualTransform);
+        }
+        
+        private Transform GetActualTransform()
+        {
+            if (_actualTransform != null)
+            {
+                return _actualTransform;
+            }
+            
+            var simpleZVisualizer = GetComponentInChildren<SimpleZVisualizer>();
+            if (simpleZVisualizer != null)
+            {
+                _actualTransform = simpleZVisualizer.ActualTransform;
+                return _actualTransform;
+            }
+            _actualTransform = transform;
+            return _actualTransform;
         }
         
         private void HandleDamageEffect()
@@ -140,6 +165,17 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
+            ObjectContainer.Instance.UnregisterObject(id);
+        }
+        
+        public void DestroySelf(float delay)
+        {
+            StartCoroutine(DelayedDestroySelfCoroutine(delay));
+        }
+        
+        private IEnumerator DelayedDestroySelfCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
             ObjectContainer.Instance.UnregisterObject(id);
         }
     }
