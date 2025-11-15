@@ -1617,6 +1617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 603e33c5b072c0f49a0649350ce7c769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: ManageDeckScene
 --- !u!114 &278361955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2221,7 +2222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 365205851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 927cc8abfcfaf4d0ba2c5a58de2a2796, type: 3}
+  m_Script: {fileID: 11500000, guid: 603e33c5b072c0f49a0649350ce7c769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: MagicBookScene
@@ -7544,6 +7545,8 @@ GameObject:
   - component: {fileID: 2065755158}
   - component: {fileID: 2065755162}
   - component: {fileID: 2065755163}
+  - component: {fileID: 2065755165}
+  - component: {fileID: 2065755164}
   m_Layer: 5
   m_Name: LobbyUIController
   m_TagString: Untagged
@@ -7711,6 +7714,31 @@ MonoBehaviour:
   messageText: {fileID: 51268536}
   duration: 5
   replaceDelay: 1
+--- !u!114 &2065755164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065755157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b541eac3440a4489837cac23f3675ac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2065755165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065755157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a27ed31debc49b39b35f83b223229c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _matchQueueApi: {fileID: 2065755164}
 --- !u!1 &2068123405
 GameObject:
   m_ObjectHideFlags: 0
