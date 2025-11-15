@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Script.LobbyScene;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -25,6 +23,15 @@ public class MatchingStatusTextUI : MonoBehaviour
     private void Start()
     {
         text.text = "";
+        LobbySceneViewModel.Instance.CurrentState.OnStateChange += OnStatusChanged;
+    }
+    
+    private void OnDestroy()
+    {
+        if (LobbySceneViewModel.Instance != null)
+        {
+            LobbySceneViewModel.Instance.CurrentState.OnStateChange -= OnStatusChanged;
+        }
     }
     
     public static void SetMatchingStatusText(LocalizedString localizedString)
@@ -43,6 +50,16 @@ public class MatchingStatusTextUI : MonoBehaviour
         if (Instance != null)
         {
             Instance.text.text = status;
+        }
+    }
+    
+    private void OnStatusChanged(LobbySceneViewModel.LobbyState state)
+    {
+        switch (state)
+        {
+            case LobbySceneViewModel.LobbyState.Idle:
+                text.text = "";
+                break;
         }
     }
 }
