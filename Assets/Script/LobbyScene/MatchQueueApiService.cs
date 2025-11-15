@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Script.Data;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,15 +25,21 @@ namespace Script.LobbyScene
         
         public IEnumerator RemoveFromQueue()
         {
-            using var webRequest = UnityWebRequest.Delete($"{SceneContext.CurrentServer}/api/match/queue/me");
+            using var webRequest = new UnityWebRequest($"{SceneContext.CurrentServer.url}/api/match/queue/me", "DELETE");
         
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            
             yield return webRequest.SendWebRequest();
         }
     
         public IEnumerator IsMeInQueue(Action<LobbySceneViewModel.LobbyState> callback)
         {
-            using var webRequest = UnityWebRequest.Get($"{SceneContext.CurrentServer}/api/match/queue/me");
+            using var webRequest = new UnityWebRequest($"{SceneContext.CurrentServer.url}/api/match/queue/me", "GET");
         
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            
             yield return webRequest.SendWebRequest();
 
             if (webRequest.responseCode == 200)

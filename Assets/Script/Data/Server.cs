@@ -29,6 +29,11 @@ namespace Script.Data
             req.SetRequestHeader("Accept-Language", LocalizationSettings.SelectedLocale.Identifier.Code);
         }
         
+        public static void SetAuthorization(UnityWebRequest webRequest)
+        {
+            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        }
+        
         public IEnumerator GetPing(Action<int> callback)
         {
             Stopwatch stopwatch = new Stopwatch();
