@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Script.Data;
 using Script.Global;
+using Script.LobbyScene;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
@@ -65,7 +66,7 @@ public static class StatusTracker
                 StompConnector.Instance.ConnectToServer();
                 try
                 {
-                    StompConnector.Instance.StartMatchingFlow();
+                    LobbySceneViewModel.Instance.Enqueue();
                 }
                 catch (Exception)
                 {

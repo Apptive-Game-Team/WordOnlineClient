@@ -2,15 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Script.Global;
+using Script.LobbyScene.Button;
 using UnityEngine;
 
-public class EnqueueButton : AsyncButtonBase
+public class PracticeButton : LobbyButtonBase
 {
     protected override void OnClickButton()
     {
+        if (!isActive)
+        {
+            return;
+        }
+        
         try
         {
-            StompConnector.Instance.StartMatchingFlow();
+            StompConnector.Instance.StartPracticeFlow();
+            SetButton();
         }
         catch (Exception)
         {
