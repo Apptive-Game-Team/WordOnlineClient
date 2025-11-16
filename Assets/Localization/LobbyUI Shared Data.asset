@@ -16,7 +16,7 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 3c47a636d3d4a4d6aad778789441531a
   m_Entries:
   - m_Id: 34501287936
-    m_Key: Match Queue
+    m_Key: Ca
     m_Metadata:
       m_Items: []
   - m_Id: 2169947283456
@@ -57,6 +57,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7565302816768
     m_Key: Go To Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8233347661684736
+    m_Key: Cancel Matching
     m_Metadata:
       m_Items: []
   m_Metadata:
