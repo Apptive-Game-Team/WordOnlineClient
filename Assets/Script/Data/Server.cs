@@ -60,6 +60,7 @@ namespace Script.Data
         public static List<Server> servers = new()
         {
             new Server("춘천", "www.monolong.shop", 7777, true),
+            new Server("춘천2", "www.monolong.shop", 6210, true),
             new Server("로컬", "localhost", 7777)
         };
         
