@@ -3,17 +3,12 @@ using UnityEngine.UI;
 
 namespace Script.Global
 {
-    public abstract class AsyncButtonBase : ButtonBase
+    public abstract class DisableableButtonBase : ButtonBase
     {
-        private bool isActive = true;
+        protected bool isActive = true;
         
-        public override void ButtonEvent()
+        protected void SetButton()
         {
-            if (!isActive)
-            {
-                return;
-            }
-            base.ButtonEvent();
             gameObject.GetComponent<Image>().color = Color.gray;
             isActive = false;
         }

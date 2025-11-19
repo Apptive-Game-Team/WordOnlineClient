@@ -29,6 +29,11 @@ namespace Script.Data
             req.SetRequestHeader("Accept-Language", LocalizationSettings.SelectedLocale.Identifier.Code);
         }
         
+        public static void SetAuthorization(UnityWebRequest webRequest)
+        {
+            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        }
+        
         public IEnumerator GetPing(Action<int> callback)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -55,6 +60,7 @@ namespace Script.Data
         public static List<Server> servers = new()
         {
             new Server("춘천", "www.monolong.shop", 7777, true),
+            new Server("춘천2", "www.monolong.shop", 6210, true),
             new Server("로컬", "localhost", 7777)
         };
         
