@@ -11,6 +11,7 @@ public class DOTweenFeedbackTester : MonoBehaviour
     [SerializeField] private Transform storm;
     [SerializeField] private Transform playerObj;
     [SerializeField] private Transform gameObj;
+    [SerializeField] private GameObject chainObj;
 
     struct BounceTesterParameters
     {

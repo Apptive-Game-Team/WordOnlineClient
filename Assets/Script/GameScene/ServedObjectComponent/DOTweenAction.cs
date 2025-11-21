@@ -135,6 +135,13 @@ public static class DOTweenAction
                 .SetEase(Ease.InBack))
             .OnComplete(() => onComplete?.Invoke());
     }
+    public static void Shrink(Transform tr, float duration = 0.5f, Action onComplete = null)
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(tr.DOScale(Vector3.zero, duration))
+            .OnComplete(() => onComplete?.Invoke());
+    }
 
     public static void BounceMob(Transform tr)
     {

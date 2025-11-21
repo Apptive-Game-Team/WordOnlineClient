@@ -15,7 +15,7 @@ namespace Script.GameScene
         private const float BounceScale = 1.3f;
         private const float SquashScale = 0.8f;
         private const float Duration = 0.2f;
-        private const float FRAME_DURATION = 0.1f;
+        private const float FRAME_DURATION = 0.05f;
 
         private Vector3 originalScale;
         private Transform _actualTransform = null;
