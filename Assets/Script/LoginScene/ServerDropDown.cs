@@ -12,7 +12,7 @@ public class ServerDropDown : MonoBehaviour
         dropdown.ClearOptions();
         
         List<string> options = new List<string>();
-        ServerList.servers.ForEach(server => options.Add($"{server.name} (---)"));
+        ServerList.Servers.ForEach(server => options.Add($"{server.name} (---)"));
         
         dropdown.AddOptions(options);
         
@@ -24,7 +24,7 @@ public class ServerDropDown : MonoBehaviour
     {
         int index = 0;
         bool isFirst = true;
-        foreach (Server server in ServerList.servers)
+        foreach (Server server in ServerList.Servers)
         {
             var index1 = index;
             StartCoroutine(server.GetPing(ping =>

@@ -14,15 +14,15 @@ public class SceneContext : MonoBehaviour
         get; set;
     }
 
-    public static Server CurrentServer = ServerList.servers[0];
+    public static Server CurrentServer = ServerList.Servers[0];
     public static void SetServer(int index)
     {
-        if (index < 0 || index >= ServerList.servers.Count)
+        if (index < 0 || index >= ServerList.Servers.Count)
         {
             WDebug.LogError("Invalid server index: " + index);
             return;
         }
-        CurrentServer = ServerList.servers[index];
+        CurrentServer = ServerList.Servers[index];
         WDebug.Log("Current server set to: " + CurrentServer.name);
     }
     
