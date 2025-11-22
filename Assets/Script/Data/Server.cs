@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
@@ -63,6 +64,9 @@ namespace Script.Data
             new Server("춘천2", "www.monolong.shop", 6210, true),
             new Server("로컬", "localhost", 7777)
         };
+
+        // public static Server MatchingServer = new Server("춘천", "www.monolong.shop", 6210, true);
+        public static Server MatchingServer = new Server("춘천", "localhost", 6209, false);
         
         public static Server AccountServer = new Server("춘천", "www.monolong.shop", 6203, true);
     }

@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Script.Data.Util;
 using UnityEngine;
 using Script.GameScene.Handler;
 using Script.Global;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
-public class StompConnector : MonoBehaviour
+public class StompConnector : LocalSingletonObject<StompConnector>
 {
     private static bool isConnected = false;
-    public static StompConnector Instance;
     
     private class ConnectionInfo
     {
@@ -33,20 +33,22 @@ public class StompConnector : MonoBehaviour
     public LocalizedString matchingFailed;
     public LocalizedString connectionClosed;
     public LocalizedString connectionDelayed;
-    
-    private void Awake()
+
+    protected override void Awake()
     {
         gameObject.name = "StompConnector";
+        base.Awake();
+    }
 
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(this);
+    private void Start()
+    {
         ConnectToServer();
+        StartInGameFlow(SceneContext.MatchInfo.sessionId);
+    }
+    
+    private void OnDestroy()
+    {
+        DisconnectFromServer();
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -66,25 +68,7 @@ public class StompConnector : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void DisconnectStomp();
     #endif
-
-    public void StartMatchingFlow()
-    {
-        CheckConnection();
-        
-        UnsubscribeFromTopic("frame-sub");
-        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
-        SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
-    }
-
-    public void StartPracticeFlow()
-    {
-        CheckConnection();
-        
-        UnsubscribeFromTopic("frame-sub");
-        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
-        SendMessageToServer("/app/game/practice", SceneContext.UserID.ToString());
-    }
-
+    
     public void StartInGameFlow(string sessionId)
     {
         CheckConnection();
@@ -163,7 +147,8 @@ public class StompConnector : MonoBehaviour
     // WebSocket 서버에 연결
     public void ConnectToServer()
     {
-        string url = $"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}";
+        string url = UrlUtil.httpToWebSocket(SceneContext.MatchInfo.server, SceneContext.JwtToken);
+        
         if (!isConnected)
         {
             #if UNITY_WEBGL && !UNITY_EDITOR

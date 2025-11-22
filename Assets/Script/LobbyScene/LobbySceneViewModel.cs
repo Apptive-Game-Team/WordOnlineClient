@@ -1,6 +1,9 @@
 using System;
+using Script.Data;
+using Script.GameScene.Dto;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Script.LobbyScene
 {
@@ -21,8 +24,73 @@ namespace Script.LobbyScene
         public void Enqueue()
         {
             Debug.Log("Enqueue button clicked: Enqueueing player.");
-            var newState = _matchQueueApi.Enqueue();
-            CurrentState.UpdateData(newState);
+            CurrentState.UpdateData(LobbyState.Matching);
+            StartCoroutine(_matchQueueApi.Enqueue(json =>
+            {
+                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
+                switch (typeChecker.type)
+                {
+                    case "matchedInfoDto":
+                        Debug.Log("Practice match found: Transitioning to game scene.");
+                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+                        SceneContext.MatchInfo = matchedInfoDto;
+                        SceneManager.LoadScene("GameScene");
+                        break;
+                    case "message":
+                        Debug.Log("Practice match message received.");
+                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
+                        if (messageDto.message.Contains("Successfully"))
+                        {
+                            Debug.Log("Practice match in progress...");
+                            CurrentState.UpdateData(LobbyState.Matching);
+                        }
+                        else if (messageDto.message.Contains("Failed"))
+                        {
+                            Debug.LogWarning("Practice match failed.");
+                            CurrentState.UpdateData(LobbyState.Idle);
+                        }
+                        break;
+                    default:
+                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
+                        break;
+                }
+            }));
+        }
+        
+        public void PlayPracticeMatch()
+        {
+            Debug.Log("Practice button clicked: Starting practice match.");
+            CurrentState.UpdateData(LobbyState.Matching);
+            StartCoroutine(_matchQueueApi.MatchPractice(json =>
+            {
+                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
+                switch (typeChecker.type)
+                {
+                    case "matchedInfoDto":
+                        Debug.Log("Practice match found: Transitioning to game scene.");
+                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+                        SceneContext.MatchInfo = matchedInfoDto;
+                        SceneManager.LoadScene("GameScene");
+                        break;
+                    case "message":
+                        Debug.Log("Practice match message received.");
+                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
+                        if (messageDto.message.Contains("Successfully"))
+                        {
+                            Debug.Log("Practice match in progress...");
+                            CurrentState.UpdateData(LobbyState.Matching);
+                        }
+                        else if (messageDto.message.Contains("Failed"))
+                        {
+                            Debug.LogWarning("Practice match failed.");
+                            CurrentState.UpdateData(LobbyState.Idle);
+                        }
+                        break;
+                    default:
+                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
+                        break;
+                }
+            }));
         }
         
         public void RemoveFromQueue()
