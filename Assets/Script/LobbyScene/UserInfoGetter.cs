@@ -26,7 +26,7 @@ public class UserInfoGetter
             accountUser =JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
         }
         
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/mine", "GET"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
         {
             Server.SetAcceptLanguage(webRequest);
             webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -47,7 +47,7 @@ public class UserInfoGetter
     
     public static IEnumerator GetUserStatus()
     {
-        using (UnityWebRequest webRequest = new UnityWebRequest(SceneContext.CurrentServer.url + "/api/users/mine", "GET"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
         {
             Server.SetAcceptLanguage(webRequest);
             webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);

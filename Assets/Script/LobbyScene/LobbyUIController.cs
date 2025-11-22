@@ -49,7 +49,7 @@ public class LobbyUIController : MonoBehaviour
             PopulateDropdown();
         }
         
-        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
+        string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
         Server.SetAcceptLanguage(www);
         www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -115,10 +115,12 @@ public class LobbyUIController : MonoBehaviour
     }
     private IEnumerator SelectDeckCoroutine(long deckId)
     {
-        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks/{deckId}";
+        string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks/{deckId}";
         using var www = UnityWebRequest.Post(url, new WWWForm());
-        www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
-
+        
+        Server.SetAuthorization(www);
+        Server.SetAcceptLanguage(www);
+        
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)

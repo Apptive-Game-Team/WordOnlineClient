@@ -29,7 +29,7 @@ public static class StatusTracker
 
     public static IEnumerator GetUserStatus()
     {
-        var url = SceneContext.CurrentServer.url + "/api/users/mine/status";
+        var url = ServerList.MatchingServer.url + "/api/users/mine/status";
 
         using var www = UnityWebRequest.Get(url);
         Server.SetAcceptLanguage(www);
@@ -77,7 +77,7 @@ public static class StatusTracker
             case "OnPlaying":
                 StompConnector.Instance.ConnectToServer();  
                 
-                var getSessionUrl = $"{SceneContext.CurrentServer.url}/sessions/mine";
+                var getSessionUrl = $"{ServerList.MatchingServer.url}/sessions/mine";
                 
                 var getSessionReq = UnityWebRequest.Get(getSessionUrl);
                 getSessionReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
@@ -115,7 +115,7 @@ public static class StatusTracker
                 SceneContext.MatchInfo.rightUser = sessionDto.rightUser;
                 SceneContext.MatchInfo.leftUser = sessionDto.leftUser;
                 
-                var snapUrl = $"{SceneContext.CurrentServer.url}/sessions/{SceneContext.MatchInfo.sessionId}/snapshot";
+                var snapUrl = $"{ServerList.MatchingServer.url}/sessions/{SceneContext.MatchInfo.sessionId}/snapshot";
                 using (var snapReq = UnityWebRequest.Get(snapUrl))
                 {
                     snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);

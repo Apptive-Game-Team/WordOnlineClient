@@ -20,7 +20,7 @@ namespace Script.LobbyScene.SettingPage
 
         private IEnumerator DeleteAccount()
         {
-            using UnityWebRequest requestToServer = UnityWebRequest.Delete($"{SceneContext.CurrentServer.url}/api/users/mine");
+            using UnityWebRequest requestToServer = UnityWebRequest.Delete($"{ServerList.MatchingServer.url}/api/users/mine");
             using UnityWebRequest requestToAccount = UnityWebRequest.Delete($"{ServerList.AccountServer.url}/api/members/me");
             Server.SetAcceptLanguage(requestToServer);
             Server.SetAcceptLanguage(requestToAccount);
