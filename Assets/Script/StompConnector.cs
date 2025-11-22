@@ -78,10 +78,10 @@ public class StompConnector : LocalSingletonObject<StompConnector>
     private static extern void ConnectStompSocket(string url, string jwtToken);
 
     [DllImport("__Internal")]
-    private static extern void SubscribeStomp(string topic, string callback, string subscriptionId);
+    private static extern void SubscribeStomp(string topic, string callback, string subscriptionId, string onErrorCallback = "OnError");
 
     [DllImport("__Internal")]
-    private static extern void SendStomp(string topic, string message);
+    private static extern void SendStomp(string topic, string message, string onErrorCallback = "OnError");
 
     [DllImport("__Internal")]
     private static extern void UnsubscribeStomp(string subscriptionId);
@@ -136,6 +136,7 @@ public class StompConnector : LocalSingletonObject<StompConnector>
     public void OnConnected(string frame)
     {
         WDebug.Log("STOMP 연결됨: " + frame);
+        ReSubscribe();
         isConnected = true;
     }
     
@@ -194,7 +195,6 @@ public class StompConnector : LocalSingletonObject<StompConnector>
             #if UNITY_WEBGL && !UNITY_EDITOR
             ConnectStompSocket(url, SceneContext.JwtToken);
             #endif
-            Reconnect();
         }
         else
         {
@@ -202,7 +202,7 @@ public class StompConnector : LocalSingletonObject<StompConnector>
         }
     }
 
-    private void Reconnect()
+    private void ReSubscribe()
     {
         foreach (var connection in _connections)
         {
