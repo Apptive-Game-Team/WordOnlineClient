@@ -8,6 +8,10 @@ using Script.Global;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+using System.Runtime.InteropServices;
+#endif
+
 public class StompConnector : LocalSingletonObject<StompConnector>
 {
     private static bool isConnected = false;
@@ -44,6 +48,23 @@ public class StompConnector : LocalSingletonObject<StompConnector>
     {
         ConnectToServer();
         StartInGameFlow(SceneContext.MatchInfo.sessionId);
+    }
+
+    private float counter = 0f;
+    private void Update()
+    {
+        if (!isConnected)
+        {
+            counter += Time.deltaTime;
+            if (counter >= 5f)
+            {
+                OnError("Not connected");
+            }
+        }
+        else
+        {
+            counter = 0f;
+        }
     }
     
     private void OnDestroy()
