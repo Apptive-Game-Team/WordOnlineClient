@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyUIController : MonoBehaviour
@@ -60,6 +61,7 @@ public class LobbyUIController : MonoBehaviour
         {
             SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
             WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
+            SceneManager.LoadScene("LoginScene");
             yield break;
         }
 
@@ -70,11 +72,12 @@ public class LobbyUIController : MonoBehaviour
         {
             SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
             WDebug.LogWarning("덱이 하나도 없습니다.");
+            SceneManager.LoadScene("LoginScene");
             yield break;
         }
         
         PopulateDropdown();
-        //sessiontracking 테스트
+        
         StartCoroutine(StatusTracker.GetUserStatus());
     }
 
