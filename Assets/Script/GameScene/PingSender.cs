@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PingSender : MonoBehaviour
 {
-    private const float PING_INTERVAL = 10f;
+    private const float PING_INTERVAL = 3f;
     
     private StompConnector stompConnector;
     private string destination;
