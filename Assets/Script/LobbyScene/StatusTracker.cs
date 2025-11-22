@@ -57,7 +57,12 @@ public static class StatusTracker
             yield break;
         }
 
-        switch (dto.status)
+        yield return HandleUserStatus(dto.status);
+    }
+
+    private static IEnumerator HandleUserStatus(string status)
+    {
+        switch (status)
         {
             case "Online":
                 yield break;
@@ -65,87 +70,43 @@ public static class StatusTracker
             case "OnMatching":
                 SystemMessageUI.Instance.ShowMessage(sessionRestoredMatching);
                 StompConnector.Instance.ConnectToServer();
-                try
-                {
-                    LobbySceneViewModel.Instance.Enqueue();
-                }
-                catch (Exception)
-                {
-                    GameObject.FindObjectOfType<EnqueueButton>().ResetButton();
-                }
+                LobbySceneViewModel.Instance.Enqueue();
                 yield break;
 
             case "OnPlaying":
-                StompConnector.Instance.ConnectToServer();  
-                
-                var getSessionUrl = $"{ServerList.MatchingServer.url}/sessions/mine";
-                
-                var getSessionReq = UnityWebRequest.Get(getSessionUrl);
-                Server.SetAcceptLanguage(getSessionReq);
-                Server.SetAuthorization(getSessionReq);
-                
-                yield return getSessionReq.SendWebRequest();
-
-                if (getSessionReq.result != UnityWebRequest.Result.Success)
-                {
-                    WDebug.LogError($"[EnterInGameByMine] fail: {getSessionReq.responseCode} / {getSessionReq.error}\n{getSessionReq.downloadHandler.text}");
-                    yield break;
-                }
-
-                if (getSessionReq.responseCode == 404)
-                {
-                    WDebug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
-                    yield break;
-                }
-
-                // 200 OK
-                SessionDto sessionDto = null;
-                try { sessionDto = JsonUtility.FromJson<SessionDto>(getSessionReq.downloadHandler.text); }
-                catch (Exception e)
-                {
-                    WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
-                    yield break;
-                }
-                if (sessionDto == null || string.IsNullOrEmpty(sessionDto.sessionId))
-                {
-                    WDebug.LogError("[EnterInGameByMine] sessionId empty");
-                    yield break;
-                }
-                SystemMessageUI.Instance.ShowMessage(sessionRestoredGame);
-                // 컨텍스트에 저장(선택)
-                if (SceneContext.MatchInfo == null) SceneContext.MatchInfo = new MatchedInfoDto();
-                SceneContext.MatchInfo.sessionId = sessionDto.sessionId;
-                SceneContext.MatchInfo.rightUser = sessionDto.rightUser;
-                SceneContext.MatchInfo.leftUser = sessionDto.leftUser;
-                
-                var snapUrl = $"{ServerList.MatchingServer.url}/sessions/{SceneContext.MatchInfo.sessionId}/snapshot";
-                using (var snapReq = UnityWebRequest.Get(snapUrl))
-                {
-                    Server.SetAcceptLanguage(snapReq);
-                    Server.SetAuthorization(snapReq);
-                    
-                    yield return snapReq.SendWebRequest();
-                    if (snapReq.result != UnityWebRequest.Result.Success)
-                    {
-                        WDebug.LogError($"[GetUserStatus] snapshot fail: {snapReq.responseCode} / {snapReq.error}\n{snapReq.downloadHandler.text}");
-                        yield break;
-                    }
-                    //
-                    // // 네 쪽 렌더러/팩토리에 그대로 넘겨서 생성/갱신
-                    WDebug.Log($"[snapshot] snapshot:{snapReq.downloadHandler.text}");
-                    SceneContext.RejoinSyncJson = snapReq.downloadHandler.text;
-                    
-                    // 인게임 플로우로 전환
-                    StompConnector.Instance.StartInGameFlow(sessionDto.sessionId);
-                    SceneManager.LoadScene("GameScene"); 
-                }
+                yield return RecoverGameSession();
                 yield break;
-
             default:
-                WDebug.LogWarning($"[GetUserStatus] unknown status: {dto.status}");
+                WDebug.LogWarning($"[GetUserStatus] unknown status: {status}");
                 yield break;
-            
-            
         }
+    }
+    
+    private static IEnumerator RecoverGameSession()
+    {
+        var getSessionUrl = $"{ServerList.MatchingServer.url}/api/users/mine/match-info";
+                
+        var getSessionReq = UnityWebRequest.Get(getSessionUrl);
+        Server.SetAcceptLanguage(getSessionReq);
+        Server.SetAuthorization(getSessionReq);
+                
+        yield return getSessionReq.SendWebRequest();
+
+        if (getSessionReq.result != UnityWebRequest.Result.Success)
+        {
+            WDebug.LogError($"[EnterInGameByMine] fail: {getSessionReq.responseCode} / {getSessionReq.error}\n{getSessionReq.downloadHandler.text}");
+            yield break;
+        }
+
+        if (getSessionReq.responseCode == 404)
+        {
+            WDebug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
+            yield break;
+        }
+
+        string json = getSessionReq.downloadHandler.text;
+        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+        SceneContext.MatchInfo = matchedInfoDto;
+        SceneManager.LoadScene("GameScene");
     }
 }
