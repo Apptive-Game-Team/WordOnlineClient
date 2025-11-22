@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Script.Data.Util;
 using UnityEngine;
 using Script.GameScene.Handler;
@@ -71,10 +71,29 @@ public class StompConnector : LocalSingletonObject<StompConnector>
     
     public void StartInGameFlow(string sessionId)
     {
-        CheckConnection();
+        StartCoroutine(GameFlowCoroutine(sessionId));
+    }
+    
+    private IEnumerator GameFlowCoroutine(string sessionId)
+    {
+        float counter = 0f;
+        while (!isConnected)
+        {
+            counter += Time.deltaTime;
+            
+            if (counter >= 10f)
+            {
+                WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
+                OnError("Not connected");
+                yield break;
+            }
+            
+            yield return null;
+        }
 
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
+        yield return null;
     }
 
     private void CheckConnection()
