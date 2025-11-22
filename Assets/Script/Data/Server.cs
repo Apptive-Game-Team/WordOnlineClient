@@ -76,8 +76,8 @@ namespace Script.Data
             new Server("로컬", "localhost", 7777)
         };
 
-        // public static readonly Server MatchingServer = new Server("춘천", "www.monolong.shop", 6210, true);
-        public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
+        public static readonly Server MatchingServer = new Server("춘천", "www.monolong.shop", 6210, true);
+        // public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
         
         public static readonly Server AccountServer = new Server("춘천", "www.monolong.shop", 6203, true);
     }
