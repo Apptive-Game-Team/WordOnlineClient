@@ -33,7 +33,8 @@ public static class StatusTracker
 
         using var www = UnityWebRequest.Get(url);
         Server.SetAcceptLanguage(www);
-        www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        Server.SetAuthorization(www);
+        
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)
@@ -80,7 +81,9 @@ public static class StatusTracker
                 var getSessionUrl = $"{ServerList.MatchingServer.url}/sessions/mine";
                 
                 var getSessionReq = UnityWebRequest.Get(getSessionUrl);
-                getSessionReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+                Server.SetAcceptLanguage(getSessionReq);
+                Server.SetAuthorization(getSessionReq);
+                
                 yield return getSessionReq.SendWebRequest();
 
                 if (getSessionReq.result != UnityWebRequest.Result.Success)
@@ -118,7 +121,9 @@ public static class StatusTracker
                 var snapUrl = $"{ServerList.MatchingServer.url}/sessions/{SceneContext.MatchInfo.sessionId}/snapshot";
                 using (var snapReq = UnityWebRequest.Get(snapUrl))
                 {
-                    snapReq.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+                    Server.SetAcceptLanguage(snapReq);
+                    Server.SetAuthorization(snapReq);
+                    
                     yield return snapReq.SendWebRequest();
                     if (snapReq.result != UnityWebRequest.Result.Success)
                     {

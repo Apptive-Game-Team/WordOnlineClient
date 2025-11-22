@@ -14,7 +14,8 @@ public class UserInfoGetter
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/me", "GET"))
         {
             Server.SetAcceptLanguage(webRequest);
-            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            Server.SetAuthorization(webRequest);
+            
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -29,7 +30,8 @@ public class UserInfoGetter
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
         {
             Server.SetAcceptLanguage(webRequest);
-            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            Server.SetAuthorization(webRequest);
+            
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -50,7 +52,8 @@ public class UserInfoGetter
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
         {
             Server.SetAcceptLanguage(webRequest);
-            webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            Server.SetAuthorization(webRequest);
+            
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)

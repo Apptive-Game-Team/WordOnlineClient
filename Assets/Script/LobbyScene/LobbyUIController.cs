@@ -52,7 +52,7 @@ public class LobbyUIController : MonoBehaviour
         string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
         Server.SetAcceptLanguage(www);
-        www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        Server.SetAuthorization(www);
         www.downloadHandler = new DownloadHandlerBuffer();
         yield return www.SendWebRequest();
 

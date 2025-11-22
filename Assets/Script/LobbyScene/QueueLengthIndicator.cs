@@ -34,7 +34,8 @@ public class QueueLengthIndicator : MonoBehaviour
     private IEnumerator FetchQueueLength()
     {
         using UnityWebRequest webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/length");
-        webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        Server.SetAuthorization(webRequest);
+        Server.SetAcceptLanguage(webRequest);
         WDebug.Log("Fetching queue length from " + $"{ServerList.MatchingServer.url}/api/match/length" + " with token " + SceneContext.JwtToken);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         
