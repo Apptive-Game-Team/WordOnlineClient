@@ -57,6 +57,8 @@ public static class StatusTracker
             yield break;
         }
 
+        WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
+
         yield return HandleUserStatus(dto.status);
     }
 
@@ -69,7 +71,6 @@ public static class StatusTracker
 
             case "OnMatching":
                 SystemMessageUI.Instance.ShowMessage(sessionRestoredMatching);
-                StompConnector.Instance.ConnectToServer();
                 LobbySceneViewModel.Instance.Enqueue();
                 yield break;
 
@@ -103,10 +104,17 @@ public static class StatusTracker
             WDebug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
             yield break;
         }
-
-        string json = getSessionReq.downloadHandler.text;
-        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-        SceneContext.MatchInfo = matchedInfoDto;
-        SceneManager.LoadScene("GameScene");
+        
+        try
+        {
+            string json = getSessionReq.downloadHandler.text;
+            MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+            SceneContext.MatchInfo = matchedInfoDto;
+            SceneManager.LoadScene("GameScene");
+        } catch (Exception e)
+        {
+            WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
+            yield break;
+        }
     }
 }
