@@ -26,6 +26,12 @@ namespace Script.LobbyScene.Debugger
             Server.SetAuthorization(request);
             request.downloadHandler = new DownloadHandlerBuffer();
             yield return request.SendWebRequest();
+            
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                WDebug.LogError($"Error entering debug session: {request.error}");
+                yield break;
+            }
 
             String json = request.downloadHandler.text;
             
