@@ -53,12 +53,12 @@ namespace Script.DeckScene
             var token = SceneContext.JwtToken; 
 
             // 2) 요청 생성 (GET)
-            string urlCards = SceneContext.CurrentServer.url + "/api/users/mine/cards";
+            string urlCards = ServerList.MatchingServer.url + "/api/users/mine/cards";
             using var wwwPool = new UnityWebRequest(urlCards, "GET");
             Server.SetAcceptLanguage(wwwPool);
         
             // 3) 헤더 설정
-            wwwPool.SetRequestHeader("Authorization", "Bearer " + token);
+            Server.SetAuthorization(wwwPool);
 
             // 4) 다운로드 핸들러 할당
             wwwPool.downloadHandler = new DownloadHandlerBuffer();
@@ -81,11 +81,12 @@ namespace Script.DeckScene
             
 
             // 2) 요청 생성 (GET)
-            string urlDeck = SceneContext.CurrentServer.url  + "/api/users/mine/decks";
+            string urlDeck = ServerList.MatchingServer.url  + "/api/users/mine/decks";
             using var wwwDecks = new UnityWebRequest(urlDeck, "GET");
         
             // 3) 헤더 설정
-            wwwDecks.SetRequestHeader("Authorization", "Bearer " + token);
+            Server.SetAcceptLanguage(wwwDecks);
+            Server.SetAuthorization(wwwDecks);
 
             // 4) 다운로드 핸들러 할당
             wwwDecks.downloadHandler = new DownloadHandlerBuffer();
@@ -264,7 +265,7 @@ namespace Script.DeckScene
             WDebug.Log("POST 덱 페이로드: " + json);
 
             // 2) 요청 생성
-            string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
+            string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks";
             using var www = new UnityWebRequest(url, "POST")
             {
                 uploadHandler   = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json)),
@@ -272,7 +273,8 @@ namespace Script.DeckScene
             };
 
             // 3) 헤더 설정
-            www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            Server.SetAuthorization(www);
+            Server.SetAcceptLanguage(www);
             www.SetRequestHeader("Content-Type", "application/json");
 
             // 4) 전송
@@ -308,7 +310,7 @@ namespace Script.DeckScene
             WDebug.Log("PUT 덱 페이로드: " + json);
 
             // 2) 요청 생성
-            string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks/{deck.id}";
+            string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks/{deck.id}";
             using var www = new UnityWebRequest(url, "PUT")
             {
                 uploadHandler   = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json)),
@@ -316,7 +318,8 @@ namespace Script.DeckScene
             };
 
             // 3) 헤더 설정
-            www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+            Server.SetAuthorization(www);
+            Server.SetAcceptLanguage(www);
             www.SetRequestHeader("Content-Type", "application/json");
 
             // 4) 전송

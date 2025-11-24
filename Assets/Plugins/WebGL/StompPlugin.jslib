@@ -24,11 +24,17 @@ mergeInto(LibraryManager.library, {
     });
   },
 
-  SubscribeStomp: function (topicPtr, callbackPtr, subscriptionIdPtr) {
+  SubscribeStomp: function (topicPtr, callbackPtr, subscriptionIdPtr, onErrorPtr) {
     const topic = UTF8ToString(topicPtr);
     const callback = UTF8ToString(callbackPtr);
     const subscriptionId = UTF8ToString(subscriptionIdPtr);
 
+    if (!client || !client.connected) {
+        console.warn("Cannot send message: STOMP client is not connected.");
+        const onError = UTF8ToString(onErrorPtr);
+        SendMessage("StompConnector", onError, "STOMP client is not connected.");
+        return;
+    }
     // console.log("Subscribing to topic:", topic, "with callback:", callback);
 
     client.subscribe(topic, function (message) {
@@ -51,11 +57,18 @@ mergeInto(LibraryManager.library, {
     }, { id: subscriptionId });
   },
 
-  SendStomp: function (topicPtr, messagePtr) {
+  SendStomp: function (topicPtr, messagePtr, onErrorPtr) {
     const topic = UTF8ToString(topicPtr);
     const message = UTF8ToString(messagePtr);
 
     // console.log("Sending message to topic:", topic, "Message:", message);
+    
+    if (!client || !client.connected) {
+        console.warn("Cannot Send Stomp: STOMP client is not connected.");
+        const onError = UTF8ToString(onErrorPtr);
+        SendMessage("StompConnector", onError, "STOMP client is not connected.");
+        return;
+    }
 
     client.send(topic, {}, message);
   },

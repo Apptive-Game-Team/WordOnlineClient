@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Script.Data;
 using Script.Global;
 using TMPro;
 using UnityEngine;
@@ -32,9 +33,10 @@ public class QueueLengthIndicator : MonoBehaviour
     
     private IEnumerator FetchQueueLength()
     {
-        using UnityWebRequest webRequest = UnityWebRequest.Get($"{SceneContext.CurrentServer.url}/api/match/length");
-        webRequest.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
-        WDebug.Log("Fetching queue length from " + $"{SceneContext.CurrentServer.url}/api/match/length" + " with token " + SceneContext.JwtToken);
+        using UnityWebRequest webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/length");
+        Server.SetAuthorization(webRequest);
+        Server.SetAcceptLanguage(webRequest);
+        WDebug.Log("Fetching queue length from " + $"{ServerList.MatchingServer.url}/api/match/length" + " with token " + SceneContext.JwtToken);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         
         yield return webRequest.SendWebRequest();

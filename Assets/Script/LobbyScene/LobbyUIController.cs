@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyUIController : MonoBehaviour
@@ -49,10 +50,10 @@ public class LobbyUIController : MonoBehaviour
             PopulateDropdown();
         }
         
-        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks";
+        string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks";
         using var www = UnityWebRequest.Get(url);
         Server.SetAcceptLanguage(www);
-        www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
+        Server.SetAuthorization(www);
         www.downloadHandler = new DownloadHandlerBuffer();
         yield return www.SendWebRequest();
 
@@ -60,6 +61,7 @@ public class LobbyUIController : MonoBehaviour
         {
             SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
             WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
+            SceneManager.LoadScene("LoginScene");
             yield break;
         }
 
@@ -70,11 +72,12 @@ public class LobbyUIController : MonoBehaviour
         {
             SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
             WDebug.LogWarning("덱이 하나도 없습니다.");
+            SceneManager.LoadScene("LoginScene");
             yield break;
         }
         
         PopulateDropdown();
-        //sessiontracking 테스트
+        
         StartCoroutine(StatusTracker.GetUserStatus());
     }
 
@@ -115,10 +118,12 @@ public class LobbyUIController : MonoBehaviour
     }
     private IEnumerator SelectDeckCoroutine(long deckId)
     {
-        string url = $"{SceneContext.CurrentServer.url}/api/users/mine/decks/{deckId}";
+        string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks/{deckId}";
         using var www = UnityWebRequest.Post(url, new WWWForm());
-        www.SetRequestHeader("Authorization", "Bearer " + SceneContext.JwtToken);
-
+        
+        Server.SetAuthorization(www);
+        Server.SetAcceptLanguage(www);
+        
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)

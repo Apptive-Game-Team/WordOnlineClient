@@ -15,6 +15,14 @@ namespace Script.Data
             this.name = accountUser.name;
             this.email = accountUser.email;
         }
+        
+        public User(long id, string name, string email, long selectedDeckId)
+        {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.selectedDeckId = selectedDeckId;
+        }
     }
     
     [System.Serializable]
