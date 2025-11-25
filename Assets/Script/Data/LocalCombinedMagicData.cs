@@ -69,6 +69,8 @@ namespace Script.Data
             new (){magicName = "Thunder Bird Swarm", recipe = new () { CardType.Spawn , CardType.Drop, CardType.Lightning}, spritePath = "Game/spawn/thunder_bird"},
             new (){magicName = "Tree Golem", recipe = new () { CardType.Spawn , CardType.Nature, CardType.Nature}, spritePath = "Game/spawn/tree_golem"},
             new (){magicName = "Vine Spirit", recipe = new () { CardType.Spawn , CardType.Shoot, CardType.Nature}, spritePath = "Game/spawn/vine_spirit"},
+            
+            new (){magicName = "Vine Colony", recipe = new () { CardType.Build , CardType.Nature, CardType.Nature}, spritePath = "Game/build/vine_colony"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)
