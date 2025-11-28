@@ -242,6 +242,10 @@ MonoBehaviour:
     m_Localized: Vine Colony
     m_Metadata:
       m_Items: []
+  - m_Id: 12553293619257344
+    m_Localized: Rock Mage
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

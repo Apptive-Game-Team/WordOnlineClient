@@ -239,6 +239,10 @@ MonoBehaviour:
     m_Key: vineColony
     m_Metadata:
       m_Items: []
+  - m_Id: 12553293619257344
+    m_Key: rockMage
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
