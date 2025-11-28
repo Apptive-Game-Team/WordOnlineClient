@@ -12,10 +12,16 @@ namespace Script.GameScene.ServedObjectComponent.OnAttack
         private void Start()
         {
             ServedObject servedObject = transform.parent.GetComponentInChildren<ServedObject>();
-            servedObject.OnAttack += () => { isSpawned = true; };
+            servedObject.OnAttack += SetSpawned;
             StartCoroutine(PlayAfterImage());
         }
 
+
+        public void SetSpawned()
+        {
+            isSpawned = true;
+        }
+        
         private IEnumerator PlayAfterImage()
         {
             while (true)
