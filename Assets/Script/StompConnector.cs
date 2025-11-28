@@ -1,16 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Script.Data.Util;
 using UnityEngine;
 using Script.GameScene.Handler;
 using Script.Global;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
-public class StompConnector : MonoBehaviour
+#if UNITY_WEBGL && !UNITY_EDITOR
+using System.Runtime.InteropServices;
+#endif
+
+public class StompConnector : LocalSingletonObject<StompConnector>
 {
     private static bool isConnected = false;
-    public static StompConnector Instance;
     
     private class ConnectionInfo
     {
@@ -33,20 +37,39 @@ public class StompConnector : MonoBehaviour
     public LocalizedString matchingFailed;
     public LocalizedString connectionClosed;
     public LocalizedString connectionDelayed;
-    
-    private void Awake()
+
+    protected override void Awake()
     {
         gameObject.name = "StompConnector";
+        base.Awake();
+    }
 
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(this);
+    private void Start()
+    {
         ConnectToServer();
+        StartInGameFlow(SceneContext.MatchInfo.sessionId);
+    }
+
+    private float counter = 0f;
+    private void Update()
+    {
+        if (!isConnected)
+        {
+            counter += Time.deltaTime;
+            if (counter >= 5f)
+            {
+                OnError("Not connected");
+            }
+        }
+        else
+        {
+            counter = 0f;
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        DisconnectFromServer();
     }
 
     // WebGL에서 JavaScript 함수 호출
@@ -55,10 +78,10 @@ public class StompConnector : MonoBehaviour
     private static extern void ConnectStompSocket(string url, string jwtToken);
 
     [DllImport("__Internal")]
-    private static extern void SubscribeStomp(string topic, string callback, string subscriptionId);
+    private static extern void SubscribeStomp(string topic, string callback, string subscriptionId, string onErrorCallback = "OnError");
 
     [DllImport("__Internal")]
-    private static extern void SendStomp(string topic, string message);
+    private static extern void SendStomp(string topic, string message, string onErrorCallback = "OnError");
 
     [DllImport("__Internal")]
     private static extern void UnsubscribeStomp(string subscriptionId);
@@ -66,31 +89,32 @@ public class StompConnector : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void DisconnectStomp();
     #endif
-
-    public void StartMatchingFlow()
-    {
-        CheckConnection();
-        
-        UnsubscribeFromTopic("frame-sub");
-        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
-        SendMessageToServer("/app/game/match/queue", SceneContext.UserID.ToString());
-    }
-
-    public void StartPracticeFlow()
-    {
-        CheckConnection();
-        
-        UnsubscribeFromTopic("frame-sub");
-        SubscribeToTopic($"/queue/match-status/{SceneContext.UserID}", "OnMessageReceived", "match-sub");
-        SendMessageToServer("/app/game/practice", SceneContext.UserID.ToString());
-    }
-
+    
     public void StartInGameFlow(string sessionId)
     {
-        CheckConnection();
+        StartCoroutine(GameFlowCoroutine(sessionId));
+    }
+    
+    private IEnumerator GameFlowCoroutine(string sessionId)
+    {
+        float counter = 0f;
+        while (!isConnected)
+        {
+            counter += Time.deltaTime;
+            
+            if (counter >= 10f)
+            {
+                WDebug.LogError("STOMP 서버에 연결되지 않았습니다.");
+                OnError("Not connected");
+                yield break;
+            }
+            
+            yield return null;
+        }
 
         UnsubscribeFromTopic("match-sub");
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
+        yield return null;
     }
 
     private void CheckConnection()
@@ -112,6 +136,7 @@ public class StompConnector : MonoBehaviour
     public void OnConnected(string frame)
     {
         WDebug.Log("STOMP 연결됨: " + frame);
+        ReSubscribe();
         isConnected = true;
     }
     
@@ -163,13 +188,13 @@ public class StompConnector : MonoBehaviour
     // WebSocket 서버에 연결
     public void ConnectToServer()
     {
-        string url = $"{SceneContext.CurrentServer.webSocketUrl}{SceneContext.JwtToken}";
+        string url = UrlUtil.httpToWebSocket(SceneContext.MatchInfo.server, SceneContext.JwtToken);
+        
         if (!isConnected)
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
             ConnectStompSocket(url, SceneContext.JwtToken);
             #endif
-            Reconnect();
         }
         else
         {
@@ -177,7 +202,7 @@ public class StompConnector : MonoBehaviour
         }
     }
 
-    private void Reconnect()
+    private void ReSubscribe()
     {
         foreach (var connection in _connections)
         {

@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Script.Global;
+using Script.LobbyScene;
 using Script.LobbyScene.Button;
-using UnityEngine;
 
 public class PracticeButton : LobbyButtonBase
 {
@@ -16,7 +13,7 @@ public class PracticeButton : LobbyButtonBase
         
         try
         {
-            StompConnector.Instance.StartPracticeFlow();
+            LobbySceneViewModel.Instance.PlayPracticeMatch();
             SetButton();
         }
         catch (Exception)
