@@ -210,6 +210,42 @@ MonoBehaviour:
     m_Localized: Fire Drop
     m_Metadata:
       m_Items: []
+  - m_Id: 11600645659287552
+    m_Localized: Tornado Strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11600812500312064
+    m_Localized: Tide Call
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601008273645568
+    m_Localized: Meteor Shower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601343352397824
+    m_Localized: Cloud Dragon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601457722679296
+    m_Localized: Thunder Bird Swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601582142513152
+    m_Localized: Tree Golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601775223103488
+    m_Localized: Vine Spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11601889991843840
+    m_Localized: Vine Colony
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12553293619257344
+    m_Localized: Rock Mage
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
