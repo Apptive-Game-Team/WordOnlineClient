@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: Cancel Matching
     m_Metadata:
       m_Items: []
+  - m_Id: 15080201697726464
+    m_Key: Customize
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

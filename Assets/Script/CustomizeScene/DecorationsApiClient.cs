@@ -1,19 +1,14 @@
 using System;
 using System.Collections;
 using System.Text;
+using Script.Data;
+using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class DecorationsApiClient : MonoBehaviour
 {
-    [SerializeField] private string baseUrl = "https://your.server.com";
-    
-    // TODO: 토큰 있는 경우 여기서 넣기
-    private void AddCommonHeaders(UnityWebRequest req)
-    {
-        req.SetRequestHeader("Content-Type", "application/json");
-        // req.SetRequestHeader("Authorization", "Bearer " + token);
-    }
+    private string baseUrl = ServerList.MatchingServer.url;
 
     [Serializable]
     private class DecorationRequest
@@ -22,17 +17,22 @@ public class DecorationsApiClient : MonoBehaviour
         public DecorationRequest(long id) { decorationId = id; }
     }
 
-    public IEnumerator GetMyDecorations(bool equippedOnly, Action<DecorationsResponse> onSuccess, Action<string> onError)
+    public IEnumerator GetMyDecorations(
+        bool equippedOnly, 
+        Action<DecorationsResponse> onSuccess, 
+        Action<string> onError)
     {
-        string url = $"{baseUrl}/api/users/mine/decorations?equippedOnly={equippedOnly.ToString().ToLower()}";
+        var url = $"{baseUrl}/api/users/mine/decorations?equippedOnly={equippedOnly.ToString().ToLower()}";
+
         using var req = UnityWebRequest.Get(url);
-        AddCommonHeaders(req);
+        Server.SetAcceptLanguage(req);
+        Server.SetAuthorization(req);
 
         yield return req.SendWebRequest();
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            onError?.Invoke(req.error);
+            onError?.Invoke($"{req.responseCode} / {req.error}");
             yield break;
         }
 
@@ -44,28 +44,34 @@ public class DecorationsApiClient : MonoBehaviour
         }
         catch (Exception e)
         {
-            onError?.Invoke(e.Message);
+            onError?.Invoke($"JSON parse error: {e}\n{req.downloadHandler.text}");
         }
     }
 
-    public IEnumerator EquipDecoration(long decorationId, Action onSuccess, Action<string> onError)
+    public IEnumerator EquipDecoration(
+        long decorationId, 
+        Action onSuccess, 
+        Action<string> onError)
     {
-        string url = $"{baseUrl}/api/users/mine/decorations";
+        var url = $"{baseUrl}/api/users/mine/decorations";
 
         var bodyObj = new DecorationRequest(decorationId);
-        string jsonBody = JsonUtility.ToJson(bodyObj);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+        var jsonBody = JsonUtility.ToJson(bodyObj);
+        var bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 
         using var req = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
-        req.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        req.uploadHandler   = new UploadHandlerRaw(bodyRaw);
         req.downloadHandler = new DownloadHandlerBuffer();
-        AddCommonHeaders(req);
+
+        req.SetRequestHeader("Content-Type", "application/json");
+        Server.SetAcceptLanguage(req);
+        Server.SetAuthorization(req);
 
         yield return req.SendWebRequest();
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            onError?.Invoke(req.error + " / " + req.downloadHandler.text);
+            onError?.Invoke($"{req.responseCode} / {req.error}\n{req.downloadHandler.text}");
             yield break;
         }
 
@@ -76,7 +82,7 @@ public class DecorationsApiClient : MonoBehaviour
         }
         else
         {
-            onError?.Invoke("Unexpected status: " + req.responseCode);
+            onError?.Invoke("Unexpected status: " + req.responseCode + "\n" + req.downloadHandler.text);
         }
     }
 }
