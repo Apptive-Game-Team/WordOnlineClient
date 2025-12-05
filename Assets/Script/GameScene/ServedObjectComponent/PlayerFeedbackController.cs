@@ -38,18 +38,18 @@ public class PlayerFeedbackController : LocalSingletonObject<PlayerFeedbackContr
 
     public void PlayCardSelectFeedback()
     {
-        Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
+        Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
         DOTweenAction.RotatePlayerUseCard(spriteTr);
     }
     public void CancelCardSelectFeedback()
     {
-        Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
+        Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
         DOTweenAction.RotatePlayerCancelCard(spriteTr);
     }
 
     public void UseMagicFeedback()
     {
-        Transform spriteTr = PlayerObject.transform.Find("PlayerSprite");
+        Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
         DOTweenAction.RotatePlayerUseMagic(spriteTr);
     }
 }

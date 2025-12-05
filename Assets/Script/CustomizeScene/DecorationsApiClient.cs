@@ -47,6 +47,36 @@ public class DecorationsApiClient : MonoBehaviour
             onError?.Invoke($"JSON parse error: {e}\n{req.downloadHandler.text}");
         }
     }
+    public IEnumerator GetUsersDecorations(
+        long userId,
+        Action<DecorationsResponse> onSuccess,
+        Action<string> onError)
+    {
+        var url = $"{baseUrl}/api/users/{userId}/decorations?equippedOnly=true";
+
+        using var req = UnityWebRequest.Get(url);
+        Server.SetAcceptLanguage(req);
+        Server.SetAuthorization(req);
+
+        yield return req.SendWebRequest();
+
+        if (req.result != UnityWebRequest.Result.Success)
+        {
+            onError?.Invoke($"{req.responseCode} / {req.error}");
+            yield break;
+        }
+
+        try
+        {
+            var json = req.downloadHandler.text;
+            var resp = JsonUtility.FromJson<DecorationsResponse>(json);
+            onSuccess?.Invoke(resp);
+        }
+        catch (Exception e)
+        {
+            onError?.Invoke($"JSON parse error: {e}\n{req.downloadHandler.text}");
+        }
+    }
 
     public IEnumerator EquipDecoration(
         long decorationId, 
