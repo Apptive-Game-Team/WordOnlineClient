@@ -31,7 +31,7 @@ namespace Script.MagicBookScene
                 img.rectTransform.sizeDelta = new Vector2(50, 50);
                 cardObj.transform.SetParent(cardsParent, false);
             }
-            nameText.text = await LocaleUtils.GetStringAsync("Magic",StringUtils.ToCamelCase(data.magicName));
+            nameText.text = data.magicName;
         }
     }
 }
