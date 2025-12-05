@@ -68,6 +68,10 @@ MonoBehaviour:
     m_Localized: Cancel
     m_Metadata:
       m_Items: []
+  - m_Id: 15080201697726464
+    m_Localized: Customize
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

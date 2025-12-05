@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaab9edb71fcdb34fa7ea782fc0b2b9f, type: 3}
+  m_Name: New Decoration Database
+  m_EditorClassIdentifier: 
+  datas:
+  - decorationId: 1
+    type: 0
+    iconSprite: {fileID: 21300000, guid: 3e6e249afb6788042b5858ce9efb3107, type: 3}
+    characterSprite: {fileID: 21300000, guid: 3e6e249afb6788042b5858ce9efb3107, type: 3}
+  - decorationId: 2
+    type: 1
+    iconSprite: {fileID: 21300000, guid: c7ce37108a59ef6468f269d45b0c0e99, type: 3}
+    characterSprite: {fileID: 21300000, guid: c7ce37108a59ef6468f269d45b0c0e99, type: 3}
+  - decorationId: 3
+    type: 0
+    iconSprite: {fileID: 21300000, guid: dae118a60fab0f84f94a8db5c74ee5e4, type: 3}
+    characterSprite: {fileID: 21300000, guid: dae118a60fab0f84f94a8db5c74ee5e4, type: 3}
+  - decorationId: 4
+    type: 1
+    iconSprite: {fileID: 21300000, guid: 941abd8b38720a44ca7ea47297cb719f, type: 3}
+    characterSprite: {fileID: 21300000, guid: 941abd8b38720a44ca7ea47297cb719f, type: 3}
