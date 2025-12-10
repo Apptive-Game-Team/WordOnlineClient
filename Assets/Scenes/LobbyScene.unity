@@ -6828,7 +6828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13ec967dcc51441c97ad38ab7700e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: practice
+  side: Practice
 --- !u!114 &1508360884
 MonoBehaviour:
   m_ObjectHideFlags: 0
