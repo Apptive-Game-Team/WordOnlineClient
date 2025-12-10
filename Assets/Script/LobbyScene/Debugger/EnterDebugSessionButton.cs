@@ -44,7 +44,7 @@ namespace Script.LobbyScene.Debugger
             
             DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
 
-            SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, side, SceneContext.UserID);
+            SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, "left", SceneContext.UserID);
             SceneManager.LoadScene("GameScene");
         }
         
