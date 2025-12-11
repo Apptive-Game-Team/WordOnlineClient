@@ -33,8 +33,7 @@ namespace Script.LobbyScene
                     case "matchedInfoDto":
                         Debug.Log("Practice match found: Transitioning to game scene.");
                         MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                        SceneContext.MatchInfo = matchedInfoDto;
-                        SceneManager.LoadScene("GameScene");
+                        OnMatched(matchedInfoDto);
                         break;
                     case "message":
                         Debug.Log("Practice match message received.");
@@ -69,8 +68,7 @@ namespace Script.LobbyScene
                     case "matchedInfoDto":
                         Debug.Log("Practice match found: Transitioning to game scene.");
                         MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                        SceneContext.MatchInfo = matchedInfoDto;
-                        SceneManager.LoadScene("GameScene");
+                        OnMatched(matchedInfoDto);
                         break;
                     case "message":
                         Debug.Log("Practice match message received.");
@@ -91,6 +89,66 @@ namespace Script.LobbyScene
                         break;
                 }
             }));
+        }
+        
+        private float _pollTimer = 0;
+        private float POLL_INTERVAL = 6.0f;
+
+        private void Update()
+        {
+            if (CurrentState.Data == LobbyState.Matching) 
+            {
+                if (_pollTimer > POLL_INTERVAL)
+                {
+                    PollMatchedInfo();
+                    _pollTimer = 0;
+                }
+                
+                _pollTimer += Time.deltaTime;
+            }
+        }
+        
+        public void PollMatchedInfo()
+        {
+            Debug.Log("Poll button clicked: Polling matched info.");
+            StartCoroutine(_matchQueueApi.PollMatchedInfo(json =>
+            {
+                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
+                switch (typeChecker.type)
+                {
+                    case "matchedInfoDto":
+                        Debug.Log("Practice match found: Transitioning to game scene.");
+                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+                        OnMatched(matchedInfoDto);
+                        break;
+                    case "message":
+                        Debug.Log("Practice match message received.");
+                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
+                        if (messageDto.message.Contains("Not Matched"))
+                        {
+                            Debug.Log("Practice match in progress...");
+                        }
+                        else if (messageDto.message.Contains("Not In Queue"))
+                        {
+                            CurrentState.UpdateData(LobbyState.Idle);
+                        }
+                        break;
+                    default:
+                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
+                        break;
+                }
+            }));
+        }
+
+        private void OnMatched(MatchedInfoDto matchedInfoDto)
+        {
+            SceneContext.MatchInfo = matchedInfoDto;
+            string targetSceneName = "GameScene";
+            if (SceneManager.GetActiveScene().name.Contains(targetSceneName))
+            {
+                return;
+            }
+            SceneManager.LoadScene(targetSceneName);
         }
         
         public void RemoveFromQueue()

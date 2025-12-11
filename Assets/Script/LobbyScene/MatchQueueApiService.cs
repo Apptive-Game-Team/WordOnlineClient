@@ -12,53 +12,38 @@ namespace Script.LobbyScene
     public class MatchQueueApiService : MonoBehaviour
     {
         [SerializeField] private SseHandler sseHandler;
-        
-        public LobbySceneViewModel.LobbyState Enqueue()
-        {
-            try
-            {
-                // StompConnector.Instance.StartMatchingFlow();
-                return LobbySceneViewModel.LobbyState.Matching;
-            }
-            catch (Exception)
-            {
-                WDebug.LogError($"Error starting match queue: {ServerList.MatchingServer}");
-                return LobbySceneViewModel.LobbyState.Idle;
-            }
-        }
 
         public IEnumerator Enqueue(Action<string> callback)
         {
             sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/match/queue/me", callback);
-            // yield return SseHandler.ListenSseCoroutine();
-            // var task = SseHandler.ListenSse($"{ServerList.MatchingServer.url}/api/match/queue/me", callback);
-
-            // while (!task.IsCompleted)
-            // {
-            //     yield return null;
-            // }
-            //
-            // if (task.Exception != null)
-            // {
-            //     Debug.LogError(task.Exception);
-            // }
             yield return null;
         }
 
         public IEnumerator MatchPractice(Action<string> callback)
         {
-            // yield return SseHandler.ListenSseCoroutine($"{ServerList.MatchingServer.url}/api/match/practice/me", callback);
             sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/match/practice/me", callback);
-            // while (!task.IsCompleted)
-            // {
-            //     yield return null;
-            // }
-            //
-            // if (task.Exception != null)
-            // {
-            //     Debug.LogError(task.Exception);
-            // }
             yield return null;
+        }
+
+        public IEnumerator PollMatchedInfo(Action<string> callback)
+        {
+            using var webRequest = new UnityWebRequest($"{ServerList.MatchingServer.url}/api/match/queue/me/state", "GET");
+        
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            
+            yield return webRequest.SendWebRequest();
+            
+            if (webRequest.responseCode != (int)HttpStatusCode.OK)
+            {
+                WDebug.LogError($"Error polling matched info: {webRequest.error}");
+                yield break;
+                
+            }
+       
+            WDebug.Log("Matched info received.");
+            callback(webRequest.downloadHandler.text);
         }
         
         public IEnumerator RemoveFromQueue()
