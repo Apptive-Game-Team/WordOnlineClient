@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Script.Data;
 using Script.GameScene.Dto;
 using Script.Global;
@@ -111,33 +112,21 @@ namespace Script.LobbyScene
         public void PollMatchedInfo()
         {
             Debug.Log("Poll button clicked: Polling matched info.");
-            StartCoroutine(_matchQueueApi.PollMatchedInfo(json =>
+            StartCoroutine(StatusTracker.GetUserStatus(Handler));
+        }
+
+        private IEnumerator Handler(string state)
+        {
+            switch (state)
             {
-                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
-                switch (typeChecker.type)
-                {
-                    case "matchedInfoDto":
-                        Debug.Log("Practice match found: Transitioning to game scene.");
-                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                        OnMatched(matchedInfoDto);
-                        break;
-                    case "message":
-                        Debug.Log("Practice match message received.");
-                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
-                        if (messageDto.message.Contains("Not Matched"))
-                        {
-                            Debug.Log("Practice match in progress...");
-                        }
-                        else if (messageDto.message.Contains("Not In Queue"))
-                        {
-                            CurrentState.UpdateData(LobbyState.Idle);
-                        }
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
-                        break;
-                }
-            }));
+                case "Online":
+                    CurrentState.UpdateData(LobbyState.Idle);
+                    break;
+                case "OnPlaying":
+                    Debug.Log("User matched: Transitioning to game scene.");
+                    yield return StatusTracker.RecoverGameSession();
+                    break;
+            }
         }
 
         private void OnMatched(MatchedInfoDto matchedInfoDto)

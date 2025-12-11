@@ -24,27 +24,6 @@ namespace Script.LobbyScene
             sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/match/practice/me", callback);
             yield return null;
         }
-
-        public IEnumerator PollMatchedInfo(Action<string> callback)
-        {
-            using var webRequest = new UnityWebRequest($"{ServerList.MatchingServer.url}/api/match/queue/me/state", "GET");
-        
-            Server.SetAcceptLanguage(webRequest);
-            Server.SetAuthorization(webRequest);
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
-            
-            yield return webRequest.SendWebRequest();
-            
-            if (webRequest.responseCode != (int)HttpStatusCode.OK)
-            {
-                WDebug.LogError($"Error polling matched info: {webRequest.error}");
-                yield break;
-                
-            }
-       
-            WDebug.Log("Matched info received.");
-            callback(webRequest.downloadHandler.text);
-        }
         
         public IEnumerator RemoveFromQueue()
         {
