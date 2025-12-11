@@ -29,6 +29,11 @@ public static class StatusTracker
 
     public static IEnumerator GetUserStatus()
     {
+        return GetUserStatus(HandleUserStatus);
+    }
+    
+    public static IEnumerator GetUserStatus(Func<string, IEnumerator> handler)
+    {
         var url = ServerList.MatchingServer.url + "/api/users/mine/status";
 
         using var www = UnityWebRequest.Get(url);
@@ -59,7 +64,7 @@ public static class StatusTracker
 
         WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
 
-        yield return HandleUserStatus(dto.status);
+        yield return handler.Invoke(dto.status);
     }
 
     private static IEnumerator HandleUserStatus(string status)
@@ -83,7 +88,7 @@ public static class StatusTracker
         }
     }
     
-    private static IEnumerator RecoverGameSession()
+    public static IEnumerator RecoverGameSession()
     {
         var getSessionUrl = $"{ServerList.MatchingServer.url}/api/users/mine/match-info";
                 
