@@ -111,7 +111,7 @@ namespace Script.LobbyScene
         
         public void PollMatchedInfo()
         {
-            Debug.Log("Poll button clicked: Polling matched info.");
+            Debug.Log("Automatic polling: checking match status.");
             StartCoroutine(StatusTracker.GetUserStatus(Handler));
         }
 
