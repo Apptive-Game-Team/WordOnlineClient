@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: tutorial.no
     m_Metadata:
       m_Items: []
+  - m_Id: 17634470650839040
+    m_Key: tutorial.wordSpeech
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

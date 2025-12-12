@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CustomizeScene.unity
     guid: 87ad9e0aeaae87644b2213cd3dd0ef4b
+  - enabled: 1
+    path: Assets/Scenes/InteractiveTutorialScene.unity
+    guid: 9586e5fca72b64e8ab023b7582060628
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: d5ac7d2c0eb114acf823685c7079a8f7, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: cd2023339e910421c9fc21cab4d3e343, type: 2}
