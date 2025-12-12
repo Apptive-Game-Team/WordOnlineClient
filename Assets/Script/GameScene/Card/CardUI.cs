@@ -1,3 +1,4 @@
+using System;
 using Script.Data;
 using Script.Data.Localization;
 using Script.Data.Sound;
@@ -17,6 +18,8 @@ namespace Script.GameScene
         
         [SerializeField] private Sprite typeSprite;
         [SerializeField] private Sprite magicSprite;
+        [SerializeField] private Outline outline;
+        
         private void Awake()
         {
             cardSound = gameObject.GetComponent<AudioSource>();
@@ -31,6 +34,7 @@ namespace Script.GameScene
         private bool isActive = false;
     
         public string CardName;
+        public CardType CardType { get; private set; }
         public string DisplayName => cardNameText.text;
         public string Mana => cardManaText.text;
 
@@ -38,6 +42,7 @@ namespace Script.GameScene
         {
             CardName = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
+            CardType = Enum.Parse<CardType>(name, true);
             cardManaText.text = magicData.mana.ToString();
             switch (magicData.type)
             {
@@ -83,7 +88,11 @@ namespace Script.GameScene
         {
             Destroy(gameObject);
         }
-
+        public void SetHighlighted(bool on)
+        {
+            if (outline != null)
+                outline.enabled = on;
+        }
         public void OnPointerEnter(PointerEventData eventData)
         {
             CardUIZoom.Instance.Show(this);

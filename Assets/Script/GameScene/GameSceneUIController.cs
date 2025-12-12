@@ -29,6 +29,8 @@ public class GameSceneUIController : MonoBehaviour
 
     [SerializeField] private ExpectedMagicUI expectedMagicUI;
     
+    [SerializeField] private MagicHelperUI magicHelperUI;
+    
     [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
     [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
 
@@ -90,6 +92,7 @@ public class GameSceneUIController : MonoBehaviour
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname);
+        magicHelperUI.RefreshSuggestions();
     }
 
     public List<string> GetAllCards()
