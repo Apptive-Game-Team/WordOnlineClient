@@ -84,6 +84,14 @@ MonoBehaviour:
       each spell'
     m_Metadata:
       m_Items: []
+  - m_Id: 17619801198428160
+    m_Localized: Yay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17619899324170240
+    m_Localized: Nay
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

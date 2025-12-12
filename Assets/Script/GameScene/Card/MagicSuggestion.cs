@@ -28,7 +28,7 @@ namespace Script.Data
         {
             var list = GetAvailableByHand(hand);
             
-            list.Sort((a, b) => a.recipe.Count.CompareTo(b.recipe.Count)); // 재료 적은 순
+            list.Sort((a, b) => b.recipe.Count.CompareTo(a.recipe.Count));
 
             if (list.Count > count)
                 list.RemoveRange(count, list.Count - count);

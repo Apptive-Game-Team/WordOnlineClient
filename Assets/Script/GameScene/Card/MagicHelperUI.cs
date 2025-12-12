@@ -44,10 +44,13 @@ namespace Script.GameScene
         public void OnSuggestionClicked(CombinedMagicData data)
         {
             var handCards = handRoot.GetComponentsInChildren<CardUI>();
-            
+
             foreach (var card in handCards)
+            {
                 card.SetHighlighted(false);
-            
+                Debug.Log("OFF : " + card.CardName);
+            }
+                
             var need = new Dictionary<CardType, int>();
             foreach (var t in data.recipe)
             {
@@ -69,6 +72,7 @@ namespace Script.GameScene
                     continue;
 
                 card.SetHighlighted(true);
+                Debug.Log("ON : " + card.CardName);
                 used[type] = usedCount + 1;
             }
         }

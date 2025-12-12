@@ -1612,7 +1612,7 @@ MonoBehaviour:
   textSystemMsg: {fileID: 304404313}
   cardImageMapper: {fileID: 11400000, guid: 801779e6bc17149e683648b90569ac9e, type: 2}
   expectedMagicUI: {fileID: 70059385}
-  magicHelperUI: {fileID: 0}
+  magicHelperUI: {fileID: 6389242960862484227}
   leftUserMagicFailEffecter: {fileID: 1752788140}
   rightUserMagicFailEffecter: {fileID: 1377131383}
 --- !u!4 &983237233
@@ -4091,6 +4091,7 @@ GameObject:
   - component: {fileID: 5988700167432777773}
   - component: {fileID: 6389242960862484226}
   - component: {fileID: 6389242960862484227}
+  - component: {fileID: 6389242960862484228}
   m_Layer: 0
   m_Name: MagicHelper
   m_TagString: Untagged
@@ -4270,6 +4271,30 @@ MonoBehaviour:
   handRoot: {fileID: 447655976}
   suggestionRoot: {fileID: 5988700167432777773}
   suggestionItemPrefab: {fileID: 1378805479182352352, guid: 278c679ed8cc9224a86288100ab2e713, type: 3}
+--- !u!114 &6389242960862484228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2805307238498667672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 400, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
