@@ -83,12 +83,14 @@ public class GameSceneUIController : MonoBehaviour
 
     public void UpdateMana(int mana)
     {
+        if (manaText == null || manaSlider == null) return;
         manaText.text = mana.ToString();
         manaSlider.value = mana;
     }
 
     public void AddCard(string cardname)
     {
+        if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null) return;
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname);
@@ -107,6 +109,7 @@ public class GameSceneUIController : MonoBehaviour
 
     public void TrySetExpectedMagicUI(IList<CardType> recipe)
     {
+        if (expectedMagicUI == null) return;
         CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
         if (data != null)
         {
