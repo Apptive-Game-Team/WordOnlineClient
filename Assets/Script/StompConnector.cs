@@ -115,7 +115,6 @@ public class StompConnector : LocalSingletonObject<StompConnector>
         }
 
         UnsubscribeFromTopic("match-sub");
-        SubscribeToTopic($"/game/{sessionId}/frameInfos/{SceneContext.UserID}", "OnFrameInfoReceived", "frame-sub");
         long userId = isSpectator ? 0 : SceneContext.UserID;
         SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", "OnFrameInfoReceived", "frame-sub");
         yield return null;
