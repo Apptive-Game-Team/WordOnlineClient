@@ -1,3 +1,4 @@
+using Script.Admin.Dto;
 using Script.Data;
 
 [System.Serializable]
@@ -22,5 +23,18 @@ public class MatchedInfoDto
             rightUser = new User(userIdRight, "debugger_right", "debugger_right@team6515.com", -1),
             sessionId = sessionId
         };
+    }
+
+    public static MatchedInfoDto CreateSpectatingSession(RoomInfo roomInfo)
+    {
+        return new MatchedInfoDto
+        {
+            message = "spectating session",
+            server = roomInfo.serverUrl,
+            leftUser = new User(roomInfo.leftUserId, "debugger_left", "debugger_left@team6515.com", -1),
+            rightUser = new User(roomInfo.rightUserId, "debugger_right", "debugger_right@team6515.com", -1),
+            sessionId = roomInfo.sessionId
+        };
+
     }
 }
