@@ -538,6 +538,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SystemMessageUI
       objectReference: {fileID: 0}
+    - target: {fileID: 579430591620087404, guid: 44b9d206afcf4054f8eb9942497571f2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7112699137482991874, guid: 44b9d206afcf4054f8eb9942497571f2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
