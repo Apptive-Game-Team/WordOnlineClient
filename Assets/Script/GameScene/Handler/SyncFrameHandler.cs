@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Script.GameScene.Dto;
 using Script.GameScene.Object;
+using Script.Global;
 
 namespace Script.GameScene.Handler
 {
@@ -15,10 +16,17 @@ namespace Script.GameScene.Handler
             GameSceneUIController.Instance.UpdateUserHps(syncFrameInfo.leftPlayerHp, syncFrameInfo.rightPlayerHp);
             
             // // 카드 추가
-            List<string> existedCards = GameSceneUIController.Instance.GetAllCards();
-            List<string> cardData = syncFrameInfo.snapshotResponseDto.myCards.ToList<string>();
-            existedCards.ForEach(x => cardData.Remove(x));
-            cardData.ForEach(x => GameSceneUIController.Instance.AddCard(x));
+            try
+            {
+                List<string> existedCards = GameSceneUIController.Instance.GetAllCards();
+                List<string> cardData = syncFrameInfo.snapshotResponseDto.myCards.ToList<string>();
+                existedCards.ForEach(x => cardData.Remove(x));
+                cardData.ForEach(x => GameSceneUIController.Instance.AddCard(x));
+            }
+            catch
+            {
+                WDebug.Log("[SyncFrameHandler] 카드 추가 중 오류 발생");
+            }
  
             // 동기화
             ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects);
