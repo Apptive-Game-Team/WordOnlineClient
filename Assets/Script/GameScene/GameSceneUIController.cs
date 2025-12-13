@@ -21,8 +21,7 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private GameObject lowerBar;
-
-    [SerializeField] private GameObject textObject;
+    
     [SerializeField] private TextMeshProUGUI textSystemMsg;
 
     [SerializeField] private CardImageMapper cardImageMapper;
@@ -33,12 +32,6 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
     [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
-
-    public IEnumerator SetTimer(float time)
-    {
-        yield return new WaitForSeconds(time);
-        textObject.SetActive(false);
-    }
     
     private void Awake()
     {
