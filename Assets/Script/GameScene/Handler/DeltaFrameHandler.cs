@@ -1,5 +1,4 @@
 using Script.GameScene.Object;
-using Script.Global;
 
 namespace Script.GameScene.Handler
 {
