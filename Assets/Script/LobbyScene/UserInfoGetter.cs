@@ -24,7 +24,7 @@ public class UserInfoGetter
                 yield break;
             }
             
-            accountUser =JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
+            accountUser = JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
         }
         
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
@@ -44,25 +44,5 @@ public class UserInfoGetter
         }
 
         SceneContext.User = new User(accountUser, gameUser);
-    }
-    
-    
-    public static IEnumerator GetUserStatus()
-    {
-        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
-        {
-            Server.SetAcceptLanguage(webRequest);
-            Server.SetAuthorization(webRequest);
-            
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
-            yield return webRequest.SendWebRequest();
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                WDebug.LogError("Error: " + webRequest.error);
-                yield break;
-            }
-            
-            SceneContext.User = JsonUtility.FromJson<User>(webRequest.downloadHandler.text);
-        }
     }
 }
