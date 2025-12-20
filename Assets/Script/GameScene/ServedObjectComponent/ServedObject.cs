@@ -29,6 +29,7 @@ namespace Script.GameScene
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
         public Action OnAttack;
+        public Action OnDamaged;
 
         private int lastHp = 0;
 
@@ -69,20 +70,35 @@ namespace Script.GameScene
             
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
-            if (updatedObjectDto.status.Equals("Destroyed"))
-            {
-                DestroySelf(FRAME_DURATION);
-            }
-            else if (updatedObjectDto.status.Equals("Attack"))
-            {
-                //feedback_ATTACK
-                OnAttack?.Invoke();
-                DOTweenAction.SwingMobAttack(GetActualTransform());
-            }
-            else
+
+            HandleStatus(updatedObjectDto.status);
+            
             // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
             HandleDamageEffect();
+        }
+
+        private void HandleStatus(string status)
+        {
+            switch (status)
+            {
+                case "Destroyed":
+                    DestroySelf(FRAME_DURATION);
+                    break;
+
+                case "Attack":
+                    OnAttack?.Invoke();
+                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    break;
+
+                case "Damaged":
+                    OnDamaged?.Invoke();
+                    break;
+
+                default:
+                    Debug.LogWarning($"Unknown status received: {status}");
+                    break;
+            }
         }
 
         private void UpdatePosition(UpdatedObjectDto updatedObjectDto)
