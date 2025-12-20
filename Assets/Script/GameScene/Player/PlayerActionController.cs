@@ -13,6 +13,10 @@ namespace Script.GameScene.Player
     
         private void Start()
         {
+            if (servedObject.GetMaster().Equals(SceneContext.Me))
+            {
+                Destroy(this);
+            }
             Init();
             servedObject.OnOtherStatus += OnOtherStatus;
             servedObject.OnAttack += OnAttack;
