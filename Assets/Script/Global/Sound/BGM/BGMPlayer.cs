@@ -31,6 +31,7 @@ namespace Script.Global.Sound.BGM
         {
             var bgmClipContainer = FindObjectOfType<BGMClipContainer>();
             var audioSource = GetComponent<AudioSource>();
+            audioSource.pitch = 1.0f;
             if (bgmClipContainer != null)
             {
                 AudioClip audioClip = bgmClipContainer.GetBGMClip();
@@ -44,6 +45,12 @@ namespace Script.Global.Sound.BGM
             {
                 audioSource.Stop();
             }
+        }
+        
+        public void SetPitch(float pitch)
+        {
+            var audioSource = GetComponent<AudioSource>();
+            audioSource.pitch = pitch;
         }
     }
 }
