@@ -30,6 +30,7 @@ namespace Script.GameScene
 
         public event Action OnAttack;
         public event Action OnDamaged;
+        public event Action<string> OnOtherStatus;
 
         private int lastHp = 0;
 
@@ -62,6 +63,11 @@ namespace Script.GameScene
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
+        }
+        
+        public string GetMaster()
+        {
+            return master;
         }
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
@@ -96,7 +102,7 @@ namespace Script.GameScene
                     break;
 
                 default:
-                    Debug.LogWarning($"Unknown status received: {status}");
+                    OnOtherStatus?.Invoke(status);
                     break;
             }
         }
