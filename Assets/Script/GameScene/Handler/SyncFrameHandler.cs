@@ -4,7 +4,6 @@ using Script.GameScene.Dto;
 using Script.GameScene.Object;
 using Script.GameScene.UI;
 using Script.Global;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 namespace Script.GameScene.Handler
 {
