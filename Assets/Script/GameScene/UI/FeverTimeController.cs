@@ -6,17 +6,33 @@ namespace Script.GameScene.UI
 {
     public class FeverTimeController : MonoBehaviour
     {
+        private static readonly int FeverTime = 30;
         
         [SerializeField] private GameObject feverTimeEffect;
         
         private bool isFeverTime = false;
-
-        public void StartFeverTime()
+        
+        private void Start()
+        {
+            TimerController.Instance.OnTimeUpdated += CheckFeverTime;
+            feverTimeEffect.SetActive(false);
+        }
+        
+        private void OnDestroy()
+        {
+            TimerController.Instance.OnTimeUpdated -= CheckFeverTime;
+            BGMPlayer.Instance.SetPitch(1.0f);
+        }
+        
+        public void CheckFeverTime(int remainingTime)
         {
             if (isFeverTime) return;
-            isFeverTime = true;
+            if (remainingTime <= FeverTime)
+            {
+                isFeverTime = true;
 
-            OnFeverTimeStart();
+                OnFeverTimeStart();
+            };
         }
 
         private void OnFeverTimeStart()
@@ -31,11 +47,6 @@ namespace Script.GameScene.UI
                         .SetDelay(1f)
                         .OnComplete(() => feverTimeEffect.SetActive(false)));
             Destroy(gameObject, 3);
-        }
-
-        private void OnDestroy()
-        {
-            BGMPlayer.Instance.SetPitch(1.0f);
         }
     }
 }
