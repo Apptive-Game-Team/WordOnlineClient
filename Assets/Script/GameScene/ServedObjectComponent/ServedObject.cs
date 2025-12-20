@@ -28,7 +28,9 @@ namespace Script.GameScene
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
-        public Action OnAttack;
+        public event Action OnAttack;
+        public event Action OnDamaged;
+        public event Action<string> OnOtherStatus;
 
         private int lastHp = 0;
 
@@ -62,6 +64,11 @@ namespace Script.GameScene
                 gameObject.transform.Rotate(0, 180, 0);
             }
         }
+        
+        public string GetMaster()
+        {
+            return master;
+        }
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
@@ -69,20 +76,35 @@ namespace Script.GameScene
             
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
-            if (updatedObjectDto.status.Equals("Destroyed"))
-            {
-                DestroySelf(FRAME_DURATION);
-            }
-            else if (updatedObjectDto.status.Equals("Attack"))
-            {
-                //feedback_ATTACK
-                OnAttack?.Invoke();
-                DOTweenAction.SwingMobAttack(GetActualTransform());
-            }
-            else
+
+            HandleStatus(updatedObjectDto.status);
+            
             // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
             HandleDamageEffect();
+        }
+
+        private void HandleStatus(string status)
+        {
+            switch (status)
+            {
+                case "Destroyed":
+                    DestroySelf(FRAME_DURATION);
+                    break;
+
+                case "Attack":
+                    OnAttack?.Invoke();
+                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    break;
+
+                case "Damaged":
+                    OnDamaged?.Invoke();
+                    break;
+
+                default:
+                    OnOtherStatus?.Invoke(status);
+                    break;
+            }
         }
 
         private void UpdatePosition(UpdatedObjectDto updatedObjectDto)

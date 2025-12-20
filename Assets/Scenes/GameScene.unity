@@ -1474,7 +1474,6 @@ MonoBehaviour:
   rightUserHpSlider: {fileID: 1297491975}
   cardUIPrefab: {fileID: 892263666564006026, guid: 95f1db2819f38d2488ceb29a0e1253d6, type: 3}
   lowerBar: {fileID: 447655975}
-  textObject: {fileID: 0}
   textSystemMsg: {fileID: 0}
   cardImageMapper: {fileID: 11400000, guid: 801779e6bc17149e683648b90569ac9e, type: 2}
   expectedMagicUI: {fileID: 70059385}
