@@ -37,7 +37,7 @@ namespace Script.GameScene.UI
 
         private void OnFeverTimeStart()
         {
-            BGMPlayer.Instance.SetPitch(1.5f);
+            BGMPlayer.Instance.SetPitch(2f);
             feverTimeEffect.SetActive(true);
             feverTimeEffect.transform.localScale = Vector3.zero;
             feverTimeEffect.transform.DOScale(1f, 0.5f)
