@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Script.GameScene.Dto;
 using Script.GameScene.Object;
+using Script.GameScene.UI;
 using Script.Global;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 namespace Script.GameScene.Handler
 {
@@ -30,6 +32,8 @@ namespace Script.GameScene.Handler
  
             // 동기화
             ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects);
+            
+            TimerController.Instance.UpdateTimer(syncFrameInfo.remainingTime);
         }
     }
 }
