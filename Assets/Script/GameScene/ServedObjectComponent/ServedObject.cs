@@ -28,8 +28,8 @@ namespace Script.GameScene
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
-        public Action OnAttack;
-        public Action OnDamaged;
+        public event Action OnAttack;
+        public event Action OnDamaged;
 
         private int lastHp = 0;
 
