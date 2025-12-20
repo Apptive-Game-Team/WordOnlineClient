@@ -1,6 +1,7 @@
 using Script.Data.Sound;
 using Script.GameScene.Exception;
 using Script.Global;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Script.GameScene.Object
@@ -8,51 +9,15 @@ namespace Script.GameScene.Object
     public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {
         
-        // private void Start()
-        // {
-        //     SpawnObject(new CreatedObjectDto
-        //     {
-        //         id = 0,
-        //         master = "None",
-        //         position = new Vector3(3, 3, 0),
-        //         type = "Player"
-        //     });
-        // }
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
             WDebug.Log($"Spawning object: {createdObjectDto.type}, id: {createdObjectDto.id}");
-            Vector3 position = new Vector3(
-                createdObjectDto.position.x, 
-                createdObjectDto.position.y, 
-                createdObjectDto.position.z);
-            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
-            GameObject spawnedObject;
+           
+            GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
-            WDebug.Log($"Spawning object: {createdObjectDto.type}, prefab found: {prefab != null}");
+            ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             
-            if (!prefab)
-            {
-                spawnedObject = new GameObject(createdObjectDto.type);
-                spawnedObject.transform.position = position;
-            }
-            else 
-            {
-                spawnedObject = Instantiate(prefab, position, prefab.transform.rotation);
-            }
-            
-            WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {position}");
-            
-            ServedObject servedObject = spawnedObject.AddComponent<ServedObject>();
-            AudioSource[] audioSource = spawnedObject.GetComponentsInChildren<AudioSource>();
-            if (audioSource.Length > 0)
-            {
-                foreach (var source in audioSource)
-                {
-                    source.volume = source.volume * SoundData.gameVolume / 100f;;
-                }
-            }
-            
-            WDebug.Log($"Spawned object: {spawnedObject}, audio sources set: {audioSource.Length}");
+            SetAudioSourceVolume(spawnedObject);
             
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
@@ -66,8 +31,37 @@ namespace Script.GameScene.Object
                 WDebug.LogError($"Failed to register object: {e.Message}");
                 Destroy(spawnedObject);
             }
+        }
+        
+        private void SetAudioSourceVolume(GameObject obj)
+        {
+            AudioSource[] audioSources = obj.GetComponentsInChildren<AudioSource>();
+            foreach (var source in audioSources)
+            {
+                source.volume = source.volume * SoundData.gameVolume / 100f;
+            }
+            WDebug.Log($"Spawned object: {obj}, audio sources set: {audioSources.Length}");
+        }
+
+        private GameObject InstantiateGameObject(CreatedObjectDto createdObjectDto)
+        {
+            GameObject spawnedObject;
+            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}");
             
-            WDebug.Log($"Spawned object: {createdObjectDto.type}, id: {createdObjectDto.id} at position {position}");
+            WDebug.Log($"Spawning object: {createdObjectDto.type}, prefab found: {prefab != null}");
+            
+            if (!prefab)
+            {
+                spawnedObject = new GameObject(createdObjectDto.type);
+                spawnedObject.transform.position = createdObjectDto.position;
+            }
+            else 
+            {
+                spawnedObject = Instantiate(prefab, createdObjectDto.position, prefab.transform.rotation);
+            }
+            
+            WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {createdObjectDto.position}");
+            return spawnedObject;
         }
     }
 }
