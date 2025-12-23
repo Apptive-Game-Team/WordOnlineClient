@@ -6,6 +6,18 @@ using Sequence = DG.Tweening.Sequence;
 
 public static class DOTweenAction
 {
+    public struct WaddleParameters
+    {
+        public float tiltAngle;
+        public float duration;
+    }
+    
+    public struct HopParameters
+    {
+        public float jumpHeight;
+        public float duration;
+    }
+    
     public struct BounceParameters
     {
         public Vector3 originScale;
@@ -24,6 +36,18 @@ public static class DOTweenAction
         public float zDistance;
         public float duration;
     }
+    
+    private static WaddleParameters _bigMobWaddleParam = new WaddleParameters
+    {
+        tiltAngle = 5f,
+        duration  = 3f
+    };
+    
+    private static HopParameters _mobHopParam = new HopParameters
+    {
+        jumpHeight = 0.5f,
+        duration   = 0.5f
+    };
     
     private static BounceParameters _mobBounceParam = new BounceParameters
     {
@@ -63,6 +87,25 @@ public static class DOTweenAction
         zDistance = 0.5f,
         duration = 1f
     };
+    
+    public static void Waddle(Transform tr, float tiltAngle, float duration)
+    {
+        tr.localRotation = Quaternion.identity;
+        
+        tr.DOLocalRotate(new Vector3(0, 0, tiltAngle), duration * 0.5f)
+            .From(new Vector3(0, 0, -tiltAngle)) 
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine)
+            .SetUpdate(true);
+    }
+
+    public static void Hop(Transform tr, float jumpHeight, float duration)
+    {
+        tr.DOLocalMoveZ(jumpHeight, duration)
+            .SetRelative(true)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.OutQuad);
+    }
     
     public static void Bounce(Transform tr, Vector3 originScale, float squashScale, float bounceScale, float duration)
     {
@@ -135,6 +178,7 @@ public static class DOTweenAction
                 .SetEase(Ease.InBack))
             .OnComplete(() => onComplete?.Invoke());
     }
+    
     public static void PopIn(Transform tr, float duration = 0.5f, Action onComplete = null)
     {
         tr.localScale = Vector3.zero;
@@ -151,6 +195,21 @@ public static class DOTweenAction
 
         seq.Append(tr.DOScale(Vector3.zero, duration))
             .OnComplete(() => onComplete?.Invoke());
+    }
+    
+    public static void WaddleBigMob(Transform tr)
+    {
+        Waddle(tr, _bigMobWaddleParam.tiltAngle, _bigMobWaddleParam.duration);
+    }
+    
+    public static void HopMob(Transform tr, float duration)
+    {
+        Hop(tr, _mobHopParam.jumpHeight, duration);
+    }
+    
+    public static void HopMob(Transform tr)
+    {
+        Hop(tr, _mobHopParam.jumpHeight, _mobHopParam.duration);
     }
 
     public static void BounceMob(Transform tr)
