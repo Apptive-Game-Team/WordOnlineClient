@@ -18,6 +18,7 @@ namespace Script.GameScene
         private const float FRAME_DURATION = 0.05f;
 
         private Vector3 originalScale;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         private Transform _actualTransform = null;
         public int id;
         private GameObject _effectInstance = null;
@@ -31,6 +32,8 @@ namespace Script.GameScene
         public event Action OnAttack;
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
+        public event Action OnDestroyed;
+        public event Action<int> OnHpChanged;
 
         private int lastHp = 0;
 
@@ -42,23 +45,22 @@ namespace Script.GameScene
         public void SetMaster(string master)
         {
             this.master = master;
-            SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
             
-            if (renderer == null)
+            if (_spriteRenderer == null)
             {
                 return;
             }
             
             if (!SceneContext.Me.Equals(master) && master != "None")
             {
-                renderer.color = new Color(1f, 0.5f, 0.5f, 1f);
+                _spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 1f);
             }
             
             if (master.Equals("RightPlayer"))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
-                    renderer.flipX = true;
+                    _spriteRenderer.flipX = true;
                     return;
                 }
                 gameObject.transform.Rotate(0, 180, 0);
@@ -73,7 +75,11 @@ namespace Script.GameScene
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
             UpdatePosition(updatedObjectDto);
-            
+
+            if (hp != updatedObjectDto.hp)
+            {
+                OnHpChanged?.Invoke(updatedObjectDto.hp);
+            }
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
 
@@ -187,6 +193,7 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
+            OnDestroyed?.Invoke();
             ObjectContainer.Instance.UnregisterObject(id);
         }
         
@@ -198,7 +205,7 @@ namespace Script.GameScene
         private IEnumerator DelayedDestroySelfCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            ObjectContainer.Instance.UnregisterObject(id);
+            DestroySelf();
         }
     }
 }

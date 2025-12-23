@@ -1,5 +1,3 @@
-using UnityEngine.SceneManagement;
-
 namespace Script.GameScene.Handler
 {
     public class ResultHandler : IFrameInfoHandler<ResultInfo>
@@ -7,7 +5,7 @@ namespace Script.GameScene.Handler
         public void Handler(ResultInfo data)
         {
             SceneContext.MatchResult = data;
-            SceneManager.LoadScene("ResultScene");
+            GameEndEventController.Instance.TriggerGameEnd();
         }
     }
 }

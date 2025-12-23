@@ -21,7 +21,6 @@ namespace Script.GameScene.UI
         private void OnDestroy()
         {
             TimerController.Instance.OnTimeUpdated -= CheckFeverTime;
-            BGMPlayer.Instance.SetPitch(1.0f);
         }
         
         public void CheckFeverTime(int remainingTime)

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2669417283129473337}
   - component: {fileID: 5283255560866415773}
   - component: {fileID: 310021187152718444}
+  - component: {fileID: 1293051082466908419}
   m_Layer: 0
   m_Name: AbstractShot
   m_TagString: Untagged
@@ -160,6 +161,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualGameObject: {fileID: 5745790288218242455}
   ShadowSpriteRenderer: {fileID: 1711364869096585375}
+--- !u!114 &1293051082466908419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468314681180972983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 7077577480859934061}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &5745790288218242455
 GameObject:
   m_ObjectHideFlags: 0

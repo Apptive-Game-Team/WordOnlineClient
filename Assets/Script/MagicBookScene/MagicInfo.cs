@@ -16,7 +16,7 @@ namespace Script.MagicBookScene
         
         [SerializeField] private CardImageMapper mapper;
 
-        public async void Init(CombinedMagicData data)
+        public void Init(CombinedMagicData data)
         {
             magicImage.sprite = data.GetSprite();
             foreach (Transform child in cardsParent)

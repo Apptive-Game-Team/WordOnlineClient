@@ -84,19 +84,18 @@ public class CustomizeSceneController : MonoBehaviour
 
     private IEnumerator EquipAndRefresh(DecorationData meta)
     {
-        bool done = false;
         bool success = false;
 
         yield return StartCoroutine(apiClient.EquipDecoration(meta.decorationId,
             () =>
             {
                 success = true;
-                done = true;
+                _ = true;
             },
             err =>
             {
                 Debug.LogError("EquipDecoration failed: " + err);
-                done = true;
+                _ = true;
             }));
 
         if (!success) yield break;

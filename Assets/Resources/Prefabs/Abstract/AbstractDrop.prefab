@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 3650954007380220348}
   - component: {fileID: 6849814405744498250}
   - component: {fileID: 1623593914299506320}
+  - component: {fileID: 1088561502640704175}
   m_Layer: 0
   m_Name: AbstractDrop
   m_TagString: Untagged
@@ -208,6 +209,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6630687504928479194, guid: 8d2ff5932544147bab8e9fb89bdb9269, type: 3}
+--- !u!114 &1088561502640704175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4705269614485497549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8896401521967180672}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &8708951248655445820
 GameObject:
   m_ObjectHideFlags: 0
