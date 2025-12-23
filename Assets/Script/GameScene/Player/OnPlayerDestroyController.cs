@@ -1,3 +1,4 @@
+using Script.Global;
 using UnityEngine;
 
 namespace Script.GameScene.Player
@@ -6,30 +7,15 @@ namespace Script.GameScene.Player
     {
         [SerializeField] private ServedObject servedObject;
         
-        private void Start()
-        {
-            servedObject.OnHpChanged += OnHpChanged;
-            servedObject.OnDestroyed += FallPlayer;
-        }
-        
         private void OnDestroy()
         {
-            servedObject.OnHpChanged -= OnHpChanged;
-            servedObject.OnDestroyed -= FallPlayer;
-        }
-
-        private void OnHpChanged(int hp)
-        {
-            if (hp <= 0)
-            {
-                FallPlayer();
-            }
+            WDebug.Log("OnPlayerDestroyController OnDestroy");
+            FallPlayer();
         }
 
         private void FallPlayer()
         {
-            Transform player = GetPlayerObject().transform.Find("PlayerObject");
-            DOTweenAction.FallForward(player, 1.0f);
+            GetPlayerObject().GetComponentInChildren<PlayerFallDownController>().FallDown();
         }
         
         private GameObject GetPlayerObject()
