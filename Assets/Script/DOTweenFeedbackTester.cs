@@ -73,5 +73,9 @@ public class DOTweenFeedbackTester : MonoBehaviour
         {
             DOTweenAction.SwingStormIdle(storm.transform);
         }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            DOTweenAction.FallForward(playerObj.transform, 1f);
+        }
     }
 }
