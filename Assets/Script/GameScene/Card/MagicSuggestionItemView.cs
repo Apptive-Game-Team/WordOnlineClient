@@ -8,7 +8,6 @@ namespace Script.GameScene
     public class MagicSuggestionItemView : MonoBehaviour
     {
         [SerializeField] private Image iconImage;
-        [SerializeField] private TextMeshProUGUI nameText;
 
         private CombinedMagicData _data;
         private MagicHelperUI _helper;
@@ -17,9 +16,6 @@ namespace Script.GameScene
         {
             _data = data;
             _helper = helper;
-
-            if (nameText != null)
-                nameText.text = data.magicName; 
 
             if (iconImage != null)
                 iconImage.sprite = data.GetSprite();
