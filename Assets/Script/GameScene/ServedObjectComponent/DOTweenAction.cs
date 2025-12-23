@@ -87,7 +87,17 @@ public static class DOTweenAction
         zDistance = 0.5f,
         duration = 1f
     };
-    
+
+    public static void FallForward(Transform tr, float duration)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.1f);
+        seq.Append(tr.DOLocalRotate(new Vector3(0, 0, 90), duration).SetEase(Ease.InQuad));
+        seq.Join(tr.DOLocalMoveZ(-0.5f, duration).SetRelative(true).SetEase(Ease.InQuad));
+        seq.Append(tr.DOScale(new Vector3(1.3f, 0.7f, 1f), 0.2f).SetEase(Ease.OutQuad));
+        seq.Append(tr.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic));
+    }
+
     public static void Waddle(Transform tr, float tiltAngle, float duration)
     {
         tr.localRotation = Quaternion.identity;
