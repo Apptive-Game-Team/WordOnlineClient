@@ -1,65 +1,89 @@
+using System;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 using Script.Global;
 using UnityEngine.Localization;
 
 public class SystemMessageUI : LocalSingletonObject<SystemMessageUI>
 {
     [SerializeField] private TMP_Text messageText;
+    [SerializeField] private GameObject messagePanel;
     [SerializeField] private float duration = 5f; 
     [SerializeField] private float replaceDelay = 1f; 
 
-    private string currentMessage = "";
-    private Coroutine displayRoutine;
-    private Coroutine replaceRoutine;
+    private static Queue<string> messageQueue = new Queue<string>();
+    private Coroutine messageRoutine;
 
     protected override void Awake()
     {
         base.Awake();
-        messageText.transform.parent.gameObject.SetActive(false);
+        if (messagePanel == null)
+            messagePanel = messageText.transform.parent.gameObject;
+            
+        messagePanel.SetActive(false);
     }
 
-    public void ShowMessage(LocalizedString localizedString)
+    private void Start()
+    {
+        if (messageQueue.Count > 0 && messageRoutine == null)
+        {
+            messageRoutine = StartCoroutine(ProcessMessageQueue());
+        }
+    }
+
+    public void ShowMessage(LocalizedString localizedString, Action callback = null)
     {
         localizedString.GetLocalizedStringAsync().Completed += handle =>
         {
-            ShowMessage(handle.Result);
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                ShowMessage(handle.Result);
+            }
+            callback?.Invoke();
         };
     }
     
     public void ShowMessage(string msg)
     {
-        if (msg == currentMessage) return;
-        
-        if (displayRoutine != null)
+        messageQueue.Enqueue(msg);
+
+        if (messageRoutine == null)
         {
-            if (replaceRoutine != null) StopCoroutine(replaceRoutine);
-            replaceRoutine = StartCoroutine(ReplaceAfterDelay(msg));
-        }
-        else
-        {
-            displayRoutine = StartCoroutine(DisplayMessage(msg));
+            messageRoutine = StartCoroutine(ProcessMessageQueue());
         }
     }
 
-    private IEnumerator ReplaceAfterDelay(string msg)
+    private IEnumerator ProcessMessageQueue()
     {
-        yield return new WaitForSeconds(replaceDelay);
-        StopCoroutine(displayRoutine);
-        displayRoutine = StartCoroutine(DisplayMessage(msg));
-    }
+        while (messageQueue.Count > 0)
+        {
+            string msg = messageQueue.Peek();
+            
+            messageText.text = msg;
+            messagePanel.SetActive(true);
 
-    private IEnumerator DisplayMessage(string msg)
-    {
-        currentMessage = msg;
-        messageText.text = msg;
-        messageText.transform.parent.gameObject.SetActive(true);
+            float timer = 0f;
+            float currentDuration = duration;
 
-        yield return new WaitForSeconds(duration);
+            while (timer < currentDuration)
+            {
+                timer += Time.deltaTime;
+                
+                if (messageQueue.Count > 1 && timer >= replaceDelay)
+                {
+                    break; 
+                }
+                
+                yield return null;
+            }
+            
+            messageQueue.Dequeue();
+        }
 
-        messageText.transform.parent.gameObject.SetActive(false);
-        currentMessage = "";
-        displayRoutine = null;
+        messagePanel.SetActive(false);
+        messageText.text = "";
+        messageRoutine = null;
     }
 }

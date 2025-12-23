@@ -1,13 +1,8 @@
 using Script.Data;
 using Script.Global;
-using UnityEngine;
 
-public class SceneContext : MonoBehaviour
+public class SceneContext : SingletonObject<SceneContext>
 {
-    public static SceneContext Instance { 
-        get; 
-        private set; 
-    }
     
     public static string JwtToken
     {
@@ -67,17 +62,6 @@ public class SceneContext : MonoBehaviour
         get; set;
     }
     
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-    
     public static void ClearContext()
     {
         JwtToken = null;
@@ -86,5 +70,6 @@ public class SceneContext : MonoBehaviour
         MatchResult = null;
         SelectedDeck = null;
         OwnedCards = null;
+        GuestContext.ClearGuestInfo();
     }
 }
