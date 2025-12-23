@@ -32,6 +32,7 @@ namespace Script.GameScene
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
+        public event Action<int> OnHpChanged;
 
         private int lastHp = 0;
 
@@ -74,7 +75,11 @@ namespace Script.GameScene
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
             UpdatePosition(updatedObjectDto);
-            
+
+            if (hp != updatedObjectDto.hp)
+            {
+                OnHpChanged?.Invoke(updatedObjectDto.hp);
+            }
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
 

@@ -5,15 +5,25 @@ namespace Script.GameScene.Player
     public class OnPlayerDestroyController : MonoBehaviour
     {
         [SerializeField] private ServedObject servedObject;
-
+        
         private void Start()
         {
+            servedObject.OnHpChanged += OnHpChanged;
             servedObject.OnDestroyed += FallPlayer;
         }
         
         private void OnDestroy()
         {
+            servedObject.OnHpChanged -= OnHpChanged;
             servedObject.OnDestroyed -= FallPlayer;
+        }
+
+        private void OnHpChanged(int hp)
+        {
+            if (hp <= 0)
+            {
+                FallPlayer();
+            }
         }
 
         private void FallPlayer()
