@@ -31,6 +31,7 @@ namespace Script.GameScene
         public event Action OnAttack;
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
+        public event Action OnDestroyed;
 
         private int lastHp = 0;
 
@@ -187,6 +188,7 @@ namespace Script.GameScene
 
         public void DestroySelf()
         {
+            OnDestroyed?.Invoke();
             ObjectContainer.Instance.UnregisterObject(id);
         }
         
@@ -198,7 +200,7 @@ namespace Script.GameScene
         private IEnumerator DelayedDestroySelfCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            ObjectContainer.Instance.UnregisterObject(id);
+            DestroySelf();
         }
     }
 }
