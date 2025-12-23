@@ -2,6 +2,7 @@ using System.Collections;
 using Script.Data;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace Script.LobbyScene.SettingPage
 
     public class GuestRegisterButton : AsyncButtonBase
     {
+        [SerializeField] private LocalizedString registrationSuccessMessage;
         [SerializeField] private InputField nameInputField;
         [SerializeField] private InputField emailInputField;
         [SerializeField] private InputField passwordInputField;
@@ -41,8 +43,10 @@ namespace Script.LobbyScene.SettingPage
             WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
             SceneContext.ClearContext();
-            
-            SceneManager.LoadScene("LoginScene");
+            SystemMessageUI.Instance.ShowMessage(registrationSuccessMessage, () =>
+            {
+                SceneManager.LoadScene("LoginScene");
+            });
         }
 
         protected override void OnClickButton()
