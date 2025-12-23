@@ -39,8 +39,10 @@ namespace Script.LobbyScene.SettingPage
             }
                 
             WDebug.Log("Response: " + webRequest.downloadHandler.text);
-                        
-            SceneManager.LoadScene("LobbyScene");
+            
+            SceneContext.ClearContext();
+            
+            SceneManager.LoadScene("LoginScene");
         }
 
         protected override void OnClickButton()
