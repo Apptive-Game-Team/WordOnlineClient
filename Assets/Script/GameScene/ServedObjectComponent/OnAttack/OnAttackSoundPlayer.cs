@@ -24,7 +24,10 @@ namespace Script.GameScene.ServedObjectComponent.OnAttack
 
         private void OnDestroy()
         {
-            servedObject.OnAttack -= PlayAttackSound;
+            if (servedObject != null) 
+            {
+                servedObject.OnAttack -= PlayAttackSound;
+            }
         }
     }
 }

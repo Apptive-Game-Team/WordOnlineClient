@@ -19,6 +19,11 @@ namespace Script.GameScene.Object.Projectile
                     break;
                 case "reference":
                     ServedObject targetObject = ObjectContainer.Instance.FindById(projectileDto.end.id);
+                    if (targetObject == null)
+                    {
+                        Destroy(gameObject);
+                        return;
+                    }
                     MoveTo(targetObject.transform, projectileDto.duration);
                     break;
             }
