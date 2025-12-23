@@ -27,7 +27,7 @@ public class QueueLengthIndicator : MonoBehaviour
         while (true)
         {
             yield return FetchQueueLength();
-            yield return new WaitForSeconds(30f);
+            yield return new WaitForSeconds(11f);
         }
     }
     
