@@ -45,7 +45,7 @@ public static class DOTweenAction
     
     private static HopParameters _mobHopParam = new HopParameters
     {
-        jumpHeight = 0.5f,
+        jumpHeight = 0.2f,
         duration   = 0.5f
     };
     
@@ -111,7 +111,7 @@ public static class DOTweenAction
 
     public static void Hop(Transform tr, float jumpHeight, float duration)
     {
-        tr.DOLocalMoveZ(jumpHeight, duration)
+        tr.DOLocalMoveY(jumpHeight, duration)
             .SetRelative(true)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.OutQuad);
