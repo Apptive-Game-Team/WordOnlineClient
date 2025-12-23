@@ -1,4 +1,3 @@
-using Script.Data;
 using Script.GameScene;
 using UnityEngine;
 
@@ -17,7 +16,6 @@ public class CardUIZoom : MonoBehaviour
     
     public void Show(CardUI cardUI)
     {
-        Debug.Log($"Showing zoomed card for {cardUI.CardName} at position {cardUI.transform.position}, {Screen.width / 2}");
         zoomedCardUI.Show(cardUI);
         audioSource.Play();
     }

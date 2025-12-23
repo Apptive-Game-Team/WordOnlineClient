@@ -48,6 +48,11 @@ namespace Script.GameScene
             
             if (_spriteRenderer == null)
             {
+                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+            
+            if (_spriteRenderer == null)
+            {
                 return;
             }
             
