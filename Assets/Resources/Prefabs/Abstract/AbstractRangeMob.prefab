@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3293512053745346964}
   - component: {fileID: 1199219331992406620}
   - component: {fileID: 4217503714343169093}
+  - component: {fileID: 7140850829614563192}
   m_Layer: 0
   m_Name: AbstractRangeMob
   m_TagString: Untagged
@@ -64,6 +65,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 4301585983589155369}
   _duration: 0.5
+--- !u!114 &7140850829614563192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578785568479126700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 3630220617462090093}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &975721718613834590
 GameObject:
   m_ObjectHideFlags: 0

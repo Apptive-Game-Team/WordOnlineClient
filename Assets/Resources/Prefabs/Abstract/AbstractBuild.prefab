@@ -240,6 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7043489956950792422}
   - component: {fileID: 7066668946435068093}
+  - component: {fileID: 1060800969627125256}
   m_Layer: 0
   m_Name: AbstractBuild
   m_TagString: Untagged
@@ -279,6 +280,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualGameObject: {fileID: 790713194785081376}
   ShadowSpriteRenderer: {fileID: 4539336992273368013}
+--- !u!114 &1060800969627125256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8347068386141385781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8690925198442129744}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1001 &4420678522536806558
 PrefabInstance:
   m_ObjectHideFlags: 0

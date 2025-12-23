@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 8841690536847902715}
   - component: {fileID: 2594164038376950415}
   - component: {fileID: 6542150130469813617}
+  - component: {fileID: 7643070402292094288}
   m_Layer: 0
   m_Name: AbstractMeleeMob
   m_TagString: Untagged
@@ -242,6 +243,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 6456819394278174577}
   _duration: 0.5
+--- !u!114 &7643070402292094288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7556005377799559492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 6137335418506685782}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &9073358497309748316
 GameObject:
   m_ObjectHideFlags: 0

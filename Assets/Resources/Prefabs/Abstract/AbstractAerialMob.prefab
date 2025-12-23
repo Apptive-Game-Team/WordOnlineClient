@@ -379,6 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 263219564477927176}
   - component: {fileID: 7571628863401072700}
+  - component: {fileID: 7774054542688849500}
   m_Layer: 0
   m_Name: AbstractAerialMob
   m_TagString: Untagged
@@ -415,6 +416,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 1358037529747643573}
+--- !u!114 &7774054542688849500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133848519264727152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 3475341198290787986}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &4651727963119296362
 GameObject:
   m_ObjectHideFlags: 0
