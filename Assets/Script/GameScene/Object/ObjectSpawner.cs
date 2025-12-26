@@ -11,6 +11,12 @@ namespace Script.GameScene.Object
         
         public void SpawnObject(CreatedObjectDto createdObjectDto)
         {
+            if (ObjectContainer.Instance.IsExist(createdObjectDto.id))
+            {
+                WDebug.LogWarning($"Object with ID {createdObjectDto.id} already exists. Spawn aborted.");
+                return;
+            }
+            
             WDebug.Log($"Spawning object: {createdObjectDto.type}, id: {createdObjectDto.id}");
            
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
