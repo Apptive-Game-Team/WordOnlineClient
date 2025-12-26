@@ -7,18 +7,20 @@ namespace Script.GameScene.ServedObjectComponent.OnAttack
     {
         [SerializeField] private AudioClip attackSound;
         [SerializeField] private AudioSource audioSource;
-        private ServedObject servedObject;
+        [SerializeField] private ServedObject servedObject;
 
         private void Start()
         {
-            servedObject = transform.parent.GetComponentInChildren<ServedObject>();
-            
             if (audioSource == null)
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
             audioSource.volume = audioSource.volume * SoundData.gameVolume / 100f;
-            
+
+            if (servedObject == null)
+            {
+                servedObject = transform.parent.GetComponentInChildren<ServedObject>();
+            }
             servedObject.OnAttack += PlayAttackSound;
         }
 

@@ -361,6 +361,10 @@ PrefabInstance:
       propertyPath: attackSound
       value: 
       objectReference: {fileID: 8300000, guid: 0384b0bb39c674ac19083133d7b54f85, type: 3}
+    - target: {fileID: 2723268868756094270, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
+      propertyPath: servedObject
+      value: 
+      objectReference: {fileID: 1088561502640704175}
     - target: {fileID: 5251973200035102780, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: m_Name
       value: HitSoundPlayer
