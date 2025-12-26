@@ -11,6 +11,12 @@ namespace Script.GameScene.Handler
     {
         public void Handler(SyncFrameInfo syncFrameInfo)
         {
+            if (syncFrameInfo == null)
+            {
+                WDebug.LogError("[SyncFrameHandler] syncFrameInfo is null");
+                return;
+            }
+            
             // 마나 UI 업데이트
             GameSceneUIController.Instance.UpdateMana(syncFrameInfo.updatedMana);
             // 플레이어 HP 업데이트 
