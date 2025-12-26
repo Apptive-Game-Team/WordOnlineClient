@@ -53,7 +53,7 @@ namespace Script.DeckScene
             var token = SceneContext.JwtToken; 
 
             // 2) 요청 생성 (GET)
-            string urlCards = ServerList.MatchingServer.url + "/api/users/mine/cards";
+            string urlCards = ServerList.MatchingServer.url + "/api/users/mine/cardLists";
             using var wwwPool = new UnityWebRequest(urlCards, "GET");
             Server.SetAcceptLanguage(wwwPool);
         
@@ -113,30 +113,27 @@ namespace Script.DeckScene
             LoadingPage.Instance.IsLoading = false;
         }
         
-        void PopulateOwnedCardsList() {
+        void PopulateOwnedCardsList()
+        {
             foreach (Transform child in ownedCardsContainer)
-            {
                 Destroy(child.gameObject);
-            }
-            
-            var summary = ownedCards
-                .GroupBy(c => c.name)                
-                .Select(g => new { 
-                    Name  = g.Key,                  
-                    Count = g.Count()
-                })
-                .ToList();                          
-        
-            // 보유 카드 표시
-            foreach (var card in summary) {
+
+            foreach (var card in ownedCards.OrderBy(c => c.id))
+            {
                 var item = Instantiate(cardItemPrefab, ownedCardsContainer);
                 var ui = item.GetComponent<CardItemUI>();
                 var btn = item.GetComponent<Button>();
-                
-                btn.onClick.AddListener(() => OnOwnedCardSelected(
-                    Array.Find(ownedCards, c=> c.name == card.Name))
-                );
-                ui.Init(card.Name,card.Count);
+
+                ui.Init(card.name, card.count, card.unlocked, card.unlockText, card.progressText);
+
+                btn.onClick.RemoveAllListeners();
+                btn.interactable = card.unlocked;
+
+                if (card.unlocked)
+                {
+                    var local = card;
+                    btn.onClick.AddListener(() => OnOwnedCardSelected(local));
+                }
             }
         }
 
@@ -160,27 +157,33 @@ namespace Script.DeckScene
             createDeckButton.onClick.AddListener(() => OnNewDeckSelected());
         }
         
-        private void ReloadDeckList() {
+        private void ReloadDeckList()
+        {
             var summary = DeckSceneContext.CurrentDeck.cards
-            .GroupBy(c => c.name)                
-            .Select(g => new { 
-                Name  = g.Key,                  
-                Count = g.Count()               
-            })
-            .ToList(); 
-        
-            // 덱 카드 표시
-            foreach (Transform t in deckCardsContainer) Destroy(t.gameObject);
-            foreach (var cardInDeck in summary) {
+                .GroupBy(c => c.id)
+                .Select(g => new {
+                    Id = g.Key,
+                    Name = g.First().name,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            foreach (Transform t in deckCardsContainer)
+                Destroy(t.gameObject);
+
+            foreach (var cardInDeck in summary)
+            {
                 var item = Instantiate(cardInDeckItemPrefab, deckCardsContainer);
                 var ui = item.GetComponent<CardItemUI>();
                 var btn = item.GetComponent<Button>();
-                
-                btn.onClick.AddListener(() => OnCardInDeckSelected(
-                    Array.Find(ownedCards, c=> c.name == cardInDeck.Name))
-                );
+
+                var refCard = DeckSceneContext.CurrentDeck.cards.First(c => c.id == cardInDeck.Id);
+
+                btn.onClick.RemoveAllListeners();
+                btn.onClick.AddListener(() => OnCardInDeckSelected(refCard));
+
                 ui.Init(cardInDeck.Name, cardInDeck.Count);
-            }   
+            }
         }
         
         void OnDeckSelected(DeckResponseDto deck) {
@@ -214,12 +217,16 @@ namespace Script.DeckScene
 
         void OnOwnedCardSelected(CardDto card)
         {
+            if (card == null || !card.unlocked)
+                return;
+
             WDebug.Log($"OnOwnedCardSelected: {card.name} (ID: {card.id})");
-            if (DeckSceneContext.CurrentDeck.cards.Length < 10  && 
-                DeckSceneContext.CurrentDeck.cards.Count(c => c.id == card.id)
-                < ownedCards.Count(c => c.id == card.id))
+
+            var ownedCount = card.count;
+            var inDeckCount = DeckSceneContext.CurrentDeck.cards.Count(c => c.id == card.id);
+
+            if (DeckSceneContext.CurrentDeck.cards.Length < 10 && inDeckCount < ownedCount)
             {
-                WDebug.Log($"Adding card to deck: {card.name} (ID: {card.id})");
                 var cardList = DeckSceneContext.CurrentDeck.cards.ToList();
                 cardList.Add(card);
                 DeckSceneContext.CurrentDeck.cards = cardList.ToArray();
