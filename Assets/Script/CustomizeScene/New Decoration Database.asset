@@ -19,12 +19,12 @@ MonoBehaviour:
     characterSprite: {fileID: 21300000, guid: fb05b1491f12846c69c76bc9635120ab, type: 3}
   - decorationId: 2
     type: 1
-    iconSprite: {fileID: 21300000, guid: 3e6e249afb6788042b5858ce9efb3107, type: 3}
+    iconSprite: {fileID: 21300000, guid: 7f6ec671aeb1d41cd87670e4a7bafd35, type: 3}
     characterSprite: {fileID: 21300000, guid: b1bea5a3d0743440f83cad489384e15e, type: 3}
   - decorationId: 3
     type: 0
     iconSprite: {fileID: 21300000, guid: ff0baffda4a164928841d9d139676bf5, type: 3}
-    characterSprite: {fileID: 21300000, guid: 54b770a4421054046b559c7e933dd423, type: 3}
+    characterSprite: {fileID: 21300000, guid: 65566be13d2b74928ae50b1fcbd03633, type: 3}
   - decorationId: 4
     type: 1
     iconSprite: {fileID: 21300000, guid: e927c1e3bc5654f169ef6fc509c4ecf7, type: 3}
