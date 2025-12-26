@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6216394680016439395}
   - component: {fileID: 4789127863112828176}
+  - component: {fileID: 3172375922847195547}
   m_Layer: 0
   m_Name: WaterField
   m_TagString: Untagged
@@ -84,3 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3172375922847195547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5260405638617516871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 4789127863112828176}
+  id: 0
+  hp: 0
+  maxHp: 0
