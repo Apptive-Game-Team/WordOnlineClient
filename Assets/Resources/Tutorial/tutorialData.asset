@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3399a250bd234f54d8f13fd51cb80e19, type: 3}
+  m_Name: tutorialData
+  m_EditorClassIdentifier: 
+  stringTableName: tutorial
+  steps:
+  - localizationKey: tutorial.cards
+    waitType: 0
+  - localizationKey: tutorial.basic
+    waitType: 0
+  - localizationKey: tutorial.shotfire
+    waitType: 1
+  - localizationKey: tutorial.shotfire
+    waitType: 0
+  - localizationKey: tutorial.shotFireSuccess
+    waitType: 0
+  - localizationKey: tutorial.advanced
+    waitType: 0
+  - localizationKey: tutorial.spawnArcher
+    waitType: 2
+  - localizationKey: tutorial.spawnArcherSuccess
+    waitType: 0
+  - localizationKey: tutorial.discard
+    waitType: 0
+  - localizationKey: tutorial.discardAny
+    waitType: 3
+  - localizationKey: tutorial.discardAnySuccess
+    waitType: 0
+  - localizationKey: tutorial.finishEnemy
+    waitType: 4
+  - localizationKey: tutorial.finishEnemySuccess
+    waitType: 0
+  lobbySceneName: LobbyScene
