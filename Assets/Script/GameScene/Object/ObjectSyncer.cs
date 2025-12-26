@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using Script.GameScene.Dto;
-using UnityEngine;
-using System.Linq;
 using Script.Global;
 
 namespace Script.GameScene.Object
@@ -11,6 +9,13 @@ namespace Script.GameScene.Object
 
         public void Sync(SnapshotObjectDto[] snapshotObjects)
         {
+            if (snapshotObjects == null)
+            {
+                WDebug.LogWarning("Snapshot objects array is null. Sync operation aborted.");
+                ObjectContainer.Instance.Clear();
+                return;
+            }
+            
             // WDebug.Log("ObjectSyncer Sync called with " + string.Join(" | ", snapshotObjects.Select(dto => $"id: {dto.id}, {dto.prefab}")) + " objects.");
             foreach (var snapshotObject in snapshotObjects)
             {
@@ -26,14 +31,26 @@ namespace Script.GameScene.Object
                 }
             }
 
-            List<int> ids = snapshotObjects.Select(snapshotObject => snapshotObject.id).ToList();
-            
-            List<int> toRemove = ObjectContainer.Instance.GetIds()
-                .Where(id => !ids.Contains(id))
-                .ToList();
-            foreach (var i in toRemove)
+            RemoveObjects(snapshotObjects);
+        }
+
+        private void RemoveObjects(SnapshotObjectDto[] snapshotObjects)
+        {
+            HashSet<int> snapshotIdSet = new HashSet<int>(snapshotObjects.Length);
+
+            foreach (var obj in snapshotObjects)
             {
-                ObjectContainer.Instance.UnregisterObject(i);
+                snapshotIdSet.Add(obj.id);
+            }
+            
+            var currentIds = ObjectContainer.Instance.GetIds(); 
+
+            foreach (var id in currentIds)
+            {
+                if (!snapshotIdSet.Contains(id))
+                {
+                    ObjectContainer.Instance.UnregisterObject(id);
+                }
             }
         }
     }

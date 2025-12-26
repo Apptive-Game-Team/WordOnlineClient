@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Script.GameScene.Exception;
 using Script.Global;
 using System.Linq;
-using UnityEngine;
 
 namespace Script.GameScene.Object
 {
@@ -45,6 +44,19 @@ namespace Script.GameScene.Object
             }
         }
 
+        public void Clear()
+        {
+            foreach (var obj in objects.Values)
+            {
+                if (obj != null && obj.gameObject != null)
+                {
+                    Destroy(obj.gameObject);
+                }
+            }
+            objects.Clear();
+            WDebug.Log("Cleared all objects from the container.");
+        }
+        
         public bool IsExist(int id)
         {
             return objects.ContainsKey(id);
