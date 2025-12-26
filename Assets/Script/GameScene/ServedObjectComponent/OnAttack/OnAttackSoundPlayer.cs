@@ -12,8 +12,14 @@ namespace Script.GameScene.ServedObjectComponent.OnAttack
         private void Start()
         {
             servedObject = transform.parent.GetComponentInChildren<ServedObject>();
-            servedObject.OnAttack += PlayAttackSound;
+            
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
             audioSource.volume = audioSource.volume * SoundData.gameVolume / 100f;
+            
+            servedObject.OnAttack += PlayAttackSound;
         }
 
         private void PlayAttackSound()
