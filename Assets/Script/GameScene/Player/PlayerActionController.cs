@@ -24,6 +24,8 @@ namespace Script.GameScene.Player
 
         private void OnDestroy()
         {
+            if (servedObject == null) return;
+            
             servedObject.OnOtherStatus -= OnOtherStatus;
             servedObject.OnAttack -= OnAttack;
         }

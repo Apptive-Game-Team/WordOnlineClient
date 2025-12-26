@@ -72,6 +72,10 @@ MonoBehaviour:
     m_Localized: Customize
     m_Metadata:
       m_Items: []
+  - m_Id: 21722735079055360
+    m_Localized: Registration successful. Please log in with your new account.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

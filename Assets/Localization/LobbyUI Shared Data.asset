@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: Customize
     m_Metadata:
       m_Items: []
+  - m_Id: 21722735079055360
+    m_Key: Registraion Success
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

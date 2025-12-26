@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerObjectView : MonoBehaviour
 {
     // 모자/망토 스프라이트 교체하는 컴포넌트들
-    [SerializeField] private SpriteRenderer hatRenderer;
-    [SerializeField] private SpriteRenderer capeRenderer;
+    [SerializeField] private Image hatRenderer;
+    [SerializeField] private Image capeRenderer;
 
     // DB 참조
     [SerializeField] private DecorationDatabase decorationDatabase;

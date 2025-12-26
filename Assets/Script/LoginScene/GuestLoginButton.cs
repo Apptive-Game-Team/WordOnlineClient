@@ -1,6 +1,7 @@
 using System.Collections;
 using Script.Data;
 using Script.Global;
+using Script.LoginScene;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,7 @@ public class GuestLoginButton : AsyncButtonBase
             Server.SetAcceptLanguage(webRequest);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.timeout = 10;
+            webRequest.SetRequestHeader("Content-Type", "application/json");
             
             yield return webRequest.SendWebRequest();
 
@@ -29,9 +31,10 @@ public class GuestLoginButton : AsyncButtonBase
             
             WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
-            AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
+            GuestAuthResponseDto authResponseDto = JsonUtility.FromJson<GuestAuthResponseDto>(webRequest.downloadHandler.text);
             
             SceneContext.JwtToken = authResponseDto.jwt;
+            GuestContext.GuestPassword = authResponseDto.password;
             
             SceneManager.LoadScene("TutorialScene");
         }

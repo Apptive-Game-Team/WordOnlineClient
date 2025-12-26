@@ -27,7 +27,7 @@ public class QueueLengthIndicator : MonoBehaviour
         while (true)
         {
             yield return FetchQueueLength();
-            yield return new WaitForSeconds(30f);
+            yield return new WaitForSeconds(11f);
         }
     }
     
@@ -36,7 +36,7 @@ public class QueueLengthIndicator : MonoBehaviour
         using UnityWebRequest webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/length");
         Server.SetAuthorization(webRequest);
         Server.SetAcceptLanguage(webRequest);
-        WDebug.Log("Fetching queue length from " + $"{ServerList.MatchingServer.url}/api/match/length" + " with token " + SceneContext.JwtToken);
+        WDebug.Log("Fetching queue length from " + $"{ServerList.MatchingServer.url}/api/match/length");
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         
         yield return webRequest.SendWebRequest();
