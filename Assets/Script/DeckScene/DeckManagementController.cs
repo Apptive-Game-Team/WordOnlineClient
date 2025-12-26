@@ -53,7 +53,7 @@ namespace Script.DeckScene
             var token = SceneContext.JwtToken; 
 
             // 2) 요청 생성 (GET)
-            string urlCards = ServerList.MatchingServer.url + "/api/users/mine/cards";
+            string urlCards = ServerList.MatchingServer.url + "/api/users/mine/cardLists";
             using var wwwPool = new UnityWebRequest(urlCards, "GET");
             Server.SetAcceptLanguage(wwwPool);
         
