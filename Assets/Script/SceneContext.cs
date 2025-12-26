@@ -47,11 +47,6 @@ public class SceneContext : SingletonObject<SceneContext>
     {
         get; set;
     }
-
-    public static string RejoinSyncJson
-    {
-        get; set;
-    }
     
     public static string SelectedDeck
     {
