@@ -646,7 +646,7 @@ MonoBehaviour:
   m_text: "\uB9C8\uBC95\uC11C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
-  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_sharedMaterial: {fileID: 2677240867868494053, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -817,12 +817,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 22040225613595634, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_Type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22040225613595634, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 22040225613595634, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22040225613595634, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_text
       value: 
