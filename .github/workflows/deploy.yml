@@ -51,11 +51,10 @@ jobs:
         with:
           name: WebGL-Build
           path: build
-
+  
   deployWebGL:
     runs-on: ubuntu-latest
     needs: buildWebGL
-    continue-on-error: true
     steps:
       - name: Download WebGL artifact
         uses: actions/download-artifact@v4
@@ -63,19 +62,11 @@ jobs:
           name: WebGL-Build
           path: build
 
-      - name: Push to another repo
+      - name: Deploy to Vercel
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git clone https://x-access-token:${{ secrets.WORD_ONLINE_PLAY_TOKEN }}@github.com/Apptive-Game-Team/WordOnline_Play.git
-          cd WordOnline_Play
-
-          rm -rf ./Build
-          rm -rf ./index.html
-
-          cp -r ../build/WebGL/WebGL/* ./
-
-          git add .
-          git commit -m "Update WebGL build from main repo" || echo "Nothing to commit"
-          git push origin main
+          npm install -g vercel
+          vercel --prod --yes --cwd build/WebGL
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
