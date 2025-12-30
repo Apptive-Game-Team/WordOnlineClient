@@ -19,7 +19,7 @@ namespace Script.GameScene
 
         private Vector3 originalScale;
         [SerializeField] private SpriteRenderer _spriteRenderer;
-        private Transform _actualTransform = null;
+        [SerializeField] private Transform _actualTransform = null;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
@@ -34,6 +34,9 @@ namespace Script.GameScene
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
         public event Action<int> OnHpChanged;
+        
+        public event Action OnHpIncreased;
+        public event Action OnHpDecreased;
 
         private int lastHp = 0;
 
@@ -170,6 +173,12 @@ namespace Script.GameScene
             {
                 return _actualTransform;
             }
+
+            if (_spriteRenderer != null)
+            {
+                _actualTransform = _spriteRenderer.transform;
+                return _actualTransform;
+            }
             
             var simpleZVisualizer = GetComponentInChildren<SimpleZVisualizer>();
             if (simpleZVisualizer != null)
@@ -185,24 +194,22 @@ namespace Script.GameScene
         {
             if (hp < lastHp)
             {
-                DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
-                DOTweenAction.BounceMob(transform);
+                OnHpDecreased?.Invoke();
             }
             if (hp > lastHp && hp != maxHp)
             {
-                DamagedObjectEffect.SetSelfDestroyEffect("HealEffect",transform);
-                DOTweenAction.BounceMob(transform);
+                OnHpIncreased?.Invoke();
             }
             lastHp = hp;
         }
 
-        public void DestroySelf()
+        private void DestroySelf()
         {
             OnDestroyed?.Invoke();
             ObjectContainer.Instance.UnregisterObject(id);
         }
         
-        public void DestroySelf(float delay)
+        private void DestroySelf(float delay)
         {
             StartCoroutine(DelayedDestroySelfCoroutine(delay));
         }
