@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2707287461265946569, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.67
+      value: 0.089
       objectReference: {fileID: 0}
     - target: {fileID: 7043489956950792422, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8347068386141385781, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_Name
-      value: AbstractBuild (1) Variant
+      value: Vine
       objectReference: {fileID: 0}
     - target: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_Sprite
