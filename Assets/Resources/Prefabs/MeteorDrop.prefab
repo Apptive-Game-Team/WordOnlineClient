@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1081655315572629644, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.989
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715395281370167880, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.2875
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715395281370167880, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.285
+      objectReference: {fileID: 0}
     - target: {fileID: 3650954007380220348, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.3575153
@@ -50,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4705269614485497549, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_Name
-      value: MeteorStorm
+      value: MeteorDrop
       objectReference: {fileID: 0}
     - target: {fileID: 8896401521967180672, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_Sprite
