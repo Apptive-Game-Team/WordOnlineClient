@@ -645,8 +645,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB9C8\uBC95\uC11C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 798a9152159fe4eb1ac04250bf6f64d8, type: 2}
-  m_sharedMaterial: {fileID: -3822564597673967843, guid: 798a9152159fe4eb1ac04250bf6f64d8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -670,7 +670,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 54.15
+  m_fontSize: 44.9
   m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -832,6 +832,14 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+    - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_fontColor.b
       value: 0.31621575
       objectReference: {fileID: 0}
@@ -844,8 +852,16 @@ PrefabInstance:
       value: 0.3584906
       objectReference: {fileID: 0}
     - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+    - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4283520347
+      objectReference: {fileID: 0}
+    - target: {fileID: 357317440925994223, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2742560933152668160, guid: 8195c9843dc2e46fd88ad8eb14b1c7e3, type: 3}
       propertyPath: m_Pivot.x
@@ -1441,7 +1457,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 643807740}
   m_HandleRect: {fileID: 643807739}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
