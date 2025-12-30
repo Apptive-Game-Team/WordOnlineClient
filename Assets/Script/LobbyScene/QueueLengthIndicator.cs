@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Script.Data;
 using Script.Global;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 
 public class QueueLengthIndicator : MonoBehaviour
 {
     [SerializeField] private TMP_Text _queueLengthText;
+    [SerializeField] private LocalizedString _queueLengthLocalizedString;
     
     [Serializable]
     private class QueueLengthResponse
@@ -49,6 +50,6 @@ public class QueueLengthIndicator : MonoBehaviour
         
         QueueLengthResponse response = JsonUtility.FromJson<QueueLengthResponse>(webRequest.downloadHandler.text);
         
-        _queueLengthText.text = $"{response.length}";
+        _queueLengthText.text = $"{_queueLengthLocalizedString.GetLocalizedString()} {response.length}";
     }
 }

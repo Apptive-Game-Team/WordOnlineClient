@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8690925198442129744}
   - component: {fileID: 7632411676289019041}
   - component: {fileID: 2500978649992808251}
+  - component: {fileID: 3847265105902224156}
+  - component: {fileID: 4327875374951260447}
   m_Layer: 0
   m_Name: AbstractBuild
   m_TagString: Untagged
@@ -119,11 +121,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.75}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 2.05, y: 1.2225}
     newSize: {x: 10.24, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -146,6 +148,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
+--- !u!114 &3847265105902224156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790713194785081376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0cc83bc3f748f4a0842f51c1b6b2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 1060800969627125256}
+--- !u!114 &4327875374951260447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790713194785081376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5c48af659d4ab2a3a6953c89168883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 1060800969627125256}
 --- !u!1 &2297122789264468051
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 2297122789264468051}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.222, y: -0.384, z: 0}
+  m_LocalPosition: {x: -0.222, y: 0.15, z: 0}
   m_LocalScale: {x: 1.4899999, y: 0.23749998, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -293,6 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 8690925198442129744}
+  _actualTransform: {fileID: 0}
   id: 0
   hp: 0
   maxHp: 0
@@ -310,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2314719353421891777, guid: af690d0bec7474d508446bd445886e82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.33
+      value: 0.84
       objectReference: {fileID: 0}
     - target: {fileID: 2314719353421891777, guid: af690d0bec7474d508446bd445886e82, type: 3}
       propertyPath: m_LocalPosition.z

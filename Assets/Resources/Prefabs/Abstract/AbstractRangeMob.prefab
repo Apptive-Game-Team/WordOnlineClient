@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 578785568479126700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.62, y: 7.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 3630220617462090093}
+  _actualTransform: {fileID: 0}
   id: 0
   hp: 0
   maxHp: 0
@@ -430,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 5860956374457924620}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.43, z: 0}
+  m_LocalPosition: {x: 0, y: 1.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -583,6 +584,8 @@ GameObject:
   - component: {fileID: 3630220617462090093}
   - component: {fileID: 4479202527324724850}
   - component: {fileID: 8945073509245971357}
+  - component: {fileID: 3708748492312874875}
+  - component: {fileID: 8249329600915837112}
   m_Layer: 0
   m_Name: aqua_archer
   m_TagString: Untagged
@@ -690,10 +693,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.75}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.71, y: 1.5175}
     newSize: {x: 5.51, y: 4.56}
     adaptiveTilingThreshold: 0.5
@@ -717,6 +720,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
+--- !u!114 &3708748492312874875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768544784294366829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0cc83bc3f748f4a0842f51c1b6b2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7140850829614563192}
+--- !u!114 &8249329600915837112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768544784294366829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5c48af659d4ab2a3a6953c89168883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7140850829614563192}
 --- !u!1001 &5489507395646316557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -801,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
       propertyPath: m_LocalPosition.z
