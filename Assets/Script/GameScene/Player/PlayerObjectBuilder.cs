@@ -1,3 +1,4 @@
+using Script.CustomizeScene;
 using UnityEngine;
 
 public class PlayerObjectBuilder : MonoBehaviour
