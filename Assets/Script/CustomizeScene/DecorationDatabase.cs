@@ -21,6 +21,19 @@ public class DecorationDatabase : ScriptableObject
 {
     public DecorationData[] datas;
 
+    public DecorationData[] FindAllNotInList(List<long> ids)
+    {
+        List<DecorationData> results = new List<DecorationData>();
+        foreach (var m in datas)
+        {
+            if (!ids.Contains(m.decorationId))
+            {
+                results.Add(m);
+            }
+        }
+        return results.ToArray();
+    }
+    
     public DecorationData Find(long id)
     {
         foreach (var m in datas)

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Script.CustomizeScene;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,6 +72,30 @@ public class CustomizeSceneController : MonoBehaviour
             else if (meta.type == DecorationType.Cape && dto.isEquipped)
                 equippedCapeId = dto.decorationId;
         }
+        
+        dataDb.FindAllNotInList(response.decorations.Select(d => d.decorationId).ToList()).ToList().ForEach(meta =>
+        {
+            CreateLockIcon(meta);
+        });
+    }
+    
+    private void CreateLockIcon(DecorationData meta)
+    {
+        StartCoroutine(
+        apiClient.GetQuestState(meta.decorationId,
+            questState =>
+            {
+                Transform parent = meta.type == DecorationType.Hat ? hatGridRoot : capeGridRoot;
+                var icon = Instantiate(iconPrefab, parent);
+                icon.Init(meta, false, OnDecorationIconClicked, questState);
+        
+                iconById[meta.decorationId] = icon;
+            },
+            err =>
+            {
+                Debug.LogError("GetQuestState failed: " + err);
+            }
+        ));
     }
 
     private void OnDecorationIconClicked(DecorationData meta)
