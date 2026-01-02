@@ -1,4 +1,3 @@
-using Script.Data;
 using Script.Global;
 using UnityEngine;
 

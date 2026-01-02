@@ -61,6 +61,7 @@ public class LobbyUIController : MonoBehaviour
         {
             SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
             WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
+            LoadingPage.Instance.IsLoading = false;
             SceneManager.LoadScene("LoginScene");
             yield break;
         }
