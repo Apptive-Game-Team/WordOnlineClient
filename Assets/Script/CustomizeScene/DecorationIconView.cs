@@ -16,6 +16,7 @@ public class DecorationIconView : MonoBehaviour
     private DecorationData meta;
     private System.Action<DecorationData> onClicked;
     
+    private bool isLocked = false;
 
     public void Init(DecorationData meta, bool isEquipped, System.Action<DecorationData> onClicked, QuestState questState = null)
     {
@@ -24,7 +25,7 @@ public class DecorationIconView : MonoBehaviour
 
         if (lockIcon != null && questState == null)
             lockIcon.SetActive(false);
-        else if (lockIcon != null && questState != null)
+        else if (questState != null)
             SetLock(questState);
         
         iconImage.sprite = meta.iconSprite;
@@ -36,6 +37,8 @@ public class DecorationIconView : MonoBehaviour
 
     private void SetLock(QuestState questState)
     {
+        isLocked = true;
+        
         if (lockIcon != null)
             lockIcon.SetActive(true);
         
@@ -54,6 +57,7 @@ public class DecorationIconView : MonoBehaviour
 
     public void SetEquipped(bool equipped)
     {
+        if (isLocked) return;
         if (equippedMarker != null)
             equippedMarker.SetActive(equipped);
     }
