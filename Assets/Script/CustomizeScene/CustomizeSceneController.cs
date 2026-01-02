@@ -87,7 +87,7 @@ public class CustomizeSceneController : MonoBehaviour
             {
                 Transform parent = meta.type == DecorationType.Hat ? hatGridRoot : capeGridRoot;
                 var icon = Instantiate(iconPrefab, parent);
-                icon.Init(meta, false, OnDecorationIconClicked, questState);
+                icon.Init(meta, false, null, questState);
         
                 iconById[meta.decorationId] = icon;
             },
