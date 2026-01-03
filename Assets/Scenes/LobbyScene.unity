@@ -413,6 +413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &51268537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 579430591620087404, guid: 44b9d206afcf4054f8eb9942497571f2, type: 3}
+  m_PrefabInstance: {fileID: 51268534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &81518070
 GameObject:
   m_ObjectHideFlags: 0
@@ -10341,7 +10346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageText: {fileID: 51268536}
-  messagePanel: {fileID: 0}
+  messagePanel: {fileID: 51268537}
   duration: 5
   replaceDelay: 1
 --- !u!114 &2065755164

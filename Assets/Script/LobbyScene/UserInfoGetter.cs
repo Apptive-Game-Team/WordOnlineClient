@@ -4,6 +4,7 @@ using Script.Data;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class UserInfoGetter
 {
@@ -21,6 +22,9 @@ public class UserInfoGetter
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                LoadingPage.Instance.IsLoading = false;
+                SceneManager.LoadScene("LoginScene");
                 yield break;
             }
             
@@ -37,6 +41,9 @@ public class UserInfoGetter
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                LoadingPage.Instance.IsLoading = false;
+                SceneManager.LoadScene("LoginScene");
                 yield break;
             }
             
