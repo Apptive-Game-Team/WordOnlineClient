@@ -18,7 +18,8 @@ namespace Script.GameScene
         private const float FRAME_DURATION = 0.05f;
 
         private Vector3 originalScale;
-        private Transform _actualTransform = null;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Transform _actualTransform = null;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
@@ -28,7 +29,14 @@ namespace Script.GameScene
         private Vector3? nextPosition = null;
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 
-        public Action OnAttack;
+        public event Action OnAttack;
+        public event Action OnDamaged;
+        public event Action<string> OnOtherStatus;
+        public event Action OnDestroyed;
+        public event Action<int> OnHpChanged;
+        
+        public event Action OnHpIncreased;
+        public event Action OnHpDecreased;
 
         private int lastHp = 0;
 
@@ -40,49 +48,77 @@ namespace Script.GameScene
         public void SetMaster(string master)
         {
             this.master = master;
-            SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
             
-            if (renderer == null)
+            if (_spriteRenderer == null)
+            {
+                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+            
+            if (_spriteRenderer == null)
             {
                 return;
             }
             
             if (!SceneContext.Me.Equals(master) && master != "None")
             {
-                renderer.color = new Color(1f, 0.5f, 0.5f, 1f);
+                _spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 1f);
             }
             
             if (master.Equals("RightPlayer"))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
-                    renderer.flipX = true;
+                    _spriteRenderer.flipX = true;
                     return;
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
         }
+        
+        public string GetMaster()
+        {
+            return master;
+        }
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
             UpdatePosition(updatedObjectDto);
-            
+
+            if (hp != updatedObjectDto.hp)
+            {
+                OnHpChanged?.Invoke(updatedObjectDto.hp);
+            }
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
-            if (updatedObjectDto.status.Equals("Destroyed"))
-            {
-                DestroySelf(FRAME_DURATION);
-            }
-            else if (updatedObjectDto.status.Equals("Attack"))
-            {
-                //feedback_ATTACK
-                OnAttack?.Invoke();
-                DOTweenAction.SwingMobAttack(GetActualTransform());
-            }
-            else
+
+            HandleStatus(updatedObjectDto.status);
+            
             // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
             HandleDamageEffect();
+        }
+
+        private void HandleStatus(string status)
+        {
+            switch (status)
+            {
+                case "Destroyed":
+                    DestroySelf(FRAME_DURATION);
+                    break;
+
+                case "Attack":
+                    OnAttack?.Invoke();
+                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    break;
+
+                case "Damaged":
+                    OnDamaged?.Invoke();
+                    break;
+
+                default:
+                    OnOtherStatus?.Invoke(status);
+                    break;
+            }
         }
 
         private void UpdatePosition(UpdatedObjectDto updatedObjectDto)
@@ -137,6 +173,12 @@ namespace Script.GameScene
             {
                 return _actualTransform;
             }
+
+            if (_spriteRenderer != null)
+            {
+                _actualTransform = _spriteRenderer.transform;
+                return _actualTransform;
+            }
             
             var simpleZVisualizer = GetComponentInChildren<SimpleZVisualizer>();
             if (simpleZVisualizer != null)
@@ -152,23 +194,22 @@ namespace Script.GameScene
         {
             if (hp < lastHp)
             {
-                DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
-                DOTweenAction.BounceMob(transform);
+                OnHpDecreased?.Invoke();
             }
             if (hp > lastHp && hp != maxHp)
             {
-                DamagedObjectEffect.SetSelfDestroyEffect("HealEffect",transform);
-                DOTweenAction.BounceMob(transform);
+                OnHpIncreased?.Invoke();
             }
             lastHp = hp;
         }
 
-        public void DestroySelf()
+        private void DestroySelf()
         {
+            OnDestroyed?.Invoke();
             ObjectContainer.Instance.UnregisterObject(id);
         }
         
-        public void DestroySelf(float delay)
+        private void DestroySelf(float delay)
         {
             StartCoroutine(DelayedDestroySelfCoroutine(delay));
         }
@@ -176,7 +217,7 @@ namespace Script.GameScene
         private IEnumerator DelayedDestroySelfCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            ObjectContainer.Instance.UnregisterObject(id);
+            DestroySelf();
         }
     }
 }

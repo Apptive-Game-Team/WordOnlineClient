@@ -43,6 +43,7 @@ namespace Script.LobbyScene
                         {
                             Debug.Log("Practice match in progress...");
                             CurrentState.UpdateData(LobbyState.Matching);
+                            _isPolling = true;
                         }
                         else if (messageDto.message.Contains("Failed"))
                         {
@@ -92,6 +93,7 @@ namespace Script.LobbyScene
             }));
         }
         
+        private bool _isPolling = false;
         private float _pollTimer = 0;
         private float POLL_INTERVAL = 6.0f;
 
@@ -99,6 +101,12 @@ namespace Script.LobbyScene
         {
             if (CurrentState.Data == LobbyState.Matching) 
             {
+                
+                if (!_isPolling)
+                {
+                    return;
+                }
+                
                 if (_pollTimer > POLL_INTERVAL)
                 {
                     PollMatchedInfo();
@@ -106,6 +114,11 @@ namespace Script.LobbyScene
                 }
                 
                 _pollTimer += Time.deltaTime;
+            }
+            else
+            {
+                _isPolling = false;
+                _pollTimer = 0;
             }
         }
         

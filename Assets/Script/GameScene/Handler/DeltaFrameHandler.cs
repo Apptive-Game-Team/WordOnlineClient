@@ -1,5 +1,5 @@
 using Script.GameScene.Object;
-using Script.Global;
+using Script.GameScene.UI;
 
 namespace Script.GameScene.Handler
 {
@@ -31,6 +31,8 @@ namespace Script.GameScene.Handler
             // // 기존 오브젝트 업데이트
             foreach (var updated in data.objects.update)
                 ObjectUpdater.Instance.UpdateObject(updated);
+            
+            TimerController.Instance.UpdateTimer(data.remainingTime);
         }
     }
 }

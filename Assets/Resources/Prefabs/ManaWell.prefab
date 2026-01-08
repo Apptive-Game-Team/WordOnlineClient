@@ -16,6 +16,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 2.4633334
       objectReference: {fileID: 0}
+    - target: {fileID: 1799249546358094163, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799249546358094163, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2109636590089158751, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -34,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2707287461265946569, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.547
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 5385553848824757419, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: attackSound

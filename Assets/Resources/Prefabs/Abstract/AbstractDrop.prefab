@@ -118,11 +118,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.7}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.27, y: 1.685}
     newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 3650954007380220348}
   - component: {fileID: 6849814405744498250}
   - component: {fileID: 1623593914299506320}
+  - component: {fileID: 1088561502640704175}
   m_Layer: 0
   m_Name: AbstractDrop
   m_TagString: Untagged
@@ -208,6 +209,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6630687504928479194, guid: 8d2ff5932544147bab8e9fb89bdb9269, type: 3}
+--- !u!114 &1088561502640704175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4705269614485497549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8896401521967180672}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &8708951248655445820
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +251,7 @@ Transform:
   m_GameObject: {fileID: 8708951248655445820}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.81, z: 0}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0}
   m_LocalScale: {x: 1.2, y: 0.19999999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -344,6 +361,10 @@ PrefabInstance:
       propertyPath: attackSound
       value: 
       objectReference: {fileID: 8300000, guid: 0384b0bb39c674ac19083133d7b54f85, type: 3}
+    - target: {fileID: 2723268868756094270, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
+      propertyPath: servedObject
+      value: 
+      objectReference: {fileID: 1088561502640704175}
     - target: {fileID: 5251973200035102780, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: m_Name
       value: HitSoundPlayer

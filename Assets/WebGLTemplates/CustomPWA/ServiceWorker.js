@@ -32,37 +32,33 @@ self.addEventListener('fetch', (e) => {
   
   const req = e.request;
   if (req.method !== 'GET') return;
-
+  
   const url = new URL(req.url);
   const sameOrigin = url.origin === self.location.origin;
 
-  const isStatic =
+  const isUnityResource = url.pathname.includes('/Build/') ||
+      url.pathname.includes('/TemplateData/') ||
+      /\.(js|css|wasm|data|unityweb)$/i.test(url.pathname);
+
+  const isStaticAsset =
     sameOrigin && /\.(js|css|wasm|data|png|jpg|jpeg|gif|webp|svg|ico)$/i.test(url.pathname);
 
-  if (!isStatic) {
+  if (sameOrigin && (isUnityResource || isStaticAsset)) {
+
     e.respondWith((async () => {
+      const hit = await caches.match(req);
+      if (hit) return hit;
       try {
-        return await fetch(req);
+        const resp = await fetch(req);
+        if (resp.ok && resp.type !== 'opaque') {
+          const cache = await caches.open(cacheName);
+          await cache.put(req, resp.clone());
+        }
+        return resp;
       } catch (err) {
-        return new Response('', { status: 502, statusText: 'Bad Gateway' });
+        return new Response('', {status: 504, statusText: 'Gateway Timeout'});
       }
     })());
-    return;
   }
-
-  e.respondWith((async () => {
-    const hit = await caches.match(req);
-    if (hit) return hit;
-    try {
-      const resp = await fetch(req);
-      if (resp.ok && resp.type !== 'opaque') {
-        const cache = await caches.open(cacheName);
-        await cache.put(req, resp.clone());
-      }
-      return resp;
-    } catch (err) {
-      return new Response('', { status: 504, statusText: 'Gateway Timeout' });
-    }
-  })());
 });
 #endif

@@ -21,8 +21,7 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private GameObject lowerBar;
-
-    [SerializeField] private GameObject textObject;
+    
     [SerializeField] private TextMeshProUGUI textSystemMsg;
 
     [SerializeField] private CardImageMapper cardImageMapper;
@@ -33,12 +32,6 @@ public class GameSceneUIController : MonoBehaviour
     
     [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
     [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
-
-    public IEnumerator SetTimer(float time)
-    {
-        yield return new WaitForSeconds(time);
-        textObject.SetActive(false);
-    }
     
     private void Awake()
     {
@@ -83,12 +76,14 @@ public class GameSceneUIController : MonoBehaviour
 
     public void UpdateMana(int mana)
     {
+        if (manaText == null || manaSlider == null) return;
         manaText.text = mana.ToString();
         manaSlider.value = mana;
     }
 
     public void AddCard(string cardname)
     {
+        if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null || cardImageMapper == null) return;
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
         cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
         cardUI.Init(cardname);
@@ -97,6 +92,7 @@ public class GameSceneUIController : MonoBehaviour
 
     public List<string> GetAllCards()
     {
+        if (lowerBar == null) return new List<string>();
         List<string> cardNames = new List<string>();
         foreach (Transform child in lowerBar.transform)
         {
@@ -107,6 +103,7 @@ public class GameSceneUIController : MonoBehaviour
 
     public void TrySetExpectedMagicUI(IList<CardType> recipe)
     {
+        if (expectedMagicUI == null) return;
         CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
         if (data != null)
         {

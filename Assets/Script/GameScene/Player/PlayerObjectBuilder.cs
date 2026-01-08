@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using Script.CustomizeScene;
 using UnityEngine;
 
 public class PlayerObjectBuilder : MonoBehaviour
 {
     [SerializeField] private DecorationsApiClient decorationsApiClient;
-    
     
     // 왼쪽/오른쪽 플레이어 꾸미기를 실제로 그려줄 애들
     [SerializeField] private PlayerObjectView leftPlayerView;

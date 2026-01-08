@@ -27,11 +27,17 @@ EditorBuildSettings:
     path: Assets/Scenes/ManageDeckScene.unity
     guid: dc377030416686e4a900218035afd1ba
   - enabled: 1
+    path: Assets/Scenes/AdminScene.unity
+    guid: 360cbef95879d4cdfa9306bcfa32dbc5
+  - enabled: 1
     path: Assets/Scenes/MagicBookScene.unity
     guid: 6dc3fb295a4c64718809f9ea0643d4aa
   - enabled: 1
     path: Assets/Scenes/CustomizeScene.unity
     guid: 87ad9e0aeaae87644b2213cd3dd0ef4b
+  - enabled: 1
+    path: Assets/Scenes/SpectatingScene.unity
+    guid: 8723ca805ecb247bfa2b674bc0aa82b2
   - enabled: 1
     path: Assets/Scenes/InteractiveTutorialScene.unity
     guid: 9586e5fca72b64e8ab023b7582060628

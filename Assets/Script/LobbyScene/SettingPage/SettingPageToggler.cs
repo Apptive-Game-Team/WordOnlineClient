@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +5,37 @@ public class SettingPage : MonoBehaviour
 {
     [SerializeField] private GameObject closeButton;
     [SerializeField] private GameObject settingPage;
+    [SerializeField] private GameObject guestRegisterPage;
     
-    public void SetSettingPageActive(bool open)
+    private Stack<GameObject> pageStack = new Stack<GameObject>();
+    
+    public void OpenPage(string pageName = "Setting")
     {
-        settingPage.SetActive(open);
-        closeButton.SetActive(open);
+        switch (pageName)
+        {
+            case "Setting":
+                pageStack.Push(settingPage);
+                break;
+            case "GuestRegister":
+                pageStack.Push(guestRegisterPage);
+                break;
+            default:
+                pageStack.Push(settingPage);
+                break;
+        }
+        pageStack.Peek().SetActive(true);
+        closeButton.SetActive(true);
+    }
+    
+    public void ClosePage()
+    {
+        if (pageStack.Count > 0)
+        {
+            pageStack.Pop().SetActive(false);
+        }
+        if (pageStack.Count == 0)
+        {
+            closeButton.SetActive(false);
+        }
     }
 }

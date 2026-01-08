@@ -4,6 +4,7 @@ using Script.Data;
 using Script.Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class UserInfoGetter
 {
@@ -21,10 +22,13 @@ public class UserInfoGetter
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                LoadingPage.Instance.IsLoading = false;
+                SceneManager.LoadScene("LoginScene");
                 yield break;
             }
             
-            accountUser =JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
+            accountUser = JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
         }
         
         using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
@@ -37,6 +41,9 @@ public class UserInfoGetter
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
+                SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                LoadingPage.Instance.IsLoading = false;
+                SceneManager.LoadScene("LoginScene");
                 yield break;
             }
             
@@ -44,25 +51,5 @@ public class UserInfoGetter
         }
 
         SceneContext.User = new User(accountUser, gameUser);
-    }
-    
-    
-    public static IEnumerator GetUserStatus()
-    {
-        using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
-        {
-            Server.SetAcceptLanguage(webRequest);
-            Server.SetAuthorization(webRequest);
-            
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
-            yield return webRequest.SendWebRequest();
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                WDebug.LogError("Error: " + webRequest.error);
-                yield break;
-            }
-            
-            SceneContext.User = JsonUtility.FromJson<User>(webRequest.downloadHandler.text);
-        }
     }
 }

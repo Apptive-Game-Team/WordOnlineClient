@@ -34,7 +34,7 @@ namespace Script.Data
             new (){magicName = "Fire Rune", recipe = new () { CardType.Build , CardType.Fire}, spritePath = "Game/rune/fire_rune"},
             new (){magicName = "Water Rune", recipe = new () { CardType.Build , CardType.Water}, spritePath = "Game/rune/water_rune"},
             new (){magicName = "Lightning Rune", recipe = new () { CardType.Build , CardType.Lightning}, spritePath = "Game/rune/lightning_rune"},
-            new (){magicName = "Nature Rune", recipe = new () { CardType.Build , CardType.Nature}, spritePath = "Game/rune/leaf_rune"},
+            new (){magicName = "Nature Rune", recipe = new () { CardType.Build , CardType.Nature}, spritePath = "Game/rune/nature_rune"},
             new (){magicName = "Rock Rune", recipe = new () { CardType.Build , CardType.Rock}, spritePath = "Game/rune/rock_rune"},
             new (){magicName = "Wind Rune", recipe = new () { CardType.Build , CardType.Wind}, spritePath = "Game/rune/wind_rune"},
             new (){magicName = "Fire Explosion", recipe = new () { CardType.Explode , CardType.Fire}, spritePath = "Game/explode/fire_explode"},

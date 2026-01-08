@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 13673067340979056}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.085, z: 0}
   m_LocalScale: {x: 0.79999995, y: 0.19999999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -275,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 2320294970814455521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.341, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -379,6 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 263219564477927176}
   - component: {fileID: 7571628863401072700}
+  - component: {fileID: 7774054542688849500}
   m_Layer: 0
   m_Name: AbstractAerialMob
   m_TagString: Untagged
@@ -415,6 +416,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 1358037529747643573}
+--- !u!114 &7774054542688849500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133848519264727152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 3475341198290787986}
+  _actualTransform: {fileID: 0}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &4651727963119296362
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +565,8 @@ GameObject:
   - component: {fileID: 3475341198290787986}
   - component: {fileID: 2248884640906561088}
   - component: {fileID: 1020847408684355041}
+  - component: {fileID: 4573400319679388326}
+  - component: {fileID: 2776399463807208965}
   m_Layer: 0
   m_Name: ThunderSpirit
   m_TagString: Untagged
@@ -654,11 +674,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.7025, y: 0.67625}
     newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -681,6 +701,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
+--- !u!114 &4573400319679388326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070132627427492977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5c48af659d4ab2a3a6953c89168883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7774054542688849500}
+--- !u!114 &2776399463807208965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070132627427492977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0cc83bc3f748f4a0842f51c1b6b2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7774054542688849500}
 --- !u!1 &9003734973755074949
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,6 +877,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2723268868756094270, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
+      propertyPath: servedObject
+      value: 
+      objectReference: {fileID: 7774054542688849500}
     - target: {fileID: 5251973200035102780, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: m_Name
       value: HitSoundPlayer

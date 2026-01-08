@@ -34,9 +34,11 @@ namespace Script.LobbyScene.SettingPage
             {
                 WDebug.Log("Account deleted successfully.");
                 SceneContext.ClearContext();
-                SystemMessageUI.Instance.ShowMessage(confirmationMessage);
-                yield return new WaitForSeconds(2f);
-                SceneManager.LoadScene("LoginScene");
+                SystemMessageUI.Instance.ShowMessage(confirmationMessage, () =>
+                {
+                    SceneManager.LoadScene("LoginScene");
+                });
+                
                 yield break;
             }
             WDebug.LogError($"Error deleting account: {requestToServer.error}");

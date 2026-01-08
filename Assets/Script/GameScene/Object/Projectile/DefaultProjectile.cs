@@ -6,9 +6,12 @@ namespace Script.GameScene.Object.Projectile
 {
     public class DefaultProjectile : MonoBehaviour, IProjectile
     {
+
+        [SerializeField] private Transform actualObject;
+        
         public void Init(ProjectileDto projectileDto)
         {
-            transform.rotation = ProjectileUtil.GetRotation(projectileDto);
+            actualObject.rotation = ProjectileUtil.GetRotation(projectileDto);
             transform.position = ProjectileUtil.GetPosition(projectileDto.start);
             
             switch (projectileDto.end.targetType)
@@ -19,6 +22,11 @@ namespace Script.GameScene.Object.Projectile
                     break;
                 case "reference":
                     ServedObject targetObject = ObjectContainer.Instance.FindById(projectileDto.end.id);
+                    if (targetObject == null)
+                    {
+                        Destroy(gameObject);
+                        return;
+                    }
                     MoveTo(targetObject.transform, projectileDto.duration);
                     break;
             }

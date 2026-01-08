@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8804314480276434358}
   - component: {fileID: 4791346112242810010}
+  - component: {fileID: 1273632256142691370}
   m_Layer: 0
   m_Name: AbstractExplode
   m_TagString: Untagged
@@ -46,6 +47,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualGameObject: {fileID: 5252910649224045791}
+--- !u!114 &1273632256142691370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2898933720311739919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 6532723950483228932}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &5252910649224045791
 GameObject:
   m_ObjectHideFlags: 0

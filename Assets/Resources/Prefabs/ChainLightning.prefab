@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2555408739639926963}
   - component: {fileID: 2669417283129473337}
   - component: {fileID: 6360361640997556663}
+  - component: {fileID: 5838226653793143268}
   m_Layer: 0
   m_Name: ChainLightning
   m_TagString: Untagged
@@ -195,3 +196,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AfterImagePrefab: {fileID: 468314681180972983, guid: ec48247db96c8b3468863c78bed3e0e4, type: 3}
+--- !u!114 &5838226653793143268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468314681180972983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 2555408739639926963}
+  id: 0
+  hp: 0
+  maxHp: 0

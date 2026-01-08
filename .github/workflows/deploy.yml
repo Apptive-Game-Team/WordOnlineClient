@@ -46,12 +46,6 @@ jobs:
           targetPlatform: WebGL
           customParameters: -logFile -
 
-      - name: Upload WebGL build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: WebGL-Build
-          path: build
-
       - name: Push to another repo
         run: |
           git config --global user.name "github-actions[bot]"

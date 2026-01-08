@@ -157,6 +157,7 @@ GameObject:
   - component: {fileID: 8841690536847902715}
   - component: {fileID: 2594164038376950415}
   - component: {fileID: 3003403705979211347}
+  - component: {fileID: 6548991394052526327}
   m_Layer: 0
   m_Name: AbstractSlime
   m_TagString: Untagged
@@ -209,6 +210,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 6456819394278174577}
+--- !u!114 &6548991394052526327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7556005377799559492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 6137335418506685782}
+  id: 0
+  hp: 0
+  maxHp: 0
 --- !u!1 &9073358497309748316
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +428,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2723268868756094270, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
+      propertyPath: servedObject
+      value: 
+      objectReference: {fileID: 6548991394052526327}
     - target: {fileID: 5251973200035102780, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: m_Name
       value: HitSoundPlayer
