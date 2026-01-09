@@ -34,7 +34,7 @@ public class LoginButton : AsyncButtonBase
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError("Error: " + webRequest.error);
-                SystemMessageUI.Instance.ShowMessage(webRequest.downloadHandler.text);
+                SystemMessageUI.Instance.ShowMessage(loginErrorProcessingResponse);
                 ResetButton();
                 yield break;
             }
