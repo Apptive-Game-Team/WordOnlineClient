@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Script.GameScene.Dto.Projectile;
+
 namespace Script.GameScene.Dto
 {
     [System.Serializable]
@@ -11,5 +14,6 @@ namespace Script.GameScene.Dto
         public int leftPlayerHp;
         public int rightPlayerHp;
         public SnapshotDto snapshotResponseDto;
+        public List<ProjectileDto> projectileDtos;
     }
 }
