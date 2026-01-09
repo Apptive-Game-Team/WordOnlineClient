@@ -35,6 +35,11 @@ namespace Script.GameScene.Handler
                 WDebug.Log("[SyncFrameHandler] 카드 추가 중 오류 발생");
             }
  
+            foreach (var projectile in syncFrameInfo.projectileDtos)
+            {
+                ProjectileSpawner.Instance.Spawn(projectile);
+            }
+            
             // 동기화
             ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects);
             

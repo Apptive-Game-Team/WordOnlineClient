@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
+using Script.Global;
 
 namespace Script.Data.Sse
 {
@@ -26,6 +27,11 @@ namespace Script.Data.Sse
 
         private void OnReceive(string line)
         {
+            if (line.Contains("heartbeat"))
+            {
+                WDebug.Log("SSE Heartbeat received.");
+                return;
+            }
             // Unity 메인 스레드에서 실행
             UnityMainThreadDispatcher.Enqueue(() =>
             {

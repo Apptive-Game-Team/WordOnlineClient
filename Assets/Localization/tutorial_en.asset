@@ -164,6 +164,14 @@ MonoBehaviour:
       slides down when you tap the field.'
     m_Metadata:
       m_Items: []
+  - m_Id: 27897468149555200
+    m_Localized: Alright, follow me!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27897500370198528
+    m_Localized: Great, give it your best shot!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
