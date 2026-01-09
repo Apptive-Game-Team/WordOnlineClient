@@ -10,10 +10,12 @@ namespace Script.TutorialScene
 {
     public class TutorialManager : MonoBehaviour
     {
+        public static TutorialManager Instance;
         [SerializeField] TutorialCardSender _cardSender;
         [SerializeField] TutorialData _tutorialData;
         [SerializeField] TextMeshProUGUI _dialogueText;
-
+        
+        
         private bool _advanceRequested;
         private bool _usedShotFire;
         private bool _usedWaterArcher;
@@ -21,7 +23,14 @@ namespace Script.TutorialScene
         private bool _enemyDead;
 
         private void Awake()
-        {
+        {        
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            
             _cardSender.MagicUsed += OnMagicUsed;
             _cardSender.SingleCardUsed += OnSingleCardUsed;
         }
@@ -43,6 +52,16 @@ namespace Script.TutorialScene
             {
                 var step = _tutorialData.steps[i];
 
+                if (step.shouldClearCards)
+                {
+                    ClearCard();
+                }
+                
+                foreach (var name in step.cardNames)
+                {
+                    GiveCard(name);
+                }
+                
                 yield return SetLocalizedDialogue(step.localizationKey);
 
                 switch (step.waitType)
@@ -110,7 +129,11 @@ namespace Script.TutorialScene
         {
             _enemyDead = true;
         }
-
+        public void NotifyShotFire()
+        {
+            _usedShotFire = true;
+        }
+        
         private void OnSingleCardUsed()
         {
             _usedAnyCard = true;
@@ -147,6 +170,17 @@ namespace Script.TutorialScene
             }
 
             return true;
+        }
+
+        void GiveCard(string name)
+        {
+            TutorialSceneUIController.Instance.AddCard(name);
+        }
+
+        void ClearCard()
+        {
+            TutorialSceneUIController.Instance.ClearAllCards();
+            _cardSender.CancelAll();
         }
     }
 }

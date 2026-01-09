@@ -5,6 +5,7 @@ using Script.GameScene;
 using Script.GameScene.Card;
 using Script.Global;
 using Script.Global.Util;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Script.TutorialScene
@@ -15,17 +16,20 @@ namespace Script.TutorialScene
         public event Action SingleCardUsed;
 
         private List<string> _currentCardNameList = new List<string>();
-        private List<CardUI> _currentCardList = new List<CardUI>();
+        private List<TutorialCardUI> _currentCardList = new List<TutorialCardUI>();
 
+        [SerializeField] GameObject shotPrefab;
+        [SerializeField] GameObject mobPrefab;
+        
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
 
-        bool ICardSender.IsFieldSelectMode()
+        public bool IsFieldSelectMode()
         {
             return isFieldSelectMode;
         }
 
-        public void CancelUseCard(CardUI cardObj)
+        public void CancelUseCard(TutorialCardUI cardObj)
         {
             if (_currentCardNameList.Contains(cardObj.CardName))
             {
@@ -47,7 +51,7 @@ namespace Script.TutorialScene
             }
         }
 
-        private void Cancel()
+        public void Cancel()
         {
             if (isFieldSelectMode)
             {
@@ -55,7 +59,7 @@ namespace Script.TutorialScene
             }
         }
 
-        private void Confirm()
+        public void Confirm()
         {
             if (!CanSelectField)
                 return;
@@ -89,7 +93,7 @@ namespace Script.TutorialScene
             return result;
         }
 
-        private void CancelAll()
+        public void CancelAll()
         {
             WDebug.Log("CancelAll");
             foreach (var card in _currentCardList)
@@ -99,12 +103,11 @@ namespace Script.TutorialScene
 
             _currentCardList.Clear();
             _currentCardNameList.Clear();
-            PlayerFeedbackController.Instance.UseMagicFeedback();
-            FindObjectOfType<CardInputSender>().SetExpectedMagicUI();
+            FindObjectOfType<TutorialCardSender>().SetExpectedMagicUI();
             isFieldSelectMode = false;
         }
 
-        public void TryUseCard(CardUI cardObj)
+        public void TryUseCard(TutorialCardUI cardObj)
         {
             AddCardList(cardObj);
         }
@@ -116,12 +119,21 @@ namespace Script.TutorialScene
 
             MagicUsed?.Invoke(types);
 
+            if (_currentCardNameList.Contains("Spawn")) Instantiate(mobPrefab, pos,quaternion.identity);
+            else if (_currentCardNameList.Contains("Shoot")) Instantiate(shotPrefab, new Vector3(1,5,0),quaternion.identity);
+            
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
+            
         }
 
-        private void AddCardList(CardUI card)
+        public void TryUseCard(CardUI cardObj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddCardList(TutorialCardUI card)
         {
             WDebug.Log("AddCardList: " + card.CardName);
             _currentCardNameList.Add(card.CardName);
@@ -144,7 +156,7 @@ namespace Script.TutorialScene
 
         public void SetExpectedMagicUI()
         {
-            GameSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
+            TutorialSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
         }
     }
 }

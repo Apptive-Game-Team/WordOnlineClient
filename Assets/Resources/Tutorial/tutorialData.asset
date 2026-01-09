@@ -15,29 +15,63 @@ MonoBehaviour:
   stringTableName: tutorial
   steps:
   - localizationKey: tutorial.cards
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.basic
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.shotfire
+    cardNames:
+    - Shoot
+    - Fire
+    shouldClearCards: 1
     waitType: 1
   - localizationKey: tutorial.shotfire
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.shotFireSuccess
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.advanced
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.spawnArcher
+    cardNames:
+    - Spawn
+    - Shoot
+    - Water
+    shouldClearCards: 1
     waitType: 2
   - localizationKey: tutorial.spawnArcherSuccess
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.discard
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.discardAny
+    cardNames:
+    - Shoot
+    shouldClearCards: 1
     waitType: 3
   - localizationKey: tutorial.discardAnySuccess
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   - localizationKey: tutorial.finishEnemy
+    cardNames:
+    - Shoot
+    - Fire
+    shouldClearCards: 1
     waitType: 4
   - localizationKey: tutorial.finishEnemySuccess
+    cardNames: []
+    shouldClearCards: 0
     waitType: 0
   lobbySceneName: LobbyScene

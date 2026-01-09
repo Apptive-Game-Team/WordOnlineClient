@@ -15,6 +15,8 @@ namespace Script.TutorialScene
     public class TutorialStep
     {
         public string localizationKey;
+        public string[] cardNames;
+        public bool shouldClearCards;
         public TutorialWaitType waitType;
     }
 
