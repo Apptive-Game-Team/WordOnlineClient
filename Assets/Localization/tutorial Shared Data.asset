@@ -123,6 +123,10 @@ MonoBehaviour:
     m_Key: tutorial.final
     m_Metadata:
       m_Items: []
+  - m_Id: 27811470703198208
+    m_Key: tutorial.barcontrol
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

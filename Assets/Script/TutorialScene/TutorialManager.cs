@@ -14,7 +14,7 @@ namespace Script.TutorialScene
         [SerializeField] TutorialCardSender _cardSender;
         [SerializeField] TutorialData _tutorialData;
         [SerializeField] TextMeshProUGUI _dialogueText;
-        
+        [SerializeField] ManaMocker _manaMocker;
         
         private bool _advanceRequested;
         private bool _usedShotFire;
@@ -142,10 +142,17 @@ namespace Script.TutorialScene
         private void OnMagicUsed(System.Collections.Generic.IReadOnlyList<CardType> types)
         {
             if (IsExact(types, CardType.Shoot, CardType.Fire))
+            {
                 _usedShotFire = true;
-
+                _manaMocker.UseMana(25);
+            }
+                
             if (IsExact(types, CardType.Spawn, CardType.Shoot, CardType.Water))
+            {
                 _usedWaterArcher = true;
+            _manaMocker.UseMana(45);
+            }
+            
         }
 
         private bool IsExact(System.Collections.Generic.IReadOnlyList<CardType> types, params CardType[] expected)

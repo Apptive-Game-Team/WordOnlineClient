@@ -32,6 +32,10 @@ MonoBehaviour:
     cardNames: []
     shouldClearCards: 1
     waitType: 0
+  - localizationKey: tutorial.barcontrol
+    cardNames: []
+    shouldClearCards: 0
+    waitType: 0
   - localizationKey: tutorial.advanced
     cardNames: []
     shouldClearCards: 0
@@ -68,7 +72,7 @@ MonoBehaviour:
     waitType: 4
   - localizationKey: tutorial.finishEnemySuccess
     cardNames: []
-    shouldClearCards: 0
+    shouldClearCards: 1
     waitType: 0
   - localizationKey: tutorial.final
     cardNames: []

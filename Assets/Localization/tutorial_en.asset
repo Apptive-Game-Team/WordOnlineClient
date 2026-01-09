@@ -159,6 +159,11 @@ MonoBehaviour:
       Good Luck!
     m_Metadata:
       m_Items: []
+  - m_Id: 27811470703198208
+    m_Localized: 'Just FYI: the bottom bar slides up when you tap the mana bar, and
+      slides down when you tap the field.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
