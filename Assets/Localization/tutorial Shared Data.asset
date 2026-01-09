@@ -127,6 +127,18 @@ MonoBehaviour:
     m_Key: tutorial.barcontrol
     m_Metadata:
       m_Items: []
+  - m_Id: 27897468149555200
+    m_Key: 'tutorial.answeryes
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27897500370198528
+    m_Key: 'tutorial.answerno
+
+'
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
