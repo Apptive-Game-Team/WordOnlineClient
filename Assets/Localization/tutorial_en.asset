@@ -99,6 +99,71 @@ MonoBehaviour:
       you how it works?'
     m_Metadata:
       m_Items: []
+  - m_Id: 22654931925569536
+    m_Localized: First of all, this world has Spell Cards and Element Cards.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655127950561280
+    m_Localized: You can cast a basic spell by combining one Spell Card with one
+      Element Card.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655217972908032
+    m_Localized: "You\u2019ve got Shot and Fire right now, so why don\u2019t you
+      try casting a spell with them?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655475352178688
+    m_Localized: "Nice work! You\u2019ve really got a knack for this!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655588501917696
+    m_Localized: You can also combine three or more cards to cast more advanced spells.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655689043578880
+    m_Localized: "You\u2019ve got Spawn, Shot, and Water right now, so try combining
+      them to summon a Water Archer."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655833889673216
+    m_Localized: Whoa, nice! Summoning minions like that is key to taking control
+      of the battlefield!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22655909726883840
+    m_Localized: "Sometimes you won\u2019t be able to cast any spells, and you\u2019ll
+      have no choice but to discard a card."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22656184567042048
+    m_Localized: Try using a single card once.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22656269602361344
+    m_Localized: Nice! Remember, sometimes you have to let something go so you can
+      use even bigger magic later.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22656315026673664
+    m_Localized: Now, use your spells to finish off your opponent!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22656432915976192
+    m_Localized: "Whoa\u2026 you\u2019ve definitely got what it takes to become a
+      top-class mage. Excellent!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27802988117622784
+    m_Localized: Now go fight against lots of different people and sharpen your skills.
+      Good Luck!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27811470703198208
+    m_Localized: 'Just FYI: the bottom bar slides up when you tap the mana bar, and
+      slides down when you tap the field.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbySceneLoadButton : LobbyButtonBase
 {
-    [SerializeField] private string sceneName;
+    [SerializeField] protected string sceneName;
     
     protected override void OnClickButton()
     {
