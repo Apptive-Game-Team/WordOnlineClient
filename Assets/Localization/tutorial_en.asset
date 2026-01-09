@@ -154,6 +154,11 @@ MonoBehaviour:
       top-class mage. Excellent!"
     m_Metadata:
       m_Items: []
+  - m_Id: 27802988117622784
+    m_Localized: Now go fight against lots of different people and sharpen your skills.
+      Good Luck!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

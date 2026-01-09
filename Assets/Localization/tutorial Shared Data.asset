@@ -119,6 +119,10 @@ MonoBehaviour:
     m_Key: tutorial.finishEnemySuccess
     m_Metadata:
       m_Items: []
+  - m_Id: 27802988117622784
+    m_Key: tutorial.final
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
