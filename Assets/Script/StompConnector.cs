@@ -61,6 +61,7 @@ public class StompConnector : LocalSingletonObject<StompConnector>
             if (counter >= 5f)
             {
                 OnError("Not connected");
+                counter = 0f;
             }
         }
         else
