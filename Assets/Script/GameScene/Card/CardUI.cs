@@ -16,8 +16,6 @@ namespace Script.GameScene
         [SerializeField] private TextMeshProUGUI cardManaText;
         [SerializeField] private AudioSource cardSound;
         
-        [SerializeField] private Sprite typeSprite;
-        [SerializeField] private Sprite magicSprite;
         [SerializeField] private Outline outline;
         
         private void Awake()
@@ -44,18 +42,6 @@ namespace Script.GameScene
             MagicData magicData = LocalMagicData.GetMagicData(name);
             CardType = Enum.Parse<CardType>(name, true);
             cardManaText.text = magicData.mana.ToString();
-            switch (magicData.type)
-            {
-                case "type":
-                    GetComponent<Image>().sprite = typeSprite;
-                    break;
-                case "magic":
-                    GetComponent<Image>().sprite = magicSprite;
-                    break;
-                default:
-                    WDebug.LogError($"Unknown magic type: {magicData.type}");
-                    break;
-            }
             cardNameText.text = await LocaleUtils.GetStringAsync("Card", name);
         }
 
