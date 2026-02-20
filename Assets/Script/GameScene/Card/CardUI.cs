@@ -2,7 +2,6 @@ using System;
 using Script.Data;
 using Script.Data.Localization;
 using Script.Data.Sound;
-using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +13,7 @@ namespace Script.GameScene
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
         [SerializeField] private TextMeshProUGUI cardManaText;
+        [SerializeField] private Image image;
         [SerializeField] private AudioSource cardSound;
         
         [SerializeField] private Outline outline;
@@ -36,8 +36,9 @@ namespace Script.GameScene
         public string DisplayName => cardNameText.text;
         public string Mana => cardManaText.text;
 
-        public async void Init(string name)
+        public async void Init(string name, Sprite cardSprite)
         {
+            image.sprite = cardSprite;
             CardName = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
             CardType = Enum.Parse<CardType>(name, true);

@@ -85,8 +85,7 @@ public class GameSceneUIController : MonoBehaviour
     {
         if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null || cardImageMapper == null) return;
         CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
-        cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
-        cardUI.Init(cardname);
+        cardUI.Init(cardname, cardImageMapper.GetCardImage(cardname));
         magicHelperUI.RefreshSuggestions();
     }
 

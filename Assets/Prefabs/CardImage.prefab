@@ -439,9 +439,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameText: {fileID: 6377028756291647707}
   cardManaText: {fileID: 2828232940413020160}
+  image: {fileID: 146713146040752173}
   cardSound: {fileID: 0}
-  typeSprite: {fileID: 21300000, guid: 7d4b1ff7616ed4e319ae4c32d16d6df0, type: 3}
-  magicSprite: {fileID: 21300000, guid: aa143a60e471647e4bae9d6b44704497, type: 3}
   outline: {fileID: 2171650917416182166}
   CardName: 
 --- !u!114 &-5344989155896131315
