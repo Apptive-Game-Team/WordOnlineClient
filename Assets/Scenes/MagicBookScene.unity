@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2718469730974271840, guid: ab89aefebd40141228aabbe813d04aab, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1400
+      value: 1350
       objectReference: {fileID: 0}
     - target: {fileID: 2718469730974271840, guid: ab89aefebd40141228aabbe813d04aab, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1563,8 +1563,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 643807740}
   m_HandleRect: {fileID: 643807739}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
