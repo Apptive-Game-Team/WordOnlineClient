@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using Scripts.Data;
 using Scripts.GameScene.Object;
 using Scripts.Global;
@@ -12,12 +9,6 @@ namespace Scripts.GameScene.ServedObjectComponent
 {
     public class ServedObject : MonoBehaviour
     {
-        private const float BounceScale = 1.3f;
-        private const float SquashScale = 0.8f;
-        private const float Duration = 0.2f;
-        private const float FRAME_DURATION = 0.05f;
-
-        private Vector3 originalScale;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
         public int id;
@@ -25,9 +16,8 @@ namespace Scripts.GameScene.ServedObjectComponent
         public int hp;
         public int maxHp;
         private string master;
-        
-        private Vector3? nextPosition = null;
-        private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
+
+        private PositionUpdater _positionUpdater;
 
         public event Action OnAttack;
         public event Action OnDamaged;
@@ -39,12 +29,7 @@ namespace Scripts.GameScene.ServedObjectComponent
         public event Action OnHpDecreased;
 
         private int lastHp = 0;
-
-        private void Awake()
-        {
-            originalScale = transform.localScale;
-        }
-
+        
         public void SetMaster(string master)
         {
             this.master = master;
@@ -58,6 +43,8 @@ namespace Scripts.GameScene.ServedObjectComponent
             {
                 return;
             }
+            
+            _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
             
             if (!SceneContext.Me.Equals(master) && master != "None")
             {
@@ -82,7 +69,7 @@ namespace Scripts.GameScene.ServedObjectComponent
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
-            UpdatePosition(updatedObjectDto);
+            _positionUpdater?.UpdatePosition(updatedObjectDto);
 
             if (hp != updatedObjectDto.hp)
             {
@@ -103,7 +90,7 @@ namespace Scripts.GameScene.ServedObjectComponent
             switch (status)
             {
                 case "Destroyed":
-                    DestroySelf(FRAME_DURATION);
+                    DestroySelf(GameConfig.FRAME_DURATION);
                     break;
 
                 case "Attack":
@@ -119,24 +106,6 @@ namespace Scripts.GameScene.ServedObjectComponent
                     OnOtherStatus?.Invoke(status);
                     break;
             }
-        }
-
-        private void UpdatePosition(UpdatedObjectDto updatedObjectDto)
-        {
-            if (moveTween != null && moveTween.IsActive())
-            {
-                moveTween.Kill();
-            }
-            if (nextPosition.HasValue)
-            {
-                transform.position = nextPosition.Value;
-            }
-            
-            nextPosition = new Vector3(
-                updatedObjectDto.position.x, 
-                updatedObjectDto.position.y, 
-                updatedObjectDto.position.z);
-            moveTween = transform.DOMove(nextPosition.Value, FRAME_DURATION).SetEase(Ease.Linear);
         }
         
         private void SetEffect(string effect)
