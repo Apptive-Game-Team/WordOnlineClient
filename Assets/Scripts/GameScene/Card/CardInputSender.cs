@@ -106,7 +106,7 @@ namespace GameScene.Card
         
             string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
             StompConnector.Instance.SendMessageToServer(destination, json);
-            inputRequestDict.Add(input.id, new List<CardUI>(_currentCardList)) ;
+            inputRequestDict[input.id] = new List<CardUI>(_currentCardList);
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
