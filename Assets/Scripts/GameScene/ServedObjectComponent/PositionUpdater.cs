@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -50,16 +51,39 @@ namespace Scripts.GameScene.ServedObjectComponent
 
             double x = (double) nextPosition?.x;
 
-            if (lastX < x)
+            if (Math.Abs(lastX - x) > 0.1 * GameConfig.FRAME_DURATION)
             {
-                spriteRenderer.flipX = false;
-            }
-            else if (x < lastX)
-            {
-                spriteRenderer.flipX = true;
-            }
+                if (lastX < x)
+                {
+                    SetFlipX(false);
+                }
+                else if (x < lastX)
+                {
+                    SetFlipX(true);
+                }
+            } 
 
             lastX = x;
+        }
+        
+        private const int FLIP_THRESHOLD = 10;
+        private int flipCounter = 0;
+        
+        private void SetFlipX(bool flipX)
+        {
+            if (spriteRenderer.flipX != flipX)
+            {
+                flipCounter++;
+                if (flipCounter >= FLIP_THRESHOLD)
+                {
+                    spriteRenderer.flipX = flipX;
+                    flipCounter = 0;
+                }
+            }
+            else
+            {
+                flipCounter = 0;
+            }
         }
     }
 }
