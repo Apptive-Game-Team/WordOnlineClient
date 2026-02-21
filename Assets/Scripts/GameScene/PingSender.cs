@@ -12,6 +12,7 @@ namespace GameScene
         private StompConnector stompConnector;
         private string destination;
         private string pingMessage;
+        private Coroutine _pingCoroutine;
 
         [Serializable]
         class PingDto
@@ -26,14 +27,18 @@ namespace GameScene
             destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            StartCoroutine(PingCoroutine());
+            _pingCoroutine = StartCoroutine(PingCoroutine());
         }
     
         private void OnDisable()
         {
-            StopAllCoroutines();
+            if (_pingCoroutine != null)
+            {
+                StopCoroutine(_pingCoroutine);
+                _pingCoroutine = null;
+            }
         }
     
         private IEnumerator PingCoroutine()
