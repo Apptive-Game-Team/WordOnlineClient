@@ -54,20 +54,57 @@ namespace GameScene
         rightUserIDText.text = SceneContext.MatchInfo.rightUser.name;
 #endif
         }
+
+        private Transform leftPlayerTransform;
+        private Transform rightPlayerTransform;
+
+        private Transform GetLeftPlayerTransform()
+        {
+            if (leftPlayerTransform == null)
+            {
+                GameObject leftPlayer = GameObject.Find("LeftPlayer");
+                if (leftPlayer != null)
+                {
+                    leftPlayerTransform = leftPlayer.transform;
+                }
+            }
+
+            return leftPlayerTransform;
+        }
+
+        private Transform GetRightPlayerTransform()
+        {
+            if (rightPlayerTransform == null)
+            {
+                GameObject rightPlayer = GameObject.Find("RightPlayer");
+                if (rightPlayer != null)
+                {
+                    rightPlayerTransform = rightPlayer.transform;
+                }
+            }
+
+            return rightPlayerTransform;
+        }
     
         public void UpdateUserHps(int leftUserHp, int rightUserHp)
         {
             if (leftUserHpSlider.value > leftUserHp)
             {
-                Transform leftPlayerTr = GameObject.Find("LeftPlayer").transform;
-                DOTweenAction.BounceMob(leftPlayerTr.GetChild(0));
-                DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",leftPlayerTr);
+                Transform leftPlayerTr = GetLeftPlayerTransform();
+                if (leftPlayerTr != null)
+                {
+                    DOTweenAction.BounceMob(leftPlayerTr.GetChild(0));
+                    DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", leftPlayerTr);
+                }
             }
             else if (rightUserHpSlider.value > rightUserHp)
             {
-                Transform rightPlayerTr = GameObject.Find("RightPlayer").transform;
-                DOTweenAction.BounceMob(rightPlayerTr.GetChild(0));
-                DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", rightPlayerTr);
+                Transform rightPlayerTr = GetRightPlayerTransform();
+                if (rightPlayerTr != null)
+                {
+                    DOTweenAction.BounceMob(rightPlayerTr.GetChild(0));
+                    DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", rightPlayerTr);
+                }
             }
         
             leftUserHpSlider.value = leftUserHp;
