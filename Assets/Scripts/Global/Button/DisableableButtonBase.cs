@@ -6,6 +6,12 @@ namespace Global.Button
     public abstract class DisableableButtonBase : ButtonBase
     {
         protected bool isActive = true;
+        private Color defaultColor;
+        
+        protected void Awake()
+        {
+            defaultColor = gameObject.GetComponent<Image>().color;
+        }
         
         protected void SetButton()
         {
@@ -16,7 +22,7 @@ namespace Global.Button
         public void ResetButton()
         {
             isActive = true;
-            gameObject.GetComponent<Image>().color = Color.white;
+            gameObject.GetComponent<Image>().color = defaultColor;
         }
     }
 }
