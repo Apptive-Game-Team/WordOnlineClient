@@ -228,8 +228,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Debug (Right)
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
-  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
+  m_sharedMaterial: {fileID: -8935207719568655604, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -625,7 +625,7 @@ PrefabInstance:
     - target: {fileID: 8745894447602841410, guid: 44b9d206afcf4054f8eb9942497571f2, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+      objectReference: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
     - target: {fileID: 8745894447602841410, guid: 44b9d206afcf4054f8eb9942497571f2, type: 3}
       propertyPath: m_fontStyle
       value: 0
@@ -789,7 +789,7 @@ SpriteRenderer:
   m_Size: {x: 4.8, y: 2.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &557231814
@@ -1730,8 +1730,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Debug (Left)
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
-  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
+  m_sharedMaterial: {fileID: -8935207719568655604, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1908,8 +1908,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Reload
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
-  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
+  m_sharedMaterial: {fileID: -8935207719568655604, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2303,8 +2303,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Debug (Practice)
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
-  m_sharedMaterial: {fileID: 4538589291986368290, guid: edc7edaeaf4239948912628da1b5ac6d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
+  m_sharedMaterial: {fileID: -8935207719568655604, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

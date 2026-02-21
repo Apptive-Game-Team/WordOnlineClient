@@ -13,8 +13,8 @@ public class CardItemUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardCountText;
     [SerializeField] private CardImageMapper cardImageMapper;
 
-    [SerializeField] private Sprite typeSprite;
-    [SerializeField] private Sprite magicSprite;
+    // [SerializeField] private Sprite typeSprite;
+    // [SerializeField] private Sprite magicSprite;
 
     [SerializeField] private GameObject lockRoot;
     [SerializeField] private TextMeshProUGUI unlockConditionText;
@@ -41,8 +41,8 @@ public class CardItemUI : MonoBehaviour
         var bg = GetComponent<Image>();
         switch (magicData.type)
         {
-            case "type": bg.sprite = typeSprite; break;
-            case "magic": bg.sprite = magicSprite; break;
+            // case "type": bg.sprite = typeSprite; break;
+            // case "magic": bg.sprite = magicSprite; break;
             default: WDebug.LogError($"Unknown magic type: {magicData.type}"); break;
         }
 

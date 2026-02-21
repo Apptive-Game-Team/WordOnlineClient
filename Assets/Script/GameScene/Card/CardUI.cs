@@ -2,7 +2,6 @@ using System;
 using Script.Data;
 using Script.Data.Localization;
 using Script.Data.Sound;
-using Script.Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,10 +13,9 @@ namespace Script.GameScene
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
         [SerializeField] private TextMeshProUGUI cardManaText;
+        [SerializeField] private Image image;
         [SerializeField] private AudioSource cardSound;
         
-        [SerializeField] private Sprite typeSprite;
-        [SerializeField] private Sprite magicSprite;
         [SerializeField] private Outline outline;
         
         private void Awake()
@@ -38,24 +36,13 @@ namespace Script.GameScene
         public string DisplayName => cardNameText.text;
         public string Mana => cardManaText.text;
 
-        public async void Init(string name)
+        public async void Init(string name, Sprite cardSprite)
         {
+            image.sprite = cardSprite;
             CardName = name;
             MagicData magicData = LocalMagicData.GetMagicData(name);
             CardType = Enum.Parse<CardType>(name, true);
             cardManaText.text = magicData.mana.ToString();
-            switch (magicData.type)
-            {
-                case "type":
-                    GetComponent<Image>().sprite = typeSprite;
-                    break;
-                case "magic":
-                    GetComponent<Image>().sprite = magicSprite;
-                    break;
-                default:
-                    WDebug.LogError($"Unknown magic type: {magicData.type}");
-                    break;
-            }
             cardNameText.text = await LocaleUtils.GetStringAsync("Card", name);
         }
 
