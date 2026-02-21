@@ -5,6 +5,13 @@ namespace GameScene
 {
     public class LineSkillIndicator : MonoBehaviour
     {
+        private Camera _camera;
+
+        private void Start()
+        {
+            _camera = Camera.main;
+        }
+
         private void OnEnable()
         {
             if (SceneContext.Me.Equals("RightPlayer"))
@@ -19,7 +26,7 @@ namespace GameScene
 
         void Update()
         {
-            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseWorld = _camera.ScreenToWorldPoint(Input.mousePosition);
             mouseWorld.z = 0;
 
             Vector3 direction = mouseWorld - transform.position;
