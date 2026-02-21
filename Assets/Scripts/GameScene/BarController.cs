@@ -13,6 +13,7 @@ namespace GameScene
         [SerializeField] private Button manaBarButton;
         [SerializeField] private Button fieldButton;
         private bool lastActive = false;
+        private Coroutine _moveBarCoroutine;
 
         [SerializeField] private CardInputSender cardInputSender;
     
@@ -48,14 +49,11 @@ namespace GameScene
 
         private void SetBarActive(bool active)
         {
-            if (active)
+            if (_moveBarCoroutine != null)
             {
-                StartCoroutine(MoveBar(true));
+                StopCoroutine(_moveBarCoroutine);
             }
-            else
-            {
-                StartCoroutine(MoveBar(false));
-            }
+            _moveBarCoroutine = StartCoroutine(MoveBar(active));
         }
 
 
