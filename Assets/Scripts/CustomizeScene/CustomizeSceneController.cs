@@ -118,12 +118,10 @@ namespace CustomizeScene
                 () =>
                 {
                     success = true;
-                    _ = true;
                 },
                 err =>
                 {
                     Debug.LogError("EquipDecoration failed: " + err);
-                    _ = true;
                 }));
 
             if (!success) yield break;
