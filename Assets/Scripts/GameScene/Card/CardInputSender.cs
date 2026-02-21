@@ -90,7 +90,7 @@ namespace GameScene.Card
             _currentCardList.Clear();
             _currentCardNameList.Clear();
             PlayerFeedbackController.Instance.UseMagicFeedback();
-            FindObjectOfType<CardInputSender>().SetExpectedMagicUI(); 
+            SetExpectedMagicUI();
             isFieldSelectMode = false;
         }
 
