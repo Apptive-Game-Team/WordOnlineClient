@@ -20,6 +20,8 @@ namespace GameScene.Card
         
         [SerializeField] private Outline outline;
         
+        public Sprite CardSprite => image.sprite;
+        
         private void Awake()
         {
             cardSound = gameObject.GetComponent<AudioSource>();

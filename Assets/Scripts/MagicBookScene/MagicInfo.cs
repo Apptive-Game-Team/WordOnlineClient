@@ -25,6 +25,7 @@ namespace MagicBookScene
             {
                 var cardObj = new GameObject(cardType.ToString());
                 var img = cardObj.AddComponent<Image>();
+                img.preserveAspect = true;
                 img.sprite = mapper.GetCardImage(cardType);
                 img.rectTransform.sizeDelta = new Vector2(50, 50);
                 cardObj.transform.SetParent(cardsParent, false);
