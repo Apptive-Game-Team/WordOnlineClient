@@ -1,7 +1,7 @@
-using Scripts.Global.Button;
+using Global.Button;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LoginScene
+namespace LoginScene
 {
     public class MockLoginButton : ButtonBase
     {

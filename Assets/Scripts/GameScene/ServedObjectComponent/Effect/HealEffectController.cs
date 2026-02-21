@@ -1,7 +1,7 @@
-using Scripts.Global;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent.Effect
+namespace GameScene.ServedObjectComponent.Effect
 {
     public class HealEffectController : MonoBehaviour
     {

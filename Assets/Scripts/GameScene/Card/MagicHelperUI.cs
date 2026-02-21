@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Scripts.Data;
+using Data;
 using UnityEngine;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public class MagicHelperUI : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     [CreateAssetMenu(menuName = "Game/Tutorial/TutorialData")]
     public class TutorialData : ScriptableObject

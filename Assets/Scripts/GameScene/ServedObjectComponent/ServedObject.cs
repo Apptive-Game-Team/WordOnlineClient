@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using Scripts.Data;
-using Scripts.GameScene.Object;
-using Scripts.Global;
+using Data;
+using GameScene.Object;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     public class ServedObject : MonoBehaviour
     {

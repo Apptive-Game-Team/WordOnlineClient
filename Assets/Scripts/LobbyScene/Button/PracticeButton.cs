@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public class PracticeButton : LobbyButtonBase
     {

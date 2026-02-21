@@ -1,9 +1,9 @@
-using Scripts.Data;
-using Scripts.Global;
+using Data;
+using Global;
 using TMPro;
 using UnityEngine;
 
-namespace Scripts.ResultScene
+namespace ResultScene
 {
     public class ResultSceneUIController : MonoBehaviour
     {

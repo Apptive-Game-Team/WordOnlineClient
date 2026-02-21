@@ -1,12 +1,12 @@
-using Scripts.Data;
-using Scripts.Data.Sound;
-using Scripts.GameScene.Exception;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using Data;
+using Data.Sound;
+using GameScene.Exception;
+using GameScene.ServedObjectComponent;
+using Global;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Scripts.GameScene.Object
+namespace GameScene.Object
 {
     public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {

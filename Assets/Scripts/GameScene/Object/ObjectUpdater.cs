@@ -1,8 +1,8 @@
-using Scripts.Data;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using Data;
+using GameScene.ServedObjectComponent;
+using Global;
 
-namespace Scripts.GameScene.Object
+namespace GameScene.Object
 {
     public class ObjectUpdater : LocalSingletonObject<ObjectUpdater>
     {

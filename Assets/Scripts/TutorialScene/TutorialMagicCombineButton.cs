@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialMagicCombineButton : MonoBehaviour
     {

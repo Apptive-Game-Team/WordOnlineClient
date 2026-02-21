@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Global
+namespace Global
 {
     public class KeyInputSetting : MonoBehaviour
     {

@@ -1,15 +1,15 @@
 using System;
-using Scripts.Data;
-using Scripts.Data.Localization;
-using Scripts.Data.Sound;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Sound;
+using Data;
+using Data.Localization;
+using Data.Sound;
+using GameScene.ServedObjectComponent;
+using Sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

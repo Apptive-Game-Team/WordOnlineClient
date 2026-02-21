@@ -1,4 +1,4 @@
-namespace Scripts.Data.Sound
+namespace Data.Sound
 {
     public class SoundData
     {

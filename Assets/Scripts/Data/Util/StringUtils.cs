@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Scripts.Data.Util
+namespace Data.Util
 {
     public static class StringUtils
     {

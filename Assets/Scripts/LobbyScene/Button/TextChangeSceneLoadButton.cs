@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public class TextChangeSceneLoadButton : LobbySceneLoadButton
     {

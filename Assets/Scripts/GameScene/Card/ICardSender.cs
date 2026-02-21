@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public interface ICardSender
     {

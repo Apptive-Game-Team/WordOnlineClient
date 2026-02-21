@@ -1,6 +1,6 @@
-using Scripts.Global;
+using Global;
 
-namespace Scripts.Data.Util
+namespace Data.Util
 {
     public class UrlUtil
     {

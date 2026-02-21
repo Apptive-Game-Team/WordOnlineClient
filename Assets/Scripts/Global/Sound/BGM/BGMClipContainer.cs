@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Global.Sound.BGM
+namespace Global.Sound.BGM
 {
     public class BGMClipContainer : MonoBehaviour
     {

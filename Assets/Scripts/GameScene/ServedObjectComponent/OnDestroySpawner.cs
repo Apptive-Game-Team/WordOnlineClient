@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     public class OnDestroySpawner : MonoBehaviour
     {

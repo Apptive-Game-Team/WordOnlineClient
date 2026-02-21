@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     public static class DOTweenAction
     {

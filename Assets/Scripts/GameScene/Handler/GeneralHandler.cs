@@ -1,8 +1,8 @@
-using Scripts.Data;
-using Scripts.GameScene.Dto;
+using Data;
+using GameScene.Dto;
 using UnityEngine;
 
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public class GeneralHandler : IFrameInfoHandler<string>
     {

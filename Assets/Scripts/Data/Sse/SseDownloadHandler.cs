@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Scripts.Data.Sse
+namespace Data.Sse
 {
 
     public class SseDownloadHandler : DownloadHandlerScript

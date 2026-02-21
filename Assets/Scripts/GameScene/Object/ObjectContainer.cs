@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Scripts.GameScene.Exception;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using GameScene.Exception;
+using GameScene.ServedObjectComponent;
+using Global;
 
-namespace Scripts.GameScene.Object
+namespace GameScene.Object
 {
     public class ObjectContainer : LocalSingletonObject<ObjectContainer>
     {

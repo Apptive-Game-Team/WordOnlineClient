@@ -1,14 +1,14 @@
 using System.Collections;
-using Scripts.Data;
-using Scripts.Global;
-using Scripts.Global.Button;
-using Scripts.LoginScene;
+using Data;
+using Global;
+using Global.Button;
+using LoginScene;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Scripts.RegisterScene
+namespace RegisterScene
 {
     public class RegisterButton : AsyncButtonBase
     {

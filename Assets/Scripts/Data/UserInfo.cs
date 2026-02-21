@@ -1,7 +1,7 @@
-using Scripts.Global;
+using Global;
 using UnityEngine;
 
-namespace Scripts.Data
+namespace Data
 {
     public class UserInfo : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.GameScene.Dto
+namespace GameScene.Dto
 {
     [Serializable]
     public class SnapshotDto

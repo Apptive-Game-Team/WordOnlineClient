@@ -1,12 +1,12 @@
-using Scripts.Admin.Dto;
-using Scripts.Data;
-using Scripts.Global;
-using Scripts.Global.Button;
+using Admin.Dto;
+using Data;
+using Global;
+using Global.Button;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Admin
+namespace Admin
 {
     public class RoomUI : ButtonBase
     {

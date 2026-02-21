@@ -1,8 +1,8 @@
-using Scripts.Data;
+using Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialFieldSelector : MonoBehaviour
     {

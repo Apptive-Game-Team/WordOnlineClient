@@ -1,4 +1,4 @@
-namespace Scripts.Global
+namespace Global
 {
     public class SingletonObject<T> : LocalSingletonObject<T> where T : LocalSingletonObject<T>
     {

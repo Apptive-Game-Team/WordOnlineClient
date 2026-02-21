@@ -1,4 +1,4 @@
-namespace Scripts.GameScene.Exception
+namespace GameScene.Exception
 {
     public class DuplicatedException : System.Exception
     {

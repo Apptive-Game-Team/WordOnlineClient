@@ -1,9 +1,9 @@
 using System;
-using Scripts.Global;
+using Global;
 using TMPro;
 using UnityEngine;
 
-namespace Scripts.GameScene.UI
+namespace GameScene.UI
 {
     public class TimerController : LocalSingletonObject<TimerController>
     {

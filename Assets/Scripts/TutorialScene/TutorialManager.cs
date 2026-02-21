@@ -1,12 +1,12 @@
 using System.Collections;
-using Scripts.Data;
+using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialManager : MonoBehaviour
     {

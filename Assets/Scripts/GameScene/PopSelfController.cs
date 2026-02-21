@@ -1,7 +1,7 @@
-using Scripts.GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class PopSelfController : MonoBehaviour
     {

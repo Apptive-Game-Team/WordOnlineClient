@@ -1,4 +1,4 @@
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     public enum DecorationType
     {

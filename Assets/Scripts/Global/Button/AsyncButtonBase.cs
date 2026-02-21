@@ -1,4 +1,4 @@
-namespace Scripts.Global.Button
+namespace Global.Button
 {
     public abstract class AsyncButtonBase : DisableableButtonBase
     {

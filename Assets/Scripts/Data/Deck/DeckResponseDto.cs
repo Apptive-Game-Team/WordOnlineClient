@@ -1,4 +1,4 @@
-namespace Scripts.Data.Deck
+namespace Data.Deck
 {
     [System.Serializable]
     public class DeckResponseDto {

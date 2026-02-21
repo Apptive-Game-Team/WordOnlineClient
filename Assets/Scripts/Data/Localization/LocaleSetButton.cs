@@ -1,6 +1,6 @@
-using Scripts.Global.Button;
+using Global.Button;
 
-namespace Scripts.Data.Localization
+namespace Data.Localization
 {
     public class LocaleSetButton : ButtonBase
     {

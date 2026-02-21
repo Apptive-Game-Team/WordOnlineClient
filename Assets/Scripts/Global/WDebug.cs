@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Global
+namespace Global
 {
     public class WDebug // word online debug 라는 뜻
     {

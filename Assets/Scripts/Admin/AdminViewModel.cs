@@ -1,9 +1,9 @@
 using System;
-using Scripts.Admin.Client;
-using Scripts.Admin.Dto;
+using Admin.Client;
+using Admin.Dto;
 using UnityEngine;
 
-namespace Scripts.Admin
+namespace Admin
 {
     public class AdminViewModel : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Scripts.CustomizeScene.dto;
+using CustomizeScene.dto;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     public class CustomizeSceneController : MonoBehaviour
     {

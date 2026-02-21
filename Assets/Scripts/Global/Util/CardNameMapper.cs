@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Scripts.Data;
+using Data;
 
-namespace Scripts.Global.Util
+namespace Global.Util
 {
     public class CardNameMapper
     {

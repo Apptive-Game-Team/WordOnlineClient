@@ -1,11 +1,11 @@
 using System;
-using Scripts.Data;
-using Scripts.Data.Localization;
-using Scripts.Data.Util;
+using Data;
+using Data.Localization;
+using Data.Util;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.MagicBookScene
+namespace MagicBookScene
 {
     public class MagicButton : MonoBehaviour
     {

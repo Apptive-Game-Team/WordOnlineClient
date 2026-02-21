@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Global.Util
+namespace Global.Util
 {
     public static class JsonHelper {
         public static T[] FromJson<T>(string json) {

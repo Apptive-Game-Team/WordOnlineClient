@@ -1,4 +1,4 @@
-namespace Scripts.Admin.Dto
+namespace Admin.Dto
 {
     [System.Serializable]
     public class RoomInfo

@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Global;
+using Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialDisplay : MonoBehaviour
     {

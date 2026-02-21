@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Scripts.Data;
+using Data;
 using UnityEngine;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     [CreateAssetMenu(fileName = "CardImageMapper", menuName = "ScriptableObjects/CardImageMapper", order = 1)]
     public class CardImageMapper : ScriptableObject

@@ -1,6 +1,6 @@
-using Scripts.Data;
+using Data;
 
-namespace Scripts.Global
+namespace Global
 {
     public class SceneContext : SingletonObject<SceneContext>
     {

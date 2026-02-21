@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-using Scripts.Data;
-using Scripts.Global;
+using Data;
+using Global;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public static class StatusTracker
     {

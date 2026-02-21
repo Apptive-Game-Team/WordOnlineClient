@@ -1,8 +1,8 @@
-using Scripts.GameScene.Dto.Projectile;
-using Scripts.GameScene.ServedObjectComponent;
+using GameScene.Dto.Projectile;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Scripts.GameScene.Object.Projectile
+namespace GameScene.Object.Projectile
 {
     public class ProjectileUtil
     {

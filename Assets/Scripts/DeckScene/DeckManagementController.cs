@@ -2,17 +2,17 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using Scripts.Data;
-using Scripts.Data.Deck;
-using Scripts.Global;
-using Scripts.Global.Util;
+using Data;
+using Data.Deck;
+using Global;
+using Global.Util;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Scripts.DeckScene
+namespace DeckScene
 {
 
     public class DeckManagementController : MonoBehaviour

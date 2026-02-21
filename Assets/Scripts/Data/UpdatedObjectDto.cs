@@ -1,7 +1,7 @@
-using Scripts.GameScene.Dto;
+using GameScene.Dto;
 using UnityEngine;
 
-namespace Scripts.Data
+namespace Data
 {
     [System.Serializable]
     public class UpdatedObjectDto

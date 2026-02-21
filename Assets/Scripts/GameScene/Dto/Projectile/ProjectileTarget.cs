@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.GameScene.Dto.Projectile
+namespace GameScene.Dto.Projectile
 {
     [System.Serializable]
     public class ProjectileTarget

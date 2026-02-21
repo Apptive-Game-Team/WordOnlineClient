@@ -1,7 +1,7 @@
-using Scripts.GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Scripts.GameScene.Player
+namespace GameScene.Player
 {
     public class MagicFailEffecter : MonoBehaviour
     {

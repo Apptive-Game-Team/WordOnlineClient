@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Admin
+namespace Admin
 {
     public class RoomUIFactory : MonoBehaviour
     {

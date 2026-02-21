@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class ShotMocker : MonoBehaviour
     {

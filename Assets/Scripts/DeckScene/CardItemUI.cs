@@ -1,12 +1,12 @@
-using Scripts.Data;
-using Scripts.Data.Localization;
-using Scripts.GameScene.Card;
-using Scripts.Global;
+using Data;
+using Data.Localization;
+using GameScene.Card;
+using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.DeckScene
+namespace DeckScene
 {
     public class CardItemUI : MonoBehaviour
     {

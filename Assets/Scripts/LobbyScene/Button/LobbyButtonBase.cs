@@ -1,6 +1,6 @@
-using Scripts.Global.Button;
+using Global.Button;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public abstract class LobbyButtonBase : DisableableButtonBase
     {

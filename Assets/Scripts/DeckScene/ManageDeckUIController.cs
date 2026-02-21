@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.DeckScene
+namespace DeckScene
 {
     public class ManageDeckUIController : MonoBehaviour
     {

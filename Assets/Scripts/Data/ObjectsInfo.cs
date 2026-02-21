@@ -1,6 +1,6 @@
-using Scripts.GameScene.Dto.Projectile;
+using GameScene.Dto.Projectile;
 
-namespace Scripts.Data
+namespace Data
 {
     [System.Serializable]
     public class ObjectsInfo

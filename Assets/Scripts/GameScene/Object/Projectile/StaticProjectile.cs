@@ -1,7 +1,7 @@
-using Scripts.GameScene.Dto.Projectile;
+using GameScene.Dto.Projectile;
 using UnityEngine;
 
-namespace Scripts.GameScene.Object.Projectile
+namespace GameScene.Object.Projectile
 {
     public class StaticProjectile : MonoBehaviour, IProjectile
     {

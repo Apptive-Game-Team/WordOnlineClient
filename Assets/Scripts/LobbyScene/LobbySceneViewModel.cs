@@ -1,11 +1,11 @@
 using System.Collections;
-using Scripts.Data;
-using Scripts.GameScene.Dto;
-using Scripts.Global;
+using Data;
+using GameScene.Dto;
+using Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public class LobbySceneViewModel : LocalSingletonObject<LobbySceneViewModel>
     {

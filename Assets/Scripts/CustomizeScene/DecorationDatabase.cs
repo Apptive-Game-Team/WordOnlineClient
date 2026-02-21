@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     [CreateAssetMenu(menuName = "Game/DecorationDB")]
     public class DecorationDatabase : ScriptableObject

@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.LobbyScene.Debugger
+namespace LobbyScene.Debugger
 {
     [Serializable]
     public class DebugGameResponse

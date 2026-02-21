@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.LobbyScene.SettingPage
+namespace LobbyScene.SettingPage
 {
     [Serializable]
     public class MemberPutRequest

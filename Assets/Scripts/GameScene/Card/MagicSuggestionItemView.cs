@@ -1,8 +1,8 @@
-using Scripts.Data;
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public class MagicSuggestionItemView : MonoBehaviour
     {

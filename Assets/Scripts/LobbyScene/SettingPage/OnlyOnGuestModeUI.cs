@@ -1,7 +1,7 @@
-using Scripts.Data;
+using Data;
 using UnityEngine;
 
-namespace Scripts.LobbyScene.SettingPage
+namespace LobbyScene.SettingPage
 {
     public class OnlyOnGuestModeUI : MonoBehaviour
     {

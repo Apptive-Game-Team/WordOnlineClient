@@ -1,8 +1,8 @@
 using DG.Tweening;
-using Scripts.Global.Sound.BGM;
+using Global.Sound.BGM;
 using UnityEngine;
 
-namespace Scripts.GameScene.UI
+namespace GameScene.UI
 {
     public class FeverTimeController : MonoBehaviour
     {

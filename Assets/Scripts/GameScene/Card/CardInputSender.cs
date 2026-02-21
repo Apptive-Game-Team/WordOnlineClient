@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
-using Scripts.Global.Util;
+using Data;
+using GameScene.ServedObjectComponent;
+using Global;
+using Global.Util;
 using UnityEngine;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public class CardInputSender : MonoBehaviour, ICardSender
     {

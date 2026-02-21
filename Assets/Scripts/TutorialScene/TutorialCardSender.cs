@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.GameScene.Card;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
-using Scripts.Global.Util;
+using Data;
+using GameScene.Card;
+using GameScene.ServedObjectComponent;
+using Global;
+using Global.Util;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialCardSender : MonoBehaviour, ICardSender
     {

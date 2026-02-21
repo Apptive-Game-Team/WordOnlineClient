@@ -1,4 +1,4 @@
-namespace Scripts.GameScene
+namespace GameScene
 {
     public abstract class GameConfig
     {

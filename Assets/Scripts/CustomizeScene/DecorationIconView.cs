@@ -1,9 +1,9 @@
-using Scripts.CustomizeScene.dto;
+using CustomizeScene.dto;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     public class DecorationIconView : MonoBehaviour
     {

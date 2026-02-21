@@ -1,4 +1,4 @@
-namespace Scripts.GameScene.ServedObjectComponent.Motion
+namespace GameScene.ServedObjectComponent.Motion
 {
     public class CrawlMotionController : DOTweenMotionController
     {

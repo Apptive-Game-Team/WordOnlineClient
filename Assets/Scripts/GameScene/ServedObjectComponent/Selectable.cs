@@ -1,8 +1,8 @@
-using Scripts.GameScene.Card;
+using GameScene.Card;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class Selectable : MonoBehaviour, IPointerClickHandler

@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Text;
-using Scripts.CustomizeScene.dto;
-using Scripts.Data;
+using CustomizeScene.dto;
+using Data;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     public class DecorationsApiClient : MonoBehaviour
     {

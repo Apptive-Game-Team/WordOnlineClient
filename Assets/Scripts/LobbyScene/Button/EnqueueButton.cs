@@ -1,6 +1,6 @@
-using Scripts.Global;
+using Global;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public class EnqueueButton : LobbyButtonBase
     {

@@ -1,6 +1,6 @@
-using Scripts.Admin.Dto;
+using Admin.Dto;
 
-namespace Scripts.Data
+namespace Data
 {
     [System.Serializable]
     public class MatchedInfoDto

@@ -1,4 +1,4 @@
-namespace Scripts.Data
+namespace Data
 {
     [System.Serializable]
     public class SimpleMessageDto

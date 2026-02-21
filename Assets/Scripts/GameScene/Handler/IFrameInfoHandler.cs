@@ -1,4 +1,4 @@
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public interface IFrameInfoHandler<T>
     {

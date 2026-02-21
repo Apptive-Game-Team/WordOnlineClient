@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Global.Sound.BGM
+namespace Global.Sound.BGM
 {
     public class BGMPlayer : SingletonObject<BGMPlayer>
     {

@@ -1,8 +1,8 @@
-using Scripts.Data.Sound;
-using Scripts.Sound;
+using Data.Sound;
+using Sound;
 using UnityEngine;
 
-namespace Scripts.Global.Button
+namespace Global.Button
 {
     public abstract class ButtonBase : MonoBehaviour
     {

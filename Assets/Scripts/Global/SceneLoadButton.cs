@@ -1,8 +1,8 @@
-using Scripts.Global.Button;
+using Global.Button;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Global
+namespace Global
 {
     public class SceneLoadButton : ButtonBase
     {

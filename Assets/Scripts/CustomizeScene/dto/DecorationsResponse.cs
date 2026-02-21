@@ -1,4 +1,4 @@
-namespace Scripts.CustomizeScene.dto
+namespace CustomizeScene.dto
 {
     [System.Serializable]
     public class DecorationsResponse

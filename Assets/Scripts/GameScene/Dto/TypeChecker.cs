@@ -1,4 +1,4 @@
-namespace Scripts.GameScene.Dto
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class TypeChecker

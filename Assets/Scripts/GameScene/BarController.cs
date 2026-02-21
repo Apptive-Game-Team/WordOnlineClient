@@ -1,9 +1,9 @@
 using System.Collections;
-using Scripts.GameScene.Card;
+using GameScene.Card;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class BarController : MonoBehaviour
     {

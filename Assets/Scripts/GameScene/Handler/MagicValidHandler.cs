@@ -1,8 +1,8 @@
-using Scripts.GameScene.Card;
-using Scripts.GameScene.Dto;
-using Scripts.Global;
+using GameScene.Card;
+using GameScene.Dto;
+using Global;
 
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public class MagicValidHandler : IFrameInfoHandler<MagicValidInfo>
     {

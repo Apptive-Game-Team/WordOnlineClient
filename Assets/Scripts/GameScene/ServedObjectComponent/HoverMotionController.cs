@@ -1,6 +1,6 @@
-using Scripts.GameScene.ServedObjectComponent.Motion;
+using GameScene.ServedObjectComponent.Motion;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     public class HoverMotionController : DOTweenMotionController
     {

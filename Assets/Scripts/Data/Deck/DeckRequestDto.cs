@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.Data.Deck
+namespace Data.Deck
 {
     [Serializable]
     public class DeckRequestDto

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent.OnAttack
+namespace GameScene.ServedObjectComponent.OnAttack
 {
     public class AfterImageSpawner : MonoBehaviour
     {

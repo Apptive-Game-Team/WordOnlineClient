@@ -1,9 +1,9 @@
-using Scripts.CustomizeScene;
-using Scripts.CustomizeScene.dto;
-using Scripts.Global;
+using CustomizeScene;
+using CustomizeScene.dto;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.Player
+namespace GameScene.Player
 {
     public class PlayerObjectBuilder : MonoBehaviour
     {

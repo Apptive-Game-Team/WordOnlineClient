@@ -1,4 +1,4 @@
-namespace Scripts.Data
+namespace Data
 {
     public static class ServerList
     {

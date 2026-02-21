@@ -1,8 +1,8 @@
-using Scripts.Data.Sound;
-using Scripts.Global;
+using Data.Sound;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent.OnAttack
+namespace GameScene.ServedObjectComponent.OnAttack
 {
     public class OnAttackSoundPlayer : MonoBehaviour
     {

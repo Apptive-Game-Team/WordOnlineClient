@@ -1,7 +1,7 @@
-using Scripts.Data.Localization;
+using Data.Localization;
 using UnityEngine;
 
-namespace Scripts.LoginScene
+namespace LoginScene
 {
     public class LanguageInitializer : MonoBehaviour
     {

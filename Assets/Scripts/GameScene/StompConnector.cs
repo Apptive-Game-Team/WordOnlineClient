@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.Data.Util;
-using Scripts.GameScene.Handler;
-using Scripts.Global;
-using Scripts.LobbyScene;
+using Data;
+using Data.Util;
+using GameScene.Handler;
+using Global;
+using LobbyScene;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
 #endif
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class StompConnector : LocalSingletonObject<StompConnector>
     {

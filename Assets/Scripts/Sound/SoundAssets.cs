@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Sound
+namespace Sound
 {
     public abstract class SoundAssets
     {

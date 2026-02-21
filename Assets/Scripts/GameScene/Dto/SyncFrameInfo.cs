@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Scripts.GameScene.Dto.Projectile;
+using GameScene.Dto.Projectile;
 
-namespace Scripts.GameScene.Dto
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class SyncFrameInfo

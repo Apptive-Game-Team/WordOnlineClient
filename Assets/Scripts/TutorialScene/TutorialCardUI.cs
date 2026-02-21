@@ -1,14 +1,14 @@
 using System;
-using Scripts.Data;
-using Scripts.Data.Localization;
-using Scripts.Data.Sound;
-using Scripts.Sound;
+using Data;
+using Data.Localization;
+using Data.Sound;
+using Sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public class TutorialCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

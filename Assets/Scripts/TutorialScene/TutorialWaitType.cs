@@ -1,4 +1,4 @@
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     public enum TutorialWaitType
     {

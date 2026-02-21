@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using Scripts.Admin.Dto;
-using Scripts.Data;
+using Admin.Dto;
+using Data;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Scripts.Admin.Client
+namespace Admin.Client
 {
     public class RoomApiClient
     {

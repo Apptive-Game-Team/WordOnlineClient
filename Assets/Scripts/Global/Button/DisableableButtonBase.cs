@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Global.Button
+namespace Global.Button
 {
     public abstract class DisableableButtonBase : ButtonBase
     {

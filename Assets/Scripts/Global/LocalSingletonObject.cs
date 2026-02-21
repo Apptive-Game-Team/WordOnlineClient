@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Global
+namespace Global
 {
     public abstract class LocalSingletonObject<T> : MonoBehaviour where T : LocalSingletonObject<T>
     {

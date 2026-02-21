@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-using Scripts.Data;
-using Scripts.Global;
-using Scripts.Global.Button;
+using Data;
+using Global;
+using Global.Button;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene.Debugger
+namespace LobbyScene.Debugger
 {
     public class EnterDebugSessionButton : ButtonBase
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Data.Sse
+namespace Data.Sse
 {
     public class UnityMainThreadDispatcher : MonoBehaviour
     {

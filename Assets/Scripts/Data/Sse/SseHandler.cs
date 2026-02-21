@@ -1,9 +1,9 @@
 using System;
-using Scripts.Global;
+using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Scripts.Data.Sse
+namespace Data.Sse
 {
 
     public class SseHandler : MonoBehaviour

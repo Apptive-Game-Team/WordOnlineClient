@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Scripts.Data;
+using Data;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public static class MagicSuggestion
     {

@@ -1,6 +1,6 @@
-using Scripts.GameScene.Dto.Projectile;
+using GameScene.Dto.Projectile;
 
-namespace Scripts.GameScene.Object.Projectile
+namespace GameScene.Object.Projectile
 {
     public interface IProjectile
     {

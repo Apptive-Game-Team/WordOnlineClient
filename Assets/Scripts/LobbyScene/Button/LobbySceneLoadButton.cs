@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public class LobbySceneLoadButton : LobbyButtonBase
     {

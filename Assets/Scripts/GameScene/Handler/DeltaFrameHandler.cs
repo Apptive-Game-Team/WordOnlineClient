@@ -1,8 +1,8 @@
-using Scripts.GameScene.Dto;
-using Scripts.GameScene.Object;
-using Scripts.GameScene.UI;
+using GameScene.Dto;
+using GameScene.Object;
+using GameScene.UI;
 
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public class DeltaFrameHandler : IFrameInfoHandler<FrameInfoDto>
     {

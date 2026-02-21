@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.GameScene.Card;
-using Scripts.GameScene.Player;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using Data;
+using GameScene.Card;
+using GameScene.Player;
+using GameScene.ServedObjectComponent;
+using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class GameSceneUIController : MonoBehaviour
     {

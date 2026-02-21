@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.TutorialScene
+namespace TutorialScene
 {
     [Serializable]
     public class TutorialStep

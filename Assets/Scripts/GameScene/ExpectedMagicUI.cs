@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class ExpectedMagicUI : MonoBehaviour
     {

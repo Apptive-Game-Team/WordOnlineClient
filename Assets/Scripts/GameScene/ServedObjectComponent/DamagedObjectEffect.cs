@@ -1,7 +1,7 @@
-using Scripts.Global;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent
+namespace GameScene.ServedObjectComponent
 {
     public static class DamagedObjectEffect
     {

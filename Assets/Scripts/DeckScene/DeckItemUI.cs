@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Scripts.DeckScene
+namespace DeckScene
 {
     public class DeckItemUI : MonoBehaviour
     {

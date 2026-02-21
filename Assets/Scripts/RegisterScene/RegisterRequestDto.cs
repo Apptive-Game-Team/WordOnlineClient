@@ -1,4 +1,4 @@
-namespace Scripts.RegisterScene
+namespace RegisterScene
 {
     public class RegisterRequestDto
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.GameScene.ServedObjectComponent.Motion
+namespace GameScene.ServedObjectComponent.Motion
 {
     public abstract class DOTweenMotionController : MonoBehaviour
     {

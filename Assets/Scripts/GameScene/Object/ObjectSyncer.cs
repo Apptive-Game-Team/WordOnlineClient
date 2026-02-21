@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.GameScene.Dto;
-using Scripts.Global;
+using Data;
+using GameScene.Dto;
+using Global;
 
-namespace Scripts.GameScene.Object
+namespace GameScene.Object
 {
     public class ObjectSyncer : LocalSingletonObject<ObjectSyncer>
     {

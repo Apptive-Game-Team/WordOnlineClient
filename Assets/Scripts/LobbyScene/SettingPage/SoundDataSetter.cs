@@ -1,9 +1,9 @@
 using System;
-using Scripts.Data.Sound;
+using Data.Sound;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.LobbyScene.SettingPage
+namespace LobbyScene.SettingPage
 {
     public class SoundDataSetter : MonoBehaviour
     {

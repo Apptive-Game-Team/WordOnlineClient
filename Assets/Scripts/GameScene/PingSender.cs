@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Scripts.Global;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class PingSender : MonoBehaviour
     {

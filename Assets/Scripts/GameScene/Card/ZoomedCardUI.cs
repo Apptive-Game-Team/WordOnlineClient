@@ -1,9 +1,9 @@
-using Scripts.Data;
+using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene.Card
+namespace GameScene.Card
 {
     public class ZoomedCardUI : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.Global
+namespace Global
 {
     public class StateEvent<T>
     {

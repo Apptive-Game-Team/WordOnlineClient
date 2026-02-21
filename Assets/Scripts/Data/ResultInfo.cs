@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.Data
+namespace Data
 {
     [Serializable]
     public class ResultInfo

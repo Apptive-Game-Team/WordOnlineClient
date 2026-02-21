@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Scripts.Data;
-using Scripts.Data.Sse;
-using Scripts.Global;
+using Data;
+using Data.Sse;
+using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public class MatchQueueApiService : MonoBehaviour
     {

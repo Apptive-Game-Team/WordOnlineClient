@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.LoginScene
+namespace LoginScene
 {
     [Serializable]
     public class GuestAuthResponseDto

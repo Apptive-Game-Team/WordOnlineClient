@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public class MatchingStatusTextUI : MonoBehaviour
     {

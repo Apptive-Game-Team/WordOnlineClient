@@ -1,11 +1,11 @@
-using Scripts.Data;
-using Scripts.GameScene.Card;
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using Data;
+using GameScene.Card;
+using GameScene.ServedObjectComponent;
+using Global;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class FieldSelector : MonoBehaviour
     {

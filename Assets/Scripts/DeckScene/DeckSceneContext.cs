@@ -1,7 +1,7 @@
-using Scripts.Data.Deck;
+using Data.Deck;
 using UnityEngine;
 
-namespace Scripts.DeckScene
+namespace DeckScene
 {
     public class DeckSceneContext : MonoBehaviour
     {

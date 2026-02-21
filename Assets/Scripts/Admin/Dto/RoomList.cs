@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Scripts.Admin.Dto
+namespace Admin.Dto
 {
     [Serializable]
     public class RoomList

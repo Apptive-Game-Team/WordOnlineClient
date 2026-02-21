@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.LobbyScene.Button
+namespace LobbyScene.Button
 {
     public class CancelMatchingButtonActiveToggler : MonoBehaviour
     {

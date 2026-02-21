@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Scripts.Data
+namespace Data
 {
     public static class CombinedMagicResolver
     {

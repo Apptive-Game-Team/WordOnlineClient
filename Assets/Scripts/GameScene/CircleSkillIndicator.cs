@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.GameScene
+namespace GameScene
 {
     public class CircleSkillIndicator : MonoBehaviour
     {

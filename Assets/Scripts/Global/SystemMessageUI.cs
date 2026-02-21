@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 
-namespace Scripts.Global
+namespace Global
 {
     public class SystemMessageUI : LocalSingletonObject<SystemMessageUI>
     {

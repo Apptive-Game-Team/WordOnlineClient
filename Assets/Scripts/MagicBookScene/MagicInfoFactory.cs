@@ -1,7 +1,7 @@
-using Scripts.Data;
+using Data;
 using UnityEngine;
 
-namespace Scripts.MagicBookScene
+namespace MagicBookScene
 {
     public class MagicInfoFactory : MonoBehaviour
     {

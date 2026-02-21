@@ -1,7 +1,7 @@
-using Scripts.Data;
-using Scripts.Global;
+using Data;
+using Global;
 
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public class ResultHandler : IFrameInfoHandler<ResultInfo>
     {

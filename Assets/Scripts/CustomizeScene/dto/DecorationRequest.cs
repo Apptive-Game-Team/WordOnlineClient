@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.CustomizeScene.dto
+namespace CustomizeScene.dto
 {
     [Serializable]
     public class DecorationRequest

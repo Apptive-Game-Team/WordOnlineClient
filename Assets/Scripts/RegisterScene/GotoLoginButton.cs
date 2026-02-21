@@ -1,7 +1,7 @@
-using Scripts.Global.Button;
+using Global.Button;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.RegisterScene
+namespace RegisterScene
 {
     public class GotoLoginButton : ButtonBase
     {

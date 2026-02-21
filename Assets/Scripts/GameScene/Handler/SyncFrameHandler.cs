@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Scripts.GameScene.Dto;
-using Scripts.GameScene.Object;
-using Scripts.GameScene.UI;
-using Scripts.Global;
+using GameScene.Dto;
+using GameScene.Object;
+using GameScene.UI;
+using Global;
 
-namespace Scripts.GameScene.Handler
+namespace GameScene.Handler
 {
     public class SyncFrameHandler : IFrameInfoHandler<SyncFrameInfo>
     {

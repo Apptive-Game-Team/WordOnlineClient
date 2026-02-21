@@ -1,10 +1,10 @@
-using Scripts.Data;
-using Scripts.GameScene.Card;
+using Data;
+using GameScene.Card;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.MagicBookScene
+namespace MagicBookScene
 {
     public class MagicInfo : MonoBehaviour
     {

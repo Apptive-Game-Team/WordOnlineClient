@@ -1,9 +1,9 @@
-using Scripts.CustomizeScene;
-using Scripts.CustomizeScene.dto;
+using CustomizeScene;
+using CustomizeScene.dto;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.GameScene.Player
+namespace GameScene.Player
 {
     public class PlayerObjectView : MonoBehaviour
     {

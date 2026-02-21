@@ -1,12 +1,12 @@
 using System.Collections;
-using Scripts.Data;
-using Scripts.Global;
-using Scripts.Global.Button;
+using Data;
+using Global;
+using Global.Button;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene.SettingPage
+namespace LobbyScene.SettingPage
 {
     public class DeleteAccountButton : AsyncButtonBase
     {

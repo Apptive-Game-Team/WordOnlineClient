@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using Scripts.Global;
+using Global;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
-namespace Scripts.Data.Localization
+namespace Data.Localization
 {
     public class LocaleUtils
     {

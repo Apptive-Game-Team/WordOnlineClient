@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Scripts.Global;
+using Global;
 using UnityEngine;
 
-namespace Scripts.Data
+namespace Data
 {
     [System.Serializable]
     public class CardUseInput

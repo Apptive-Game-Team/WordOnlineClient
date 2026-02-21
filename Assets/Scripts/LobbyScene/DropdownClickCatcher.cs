@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     [RequireComponent(typeof(TMPro.TMP_Dropdown))]
     public class DropdownClickCatcher : MonoBehaviour, IPointerClickHandler

@@ -1,8 +1,8 @@
-using Scripts.Global;
+using Global;
 using TMPro;
 using UnityEngine;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public class LobbyUserNameUI : MonoBehaviour
     {

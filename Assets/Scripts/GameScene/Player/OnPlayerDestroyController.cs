@@ -1,8 +1,8 @@
-using Scripts.GameScene.ServedObjectComponent;
-using Scripts.Global;
+using GameScene.ServedObjectComponent;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.Player
+namespace GameScene.Player
 {
     public class OnPlayerDestroyController : MonoBehaviour
     {

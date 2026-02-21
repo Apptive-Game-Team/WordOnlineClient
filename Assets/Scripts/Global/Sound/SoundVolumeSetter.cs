@@ -1,8 +1,8 @@
-using Scripts.Data.Sound;
-using Scripts.LobbyScene.SettingPage;
+using Data.Sound;
+using LobbyScene.SettingPage;
 using UnityEngine;
 
-namespace Scripts.Global.Sound
+namespace Global.Sound
 {
     public class SoundVolumeSetter : MonoBehaviour
     {

@@ -1,6 +1,6 @@
-using Scripts.Data;
+using Data;
 
-namespace Scripts.GameScene.Dto
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class FrameInfoDto

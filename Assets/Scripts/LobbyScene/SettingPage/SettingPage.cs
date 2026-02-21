@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.LobbyScene.SettingPage
+namespace LobbyScene.SettingPage
 {
     public class SettingPage : MonoBehaviour
     {

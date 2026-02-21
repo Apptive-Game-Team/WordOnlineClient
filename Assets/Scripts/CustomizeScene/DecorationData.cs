@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.CustomizeScene
+namespace CustomizeScene
 {
     [System.Serializable]
     public class DecorationData

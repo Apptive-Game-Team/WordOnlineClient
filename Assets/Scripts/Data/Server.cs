@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using Scripts.Global;
+using Global;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
-namespace Scripts.Data
+namespace Data
 {
     public class Server
     {

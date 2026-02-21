@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Linq;
-using Scripts.Data;
-using Scripts.Data.Deck;
-using Scripts.DeckScene;
-using Scripts.Global;
-using Scripts.Global.Util;
+using Data;
+using Data.Deck;
+using DeckScene;
+using Global;
+using Global.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.LobbyScene
+namespace LobbyScene
 {
     public class LobbyUIController : MonoBehaviour
     {

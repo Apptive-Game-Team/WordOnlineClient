@@ -1,8 +1,8 @@
 using DG.Tweening;
-using Scripts.GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Scripts.Global
+namespace Global
 {
     public class DOTweenFeedbackTester : MonoBehaviour
     {

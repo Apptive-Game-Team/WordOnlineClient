@@ -1,9 +1,9 @@
-using Scripts.GameScene.Dto.Projectile;
-using Scripts.GameScene.Object.Projectile;
-using Scripts.Global;
+using GameScene.Dto.Projectile;
+using GameScene.Object.Projectile;
+using Global;
 using UnityEngine;
 
-namespace Scripts.GameScene.Object
+namespace GameScene.Object
 {
     public class ProjectileSpawner : LocalSingletonObject<ProjectileSpawner>
     {
