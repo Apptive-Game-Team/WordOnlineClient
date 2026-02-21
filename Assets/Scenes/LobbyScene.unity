@@ -9103,6 +9103,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 620601513}
+  - {fileID: 1477294924}
   - {fileID: 887010893}
   - {fileID: 1905113955}
   - {fileID: 2079297039}
@@ -9112,7 +9113,6 @@ RectTransform:
   - {fileID: 1399940231}
   - {fileID: 1708321418}
   - {fileID: 1652127609}
-  - {fileID: 1477294924}
   - {fileID: 191327566}
   - {fileID: 1346169576}
   m_Father: {fileID: 0}

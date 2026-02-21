@@ -1,0 +1,71 @@
+using System;
+using System.Threading.Tasks;
+using Global;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+
+namespace Data.Localization
+{
+    public class LocaleUtils
+    {
+        public static async Task<string> GetStringAsync(string tableName, string entryName)
+        {
+            try
+            {
+                await LocalizationSettings.InitializationOperation.Task;
+                var localizedString = new LocalizedString
+                {
+                    TableReference = tableName,
+                    TableEntryReference = entryName
+                };
+                var handle = localizedString.GetLocalizedStringAsync();
+                
+                await handle.Task.ConfigureAwait(false);
+
+                return handle.Result;
+            }
+            catch (Exception e)
+            {
+                WDebug.LogError(e);
+                return "";
+            }
+        }
+        
+        public static async void SetLanguageAsync(string localeCode)
+        {
+            try
+            {
+                await LocalizationSettings.InitializationOperation.Task;
+                Locale locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+                if (locale != null)
+                {
+                    LocalizationSettings.SelectedLocale = locale;
+                    PlayerPrefs.SetString("Language", localeCode);
+                }
+            }
+            catch (Exception e)
+            {
+                WDebug.LogError(e);
+            }
+        }
+        
+        public static async void InitializeLanguageAsync()
+        {
+            try
+            {
+                await LocalizationSettings.InitializationOperation.Task;
+                string savedLocaleCode = PlayerPrefs.GetString("Language", "en");
+                Locale locale = LocalizationSettings.AvailableLocales.GetLocale(savedLocaleCode);
+                if (locale != null)
+                {
+                    LocalizationSettings.SelectedLocale = locale;
+                }
+            }
+            catch (Exception e)
+            {
+                WDebug.LogError(e);
+            }
+        }
+    }
+}
