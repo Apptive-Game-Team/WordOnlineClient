@@ -1269,7 +1269,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameText: {fileID: 555827901}
   cardManaText: {fileID: 555827902}
-  cardBackgroundImage: {fileID: 2001857745}
   cardImage: {fileID: 555827900}
 --- !u!1001 &559932380
 PrefabInstance:
@@ -2117,7 +2116,7 @@ MonoBehaviour:
   leftUserHpSlider: {fileID: 593664993}
   rightUserHpSlider: {fileID: 1297491975}
   cardUIPrefab: {fileID: 2189778939739745740, guid: d8625dc2b7e6da349b30e7a092301ab0, type: 3}
-  lowerBar: {fileID: 0}
+  lowerBar: {fileID: 1396601498}
   textSystemMsg: {fileID: 304404313}
   cardImageMapper: {fileID: 11400000, guid: 801779e6bc17149e683648b90569ac9e, type: 2}
   expectedMagicUI: {fileID: 1963915864}
@@ -4101,7 +4100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardInputSender: {fileID: 2145527696}
-  _buttonImage: {fileID: 0}
+  _buttonImage: {fileID: 80443818}
 --- !u!114 &1963915864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4159,8 +4158,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MagicCombineButton, Assembly-CSharp
+      - m_Target: {fileID: 1963915863}
+        m_TargetAssemblyTypeName: TutorialScene.TutorialMagicCombineButton, Assembly-CSharp
         m_MethodName: OnClickCombineButton
         m_Mode: 1
         m_Arguments:
@@ -4179,17 +4178,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963915861}
   m_CullTransparentMesh: 1
---- !u!114 &2001857745 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1458830119987132630, guid: 95f1db2819f38d2488ceb29a0e1253d6, type: 3}
-  m_PrefabInstance: {fileID: 555827897}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555827899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2063758927
 GameObject:
   m_ObjectHideFlags: 0

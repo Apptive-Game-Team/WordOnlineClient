@@ -34,8 +34,6 @@ namespace TutorialScene
 
         [SerializeField] private ExpectedMagicUI expectedMagicUI;
     
-        [SerializeField] private MagicHelperUI magicHelperUI;
-    
         [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
         [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
     
@@ -89,23 +87,11 @@ namespace TutorialScene
 
         public void AddCard(string cardname)
         {
-            if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null || cardImageMapper == null) return;
+            if (lowerBar == null || cardUIPrefab == null || cardImageMapper == null) return;
             TutorialCardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
             cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
             cardUI.Init(cardname);
-            magicHelperUI.RefreshSuggestions();
         }
-
-        public List<string> GetAllCards()
-        {
-            if (lowerBar == null) return new List<string>();
-            List<string> cardNames = new List<string>();
-            foreach (Transform child in lowerBar.transform)
-            {
-                cardNames.Add(child.GetComponent<CardUI>().CardName);
-            }
-            return cardNames;
-        } 
 
         public void TrySetExpectedMagicUI(IList<CardType> recipe)
         {
