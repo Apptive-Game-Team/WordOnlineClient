@@ -5,6 +5,7 @@ namespace Data
 {
     public class CombinedMagicData
     {
+        public long id;
         public string magicName;
         public List<CardType> recipe;
         public string spritePath;
