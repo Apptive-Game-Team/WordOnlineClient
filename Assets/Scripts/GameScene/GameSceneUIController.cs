@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data;
+using Data.Magic;
 using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;

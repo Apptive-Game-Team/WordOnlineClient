@@ -1,4 +1,5 @@
 using Data;
+using Data.Magic;
 using UnityEngine;
 using UnityEngine.UI;
 

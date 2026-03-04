@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Data.Localization;
+using Data.Magic;
 using Data.Util;
 using UnityEngine;
 using UnityEngine.UI;

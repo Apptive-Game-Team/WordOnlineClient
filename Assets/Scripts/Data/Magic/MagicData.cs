@@ -1,4 +1,4 @@
-namespace Data
+namespace Data.Magic
 {
     public class MagicData
     {
