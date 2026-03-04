@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Data;
+using Data.Magic;
 using GameScene.Card;
 using GameScene.ServedObjectComponent;
 using Global;

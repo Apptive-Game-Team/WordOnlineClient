@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data;
+using Data.Magic;
 using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
