@@ -1,4 +1,4 @@
-using Data;
+using System.Collections.Generic;
 using Data.Magic;
 using UnityEngine;
 
@@ -10,16 +10,22 @@ namespace MagicBookScene
         [SerializeField] private GameObject magicInfoPrefab;
         [SerializeField] private MagicInfo magicInfo;
         
-        private void Start()
+        [SerializeField] private UserMagicApiClient userMagicApiClient;
+        
+        private void Awake()
         {
-            CreateAllMagicInfo();
+            userMagicApiClient.GetUserMagic((response) =>
+            {
+                CreateAllMagicInfo(response.magicIds);
+            });
         }
         
-        private void CreateAllMagicInfo()
+        private void CreateAllMagicInfo(List<long> userMagicIds = null)
         {
             foreach (var data in LocalCombinedMagicData.dataList)
             {
-                CreateMagicInfo(data);
+                bool active = userMagicIds.Contains(data.id);
+                CreateMagicInfo(data, active);
             }
         }
         
@@ -28,12 +34,18 @@ namespace MagicBookScene
             magicInfo.Init(data);
         }
         
-        private void CreateMagicInfo(CombinedMagicData data)
+        private void CreateMagicInfo(CombinedMagicData data, bool active = true)
         {
             var magicInfoObj = Instantiate(magicInfoPrefab, magicInfoParent);
+            
             var magicInfo = magicInfoObj.GetComponent<MagicButton>();
             magicInfo.Init(data);
-            magicInfo.OnClick += OnClickMagicButton;
+            magicInfo.SetActive(active);
+            
+            if (active)
+            {
+                magicInfo.OnClick += OnClickMagicButton;
+            }
         }
     }
 }

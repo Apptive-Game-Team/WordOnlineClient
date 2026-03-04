@@ -67,7 +67,7 @@ namespace Data.Magic
         }
 
 
-        public static bool TryGetByRecipe(IList<CardType> recipe, out CombinedMagicData match)
-            => CombinedMagicResolver.TryResolve(recipe, out match);
+        // public static bool TryGetByRecipe(IList<CardType> recipe, out CombinedMagicData match)
+        //     => CombinedMagicResolver.TryResolve(recipe, out match);
     }
 }

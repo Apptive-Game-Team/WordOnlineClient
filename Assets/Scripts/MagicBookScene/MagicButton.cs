@@ -19,6 +19,12 @@ namespace MagicBookScene
         {
             OnClick?.Invoke(data);
         }
+        
+        public void SetActive(bool active)
+        {
+            GetComponent<Button>().interactable = active;
+            magicImage.color = active ? Color.white : new Color(0, 0, 0, 0.6f);
+        }
 
         public async void Init(CombinedMagicData data)
         {

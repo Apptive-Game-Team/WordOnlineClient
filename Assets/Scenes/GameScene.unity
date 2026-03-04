@@ -293,6 +293,17 @@ MonoBehaviour:
   manaBarButton: {fileID: 2078343155}
   fieldButton: {fileID: 1054381334}
   cardInputSender: {fileID: 2145527694}
+--- !u!114 &47010099 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 260973228263790789, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+  m_PrefabInstance: {fileID: 6047380083849384164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fdbb74f79dc4d38935551a59c0253b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &65021188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,6 +2228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08aa0394380fbc840b10175adb4f8445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combinedMagicResolver: {fileID: 47010099}
   leftUserIDText: {fileID: 1663826751}
   rightUserIDText: {fileID: 212042297}
   manaText: {fileID: 1989999954}
@@ -4950,6 +4962,7 @@ GameObject:
   - component: {fileID: 6389242960862484228}
   - component: {fileID: 6389242960862484229}
   - component: {fileID: 6389242960862484230}
+  - component: {fileID: 6389242960862484231}
   m_Layer: 0
   m_Name: MagicHelper
   m_TagString: Untagged
@@ -5033,6 +5046,74 @@ RectTransform:
   m_AnchoredPosition: {x: 640, y: -63}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 1, y: 1}
+--- !u!1001 &6047380083849384164
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.7342889
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.62695324
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.8717263
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028918651847918546, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478496969524676128, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+      propertyPath: m_Name
+      value: MagicResolver
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+--- !u!114 &6047380083849384165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3708783078788983521, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
+  m_PrefabInstance: {fileID: 6047380083849384164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd85ed27c1e4355b8d2c23aa2feb056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &6389242960862484226
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5056,6 +5137,7 @@ MonoBehaviour:
   handRoot: {fileID: 447655976}
   suggestionRoot: {fileID: 5988700167432777773}
   suggestionItemPrefab: {fileID: 1378805479182352352, guid: 278c679ed8cc9224a86288100ab2e713, type: 3}
+  magicSuggestion: {fileID: 6389242960862484231}
 --- !u!114 &6389242960862484228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5125,6 +5207,19 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -10}
   m_UseGraphicAlpha: 1
+--- !u!114 &6389242960862484231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2805307238498667672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb624c62c9e6ea4da99ee30bd2d73ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userMagicService: {fileID: 6047380083849384165}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5146,3 +5241,4 @@ SceneRoots:
   - {fileID: 1548564704}
   - {fileID: 741320890}
   - {fileID: 755247642}
+  - {fileID: 6047380083849384164}

@@ -16,6 +16,8 @@ namespace TutorialScene
     {
         public static TutorialSceneUIController Instance;
     
+        [SerializeField] private CombinedMagicResolver combinedMagicResolver;
+        
         [SerializeField] private TextMeshProUGUI leftUserIDText;
         [SerializeField] private TextMeshProUGUI rightUserIDText;
         [SerializeField] private TextMeshProUGUI manaText;
@@ -97,7 +99,7 @@ namespace TutorialScene
         public void TrySetExpectedMagicUI(IList<CardType> recipe)
         {
             if (expectedMagicUI == null) return;
-            CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
+            combinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
             if (data != null)
             {
                 expectedMagicUI.SetImage(data.GetSprite());

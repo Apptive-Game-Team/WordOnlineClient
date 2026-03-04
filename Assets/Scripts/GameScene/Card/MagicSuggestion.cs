@@ -1,12 +1,30 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using Data.Magic;
+using UnityEngine;
 
 namespace GameScene.Card
 {
-    public static class MagicSuggestion
+    public class MagicSuggestion : MonoBehaviour
     {
-        public static List<CombinedMagicData> GetAvailableByHand(IList<CardType> hand)
+        [SerializeField] private UserMagicService userMagicService;
+
+        private List<CombinedMagicData> dataList;
+        private void Awake()
+        {
+            userMagicService.GetCombinedMagicData((list) =>
+            {
+                if (list == null)
+                {
+                    Debug.LogError("Failed to load combined magic data");
+                    return;
+                }
+                dataList = list;
+            });
+        }
+
+        public List<CombinedMagicData> GetAvailableByHand(IList<CardType> hand)
         {
             var handCount = new Dictionary<CardType, int>();
             foreach (var card in hand)
@@ -17,7 +35,7 @@ namespace GameScene.Card
 
             var result = new List<CombinedMagicData>();
 
-            foreach (var data in LocalCombinedMagicData.dataList)
+            foreach (var data in dataList)
             {
                 if (CanMake(data.recipe, handCount))
                     result.Add(data);
@@ -26,7 +44,7 @@ namespace GameScene.Card
             return result;
         }
         
-        public static List<CombinedMagicData> PickTopN(IList<CardType> hand, int count)
+        public List<CombinedMagicData> PickTopN(IList<CardType> hand, int count)
         {
             var list = GetAvailableByHand(hand);
             

@@ -24,6 +24,13 @@ namespace TutorialScene
         
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
+        
+        private CombinedMagicResolver combinedMagicResolver;
+
+        private void Awake()
+        {
+            combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
+        }
 
         public bool IsFieldSelectMode()
         {
@@ -67,7 +74,7 @@ namespace TutorialScene
 
             var types = GetCurrentRecipeTypes();
 
-            if (!CombinedMagicResolver.CanResolve(types))
+            if (!combinedMagicResolver.CanResolve(types))
             {
                 if (_currentCardList.Count == 1)
                 {

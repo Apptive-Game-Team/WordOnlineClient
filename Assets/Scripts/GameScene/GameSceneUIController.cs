@@ -15,6 +15,8 @@ namespace GameScene
     {
         public static GameSceneUIController Instance;
     
+        [SerializeField] private CombinedMagicResolver combinedMagicResolver;
+        
         [SerializeField] private TextMeshProUGUI leftUserIDText;
         [SerializeField] private TextMeshProUGUI rightUserIDText;
         [SerializeField] private TextMeshProUGUI manaText;
@@ -144,7 +146,7 @@ namespace GameScene
         public void TrySetExpectedMagicUI(IList<CardType> recipe)
         {
             if (expectedMagicUI == null) return;
-            CombinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
+            combinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
             if (data != null)
             {
                 expectedMagicUI.SetImage(data.GetSprite());
