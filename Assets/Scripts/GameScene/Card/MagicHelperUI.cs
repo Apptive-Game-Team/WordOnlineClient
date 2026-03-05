@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data;
+using Data.Magic;
 using UnityEngine;
 
 namespace GameScene.Card
@@ -13,6 +14,8 @@ namespace GameScene.Card
         [SerializeField] private Transform suggestionRoot;
         [SerializeField] private MagicSuggestionItemView suggestionItemPrefab;
 
+        [SerializeField] private MagicSuggestion magicSuggestion;
+        
         private readonly List<MagicSuggestionItemView> _spawnedItems = new();
         
         public void RefreshSuggestions()
@@ -24,7 +27,7 @@ namespace GameScene.Card
                 handTypes.Add(card.CardType);
             }
             
-            var candidates = MagicSuggestion.PickTopN(handTypes, 3);
+            var candidates = magicSuggestion.PickTopN(handTypes, 3);
             
             foreach (var item in _spawnedItems)
             {

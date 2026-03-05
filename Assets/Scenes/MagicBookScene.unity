@@ -1013,6 +1013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 895110166}
   - component: {fileID: 895110165}
+  - component: {fileID: 895110167}
   m_Layer: 0
   m_Name: MagicInfoFactory
   m_TagString: Untagged
@@ -1035,6 +1036,7 @@ MonoBehaviour:
   magicInfoParent: {fileID: 1753651958}
   magicInfoPrefab: {fileID: 682494717784839384, guid: fd2ec157782514bb4a5242065201a91e, type: 3}
   magicInfo: {fileID: 924196844}
+  userMagicApiClient: {fileID: 895110167}
 --- !u!4 &895110166
 Transform:
   m_ObjectHideFlags: 0
@@ -1050,6 +1052,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895110167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895110164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fafd7e3ac61413297f339a383c735c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &924196842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1564,7 +1578,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 643807739}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.5
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -1,12 +1,22 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace Data
+namespace Data.Magic
 {
-    public static class CombinedMagicResolver
+    public class CombinedMagicResolver : MonoBehaviour
     {
-        public static bool CanResolve(IList<CardType> recipe)
+        private List<CombinedMagicData> dataList;
+        [SerializeField] private UserMagicService userMagicService;
+
+        private void Awake()
         {
-            foreach (var d in LocalCombinedMagicData.dataList)
+            userMagicService = FindObjectOfType<UserMagicService>();
+            userMagicService.GetCombinedMagicData(list => dataList = list);
+        }
+
+        public bool CanResolve(IList<CardType> recipe)
+        {
+            foreach (var d in dataList)
             {
                 if (AreSameMultiset(d.recipe, recipe))
                 {
@@ -16,9 +26,9 @@ namespace Data
             return false;
         }
     
-        public static bool TryResolve(IList<CardType> recipe, out CombinedMagicData data)
+        public bool TryResolve(IList<CardType> recipe, out CombinedMagicData data)
         {
-            foreach (var d in LocalCombinedMagicData.dataList)
+            foreach (var d in dataList)
             {
                 if (AreSameMultiset(d.recipe, recipe))
                 {

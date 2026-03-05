@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data;
+using Data.Magic;
 using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
@@ -15,6 +16,13 @@ namespace GameScene.Card
     
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
+        
+        private CombinedMagicResolver combinedMagicResolver;
+
+        private void Awake()
+        {
+            combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
+        }
 
         public bool IsFieldSelectMode()
         {
@@ -56,7 +64,7 @@ namespace GameScene.Card
         {
             if (CanSelectField)
             {
-                if (!CombinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
+                if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
                 {
                     WDebug.Log("Cannot resolve the current recipe.");
                     PlayerFeedbackController.Instance.UseMagicFeedback();

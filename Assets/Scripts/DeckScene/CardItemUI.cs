@@ -1,5 +1,6 @@
 using Data;
 using Data.Localization;
+using Data.Magic;
 using GameScene.Card;
 using Global;
 using TMPro;
