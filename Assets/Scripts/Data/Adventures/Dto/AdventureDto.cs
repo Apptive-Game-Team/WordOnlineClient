@@ -1,34 +1,34 @@
 using System;
 using System.Collections.Generic;
 
-namespace Data.Adventures
+namespace Data.Adventures.Dto
 {
     [Serializable]
-    public class Scenario
+    public class ScenarioDto
     {
         public long id;
         public string state;
     }
 
     [Serializable]
-    public class Stage
+    public class StageDto
     {
         public long id;
         public string state;
-        public List<Scenario> scenarios;
+        public List<ScenarioDto> scenarios;
     }
 
     [Serializable]
-    public class Adventure
+    public class AdventureDto
     {
         public long id;
         public string state;
-        public List<Stage> stages;
+        public List<StageDto> stages;
     }
 
     [Serializable]
-    public class AdventuresResponse
+    public class AdventuresResponseDto
     {
-        public List<Adventure> adventures;
+        public List<AdventureDto> adventures;
     }
 }

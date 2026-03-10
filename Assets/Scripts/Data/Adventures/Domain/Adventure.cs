@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using Data.Adventures.Dto;
+using Data.Adventures.Local;
+using UnityEngine;
+
+namespace Data.Adventures.Domain
+{
+    public class Scenario
+    {
+        public long Id { get; }
+        public State State { get; }
+
+        public Scenario(long id, State state)
+        {
+            Id = id;
+            State = state;
+        }
+
+        public Scenario(ScenarioDto scenarioDto)
+        {
+            Id = scenarioDto.id;
+            State = (State)Enum.Parse(typeof(State), scenarioDto.state.ToUpper());
+        }
+    }
+
+    public class Stage
+    {
+        public long Id { get; }
+        public State State { get; }
+        public GameObject StagePanelPrefab { get; }
+        public List<Scenario> Scenarios { get; }
+
+        public Stage(long id, State state, List<Scenario> scenarios)
+        {
+            Id = id;
+            State = state;
+            Scenarios = scenarios;
+        }
+
+        public Stage(StageDto stageDto, AdventureStageScriptableObject stageScriptableObject)
+        {
+            Id = stageDto.id;
+            State = (State)Enum.Parse(typeof(State), stageDto.state.ToUpper());
+            StagePanelPrefab = stageScriptableObject.StagePanelPrefab;
+            Scenarios = new List<Scenario>();
+            foreach (var scenarioDto in stageDto.scenarios)
+            {
+                Scenarios.Add(new Scenario(scenarioDto));
+            }
+        }
+    }
+
+    public class Adventure
+    {
+        public long Id { get; }
+        public State State { get; }
+        public string Name { get; }
+        public Sprite IconImage { get; }
+        public List<Stage> Stages { get; }
+
+        public Adventure(long id, State state, string name, Sprite iconImage, List<Stage> stages)
+        {
+            Id = id;
+            State = state;
+            Name = name;
+            IconImage = iconImage;
+            Stages = stages;
+        }
+
+        public Adventure(AdventureDto adventureDto, AdventureScriptableObject adventureScriptableObject)
+        {
+            Id = adventureDto.id;
+            State = (State)Enum.Parse(typeof(State), adventureDto.state.ToUpper());
+            Name = adventureScriptableObject.AdventureName;
+            IconImage = adventureScriptableObject.IconImage;
+            Stages = new List<Stage>();
+            foreach (var stageDto in adventureDto.stages)
+            {
+                var stageScriptableObject = adventureScriptableObject.FindStageById(stageDto.id);
+                Stages.Add(new Stage(stageDto, stageScriptableObject));
+            }
+        }
+    }
+}
