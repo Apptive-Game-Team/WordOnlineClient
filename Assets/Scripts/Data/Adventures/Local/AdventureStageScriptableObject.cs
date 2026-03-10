@@ -8,6 +8,10 @@ namespace Data.Adventures.Local
     {
         [SerializeField] private long stageId;
         [SerializeField] private Sprite backgroundImage;
+        [SerializeField] private GameObject stagePanelPrefab;
         [SerializeField] private LocalizedString stageName;
+        
+        public long Id => stageId;
+        public GameObject StagePanelPrefab => stagePanelPrefab;
     }
 }

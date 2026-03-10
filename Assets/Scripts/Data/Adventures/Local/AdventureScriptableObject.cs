@@ -15,5 +15,11 @@ namespace Data.Adventures.Local
         
         public Sprite IconImage => iconImage;
         public long AdventureId => adventureId;
+        public string AdventureName => adventureName.GetLocalizedString();
+        
+        public AdventureStageScriptableObject FindStageById(long stageId)
+        {
+            return stages.Find(stage => stage.Id == stageId);
+        }
     }
 }
