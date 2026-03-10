@@ -654,8 +654,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 534103146}
-  - component: {fileID: 534103144}
-  - component: {fileID: 534103147}
+  - component: {fileID: 534103148}
+  - component: {fileID: 534103149}
   m_Layer: 0
   m_Name: AdventureDataSource
   m_TagString: Untagged
@@ -663,22 +663,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &534103144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534103143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee7e98be397142c18db23dd7bd264100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  adventureApiClient: {fileID: 534103147}
-  localAdventureData:
-  - {fileID: 11400000, guid: d9572ad9070cf45cca74ce7a06b73e6f, type: 2}
-  - {fileID: 11400000, guid: cde56eb328da04ba6add9ed12202db5e, type: 2}
 --- !u!4 &534103146
 Transform:
   m_ObjectHideFlags: 0
@@ -694,7 +678,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &534103147
+--- !u!114 &534103148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -703,7 +687,67 @@ MonoBehaviour:
   m_GameObject: {fileID: 534103143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fc9661135ff4014a0d07ea70534cca1, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ea2c8cb343cc424ba922b9edc76c4f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  adventureApiClient: {fileID: 534103149}
+  localAdventureData:
+  - {fileID: 11400000, guid: d9572ad9070cf45cca74ce7a06b73e6f, type: 2}
+  - {fileID: 11400000, guid: cde56eb328da04ba6add9ed12202db5e, type: 2}
+--- !u!114 &534103149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534103143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2902f1dfb7845869e324bb4899d0122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &809722088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 809722089}
+  - component: {fileID: 809722090}
+  m_Layer: 0
+  m_Name: CurrentAdventure
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &809722089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809722088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.2613732, y: -2.9908555, z: -0.056327716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809722090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809722088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2804c7ffdffb40e88f8767eb5b3f71eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &820030715
@@ -995,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43f9fb26b314769b4907aea80746408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adventureDateSource: {fileID: 534103144}
+  adventureDateSource: {fileID: 534103148}
   adventureIconPrefab: {fileID: 5364389228578431523, guid: 8cb9b5559bdcb4d18b0ea409e8a250d3, type: 3}
   iconParent: {fileID: 907542854}
 --- !u!1 &895629975
@@ -1080,8 +1124,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 945310756}
   m_HandleRect: {fileID: 945310755}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999928
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1158,7 +1202,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000039785984}
+  m_AnchoredPosition: {x: 0, y: -0.000045776367}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &907542856
@@ -1793,3 +1837,4 @@ SceneRoots:
   - {fileID: 480165109}
   - {fileID: 1684976467}
   - {fileID: 534103146}
+  - {fileID: 809722089}

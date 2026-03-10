@@ -1,6 +1,8 @@
-using Data.Adventures.Local;
+using Data.Adventures;
+using Data.Adventures.Domain;
 using Global.Button;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Adventures
@@ -9,15 +11,17 @@ namespace Adventures
     {
         [SerializeField] private Image icon;
         
+        private Adventure _adventure;
+        
         protected override void OnClickButton()
         {
-            throw new System.NotImplementedException();
+            CurrentAdventure.Instance.SetAdventure(_adventure);
+            SceneManager.LoadScene("AdventureScene");
         }
 
-        public void SetUp(bool isActive, AdventureScriptableObject adventure)
+        public void SetUp(bool isActive, Adventure adventure)
         {
-            Debug.Log(adventure.IconImage);
-            Debug.Log(icon);
+            _adventure = adventure;
             icon.sprite = adventure.IconImage;
             if (!isActive)
             {
