@@ -26,8 +26,10 @@ namespace Data.Adventures
                                     state = "ACTIVE",
                                     scenarios = new List<ScenarioDto>()
                                     {
-                                        new ScenarioDto() { id = 1, state = "ACTIVE" },
-                                        new ScenarioDto() { id = 2, state = "INACTIVE" },
+                                        new ScenarioDto() { id = 1, state = "FINISHED" },
+                                        new ScenarioDto() { id = 2, state = "FINISHED" },
+                                        new ScenarioDto() { id = 3, state = "ACTIVE" },
+                                        new ScenarioDto() { id = 4, state = "INACTIVE" },
                                     }
                                 },
                                 new StageDto()
@@ -36,8 +38,6 @@ namespace Data.Adventures
                                     state = "INACTIVE",
                                     scenarios = new List<ScenarioDto>()
                                     {
-                                        new ScenarioDto() { id = 3, state = "ACTIVE" },
-                                        new ScenarioDto() { id = 4, state = "INACTIVE" },
                                     }
                                 },
                             }
@@ -48,16 +48,6 @@ namespace Data.Adventures
                             state = "INACTIVE",
                             stages = new List<StageDto>()
                             {
-                                new StageDto()
-                                {
-                                    id = 3,
-                                    state = "INACTIVE",
-                                    scenarios = new List<ScenarioDto>()
-                                    {
-                                        new ScenarioDto() { id = 5, state = "INACTIVE" },
-                                        new ScenarioDto() { id = 6, state = "INACTIVE" },
-                                    }
-                                },
                             }
                         }
                     }

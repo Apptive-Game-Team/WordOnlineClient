@@ -39,6 +39,12 @@ EditorBuildSettings:
     path: Assets/Scenes/SpectatingScene.unity
     guid: 8723ca805ecb247bfa2b674bc0aa82b2
   - enabled: 1
+    path: Assets/Scenes/AdventureScene.unity
+    guid: f1ccde091fe0541ca9b0e97a7f7ef1e2
+  - enabled: 1
+    path: Assets/Scenes/AdventuresScene.unity
+    guid: 51df1984e3cbd4e25b59ad2dca6e8f09
+  - enabled: 1
     path: Assets/Scenes/InteractiveTutorialScene.unity
     guid: 9586e5fca72b64e8ab023b7582060628
   m_configObjects:
