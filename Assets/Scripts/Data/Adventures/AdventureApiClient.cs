@@ -3,13 +3,13 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Data.Adventures.Dto;
 
 namespace Data.Adventures
 {
     public class AdventureApiClient : AdventureClient
     {
-
-        public override IEnumerator GetAdventure(Action<AdventuresResponse> callback)
+        public override IEnumerator GetAdventure(Action<AdventuresResponseDto> callback)
         {
             using UnityWebRequest webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/adventures");
             
@@ -23,8 +23,8 @@ namespace Data.Adventures
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 string jsonResponse = webRequest.downloadHandler.text;
-                AdventuresResponse adventuresResponse = JsonUtility.FromJson<AdventuresResponse>(jsonResponse);
-                callback.Invoke(adventuresResponse);
+                AdventuresResponseDto adventuresResponseDto = JsonUtility.FromJson<AdventuresResponseDto>(jsonResponse);
+                callback.Invoke(adventuresResponseDto);
             }
             else
             {

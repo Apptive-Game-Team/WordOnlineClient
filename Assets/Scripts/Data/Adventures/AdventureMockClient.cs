@@ -1,52 +1,61 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data.Adventures.Dto;
 
 namespace Data.Adventures
 {
     public class AdventureMockClient : AdventureClient
     {
-        public override IEnumerator GetAdventure(Action<AdventuresResponse> callback)
+        public override IEnumerator GetAdventure(Action<AdventuresResponseDto> callback)
         {
             callback.Invoke(
-                new AdventuresResponse()
+                new AdventuresResponseDto()
                 {
-                    adventures = new List<Adventure>()
+                    adventures = new List<AdventureDto>()
                     {
-                        new Adventure()
+                        new AdventureDto()
                         {
                             id = 1,
                             state = "ACTIVE",
-                            stages = new List<Stage>()
+                            stages = new List<StageDto>()
                             {
-                                new Stage()
+                                new StageDto()
                                 {
                                     id = 1,
-                                    scenarios = new List<Scenario>()
+                                    state = "ACTIVE",
+                                    scenarios = new List<ScenarioDto>()
                                     {
-                                        new Scenario()
-                                        {
-                                            id = 1, state = "ACTIVE"
-                                        },
-                                        new Scenario()
-                                        {
-                                            id = 2, state = "INACTIVE"
-                                        },
+                                        new ScenarioDto() { id = 1, state = "ACTIVE" },
+                                        new ScenarioDto() { id = 2, state = "INACTIVE" },
                                     }
                                 },
-                                new Stage()
+                                new StageDto()
                                 {
                                     id = 2,
-                                    scenarios = new List<Scenario>()
+                                    state = "INACTIVE",
+                                    scenarios = new List<ScenarioDto>()
                                     {
-                                        new Scenario()
-                                        {
-                                            id = 3, state = "ACTIVE"
-                                        },
-                                        new Scenario()
-                                        {
-                                            id = 4, state = "INACTIVE"
-                                        },
+                                        new ScenarioDto() { id = 3, state = "ACTIVE" },
+                                        new ScenarioDto() { id = 4, state = "INACTIVE" },
+                                    }
+                                },
+                            }
+                        },
+                        new AdventureDto()
+                        {
+                            id = 2,
+                            state = "INACTIVE",
+                            stages = new List<StageDto>()
+                            {
+                                new StageDto()
+                                {
+                                    id = 3,
+                                    state = "INACTIVE",
+                                    scenarios = new List<ScenarioDto>()
+                                    {
+                                        new ScenarioDto() { id = 5, state = "INACTIVE" },
+                                        new ScenarioDto() { id = 6, state = "INACTIVE" },
                                     }
                                 },
                             }
