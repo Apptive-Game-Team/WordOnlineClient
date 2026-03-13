@@ -1,5 +1,6 @@
 using CustomizeScene;
 using CustomizeScene.dto;
+using Data;
 using Global;
 using UnityEngine;
 
@@ -8,32 +9,38 @@ namespace GameScene.Player
     public class PlayerObjectBuilder : MonoBehaviour
     {
         [SerializeField] private DecorationsApiClient decorationsApiClient;
-    
-        // 왼쪽/오른쪽 플레이어 꾸미기를 실제로 그려줄 애들
+
         [SerializeField] private PlayerObjectView leftPlayerView;
         [SerializeField] private PlayerObjectView rightPlayerView;
 
         private void Start()
         {
             var matchInfo = SceneContext.MatchInfo;
-            var leftUserId  = matchInfo.leftUser.id;
-            var rightUserId = matchInfo.rightUser.id;
+            if (matchInfo == null) return;
 
-            // 왼쪽 플레이어 꾸미기 불러오기
+            if (IsPveMatch(matchInfo))
+            {
+                DisableRightPlayer();
+            }
+
+            if (matchInfo.leftUser != null)
+            {
+                StartCoroutine(
+                    decorationsApiClient.GetUsersDecorations(
+                        matchInfo.leftUser.id,
+                        resp => OnLeftDecorationsLoaded(resp),
+                        err => Debug.LogError($"Left decorations error: {err}")
+                    )
+                );
+            }
+
+            if (matchInfo.rightUser == null || !rightPlayerView.gameObject.activeInHierarchy) return;
+
             StartCoroutine(
                 decorationsApiClient.GetUsersDecorations(
-                    leftUserId,
-                    resp => OnLeftDecorationsLoaded(resp),
-                    err  => Debug.LogError($"Left decorations error: {err}")
-                )
-            );
-
-            // 오른쪽 플레이어 꾸미기 불러오기
-            StartCoroutine(
-                decorationsApiClient.GetUsersDecorations(
-                    rightUserId,
+                    matchInfo.rightUser.id,
                     resp => OnRightDecorationsLoaded(resp),
-                    err  => Debug.LogError($"Right decorations error: {err}")
+                    err => Debug.LogError($"Right decorations error: {err}")
                 )
             );
         }
@@ -46,6 +53,26 @@ namespace GameScene.Player
         private void OnRightDecorationsLoaded(DecorationsResponse resp)
         {
             rightPlayerView.SetDecorations(resp);
+        }
+
+        private static bool IsPveMatch(MatchedInfoDto matchInfo)
+        {
+            if (!string.IsNullOrEmpty(matchInfo.message) &&
+                matchInfo.message.ToLowerInvariant().Contains("pve"))
+            {
+                return true;
+            }
+
+            return matchInfo.rightUser == null || matchInfo.rightUser.id <= 0;
+        }
+
+        private static void DisableRightPlayer()
+        {
+            var rightPlayer = GameObject.Find("RightPlayer");
+            if (rightPlayer != null)
+            {
+                rightPlayer.SetActive(false);
+            }
         }
     }
 }
