@@ -38,13 +38,13 @@ namespace MagicBookScene
         {
             var magicInfoObj = Instantiate(magicInfoPrefab, magicInfoParent);
             
-            var magicInfo = magicInfoObj.GetComponent<MagicButton>();
-            magicInfo.Init(data);
-            magicInfo.SetActive(active);
+            var magicButton = magicInfoObj.GetComponent<MagicButton>();
+            magicButton.Init(data);
+            magicButton.SetActive(active);
             
             if (active)
             {
-                magicInfo.OnClick += OnClickMagicButton;
+                magicButton.OnClick += OnClickMagicButton;
             }
         }
     }

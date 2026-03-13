@@ -26,12 +26,11 @@ namespace MagicBookScene
             magicImage.color = active ? Color.white : new Color(0, 0, 0, 0.6f);
         }
 
-        public async void Init(CombinedMagicData data)
+        public void Init(CombinedMagicData data)
         {
             GetComponent<Button>().onClick.AddListener(OnButtonClick);
             this.data = data;
             magicImage.sprite = data.GetSprite();
-            data.magicName = await LocaleUtils.GetStringAsync("Magic",StringUtils.ToCamelCase(data.magicName));
         }
     }
 }
