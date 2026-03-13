@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: Adventure
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 9bd520138d5494937a241566dc585065, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: e87ca9400559d4b9b9bba39b423a9708, type: 2}
+  - {fileID: 11400000, guid: eb1760f7b4c5242b6a28b347e7774edc, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []
