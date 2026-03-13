@@ -49,7 +49,7 @@ namespace Data.Magic
             new (){id = 41, magicName = "Sand Storm", recipe = new () { CardType.Explode , CardType.Rock, CardType.Wind}, spritePath = "Game/explode/sand_storm"},
             new (){id = 42, magicName = "Chain Lightning", recipe = new () { CardType.Shoot , CardType.Lightning, CardType.Lightning, CardType.Lightning}, spritePath = "Game/shoot/chain_lightning"},
             new (){id = 43, magicName = "Tornado Strike", recipe = new () { CardType.Spawn , CardType.Wind, CardType.Wind, CardType.Wind, CardType.Nature}, spritePath = "Game/spawn/tornado_strike"},
-            new (){id = 44, magicName = "Meteor Shower", recipe = new () { CardType.Drop , CardType.Fire, CardType.Fire, CardType.Rock, CardType.Rock}, spritePath = "Game/drop/meteor_shower"},
+            new (){id = 44, magicName = "Meteor Shower", recipe = new () { CardType.Drop , CardType.Fire, CardType.Fire, CardType.Rock, CardType.Rock}, spritePath = "Game/drop/meteor_drop"},
             new (){id = 45, magicName = "Tide Call", recipe = new () { CardType.Shoot , CardType.Water, CardType.Nature}, spritePath = "Game/shoot/tide_call"},
              // 3차 상위 마법
             new (){id = 46, magicName = "Cloud Dragon", recipe = new () { CardType.Spawn , CardType.Water, CardType.Wind}, spritePath = "Game/spawn/cloud_dragon"},
