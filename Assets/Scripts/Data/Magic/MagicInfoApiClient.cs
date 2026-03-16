@@ -1,52 +1,35 @@
 using System;
 using System.Collections;
-using Data.Versioning;
-using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Data.Magic
 {
-    public class MagicInfoApiClient : MonoBehaviour
+    public class MagicInfoApiClient
     {
-        private const string MagicsVersionKey = "magics_version";
-        private static readonly VersionParameter _versionParameter = new VersionParameter(MagicsVersionKey);
-
-        public void GetMagicInfo(Action<MagicInfoResponse> callback)
+        public IEnumerator GetMagicInfo(Action<MagicInfoResponse> onSuccess, string currentVersion = null)
         {
-            StartCoroutine(_GetMagicInfo(callback));
-        }
+            var url = $"{ServerList.MatchingServer.url}/api/data/magics";
+            if (!string.IsNullOrEmpty(currentVersion))
+            {
+                url += $"?currentVersion={UnityWebRequest.EscapeURL(currentVersion)}";
+            }
 
-        private static IEnumerator _GetMagicInfo(Action<MagicInfoResponse> callback)
-        {
-            using UnityWebRequest webRequest = UnityWebRequest.Get(
-                $"{ServerList.MatchingServer.url}/api/data/magics{_versionParameter.ToQueryString()}"
-            );
-
+            using var webRequest = UnityWebRequest.Get(url);
             Server.SetAcceptLanguage(webRequest);
             Server.SetAuthorization(webRequest);
-
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
 
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                MagicInfoResponse response = JsonUtility.FromJson<MagicInfoResponse>(
-                    webRequest.downloadHandler.text
-                );
-
-                if (response != null && !string.IsNullOrEmpty(response.version))
-                {
-                    _versionParameter.Save(response.version);
-                }
-
-                callback.Invoke(response);
+                var response = JsonUtility.FromJson<MagicInfoResponse>(webRequest.downloadHandler.text);
+                onSuccess?.Invoke(response);
             }
             else
             {
                 WDebug.LogError($"Failed to get magic info: {webRequest.error}");
-                callback.Invoke(null);
+                onSuccess?.Invoke(null);
             }
         }
     }
