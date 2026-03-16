@@ -4,13 +4,13 @@ using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Data.Magic
+namespace Data.Param
 {
-    public class MagicInfoApiClient
+    public class ParamApiClient
     {
-        public IEnumerator GetMagicInfo(Action<MagicInfoResponse> onSuccess, string currentVersion = null)
+        public IEnumerator GetParameters(Action<ParametersResponse> onSuccess, string currentVersion = null)
         {
-            var url = $"{ServerList.MatchingServer.url}/api/data/magics";
+            var url = $"{ServerList.MatchingServer.url}/api/data/parameters";
             if (!string.IsNullOrEmpty(currentVersion))
             {
                 url += $"?currentVersion={currentVersion}";
@@ -25,12 +25,12 @@ namespace Data.Magic
             if (www.result == UnityWebRequest.Result.Success)
             {
                 var json = www.downloadHandler.text;
-                var response = JsonUtility.FromJson<MagicInfoResponse>(json);
+                var response = JsonUtility.FromJson<ParametersResponse>(json);
                 onSuccess?.Invoke(response);
             }
             else
             {
-                WDebug.LogError($"Failed to get magic info: {www.error}");
+                WDebug.LogError($"Failed to get parameters: {www.error}");
                 onSuccess?.Invoke(null);
             }
         }
