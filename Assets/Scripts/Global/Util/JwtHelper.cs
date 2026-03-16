@@ -16,8 +16,7 @@ namespace Global.Util
         [Serializable]
         private class JwtPayload
         {
-            public string[] roles;
-            public string[] authorities;
+            public string scope;
         }
 
         /// <summary>
@@ -55,9 +54,10 @@ namespace Global.Util
         }
 
         /// <summary>
-        /// Extracts the roles from the JWT payload.
-        /// Supports both "roles" and "authorities" claim names.
-        /// Returns an empty array if no roles are found.
+        /// Extracts the roles from the JWT payload's "scope" claim.
+        /// The scope is a space-separated string, e.g.
+        /// "WORDONLINE_ADMIN WORDONLINE_USER WORDONLINE_CICD SUPER_ADMIN".
+        /// Returns an empty array if no scope is found.
         /// </summary>
         public static string[] ExtractRoles(string jwtToken)
         {
@@ -68,14 +68,10 @@ namespace Global.Util
             try
             {
                 JwtPayload payload = JsonUtility.FromJson<JwtPayload>(payloadJson);
-                if (payload == null)
+                if (payload == null || string.IsNullOrEmpty(payload.scope))
                     return Array.Empty<string>();
 
-                if (payload.roles != null && payload.roles.Length > 0)
-                    return payload.roles;
-
-                if (payload.authorities != null && payload.authorities.Length > 0)
-                    return payload.authorities;
+                return payload.scope.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             }
             catch (Exception)
             {
@@ -86,16 +82,16 @@ namespace Global.Util
         }
 
         /// <summary>
-        /// Returns true when the JWT token contains the exact role "ADMIN"
-        /// or "ROLE_ADMIN" (case-insensitive).
+        /// Returns true when the JWT token's scope contains "WORDONLINE_ADMIN"
+        /// or "SUPER_ADMIN" (case-insensitive).
         /// </summary>
         public static bool IsAdmin(string jwtToken)
         {
             string[] roles = ExtractRoles(jwtToken);
             foreach (string role in roles)
             {
-                if (string.Equals(role, "ADMIN", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(role, "ROLE_ADMIN", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(role, "WORDONLINE_ADMIN", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(role, "SUPER_ADMIN", StringComparison.OrdinalIgnoreCase))
                     return true;
             }
             return false;
