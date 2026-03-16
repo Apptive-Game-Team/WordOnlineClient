@@ -15,7 +15,7 @@ namespace Global
     {
         private void Awake()
         {
-            if (!JwtHelper.IsAdmin(SceneContext.JwtToken))
+            if (SceneContext.JwtToken == null || !JwtHelper.IsAdmin(SceneContext.JwtToken))
             {
                 gameObject.SetActive(false);
             }
