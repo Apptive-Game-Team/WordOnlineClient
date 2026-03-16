@@ -1,62 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data.Versioning;
 using UnityEngine;
 
 namespace Data.Magic
 {
-    public class MagicInfoDataSource : MonoBehaviour
+    public class MagicInfoDataSource : VersionedDataSource<MagicInfoApiClient, MagicInfoResponse>
     {
-        private const string PlayerPrefsKey = "MagicInfoData";
-        private MagicInfoApiClient client;
+        protected override string PlayerPrefsKey => "MagicInfoData";
+
         private List<MagicInfoDto> magics;
-        private string version;
 
-        private void Awake()
+        protected override void InitializeData()
         {
-            client = new MagicInfoApiClient();
-            LoadFromPlayerPrefs();
+            magics = new List<MagicInfoDto>();
         }
 
-        private IEnumerator UpdateMagicInfo()
+        protected override void ProcessResponse(MagicInfoResponse response)
         {
-            yield return client.GetMagicInfo(response =>
-            {
-                if (response != null)
-                {
-                    ProcessResponse(response);
-                    SaveToPlayerPrefs();
-                }
-            }, version);
-        }
-
-        private void ProcessResponse(MagicInfoResponse response)
-        {
-            version = response.version;
+            Version = response.version;
             if (response.magics != null)
             {
                 magics = response.magics;
             }
         }
 
-        private void LoadFromPlayerPrefs()
+        protected override void SaveToPlayerPrefs()
         {
-            if (PlayerPrefs.HasKey(PlayerPrefsKey))
-            {
-                var json = PlayerPrefs.GetString(PlayerPrefsKey);
-                var saved = JsonUtility.FromJson<MagicInfoResponse>(json);
-                magics = new List<MagicInfoDto>();
-                ProcessResponse(saved);
-            }
-            else
-            {
-                magics = new List<MagicInfoDto>();
-            }
-        }
-
-        private void SaveToPlayerPrefs()
-        {
-            var response = new MagicInfoResponse { version = version, magics = magics };
-            var json = JsonUtility.ToJson(response);
+            var json = JsonUtility.ToJson(new MagicInfoResponse { version = Version, magics = magics });
             PlayerPrefs.SetString(PlayerPrefsKey, json);
             PlayerPrefs.Save();
         }
@@ -66,14 +38,14 @@ namespace Data.Magic
             return magics;
         }
 
-        public void GetMagics(System.Action<List<MagicInfoDto>> callback)
+        public void GetMagics(Action<List<MagicInfoDto>> callback)
         {
             StartCoroutine(GetMagicsRoutine(callback));
         }
 
-        private IEnumerator GetMagicsRoutine(System.Action<List<MagicInfoDto>> callback)
+        private IEnumerator GetMagicsRoutine(Action<List<MagicInfoDto>> callback)
         {
-            yield return UpdateMagicInfo();
+            yield return UpdateData();
             callback?.Invoke(magics);
         }
     }
