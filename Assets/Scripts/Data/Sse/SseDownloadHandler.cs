@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using UnityEngine;
+using Global;
 using UnityEngine.Networking;
 
 namespace Data.Sse
@@ -35,7 +35,7 @@ namespace Data.Sse
                 if (line.StartsWith("data:"))
                 {
                     string message = line.Substring("data:".Length).Trim();
-                    Debug.Log(message);
+                    WDebug.Log(message);
                     onLine?.Invoke(message);
                 }
             }
