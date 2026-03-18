@@ -1,25 +1,27 @@
 using Data.Adventures;
-using Global.Button;
 using UnityEngine.UI;
 using Data.Adventures.Domain;
 using UnityEngine;
 
 namespace Adventures.Scenarios
 {
-    public class ScenarioButton : ButtonBase
+    public class ScenarioButton : AdventureButtonBase
     {
         private Image icon;
         private Scenario _scenario;
         public long Id => _scenario.Id;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             icon = GetComponent<Image>();
         }
         
         protected override void OnClickButton()
         {
-            throw new System.NotImplementedException();
+            if (_scenario.State == State.INACTIVE) return;
+            
+            AdventureViewModel.Instance.PlayPVE(Id);
         }
 
         public void Setup(Scenario scenario)

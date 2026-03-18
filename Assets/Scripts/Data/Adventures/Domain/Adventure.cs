@@ -35,6 +35,7 @@ namespace Data.Adventures.Domain
         {
             Id = id;
             State = state;
+            scenarios.Sort((a, b) => a.Id.CompareTo(b.Id));
             Scenarios = scenarios;
         }
 
@@ -48,6 +49,7 @@ namespace Data.Adventures.Domain
             {
                 Scenarios.Add(new Scenario(scenarioDto));
             }
+            Scenarios.Sort((a, b) => a.Id.CompareTo(b.Id));
         }
     }
 
