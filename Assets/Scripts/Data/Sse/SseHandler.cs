@@ -32,9 +32,11 @@ namespace Data.Sse
                 WDebug.Log("SSE Heartbeat received.");
                 return;
             }
+            WDebug.Log($"Received line: {line}");
             // Unity 메인 스레드에서 실행
             UnityMainThreadDispatcher.Enqueue(() =>
             {
+                WDebug.Log($"SSE Message received: {line}");
                 onMessage?.Invoke(line);
             });
         }

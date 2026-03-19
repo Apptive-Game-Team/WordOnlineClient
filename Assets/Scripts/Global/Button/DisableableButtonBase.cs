@@ -8,7 +8,7 @@ namespace Global.Button
         protected bool isActive = true;
         private Color defaultColor;
         
-        protected void Awake()
+        protected virtual void Awake()
         {
             defaultColor = gameObject.GetComponent<Image>().color;
         }
