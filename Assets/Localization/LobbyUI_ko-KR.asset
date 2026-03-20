@@ -75,6 +75,10 @@ MonoBehaviour:
       \uC0C8\uB85C\uC6B4 \uACC4\uC815\uC73C\uB85C \uB85C\uADF8\uC778\uD574 \uC8FC\uC138\uC694."
     m_Metadata:
       m_Items: []
+  - m_Id: 53195004118929408
+    m_Localized: "\uBCF4\uC0C1"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
