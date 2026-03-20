@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Linq;
+using System.Text;
 using Data;
 using Data.Deck;
 using DeckScene;
@@ -41,6 +43,7 @@ namespace LobbyScene
             }
         
             lobbyUserNameUI.SetUserName(SceneContext.User.name);
+            yield return QuestRewardTracker.CheckAndShowRewards();
             yield return FetchDecks();
         }
 
@@ -143,6 +146,165 @@ namespace LobbyScene
         {
             if (deckDropdown.captionText != null)
                 deckDropdown.captionText.text = deckName;
+        }
+    }
+
+    public static class QuestRewardTracker
+    {
+        [Serializable]
+        public class QuestRewardDto
+        {
+            public string rewardType;
+            public long rewardId;
+            public int amount;
+            public long questId;
+
+            // Compatibility fields for temporary backend naming differences.
+            public string type;
+            public long id;
+            public int value;
+        }
+
+        [Serializable]
+        private class QuestRewardResponseDto
+        {
+            public QuestRewardDto[] rewards;
+        }
+
+        public static IEnumerator CheckAndShowRewards()
+        {
+            QuestRewardDto[] rewards = Array.Empty<QuestRewardDto>();
+            yield return CheckRewards(result => rewards = result ?? Array.Empty<QuestRewardDto>());
+
+            if (rewards.Length == 0)
+            {
+                yield break;
+            }
+
+            ShowRewardMessage(rewards);
+        }
+
+        private static IEnumerator CheckRewards(Action<QuestRewardDto[]> onSuccess)
+        {
+            var url = $"{ServerList.MatchingServer.url}/api/users/mine/quests/check";
+
+            using var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+            request.uploadHandler = new UploadHandlerRaw(Array.Empty<byte>());
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            Server.SetAcceptLanguage(request);
+            Server.SetAuthorization(request);
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                if (request.responseCode == 404 || request.responseCode == 405)
+                {
+                    WDebug.Log("[CheckQuestRewards] endpoint is not ready yet. Skip reward visualization.");
+                }
+                else
+                {
+                    WDebug.LogError($"[CheckQuestRewards] fail: {request.responseCode} / {request.error}");
+                }
+                onSuccess?.Invoke(Array.Empty<QuestRewardDto>());
+                yield break;
+            }
+
+            if (request.responseCode == 204 || string.IsNullOrWhiteSpace(request.downloadHandler.text))
+            {
+                onSuccess?.Invoke(Array.Empty<QuestRewardDto>());
+                yield break;
+            }
+
+            try
+            {
+                onSuccess?.Invoke(ParseRewards(request.downloadHandler.text));
+            }
+            catch (Exception e)
+            {
+                WDebug.LogError($"[CheckQuestRewards] parse error: {e}\n{request.downloadHandler.text}");
+                onSuccess?.Invoke(Array.Empty<QuestRewardDto>());
+            }
+        }
+
+        private static QuestRewardDto[] ParseRewards(string json)
+        {
+            var trimmed = json.TrimStart();
+            if (trimmed.StartsWith("["))
+            {
+                return JsonHelper.FromJson<QuestRewardDto>(json) ?? Array.Empty<QuestRewardDto>();
+            }
+
+            var response = JsonUtility.FromJson<QuestRewardResponseDto>(json);
+            return response?.rewards ?? Array.Empty<QuestRewardDto>();
+        }
+
+        private static void ShowRewardMessage(QuestRewardDto[] rewards)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Quest rewards received:");
+
+            foreach (var reward in rewards)
+            {
+                var rewardType = GetRewardType(reward);
+                var rewardId = GetRewardId(reward);
+                var amount = GetAmount(reward);
+                builder.Append("- ").Append(rewardType).Append(" #").Append(rewardId).Append(" x").Append(amount);
+                if (reward.questId > 0)
+                {
+                    builder.Append(" (quest ").Append(reward.questId).Append(")");
+                }
+                builder.AppendLine();
+            }
+
+            if (SystemMessageUI.Instance != null)
+            {
+                SystemMessageUI.Instance.ShowMessage(builder.ToString().TrimEnd());
+                return;
+            }
+
+            WDebug.Log(builder.ToString());
+        }
+
+        private static string GetRewardType(QuestRewardDto reward)
+        {
+            if (!string.IsNullOrEmpty(reward.rewardType))
+            {
+                return reward.rewardType;
+            }
+
+            if (!string.IsNullOrEmpty(reward.type))
+            {
+                return reward.type;
+            }
+
+            return "UNKNOWN";
+        }
+
+        private static long GetRewardId(QuestRewardDto reward)
+        {
+            if (reward.rewardId > 0)
+            {
+                return reward.rewardId;
+            }
+
+            return reward.id;
+        }
+
+        private static int GetAmount(QuestRewardDto reward)
+        {
+            if (reward.amount > 0)
+            {
+                return reward.amount;
+            }
+
+            if (reward.value > 0)
+            {
+                return reward.value;
+            }
+
+            return 1;
         }
     }
 }
