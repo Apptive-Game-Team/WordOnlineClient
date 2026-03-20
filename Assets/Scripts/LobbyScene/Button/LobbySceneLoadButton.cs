@@ -1,18 +1,15 @@
+using Global.Button;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace LobbyScene.Button
 {
-    public class LobbySceneLoadButton : LobbyButtonBase
+    public class LobbySceneLoadButton : ButtonBase
     {
         [SerializeField] protected string sceneName;
     
         protected override void OnClickButton()
         {
-            if (!isActive)
-            {
-                return;
-            }
             SceneManager.LoadScene(sceneName);
         }
     }

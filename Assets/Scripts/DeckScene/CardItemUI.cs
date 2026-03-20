@@ -42,12 +42,6 @@ namespace DeckScene
             cardManaText.text = magicData.mana.ToString();
 
             var bg = GetComponent<Image>();
-            switch (magicData.type)
-            {
-                // case "type": bg.sprite = typeSprite; break;
-                // case "magic": bg.sprite = magicSprite; break;
-                default: WDebug.LogError($"Unknown magic type: {magicData.type}"); break;
-            }
 
             cardNameText.text = await LocaleUtils.GetStringAsync("Card", cName);
 
