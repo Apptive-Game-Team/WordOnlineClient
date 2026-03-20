@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: Registraion Success
     m_Metadata:
       m_Items: []
+  - m_Id: 53195004118929408
+    m_Key: Reward
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

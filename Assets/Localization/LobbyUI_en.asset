@@ -76,6 +76,10 @@ MonoBehaviour:
     m_Localized: Registration successful. Please log in with your new account.
     m_Metadata:
       m_Items: []
+  - m_Id: 53195004118929408
+    m_Localized: Reward
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
