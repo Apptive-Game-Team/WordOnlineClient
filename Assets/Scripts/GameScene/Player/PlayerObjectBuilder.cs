@@ -63,7 +63,7 @@ namespace GameScene.Player
                 return true;
             }
 
-            return matchInfo.rightUser == null || matchInfo.rightUser.id <= 0;
+            return matchInfo.rightUser == null;
         }
 
         private static void DisableRightPlayer()
