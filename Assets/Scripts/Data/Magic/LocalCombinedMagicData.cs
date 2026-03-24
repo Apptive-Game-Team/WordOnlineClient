@@ -9,8 +9,8 @@ namespace Data.Magic
             new (){id = 1, magicName = "Ember Spirit Swarm", recipe = new () { CardType.Spawn , CardType.Fire}, spritePath = "Game/spawn/ember_spirit"},
             new (){id = 2, magicName = "Water Slime Swarm", recipe = new () { CardType.Spawn , CardType.Water}, spritePath = "Game/spawn/water_slime"},
             new (){id = 4, magicName = "Seed Spirit Swarm", recipe = new () { CardType.Spawn , CardType.Nature}, spritePath = "Game/spawn/seed_spirit"},
-            new (){id = 5, magicName = "Mini Rock Swarm", recipe = new () { CardType.Spawn , CardType.Rock}, spritePath = "Game/spawn/mini_rock"},
-            new (){id = 6, magicName = "Wind Spirit Swarm", recipe = new () { CardType.Spawn , CardType.Wind}, spritePath = "Game/spawn/wind_spirit"},
+            new (){id = 3, magicName = "Mini Rock Swarm", recipe = new () { CardType.Spawn , CardType.Rock}, spritePath = "Game/spawn/mini_rock"},
+            new (){id = 5, magicName = "Wind Spirit", recipe = new () { CardType.Spawn , CardType.Wind}, spritePath = "Game/spawn/wind_spirit"},
             
             new (){id = 7, magicName = "Fire Shot", recipe = new () { CardType.Shoot , CardType.Fire}, spritePath = "Game/shoot/fire_shoot"},
             new (){id = 8, magicName = "Water Shot", recipe = new () { CardType.Shoot , CardType.Water}, spritePath = "Game/shoot/water_shoot"},

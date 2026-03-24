@@ -246,6 +246,34 @@ MonoBehaviour:
     m_Localized: Rock Mage
     m_Metadata:
       m_Items: []
+  - m_Id: 54766744953151488
+    m_Localized: Ember Spirit Swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54766898301100032
+    m_Localized: Seed Spirit Swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54766996380704768
+    m_Localized: Wind Spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767116140666880
+    m_Localized: Rock Turret
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767224823472128
+    m_Localized: Magma Explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767337247596544
+    m_Localized: Water Explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767467887583232
+    m_Localized: Life Tree
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
