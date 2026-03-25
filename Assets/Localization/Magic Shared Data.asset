@@ -243,6 +243,38 @@ MonoBehaviour:
     m_Key: rockMage
     m_Metadata:
       m_Items: []
+  - m_Id: 54766744953151488
+    m_Key: 'emberSpiritSwarm
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54766898301100032
+    m_Key: seedSpiritSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54766996380704768
+    m_Key: windSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767116140666880
+    m_Key: rockTurret
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767224823472128
+    m_Key: magmaExplosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767337247596544
+    m_Key: 'waterExplosion
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54767467887583232
+    m_Key: lifeTree
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
