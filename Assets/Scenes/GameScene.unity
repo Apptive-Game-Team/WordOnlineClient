@@ -1505,7 +1505,7 @@ MonoBehaviour:
   m_Content: {fileID: 1241073858}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -2982,7 +2982,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 1604897412762002221, guid: a3e9f16e0a112482abde5f06710a865b, type: 3}
   magicParent: {fileID: 1241073857}
   prefabParent: {fileID: 1652394808}
-  selectionIndicator: {fileID: 2775977334497726329, guid: 6c9dd9b617c1043b59bd19c9fd20c95a, type: 3}
+  selectionIndicator: {fileID: 2447219156604120118, guid: 6a077560b2d207c45a5370956111607c, type: 3}
   masterDropdown: {fileID: 1262121213}
 --- !u!114 &769575816
 MonoBehaviour:
@@ -3982,7 +3982,7 @@ MonoBehaviour:
   m_Content: {fileID: 1652394809}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -4070,7 +4070,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1241073859
 MonoBehaviour:
@@ -4085,7 +4085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &1241073860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5511,7 +5511,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1652394810
 MonoBehaviour:
@@ -5526,7 +5526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &1652394811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6374,6 +6374,10 @@ PrefabInstance:
     - target: {fileID: 3507375722896574938, guid: ab89aefebd40141228aabbe813d04aab, type: 3}
       propertyPath: m_Name
       value: AdminPanal
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507375722896574938, guid: ab89aefebd40141228aabbe813d04aab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
