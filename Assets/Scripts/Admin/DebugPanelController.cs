@@ -14,18 +14,57 @@ namespace Admin
         [SerializeField] private GameObject magicParent;
         [SerializeField] private GameObject prefabParent;
         [SerializeField] private GameObject selectionIndicator; // Optional: visual feedback for selection mode
+        [SerializeField] private TMPro.TMP_Dropdown masterDropdown; // Dropdown for LeftPlayer, RightPlayer, None
 
         private enum SelectionType { None, Magic, Prefab }
         private SelectionType currentSelectionType = SelectionType.None;
         private int selectedMagicId;
         private string selectedPrefabId;
+        private string selectedMaster = "None";
 
         private void Start()
         {
             if (adminViewModel == null) adminViewModel = FindObjectOfType<AdminViewModel>();
             if (selectionIndicator != null) selectionIndicator.SetActive(false);
             
+            InitializeMasterSelection();
             RefreshLists();
+        }
+
+        private void InitializeMasterSelection()
+        {
+            if (masterDropdown != null)
+            {
+                masterDropdown.onValueChanged.RemoveAllListeners();
+                masterDropdown.onValueChanged.AddListener(index => 
+                {
+                    selectedMaster = masterDropdown.options[index].text;
+                    WDebug.Log($"Master changed to: {selectedMaster}");
+                });
+
+                // Try to set initial value from SceneContext.Me
+                string currentMe = SceneContext.Me;
+                int defaultIndex = masterDropdown.options.FindIndex(option => option.text.Equals(currentMe));
+                if (defaultIndex >= 0)
+                {
+                    masterDropdown.value = defaultIndex;
+                    selectedMaster = currentMe;
+                }
+                else
+                {
+                    selectedMaster = masterDropdown.options[masterDropdown.value].text;
+                }
+            }
+            else
+            {
+                selectedMaster = SceneContext.Me ?? "None";
+            }
+        }
+
+        public void SetMaster(string master)
+        {
+            selectedMaster = master;
+            WDebug.Log($"Master manually set to: {selectedMaster}");
         }
 
         public void RefreshLists()
@@ -62,7 +101,7 @@ namespace Admin
             selectedMagicId = id;
             currentSelectionType = SelectionType.Magic;
             if (selectionIndicator != null) selectionIndicator.SetActive(true);
-            WDebug.Log($"Magic {id} selected. Click on field to summon.");
+            WDebug.Log($"Magic {id} selected. Master: {selectedMaster}. Click on field to summon.");
         }
 
         private void SelectPrefab(string id)
@@ -70,7 +109,7 @@ namespace Admin
             selectedPrefabId = id;
             currentSelectionType = SelectionType.Prefab;
             if (selectionIndicator != null) selectionIndicator.SetActive(true);
-            WDebug.Log($"Prefab {id} selected. Click on field to spawn.");
+            WDebug.Log($"Prefab {id} selected. Master: {selectedMaster}. Click on field to spawn.");
         }
 
         private void Update()
@@ -107,7 +146,7 @@ namespace Admin
         private void ExecuteSelection(Vector3 position)
         {
             string sessionId = SceneContext.MatchInfo?.sessionId ?? "debug-1";
-            string master = SceneContext.Me ?? "None";
+            string master = selectedMaster;
 
             if (currentSelectionType == SelectionType.Magic)
             {
