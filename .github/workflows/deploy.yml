@@ -60,3 +60,12 @@ jobs:
           git add .
           git commit -m "Update WebGL build from main repo"
           git push origin main
+
+      - name: Deploy to itch.io
+        uses: josephbmanley/butler-publish-itchio-action@v1.0.3
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: webgl
+          ITCH_GAME: ${{ secrets.ITCH_GAME }}
+          ITCH_USER: ${{ secrets.ITCH_USER }}
+          PACKAGE: build/WebGL/WebGL
