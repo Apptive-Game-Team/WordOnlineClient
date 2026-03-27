@@ -23,8 +23,8 @@ jobs:
       #     docker-images: true
       #     swap-storage: true
 
-      - name: Docker prune
-        run: docker system prune -af
+      # - name: Docker prune
+      #   run: docker system prune -af
 
       - name: Cache Library folder
         uses: actions/cache@v4
