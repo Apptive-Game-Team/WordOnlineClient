@@ -13,11 +13,11 @@ namespace Data.Magic
             new (){id = 5, magicName = "Wind Spirit", recipe = new () { CardType.Spawn , CardType.Wind}, spritePath = "Game/spawn/wind_spirit"},
             
             new (){id = 7, magicName = "Fire Shot", recipe = new () { CardType.Shoot , CardType.Fire}, spritePath = "Game/shoot/fire_shoot"},
-            new (){id = 8, magicName = "Water Shot", recipe = new () { CardType.Shoot , CardType.Water}, spritePath = "Game/shoot/water_shoot"},
-            new (){id = 9, magicName = "Lightning Shot", recipe = new () { CardType.Shoot , CardType.Lightning}, spritePath = "Game/shoot/lightning_shoot"},
-            new (){id = 10, magicName = "Nature Shot", recipe = new () { CardType.Shoot , CardType.Nature}, spritePath = "Game/shoot/leaf_shoot"},
-            new (){id = 11, magicName = "Rock Shot", recipe = new () { CardType.Shoot , CardType.Rock}, spritePath = "Game/shoot/rock_shoot"},
-            new (){id = 12, magicName = "Wind Shot", recipe = new () { CardType.Shoot , CardType.Wind}, spritePath = "Game/shoot/wind_shoot"},
+            new (){id = 8, magicName = "Tide Call", recipe = new () { CardType.Shoot , CardType.Water}, spritePath = "Game/shoot/tide_call"},
+            new (){id = 9, magicName = "Chain Lightning", recipe = new () { CardType.Shoot , CardType.Lightning}, spritePath = "Game/shoot/chain_lightning"},
+            new (){id = 10, magicName = "Vine Toss", recipe = new () { CardType.Shoot , CardType.Nature}, spritePath = "Game/build/vine"},
+            new (){id = 11, magicName = "Rock Rolling", recipe = new () { CardType.Shoot , CardType.Rock}, spritePath = "Game/shoot/rock_rolling"},
+            new (){id = 12, magicName = "Wind Blade", recipe = new () { CardType.Shoot , CardType.Wind}, spritePath = "Game/shoot/wind_blade"},
             
             new (){id = 16, magicName = "Life Tree", recipe = new () { CardType.Build , CardType.Nature}, spritePath = "Game/build/life_tree"},
             new (){id = 17, magicName = "Rock Turret", recipe = new () { CardType.Build , CardType.Rock}, spritePath = "Game/build/rock_turret"},
@@ -35,20 +35,14 @@ namespace Data.Magic
             new (){id = 31, magicName = "Thunder Spirit", recipe = new () { CardType.Spawn , CardType.Lightning, CardType.Wind}, spritePath = "Game/spawn/thunder_spirit"},
             new (){id = 32, magicName = "Fire Spirit", recipe = new () { CardType.Spawn , CardType.Wind, CardType.Fire}, spritePath = "Game/spawn/fire_spirit"},
             
-            new (){id = 33, magicName = "Fire Drop", recipe = new () { CardType.Drop , CardType.Fire}, spritePath = "Game/drop/fire_drop"},
-            new (){id = 34, magicName = "Water Drop", recipe = new () { CardType.Drop , CardType.Water}, spritePath = "Game/drop/water_drop"},
+            new (){id = 34, magicName = "Rain Cloud", recipe = new () { CardType.Drop , CardType.Water}, spritePath = "Game/drop/rain_cloud"},
             new (){id = 35, magicName = "Lightning Drop", recipe = new () { CardType.Drop , CardType.Lightning}, spritePath = "Game/drop/lightning_drop"},
-            new (){id = 36, magicName = "Nature Drop", recipe = new () { CardType.Drop , CardType.Nature}, spritePath = "Game/drop/leaf_drop"},
-            new (){id = 37, magicName = "Rock Drop", recipe = new () { CardType.Drop , CardType.Rock}, spritePath = "Game/drop/rock_drop"},
-            new (){id = 38, magicName = "Wind Drop", recipe = new () { CardType.Drop , CardType.Wind}, spritePath = "Game/drop/wind_drop"},
             
             new (){id = 39, magicName = "Magma Spirit", recipe = new () { CardType.Spawn , CardType.Explode, CardType.Fire, CardType.Fire, CardType.Rock}, spritePath = "Game/spawn/magma_spirit"},
             new (){id = 40, magicName = "Healing Totem", recipe = new () { CardType.Build , CardType.Nature, CardType.Water}, spritePath = "Game/build/healing_totem"},
             new (){id = 41, magicName = "Sand Storm", recipe = new () { CardType.Explode , CardType.Rock, CardType.Wind}, spritePath = "Game/explode/sand_storm"},
-            new (){id = 42, magicName = "Chain Lightning", recipe = new () { CardType.Shoot , CardType.Lightning, CardType.Lightning, CardType.Lightning}, spritePath = "Game/shoot/chain_lightning"},
             new (){id = 43, magicName = "Tornado Strike", recipe = new () { CardType.Spawn , CardType.Wind, CardType.Wind, CardType.Wind, CardType.Nature}, spritePath = "Game/spawn/tornado_strike"},
             new (){id = 44, magicName = "Meteor Shower", recipe = new () { CardType.Drop , CardType.Fire, CardType.Fire, CardType.Rock, CardType.Rock}, spritePath = "Game/drop/meteor_drop"},
-            new (){id = 45, magicName = "Tide Call", recipe = new () { CardType.Shoot , CardType.Water, CardType.Nature}, spritePath = "Game/shoot/tide_call"},
              // 3차 상위 마법
             new (){id = 46, magicName = "Cloud Dragon", recipe = new () { CardType.Spawn , CardType.Water, CardType.Wind}, spritePath = "Game/spawn/cloud_dragon"},
             new (){id = 47, magicName = "Thunder Bird Swarm", recipe = new () { CardType.Spawn , CardType.Drop, CardType.Lightning}, spritePath = "Game/spawn/thunder_bird"},
