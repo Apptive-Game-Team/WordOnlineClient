@@ -45,12 +45,15 @@ jobs:
           unityVersion: 2022.3.22f1
           targetPlatform: WebGL
           customParameters: -logFile -
-
-      - name: Deploy to itch.io
-        uses: yeslayla/butler-publish-itchio-action@v1.2.0
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      
+      - name: Push to Itch.io
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: webgl
-          ITCH_GAME: ${{ secrets.ITCH_GAME }}
-          ITCH_USER: ${{ secrets.ITCH_USER }}
-          PACKAGE: build/WebGL/WebGL
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          ./butler push build/WebGL/WebGL ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
