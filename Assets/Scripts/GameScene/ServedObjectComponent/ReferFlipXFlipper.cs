@@ -25,9 +25,16 @@ public class ReferFlipXFlipper : MonoBehaviour
         if (flipX != _renderer.flipX)
         {
             _renderer.flipX = flipX;
-            Vector3 currentVect = initialPosition;
-            currentVect.x *= -1;
-            transform.localPosition = currentVect;
+            if (flipX)
+            {
+                Vector3 currentVect = initialPosition;
+                currentVect.x *= -1;
+                transform.localPosition = currentVect;
+            }
+            else
+            {
+                transform.localPosition = initialPosition;
+            }
         }
     }
 }
