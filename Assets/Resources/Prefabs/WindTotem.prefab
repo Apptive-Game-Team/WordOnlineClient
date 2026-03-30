@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7324149257973461962}
   - component: {fileID: 5464359186005485028}
+  - component: {fileID: 2677118302549975843}
   m_Layer: 0
   m_Name: Wind
   m_TagString: Untagged
@@ -84,6 +85,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2677118302549975843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7602420987117933168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42dd0ea715aa649cab4e37a12cb677a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _referRenderer: {fileID: 6283774115668339200}
+  initialPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &3434044365886374736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -234,6 +249,11 @@ PrefabInstance:
 --- !u!4 &1269473178231215529 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4482838688472848121, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+  m_PrefabInstance: {fileID: 3434044365886374736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6283774115668339200 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
   m_PrefabInstance: {fileID: 3434044365886374736}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6664926474594645861 stripped
