@@ -5,7 +5,7 @@ namespace GameScene.ServedObjectComponent
 {
     public class ServedObjectHpBar : MonoBehaviour
     {
-        private ServedObject servedObject;
+        [SerializeField] private ServedObject servedObject;
         private Slider slider;
     
         private void Awake()

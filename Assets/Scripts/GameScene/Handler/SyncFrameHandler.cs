@@ -19,8 +19,6 @@ namespace GameScene.Handler
             
             // 마나 UI 업데이트
             GameSceneUIController.Instance.UpdateMana(syncFrameInfo.updatedMana);
-            // 플레이어 HP 업데이트 
-            GameSceneUIController.Instance.UpdateUserHps(syncFrameInfo.leftPlayerHp, syncFrameInfo.rightPlayerHp);
             
             // // 카드 추가
             try
