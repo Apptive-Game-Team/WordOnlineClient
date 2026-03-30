@@ -11,19 +11,14 @@ using UnityEngine.UI;
 
 namespace GameScene
 {
-    public class GameSceneUIController : MonoBehaviour
+    public class GameSceneUIController : LocalSingletonObject<GameSceneUIController>
     {
-        public static GameSceneUIController Instance;
-    
         [SerializeField] private CombinedMagicResolver combinedMagicResolver;
         
         [SerializeField] private TextMeshProUGUI leftUserIDText;
         [SerializeField] private TextMeshProUGUI rightUserIDText;
         [SerializeField] private TextMeshProUGUI manaText;
         [SerializeField] private Slider manaSlider;
-    
-        [SerializeField] private Slider leftUserHpSlider;
-        [SerializeField] private Slider rightUserHpSlider;
     
         [SerializeField] private CardUI cardUIPrefab;
         [SerializeField] private GameObject lowerBar;
@@ -38,85 +33,7 @@ namespace GameScene
     
         [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
         [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
-    
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-        }
-
-        private void Start()
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        leftUserIDText.text = SceneContext.MatchInfo.leftUser.name;
-        rightUserIDText.text = SceneContext.MatchInfo.rightUser.name;
-#endif
-        }
-
-        private Transform leftPlayerTransform;
-        private Transform rightPlayerTransform;
-
-        private Transform GetLeftPlayerTransform()
-        {
-            if (leftPlayerTransform == null)
-            {
-                GameObject leftPlayer = GameObject.Find("LeftPlayer");
-                if (leftPlayer != null)
-                {
-                    leftPlayerTransform = leftPlayer.transform;
-                }
-            }
-
-            return leftPlayerTransform;
-        }
-
-        private Transform GetRightPlayerTransform()
-        {
-            if (rightPlayerTransform == null)
-            {
-                GameObject rightPlayer = GameObject.Find("RightPlayer");
-                if (rightPlayer != null)
-                {
-                    rightPlayerTransform = rightPlayer.transform;
-                }
-            }
-
-            return rightPlayerTransform;
-        }
-    
-        public void UpdateUserHps(int leftUserHp, int rightUserHp)
-        {
-            if (leftUserHpSlider.value > leftUserHp)
-            {
-                Transform leftPlayerTr = GetLeftPlayerTransform();
-                if (leftPlayerTr != null)
-                {
-                    DOTweenAction.BounceMob(leftPlayerTr.GetChild(0));
-                    DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", leftPlayerTr);
-                }
-            }
-            else if (rightUserHpSlider.value > rightUserHp)
-            {
-                Transform rightPlayerTr = GetRightPlayerTransform();
-                if (rightPlayerTr != null)
-                {
-                    DOTweenAction.BounceMob(rightPlayerTr.GetChild(0));
-                    DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", rightPlayerTr);
-                }
-            }
         
-            leftUserHpSlider.value = leftUserHp;
-            rightUserHpSlider.value = rightUserHp;
-        
-            leftUserIDText.text = $"{SceneContext.MatchInfo.leftUser.name}\n HP: {leftUserHp}";
-            rightUserIDText.text = $"{SceneContext.MatchInfo.rightUser.name}\n HP: {rightUserHp}";
-        }
-
         public void UpdateMana(int mana)
         {
             if (manaText == null || manaSlider == null) return;
@@ -153,18 +70,6 @@ namespace GameScene
                 return;
             }
             expectedMagicUI.SetImage(null);
-        }
-    
-        public void PlayMagicFailEffect()
-        {
-            if (SceneContext.Me == "LeftPlayer")
-            {
-                leftUserMagicFailEffecter.Trigger();
-            }
-            else if (SceneContext.Me == "RightPlayer")
-            {
-                rightUserMagicFailEffecter.Trigger();
-            }
         }
     }
 }

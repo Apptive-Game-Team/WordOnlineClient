@@ -1,3 +1,5 @@
+using System.Linq;
+using GameScene.Player;
 using Global;
 using UnityEngine;
 
@@ -22,32 +24,28 @@ namespace GameScene.ServedObjectComponent
     
         private GameObject GetPlayerObject()
         {
-            if (SceneContext.Me.Equals("LeftPlayer"))
-            {
-                return GameObject.Find("LeftPlayer");
-            }
-            else if (SceneContext.Me.Equals("RightPlayer"))
-            {
-                return GameObject.Find("RightPlayer");
-            }
-
-            return null;
+            return FindObjectsByType<PlayerNameSetter>(FindObjectsSortMode.None)
+                .Where(o => o.GetComponent<ServedObject>() != null)
+                .Select(o => o.GetComponent<ServedObject>())
+                .Where(s => s.GetMaster().Equals(SceneContext.Me))
+                .Select(s => s.gameObject)
+                .First();
         }
 
         public void PlayCardSelectFeedback()
         {
-            Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
+            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerUseCard(spriteTr);
         }
         public void CancelCardSelectFeedback()
         {
-            Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
+            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerCancelCard(spriteTr);
         }
 
         public void UseMagicFeedback()
         {
-            Transform spriteTr = PlayerObject.transform.Find("PlayerObject");
+            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerUseMagic(spriteTr);
         }
     }
