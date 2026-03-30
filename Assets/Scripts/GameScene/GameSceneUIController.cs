@@ -15,8 +15,6 @@ namespace GameScene
     {
         [SerializeField] private CombinedMagicResolver combinedMagicResolver;
         
-        [SerializeField] private TextMeshProUGUI leftUserIDText;
-        [SerializeField] private TextMeshProUGUI rightUserIDText;
         [SerializeField] private TextMeshProUGUI manaText;
         [SerializeField] private Slider manaSlider;
     
@@ -30,9 +28,8 @@ namespace GameScene
         [SerializeField] private ExpectedMagicUI expectedMagicUI;
     
         [SerializeField] private MagicHelperUI magicHelperUI;
-    
-        [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
-        [SerializeField] private MagicFailEffecter rightUserMagicFailEffecter;
+        
+        [SerializeField] private Sprite expectingFailedMagicImage;
         
         public void UpdateMana(int mana)
         {
@@ -69,7 +66,15 @@ namespace GameScene
                 expectedMagicUI.SetImage(data.GetSprite());
                 return;
             }
-            expectedMagicUI.SetImage(null);
+
+            if (recipe.Count == 0)
+            {
+                expectedMagicUI.SetImage(null);
+            }
+            else
+            {
+                expectedMagicUI.SetImage(expectingFailedMagicImage);
+            }
         }
     }
 }
