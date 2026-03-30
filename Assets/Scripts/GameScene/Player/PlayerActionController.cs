@@ -8,9 +8,9 @@ namespace GameScene.Player
     {
     
         [SerializeField] private ServedObject servedObject;
+        [SerializeField] private MagicFailEffecter magicFailEffecter;
         private GameObject playerObject;
         private Transform playerTransform;
-        private MagicFailEffecter magicFailEffecter;
     
         private void Start()
         {
@@ -18,7 +18,6 @@ namespace GameScene.Player
             {
                 Destroy(this);
             }
-            Init();
             servedObject.OnOtherStatus += OnOtherStatus;
             servedObject.OnAttack += OnAttack;
         }
@@ -42,28 +41,6 @@ namespace GameScene.Player
             {
                 magicFailEffecter.Trigger();
             }
-        }
-
-        private void Init()
-        {
-            playerObject = GetPlayerObject();
-            playerTransform = playerObject.transform.Find("PlayerObject");
-            magicFailEffecter = playerObject.GetComponentInChildren<MagicFailEffecter>();
-        }
-        
-        private GameObject GetPlayerObject()
-        {
-            string master = servedObject.GetMaster();
-            if (master.Equals("LeftPlayer"))
-            {
-                return GameObject.Find("LeftPlayer");
-            }
-            else if (master.Equals("RightPlayer"))
-            {
-                return GameObject.Find("RightPlayer");
-            }
-
-            return null;
         }
     }
 }
