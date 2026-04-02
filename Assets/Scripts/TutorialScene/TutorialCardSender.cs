@@ -75,7 +75,7 @@ namespace TutorialScene
 
                 WDebug.Log("Cannot resolve the current recipe.");
                 TutorialSceneUIController.Instance?.PlayMagicFailEffect();
-                SendInput(Vector2.zero);
+                ClearCurrentSelection();
                 return;
             }
 
@@ -138,6 +138,19 @@ namespace TutorialScene
             WDebug.Log("AddCardList: " + card.CardName);
             _currentCardNameList.Add(card.CardName);
             _currentCardList.Add(card);
+        }
+
+        private void ClearCurrentSelection()
+        {
+            foreach (var card in _currentCardList)
+            {
+                card.SetCardActive(false);
+            }
+
+            _currentCardNameList.Clear();
+            _currentCardList.Clear();
+            isFieldSelectMode = false;
+            SetExpectedMagicUI();
         }
 
         private List<CardType> GetCurrentRecipeTypes()
