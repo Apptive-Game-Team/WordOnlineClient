@@ -158,6 +158,22 @@ namespace GameScene.ServedObjectComponent
             _actualTransform = transform;
             return _actualTransform;
         }
+
+        public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
+        {
+            if (_spriteRenderer == null)
+            {
+                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+
+            if (_spriteRenderer != null)
+            {
+                Bounds bounds = _spriteRenderer.bounds;
+                return new Vector3(bounds.center.x, bounds.max.y + verticalOffset, GetActualTransform().position.z);
+            }
+
+            return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
+        }
         
         private void HandleDamageEffect()
         {
