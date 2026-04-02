@@ -29,22 +29,37 @@ namespace GameScene.ServedObjectComponent
                 .Select(o => o.GetComponent<ServedObject>())
                 .Where(s => s.GetMaster().Equals(SceneContext.Me))
                 .Select(s => s.gameObject)
-                .First();
+                .FirstOrDefault();
         }
 
         public void PlayCardSelectFeedback()
         {
+            if (PlayerObject == null)
+            {
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for card select feedback.");
+                return;
+            }
             Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerUseCard(spriteTr);
         }
         public void CancelCardSelectFeedback()
         {
+            if (PlayerObject == null)
+            {
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for cancel feedback.");
+                return;
+            }
             Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerCancelCard(spriteTr);
         }
 
         public void UseMagicFeedback()
         {
+            if (PlayerObject == null)
+            {
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for magic feedback.");
+                return;
+            }
             Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
             DOTweenAction.RotatePlayerUseMagic(spriteTr);
         }

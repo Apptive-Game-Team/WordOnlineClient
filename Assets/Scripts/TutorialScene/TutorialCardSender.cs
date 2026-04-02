@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Data;
 using Data.Magic;
 using GameScene.Card;
-using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
 using Unity.Mathematics;
@@ -24,13 +23,6 @@ namespace TutorialScene
         
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
-        
-        private CombinedMagicResolver combinedMagicResolver;
-
-        private void Awake()
-        {
-            combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
-        }
 
         public bool IsFieldSelectMode()
         {
@@ -74,7 +66,7 @@ namespace TutorialScene
 
             var types = GetCurrentRecipeTypes();
 
-            if (!combinedMagicResolver.CanResolve(types))
+            if (!LocalCombinedMagicData.TryGetByRecipe(types, out _))
             {
                 if (_currentCardList.Count == 1)
                 {
@@ -82,7 +74,7 @@ namespace TutorialScene
                 }
 
                 WDebug.Log("Cannot resolve the current recipe.");
-                PlayerFeedbackController.Instance.UseMagicFeedback();
+                TutorialSceneUIController.Instance?.PlayMagicFailEffect();
                 SendInput(Vector2.zero);
                 return;
             }

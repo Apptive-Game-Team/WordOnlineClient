@@ -58,8 +58,48 @@ namespace Data.Magic
             return dataList.Find(x => x.magicName == name);
         }
 
+        public static bool TryGetByRecipe(IList<CardType> recipe, out CombinedMagicData match)
+        {
+            if (recipe == null)
+            {
+                match = null;
+                return false;
+            }
 
-        // public static bool TryGetByRecipe(IList<CardType> recipe, out CombinedMagicData match)
-        //     => CombinedMagicResolver.TryResolve(recipe, out match);
+            foreach (var data in dataList)
+            {
+                if (AreSameMultiset(data.recipe, recipe))
+                {
+                    match = data;
+                    return true;
+                }
+            }
+
+            match = null;
+            return false;
+        }
+
+        private static bool AreSameMultiset(IList<CardType> a, IList<CardType> b)
+        {
+            if (a == null || b == null) return false;
+            if (a.Count != b.Count) return false;
+
+            var counts = new Dictionary<CardType, int>();
+            foreach (var x in a)
+            {
+                counts.TryGetValue(x, out var count);
+                counts[x] = count + 1;
+            }
+
+            foreach (var y in b)
+            {
+                if (!counts.TryGetValue(y, out var count) || count == 0)
+                    return false;
+
+                counts[y] = count - 1;
+            }
+
+            return true;
+        }
     }
 }
