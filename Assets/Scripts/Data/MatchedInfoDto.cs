@@ -10,7 +10,7 @@ namespace Data
         public User leftUser;
         public User rightUser;
         public string sessionId;
-    
+
         public static MatchedInfoDto CreateDebugSession(string sessionId, string userSide, long userId)
         {
             long userIdLeft = userSide == "left" ? userId : -1;
@@ -36,7 +36,6 @@ namespace Data
                 rightUser = new User(roomInfo.rightUserId, "debugger_right", "debugger_right@team6515.com", -1),
                 sessionId = roomInfo.sessionId
             };
-
         }
     }
 }

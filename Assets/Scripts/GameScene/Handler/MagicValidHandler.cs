@@ -14,12 +14,6 @@ namespace GameScene.Handler
                 {
                     cardUI.Destroy();
                 }
-
-                if (magicValid.magicId == -1)
-                {
-                    // 마법 파사삭
-                    GameSceneUIController.Instance.PlayMagicFailEffect();
-                }
             }
             else
             {

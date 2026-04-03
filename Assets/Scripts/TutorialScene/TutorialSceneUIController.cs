@@ -5,7 +5,6 @@ using GameScene;
 using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;
-using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,8 +14,6 @@ namespace TutorialScene
     public class TutorialSceneUIController : MonoBehaviour
     {
         public static TutorialSceneUIController Instance;
-    
-        [SerializeField] private CombinedMagicResolver combinedMagicResolver;
         
         [SerializeField] private TextMeshProUGUI leftUserIDText;
         [SerializeField] private TextMeshProUGUI rightUserIDText;
@@ -53,9 +50,14 @@ namespace TutorialScene
 
         private void Start()
         {
+            if (leftUserIDText == null || rightUserIDText == null) return;
+
 #if UNITY_WEBGL && !UNITY_EDITOR
-        leftUserIDText.text = SceneContext.MatchInfo.leftUser.name;
-        rightUserIDText.text = SceneContext.MatchInfo.rightUser.name;
+        if (Global.SceneContext.MatchInfo != null)
+        {
+            leftUserIDText.text = Global.SceneContext.MatchInfo.leftUser.name;
+            rightUserIDText.text = Global.SceneContext.MatchInfo.rightUser.name;
+        }
 #endif
         }
     
@@ -99,7 +101,7 @@ namespace TutorialScene
         public void TrySetExpectedMagicUI(IList<CardType> recipe)
         {
             if (expectedMagicUI == null) return;
-            combinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
+            LocalCombinedMagicData.TryGetByRecipe(recipe, out CombinedMagicData data);
             if (data != null)
             {
                 expectedMagicUI.SetImage(data.GetSprite());
@@ -110,11 +112,11 @@ namespace TutorialScene
     
         public void PlayMagicFailEffect()
         {
-            if (SceneContext.Me == "LeftPlayer")
+            if (leftUserMagicFailEffecter != null)
             {
                 leftUserMagicFailEffecter.Trigger();
             }
-            else if (SceneContext.Me == "RightPlayer")
+            else if (rightUserMagicFailEffecter != null)
             {
                 rightUserMagicFailEffecter.Trigger();
             }

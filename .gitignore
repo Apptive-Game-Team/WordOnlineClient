@@ -77,3 +77,6 @@ crashlytics-build.properties
 # Mac system files
 .DS_Store
 **/.DS_Store
+
+
+./.claude

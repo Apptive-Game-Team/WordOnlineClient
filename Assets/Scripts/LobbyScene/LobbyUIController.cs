@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CustomizeScene;
 using Data;
 using Data.Deck;
 using Data.Magic;
@@ -27,7 +26,6 @@ namespace LobbyScene
         [SerializeField] private UnityEngine.UI.Button arrowButton;
         [SerializeField] private GameObject rewardUiPrefab;
         [SerializeField] private CardImageMapper cardImageMapper;
-        [SerializeField] private DecorationDatabase decorationDatabase;
         private static DeckResponseDto[] userDecks;
 
         public LocalizedString deckLoadFailed;
@@ -51,7 +49,7 @@ namespace LobbyScene
             }
         
             lobbyUserNameUI.SetUserName(SceneContext.User.name);
-            yield return QuestRewardTracker.CheckAndShowRewards(rewardUiPrefab, cardImageMapper, decorationDatabase);
+            yield return QuestRewardTracker.CheckAndShowRewards(rewardUiPrefab, cardImageMapper);
             yield return FetchDecks();
         }
 
@@ -223,8 +221,7 @@ namespace LobbyScene
 
         public static IEnumerator CheckAndShowRewards(
             GameObject rewardUiPrefab,
-            CardImageMapper cardImageMapper,
-            DecorationDatabase decorationDatabase)
+            CardImageMapper cardImageMapper)
         {
             QuestRewardDto[] rewards = Array.Empty<QuestRewardDto>();
             yield return CheckRewards(result => rewards = result ?? Array.Empty<QuestRewardDto>());
@@ -234,7 +231,7 @@ namespace LobbyScene
                 yield break;
             }
 
-            if (!TryShowRewardUI(rewards, rewardUiPrefab, cardImageMapper, decorationDatabase))
+            if (!TryShowRewardUI(rewards, rewardUiPrefab, cardImageMapper))
             {
                 ShowRewardMessage(rewards);
             }
@@ -299,11 +296,9 @@ namespace LobbyScene
         private static bool TryShowRewardUI(
             QuestRewardDto[] rewards,
             GameObject rewardUiPrefab,
-            CardImageMapper cardImageMapper,
-            DecorationDatabase decorationDatabase)
+            CardImageMapper cardImageMapper)
         {
             var resolvedCardImageMapper = ResolveCardImageMapper(cardImageMapper);
-            var resolvedDecorationDatabase = ResolveDecorationDatabase(decorationDatabase);
 
             var visuals = new List<RewardVisual>();
             foreach (var reward in rewards)
@@ -312,7 +307,7 @@ namespace LobbyScene
                 var rewardId = GetRewardId(reward);
                 var amount = Mathf.Max(1, GetAmount(reward));
 
-                if (TryResolveSprite(rewardType, rewardId, resolvedCardImageMapper, resolvedDecorationDatabase, out var sprite))
+                if (TryResolveSprite(rewardType, rewardId, resolvedCardImageMapper, out var sprite))
                 {
                     visuals.Add(new RewardVisual(rewardType, rewardId, amount, sprite));
                 }
@@ -340,7 +335,6 @@ namespace LobbyScene
             string rewardType,
             long rewardId,
             CardImageMapper cardImageMapper,
-            DecorationDatabase decorationDatabase,
             out Sprite sprite)
         {
             sprite = null;
@@ -349,8 +343,6 @@ namespace LobbyScene
             {
                 case RewardTypeCard:
                     return TryResolveCardSprite(rewardId, cardImageMapper, out sprite);
-                case RewardTypeDecoration:
-                    return TryResolveDecorationSprite(rewardId, decorationDatabase, out sprite);
                 case RewardTypeMagic:
                     return TryResolveMagicSprite(rewardId, out sprite);
                 default:
@@ -387,12 +379,6 @@ namespace LobbyScene
             return sprite != null;
         }
 
-        private static bool TryResolveDecorationSprite(long rewardId, DecorationDatabase decorationDatabase, out Sprite sprite)
-        {
-            sprite = decorationDatabase?.Find(rewardId)?.iconSprite;
-            return sprite != null;
-        }
-
         private static bool TryResolveMagicSprite(long rewardId, out Sprite sprite)
         {
             sprite = LocalCombinedMagicData.dataList
@@ -416,26 +402,6 @@ namespace LobbyScene
 
 #if UNITY_EDITOR
             return UnityEditor.AssetDatabase.LoadAssetAtPath<CardImageMapper>(CardImageMapperEditorPath);
-#else
-            return null;
-#endif
-        }
-
-        private static DecorationDatabase ResolveDecorationDatabase(DecorationDatabase decorationDatabase)
-        {
-            if (decorationDatabase != null)
-            {
-                return decorationDatabase;
-            }
-
-            decorationDatabase = Resources.FindObjectsOfTypeAll<DecorationDatabase>().FirstOrDefault();
-            if (decorationDatabase != null)
-            {
-                return decorationDatabase;
-            }
-
-#if UNITY_EDITOR
-            return UnityEditor.AssetDatabase.LoadAssetAtPath<DecorationDatabase>(DecorationDbEditorPath);
 #else
             return null;
 #endif

@@ -7,6 +7,7 @@ namespace GameScene.Player
     public class OnPlayerDestroyController : MonoBehaviour
     {
         [SerializeField] private ServedObject servedObject;
+        [SerializeField] private PlayerFallDownController playerFallDownController;
         
         private void OnDestroy()
         {
@@ -16,22 +17,7 @@ namespace GameScene.Player
 
         private void FallPlayer()
         {
-            GetPlayerObject().GetComponentInChildren<PlayerFallDownController>().FallDown();
-        }
-        
-        private GameObject GetPlayerObject()
-        {
-            string master = servedObject.GetMaster();
-            if (master.Equals("LeftPlayer"))
-            {
-                return GameObject.Find("LeftPlayer");
-            }
-            else if (master.Equals("RightPlayer"))
-            {
-                return GameObject.Find("RightPlayer");
-            }
-
-            return null;
+            playerFallDownController.FallDown();
         }
     }
 }
