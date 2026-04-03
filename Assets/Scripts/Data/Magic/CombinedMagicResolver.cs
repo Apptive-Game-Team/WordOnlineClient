@@ -5,17 +5,28 @@ namespace Data.Magic
 {
     public class CombinedMagicResolver : MonoBehaviour
     {
-        private List<CombinedMagicData> dataList;
+        private List<CombinedMagicData> dataList = new();
         [SerializeField] private UserMagicService userMagicService;
 
         private void Awake()
         {
-            userMagicService = FindObjectOfType<UserMagicService>();
-            userMagicService.GetCombinedMagicData(list => dataList = list);
+            userMagicService ??= FindObjectOfType<UserMagicService>();
+            if (userMagicService == null)
+            {
+                Debug.LogWarning("[CombinedMagicResolver] UserMagicService was not found.");
+                return;
+            }
+
+            userMagicService.GetCombinedMagicData(list => dataList = list ?? new List<CombinedMagicData>());
         }
 
         public bool CanResolve(IList<CardType> recipe)
         {
+            if (recipe == null || dataList == null || dataList.Count == 0)
+            {
+                return false;
+            }
+
             foreach (var d in dataList)
             {
                 if (AreSameMultiset(d.recipe, recipe))
@@ -28,6 +39,12 @@ namespace Data.Magic
     
         public bool TryResolve(IList<CardType> recipe, out CombinedMagicData data)
         {
+            if (recipe == null || dataList == null || dataList.Count == 0)
+            {
+                data = null;
+                return false;
+            }
+
             foreach (var d in dataList)
             {
                 if (AreSameMultiset(d.recipe, recipe))

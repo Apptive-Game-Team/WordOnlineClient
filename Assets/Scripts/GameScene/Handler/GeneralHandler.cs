@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Data;
 using GameScene.Dto;
-using Global;
 using UnityEngine;
 
 namespace GameScene.Handler
@@ -80,10 +79,7 @@ namespace GameScene.Handler
             {
                 foreach (string line in payload.lines)
                 {
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        SystemMessageUI.Instance.ShowMessage(line);
-                    }
+                    PveDialoguePresenter.ShowLine(payload.speakerObjectId, line);
                 }
 
                 return;
@@ -91,7 +87,7 @@ namespace GameScene.Handler
 
             if (!string.IsNullOrWhiteSpace(payload.key))
             {
-                SystemMessageUI.Instance.ShowMessage(payload.key);
+                PveDialoguePresenter.ShowLine(payload.speakerObjectId, payload.key);
             }
         }
 
