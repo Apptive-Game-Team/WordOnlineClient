@@ -1,91 +1,84 @@
 var client = null;
 
-
 mergeInto(LibraryManager.library, {
-    // Function to connect to STOMP server
+
+  // STOMP 서버에 WebSocket으로 연결
   ConnectStompSocket: function (urlPtr, tokenPtr) {
     const url = UTF8ToString(urlPtr);
     const token = UTF8ToString(tokenPtr);
-
-    // console.log("Connecting to STOMP at:", url);
 
     const socket = new WebSocket(url);
     client = Stomp.over(socket);
     client.debug = null;
 
-    client.connect({
-        Authorization: `Bearer ${token}`
-    }, function (frame) {
-      // console.log("Connected:", frame);
-      SendMessage("StompConnector", "OnConnected", JSON.stringify(frame.headers));
-    }, function (error) {
-      console.error("STOMP error:", error);
-      SendMessage("StompConnector", "OnError", error);
-    });
+    client.connect(
+      { Authorization: 'Bearer ' + token },
+      function (frame) {
+        SendMessage('StompConnector', 'OnConnected', JSON.stringify(frame.headers));
+      },
+      function (error) {
+        console.error('STOMP error:', error);
+        SendMessage('StompConnector', 'OnError', String(error));
+      }
+    );
   },
 
-  SubscribeStomp: function (topicPtr, callbackPtr, subscriptionIdPtr, onErrorPtr) {
+  // 토픽 구독 – 수신 메시지는 항상 OnSubscriptionMessage({ id, body })로 라우팅
+  SubscribeStomp: function (topicPtr, subscriptionIdPtr) {
     const topic = UTF8ToString(topicPtr);
-    const callback = UTF8ToString(callbackPtr);
     const subscriptionId = UTF8ToString(subscriptionIdPtr);
 
     if (!client || !client.connected) {
-        console.warn("Cannot send message: STOMP client is not connected.");
-        const onError = UTF8ToString(onErrorPtr);
-        SendMessage("StompConnector", onError, "STOMP client is not connected.");
-        return;
+      console.warn('SubscribeStomp: STOMP client is not connected.');
+      SendMessage('StompConnector', 'OnError', 'STOMP client is not connected.');
+      return;
     }
-    // console.log("Subscribing to topic:", topic, "with callback:", callback);
 
     client.subscribe(topic, function (message) {
-      // console.log("Received message from", topic, ":", message.body);
-      let bodyStr = "";
-      
-        if (typeof message.body === "string") {
-          bodyStr = message.body;
-        } else if (typeof message.body === "object") {
-          try {
-            bodyStr = JSON.stringify(message.body);
-          } catch (e) {
-            console.warn("Failed to stringify message body:", e);
-            bodyStr = message.body.toString();
-          }
-        } else {
-          bodyStr = String(message.body);
-        }
-      SendMessage("StompConnector", callback, bodyStr);
+      var bodyStr;
+      if (typeof message.body === 'string') {
+        bodyStr = message.body;
+      } else if (message.body && typeof message.body === 'object') {
+        try { bodyStr = JSON.stringify(message.body); }
+        catch (e) { bodyStr = String(message.body); }
+      } else {
+        bodyStr = String(message.body);
+      }
+
+      var payload = JSON.stringify({ id: subscriptionId, body: bodyStr });
+      SendMessage('StompConnector', 'OnSubscriptionMessage', payload);
     }, { id: subscriptionId });
   },
 
-  SendStomp: function (topicPtr, messagePtr, onErrorPtr) {
+  // 메시지 전송
+  SendStomp: function (topicPtr, messagePtr) {
     const topic = UTF8ToString(topicPtr);
     const message = UTF8ToString(messagePtr);
 
-    // console.log("Sending message to topic:", topic, "Message:", message);
-    
     if (!client || !client.connected) {
-        console.warn("Cannot Send Stomp: STOMP client is not connected.");
-        const onError = UTF8ToString(onErrorPtr);
-        SendMessage("StompConnector", onError, "STOMP client is not connected.");
-        return;
+      console.warn('SendStomp: STOMP client is not connected.');
+      SendMessage('StompConnector', 'OnError', 'STOMP client is not connected.');
+      return;
     }
 
     client.send(topic, {}, message);
   },
 
+  // 구독 해제
   UnsubscribeStomp: function (subscriptionIdPtr) {
     const subscriptionId = UTF8ToString(subscriptionIdPtr);
-    // console.log("Unsubscribing from subscription ID:", subscriptionId);
-    client.unsubscribe(subscriptionId);
+    if (client) {
+      client.unsubscribe(subscriptionId);
+    }
   },
 
-    DisconnectStomp: function () {
-        // console.log("Disconnecting from STOMP");
-        if (client) {
-        client.disconnect(function () {
-          // console.log("Disconnected from STOMP");
-          SendMessage("StompConnector", "OnDisconnected", "Disconnected");
-        });
-        }
+  // 연결 종료
+  DisconnectStomp: function () {
+    if (client) {
+      client.disconnect(function () {
+        SendMessage('StompConnector', 'OnDisconnected', 'Disconnected');
+      });
+      client = null;
     }
+  }
 });
