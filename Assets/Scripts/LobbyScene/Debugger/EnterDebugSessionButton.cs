@@ -11,9 +11,9 @@ namespace LobbyScene.Debugger
 {
     public class EnterDebugSessionButton : ButtonBase
     {
+        private const string DebugBaseUrl = "http://localhost:7777";
 
         [SerializeField] private string side;
-
 
         protected override void OnClickButton()
         {
@@ -22,54 +22,50 @@ namespace LobbyScene.Debugger
                 StartCoroutine(EnterPracticeDebugSession());
                 return;
             }
+
             StartCoroutine(EnterDebugSession());
         }
-        
+
         private IEnumerator EnterPracticeDebugSession()
         {
-            using var request = UnityWebRequest.PostWwwForm($"http://localhost:7777/api/debug/game/practice", "");
+            using var request = UnityWebRequest.PostWwwForm($"{DebugBaseUrl}/api/debug/game/practice", "");
             Server.SetAcceptLanguage(request);
             Server.SetAuthorization(request);
             request.downloadHandler = new DownloadHandlerBuffer();
             yield return request.SendWebRequest();
-            
+
             if (request.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"Error entering debug session: {request.error}");
                 yield break;
             }
 
-            String json = request.downloadHandler.text;
-            
+            string json = request.downloadHandler.text;
             WDebug.Log(json);
-            
-            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
 
+            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, "left", SceneContext.UserID);
             SceneManager.LoadScene("GameScene");
         }
-        
 
         private IEnumerator EnterDebugSession()
         {
-            using var request = UnityWebRequest.PostWwwForm($"http://localhost:7777/api/debug/game/{side}", "");
+            using var request = UnityWebRequest.PostWwwForm($"{DebugBaseUrl}/api/debug/game/{side}", "");
             Server.SetAcceptLanguage(request);
             Server.SetAuthorization(request);
             request.downloadHandler = new DownloadHandlerBuffer();
             yield return request.SendWebRequest();
-            
+
             if (request.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"Error entering debug session: {request.error}");
                 yield break;
             }
 
-            String json = request.downloadHandler.text;
-            
+            string json = request.downloadHandler.text;
             WDebug.Log(json);
-            
-            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
 
+            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, side, SceneContext.UserID);
             SceneManager.LoadScene("GameScene");
         }

@@ -45,33 +45,19 @@ namespace GameScene.Handler
                 return;
             }
 
-            if (PveSpeechBubbleUI.TryShowMessage(speakerObjectId, line))
-            {
-                return;
-            }
-
-            SystemMessageUI.Instance.ShowMessage(line);
+            PveSpeechBubbleUI.ShowMessage(speakerObjectId, line);
         }
     }
 
     internal class PveSpeechBubbleUI : MonoBehaviour
     {
-        private struct BubbleMessage
-        {
-            public ServedObject target;
-            public string message;
-        }
-
         private static PveSpeechBubbleUI instance;
 
         [SerializeField] private float duration = 3.5f;
-        [SerializeField] private float replaceDelay = 0.75f;
         [SerializeField] private float maxTextWidth = 320f;
         [SerializeField] private float horizontalPadding = 54f;
         [SerializeField] private float verticalPadding = 48f;
         [SerializeField] private float screenOffsetY = 42f;
-
-        private readonly Queue<BubbleMessage> messageQueue = new Queue<BubbleMessage>();
 
         private Canvas canvas;
         private RectTransform canvasRect;
@@ -84,27 +70,22 @@ namespace GameScene.Handler
         private Camera worldCamera;
         private Image backgroundImage;
         private Sprite bubbleSprite;
+        private int activeSpeakerObjectId;
+        private float hideAtTime;
 
-        public static bool TryShowMessage(int speakerObjectId, string message)
+        public static void ShowMessage(int speakerObjectId, string message)
         {
-            if (speakerObjectId <= 0 || string.IsNullOrWhiteSpace(message))
+            if (string.IsNullOrWhiteSpace(message))
             {
-                return false;
+                return;
             }
 
-            if (ObjectContainer.Instance == null)
+            if (speakerObjectId <= 0)
             {
-                return false;
+                return;
             }
 
-            ServedObject target = ObjectContainer.Instance.FindById(speakerObjectId);
-            if (target == null)
-            {
-                return false;
-            }
-
-            Instance.Enqueue(target, message);
-            return true;
+            Instance.ShowOrReplace(speakerObjectId, message);
         }
 
         private static PveSpeechBubbleUI Instance
@@ -151,58 +132,45 @@ namespace GameScene.Handler
             UpdateBubblePosition();
         }
 
-        private void Enqueue(ServedObject target, string message)
+        private void ShowOrReplace(int speakerObjectId, string message)
         {
-            messageQueue.Enqueue(new BubbleMessage
-            {
-                target = target,
-                message = message
-            });
+            activeSpeakerObjectId = speakerObjectId;
+            TryResolveTarget(activeSpeakerObjectId, out activeTarget);
+            SetBubbleMessage(message);
+            hideAtTime = Time.unscaledTime + duration;
+            bubbleRoot.gameObject.SetActive(true);
 
             if (messageRoutine == null)
             {
-                messageRoutine = StartCoroutine(ProcessMessageQueue());
+                messageRoutine = StartCoroutine(DisplayCurrentMessage());
             }
         }
 
-        private IEnumerator ProcessMessageQueue()
+        private IEnumerator DisplayCurrentMessage()
         {
-            while (messageQueue.Count > 0)
+            while (true)
             {
-                BubbleMessage current = messageQueue.Peek();
-                if (current.target == null)
+                if (activeTarget == null)
                 {
-                    messageQueue.Dequeue();
-                    continue;
+                    TryResolveTarget(activeSpeakerObjectId, out activeTarget);
                 }
 
-                activeTarget = current.target;
-                SetBubbleMessage(current.message);
-                bubbleRoot.gameObject.SetActive(true);
-                UpdateBubblePosition();
-
-                float timer = 0f;
-                while (timer < duration)
+                if (activeTarget != null)
                 {
-                    if (activeTarget == null)
-                    {
-                        break;
-                    }
-
-                    timer += Time.deltaTime;
-                    if (messageQueue.Count > 1 && timer >= replaceDelay)
-                    {
-                        break;
-                    }
-
-                    yield return null;
+                    UpdateBubblePosition();
                 }
 
-                messageQueue.Dequeue();
+                if (Time.unscaledTime >= hideAtTime)
+                {
+                    break;
+                }
+
+                yield return null;
             }
 
-            activeTarget = null;
             bubbleRoot.gameObject.SetActive(false);
+            activeTarget = null;
+            activeSpeakerObjectId = 0;
             messageRoutine = null;
         }
 
@@ -328,6 +296,18 @@ namespace GameScene.Handler
             {
                 worldCamera = Camera.main;
             }
+        }
+
+        private static bool TryResolveTarget(int speakerObjectId, out ServedObject target)
+        {
+            target = null;
+            if (speakerObjectId <= 0 || ObjectContainer.Instance == null)
+            {
+                return false;
+            }
+
+            target = ObjectContainer.Instance.FindById(speakerObjectId);
+            return target != null;
         }
 
         private static RectTransform CreateRect(string objectName, Transform parent)
