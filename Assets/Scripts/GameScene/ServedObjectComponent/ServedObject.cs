@@ -9,13 +9,28 @@ namespace GameScene.ServedObjectComponent
 {
     public class ServedObject : MonoBehaviour
     {
+        private const string LeftPlayer = "LeftPlayer";
+        private const string RightPlayer = "RightPlayer";
+        private const string TeamIndicatorResourcePath = "UI/ObjectIndicator";
+        private static readonly Color LeftIndicatorColor = new Color(0.92f, 0.24f, 0.24f, 1f);
+        private static readonly Color RightIndicatorColor = new Color(0.25f, 0.55f, 0.98f, 1f);
+        private static Sprite _teamIndicatorSprite;
+
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
+        [SerializeField] private float _teamIndicatorVerticalOffset = 0.1f;
+        [SerializeField] private float _teamIndicatorScale = 0.3f;
+        [SerializeField] private float _effectScaleReferenceHeight = 1.2f;
+        [SerializeField] private float _effectScaleMultiplier = 1f;
+        [SerializeField] private float _effectScaleMin = 0.8f;
+        [SerializeField] private float _effectScaleMax = 1.8f;
         public int id;
         private GameObject _effectInstance = null;
         public int hp;
         public int maxHp;
         private string master;
+        private Transform _teamIndicatorTransform;
+        private SpriteRenderer _teamIndicatorRenderer;
 
         private PositionUpdater _positionUpdater;
 
@@ -33,25 +48,17 @@ namespace GameScene.ServedObjectComponent
         public void SetMaster(string master)
         {
             this.master = master;
-            
-            if (_spriteRenderer == null)
-            {
-                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            }
-            
+
+            EnsureSpriteRenderer();
             if (_spriteRenderer == null)
             {
                 return;
             }
-            
+
             _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
-            
-            if (!SceneContext.Me.Equals(master) && master != "None")
-            {
-                _spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 1f);
-            }
-            
-            if (master.Equals("RightPlayer"))
+            UpdateTeamIndicator();
+
+            if (master.Equals(RightPlayer))
             {
                 if (transform.rotation.eulerAngles.y == 0)
                 {
@@ -60,6 +67,11 @@ namespace GameScene.ServedObjectComponent
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
+        }
+
+        private void LateUpdate()
+        {
+            UpdateTeamIndicatorPosition();
         }
         
         public string GetMaster()
@@ -132,8 +144,10 @@ namespace GameScene.ServedObjectComponent
             }
             
             Transform actualTransform = GetActualTransform();
-            _effectInstance = Instantiate(effectPrefab, actualTransform.position, Quaternion.identity);
-            _effectInstance.transform.SetParent(actualTransform);
+            _effectInstance = Instantiate(effectPrefab, actualTransform);
+            _effectInstance.transform.localPosition = Vector3.zero;
+            _effectInstance.transform.localRotation = Quaternion.identity;
+            ApplyEffectScale(_effectInstance.transform);
         }
         
         private Transform GetActualTransform()
@@ -161,10 +175,7 @@ namespace GameScene.ServedObjectComponent
 
         public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
         {
-            if (_spriteRenderer == null)
-            {
-                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            }
+            EnsureSpriteRenderer();
 
             if (_spriteRenderer != null)
             {
@@ -186,6 +197,142 @@ namespace GameScene.ServedObjectComponent
                 OnHpIncreased?.Invoke();
             }
             lastHp = hp;
+        }
+
+        private void EnsureSpriteRenderer()
+        {
+            if (_spriteRenderer == null)
+            {
+                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+        }
+
+        private void ApplyEffectScale(Transform effectTransform)
+        {
+            if (effectTransform == null)
+            {
+                return;
+            }
+
+            float spriteWorldHeight = GetSpriteWorldHeight();
+            if (spriteWorldHeight <= 0f || _effectScaleReferenceHeight <= 0f)
+            {
+                effectTransform.localScale = Vector3.one;
+                return;
+            }
+
+            float scaleFactor = spriteWorldHeight / _effectScaleReferenceHeight;
+            scaleFactor *= _effectScaleMultiplier;
+            scaleFactor = Mathf.Clamp(scaleFactor, _effectScaleMin, _effectScaleMax);
+            effectTransform.localScale = Vector3.one * scaleFactor;
+        }
+
+        private float GetSpriteWorldHeight()
+        {
+            EnsureSpriteRenderer();
+            if (_spriteRenderer == null)
+            {
+                return 0f;
+            }
+
+            return Mathf.Max(_spriteRenderer.bounds.size.y, _spriteRenderer.bounds.size.x);
+        }
+
+        private void UpdateTeamIndicator()
+        {
+            EnsureTeamIndicator();
+            if (_teamIndicatorRenderer == null)
+            {
+                return;
+            }
+
+            if (!TryGetIndicatorColor(master, out Color indicatorColor))
+            {
+                _teamIndicatorRenderer.enabled = false;
+                return;
+            }
+
+            _teamIndicatorRenderer.enabled = true;
+            _teamIndicatorRenderer.color = indicatorColor;
+            UpdateTeamIndicatorSorting();
+            UpdateTeamIndicatorPosition();
+        }
+
+        private void EnsureTeamIndicator()
+        {
+            if (_teamIndicatorRenderer != null)
+            {
+                return;
+            }
+
+            GameObject indicatorObject = new GameObject("TeamIndicator");
+            _teamIndicatorTransform = indicatorObject.transform;
+            _teamIndicatorTransform.SetParent(transform, false);
+            _teamIndicatorTransform.localScale = Vector3.one * _teamIndicatorScale;
+
+            _teamIndicatorRenderer = indicatorObject.AddComponent<SpriteRenderer>();
+            _teamIndicatorRenderer.sprite = GetTeamIndicatorSprite();
+            _teamIndicatorRenderer.enabled = false;
+        }
+
+        private void UpdateTeamIndicatorPosition()
+        {
+            if (_teamIndicatorRenderer == null || !_teamIndicatorRenderer.enabled)
+            {
+                return;
+            }
+
+            if (_teamIndicatorTransform == null)
+            {
+                _teamIndicatorTransform = _teamIndicatorRenderer.transform;
+            }
+
+            _teamIndicatorTransform.position = GetSpeechBubbleAnchorWorldPosition(_teamIndicatorVerticalOffset);
+            UpdateTeamIndicatorSorting();
+        }
+
+        private void UpdateTeamIndicatorSorting()
+        {
+            EnsureSpriteRenderer();
+            if (_spriteRenderer == null || _teamIndicatorRenderer == null)
+            {
+                return;
+            }
+
+            _teamIndicatorRenderer.sortingLayerID = _spriteRenderer.sortingLayerID;
+            _teamIndicatorRenderer.sortingOrder = _spriteRenderer.sortingOrder + 10;
+        }
+
+        private static bool TryGetIndicatorColor(string targetMaster, out Color indicatorColor)
+        {
+            switch (targetMaster)
+            {
+                case LeftPlayer:
+                    indicatorColor = LeftIndicatorColor;
+                    return true;
+                case RightPlayer:
+                    indicatorColor = RightIndicatorColor;
+                    return true;
+                default:
+                    indicatorColor = Color.clear;
+                    return false;
+            }
+        }
+
+        private static Sprite GetTeamIndicatorSprite()
+        {
+            if (_teamIndicatorSprite != null)
+            {
+                return _teamIndicatorSprite;
+            }
+
+            _teamIndicatorSprite = Resources.Load<Sprite>(TeamIndicatorResourcePath);
+            if (_teamIndicatorSprite == null)
+            {
+                WDebug.LogWarning($"Team indicator sprite not found at Resources/{TeamIndicatorResourcePath}.");
+            }
+
+            return _teamIndicatorSprite;
         }
 
         private void DestroySelf()
