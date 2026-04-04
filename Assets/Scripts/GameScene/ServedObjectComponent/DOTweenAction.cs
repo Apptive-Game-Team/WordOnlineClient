@@ -92,6 +92,7 @@ namespace GameScene.ServedObjectComponent
         public static void FallForward(Transform tr, float duration)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
             seq.AppendInterval(0.1f);
             seq.Append(tr.DOLocalRotate(new Vector3(0, 0, 90), duration).SetEase(Ease.InQuad));
             seq.Join(tr.DOLocalMoveZ(-0.5f, duration).SetRelative(true).SetEase(Ease.InQuad));
@@ -107,7 +108,8 @@ namespace GameScene.ServedObjectComponent
                 .From(new Vector3(0, 0, -tiltAngle)) 
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
-                .SetUpdate(true);
+                .SetUpdate(true)
+                .SetLink(tr.gameObject);
         }
 
         public static void Hop(Transform tr, float jumpHeight, float duration)
@@ -115,12 +117,14 @@ namespace GameScene.ServedObjectComponent
             tr.DOLocalMoveY(jumpHeight, duration)
                 .SetRelative(true)
                 .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.OutQuad);
+                .SetEase(Ease.OutQuad)
+                .SetLink(tr.gameObject);
         }
     
         public static void Bounce(Transform tr, Vector3 originScale, float squashScale, float bounceScale, float duration)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
             seq.Append(tr.DOScale(new Vector3(originScale.x * squashScale, originScale.y * bounceScale, originScale.z),
                     duration / 2).SetEase(Ease.OutQuad))
                 .Append(tr.DOScale(originScale, duration / 2).SetEase(Ease.InQuad));
@@ -129,6 +133,7 @@ namespace GameScene.ServedObjectComponent
         public static void Crawl(Transform tr, Vector3 originScale, float stretchScale, float squashScale, float duration)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
             seq.Append(tr.DOScale(new Vector3(originScale.x * stretchScale, originScale.y * squashScale, originScale.z),
                     duration / 2).SetEase(Ease.OutQuad))
                 .Append(tr.DOScale(originScale, duration / 2).SetEase(Ease.InOutQuad));
@@ -139,6 +144,7 @@ namespace GameScene.ServedObjectComponent
         public static void Hover(Transform tr, float zDistance, float duration)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
             seq.Append(tr.DOLocalMoveZ(zDistance, duration/2 ).SetEase(Ease.InOutSine))
                 .Append(tr.DOLocalMoveZ(0, duration/2).SetEase(Ease.InOutSine))
                 .SetLoops(-1, LoopType.Yoyo);
@@ -147,7 +153,8 @@ namespace GameScene.ServedObjectComponent
         public static void Swing(Transform tr, float angle, float duration)
         {
             Sequence seq = DOTween.Sequence();
-            DOTween.Sequence()
+            seq.SetLink(tr.gameObject);
+            seq
                 .Append(tr.DOLocalRotate(new Vector3(0, 0, +angle), duration * 0.3f, RotateMode.Fast)
                     .SetEase(Ease.OutBack))
                 .AppendInterval(duration * 0.3f)
@@ -159,6 +166,7 @@ namespace GameScene.ServedObjectComponent
         public static void StumbleStorm(Transform tr, float angle, float duration)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
             seq.Append(tr.DOLocalRotate(new Vector3(0, 0, +angle), duration * 0.25f, RotateMode.Fast)
                     .SetEase(Ease.OutSine))
                 .Append(tr.DOLocalRotate(new Vector3(0, 0, 0), duration * 0.25f, RotateMode.Fast)
@@ -172,7 +180,9 @@ namespace GameScene.ServedObjectComponent
     
         public static void Rotate(Transform tr, float angle, float duration, RotateMode mode = RotateMode.Fast)
         {
-            DOTween.Sequence()
+            Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
+            seq
                 .Append(tr.DOLocalRotate(new Vector3(0, 0, angle), duration, mode)
                     .SetEase(Ease.OutBack));
         }
@@ -182,6 +192,7 @@ namespace GameScene.ServedObjectComponent
             tr.localScale = Vector3.zero;
     
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
 
             seq.Append(tr.DOScale(Vector3.one, duration * 0.4f)
                     .SetEase(Ease.OutBack))
@@ -195,6 +206,7 @@ namespace GameScene.ServedObjectComponent
             tr.localScale = Vector3.zero;
     
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
 
             seq.Append(tr.DOScale(Vector3.one, duration)
                     .SetEase(Ease.OutBack))
@@ -203,6 +215,7 @@ namespace GameScene.ServedObjectComponent
         public static void Shrink(Transform tr, float duration = 0.5f, Action onComplete = null)
         {
             Sequence seq = DOTween.Sequence();
+            seq.SetLink(tr.gameObject);
 
             seq.Append(tr.DOScale(Vector3.zero, duration))
                 .OnComplete(() => onComplete?.Invoke());
