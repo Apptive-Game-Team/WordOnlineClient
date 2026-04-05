@@ -2891,7 +2891,6 @@ MonoBehaviour:
   manaSlider: {fileID: 1254746380}
   cardUIPrefab: {fileID: 892263666564006026, guid: 95f1db2819f38d2488ceb29a0e1253d6, type: 3}
   lowerBar: {fileID: 447655975}
-  textSystemMsg: {fileID: 0}
   cardImageMapper: {fileID: 11400000, guid: 801779e6bc17149e683648b90569ac9e, type: 2}
   expectedMagicUI: {fileID: 70059385}
   magicHelperUI: {fileID: 6389242960862484227}
@@ -3985,63 +3984,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472116317}
   m_CullTransparentMesh: 1
---- !u!1 &1548564701
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1548564704}
-  - component: {fileID: 1548564703}
-  - component: {fileID: 1548564702}
-  m_Layer: 0
-  m_Name: PlayerObjectBuilder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1548564702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1548564701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c4034ee4eaa2ce4b8035df77b6b0d86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1548564703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1548564701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25542b0866d8c5b439a920c5172addbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1548564704
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1548564701}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8413699, y: 6.043831, z: -0.03348536}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1566989375
 GameObject:
   m_ObjectHideFlags: 0
@@ -5202,6 +5144,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5584479226225677820, guid: 56f8570e4309d4ae5a38a8cfbd537a11, type: 3}
+      propertyPath: frameTimeout.m_TableEntryReference.m_KeyId
+      value: 38521835636121600
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584479226225677820, guid: 56f8570e4309d4ae5a38a8cfbd537a11, type: 3}
+      propertyPath: frameTimeout.m_TableReference.m_TableCollectionName
+      value: GUID:836d010f38d3b499dab72b06a1df5ba0
+      objectReference: {fileID: 0}
     - target: {fileID: 8885701543049681803, guid: 56f8570e4309d4ae5a38a8cfbd537a11, type: 3}
       propertyPath: m_Name
       value: StompConnector
@@ -6346,7 +6296,6 @@ SceneRoots:
   - {fileID: 3623133087994023720}
   - {fileID: 986834180455095214}
   - {fileID: 2035939655}
-  - {fileID: 1548564704}
   - {fileID: 741320890}
   - {fileID: 755247642}
   - {fileID: 6047380083849384164}

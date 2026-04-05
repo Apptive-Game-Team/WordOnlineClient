@@ -23,6 +23,10 @@ MonoBehaviour:
     m_Key: FeverTimeDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 38521835636121600
+    m_Key: TimeoutMessage
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

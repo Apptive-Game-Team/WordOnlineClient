@@ -27,6 +27,11 @@ MonoBehaviour:
       \uC18D\uB3C4\uAC00 2\uBC30\uB85C \uC99D\uAC00\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
+  - m_Id: 38521835636121600
+    m_Localized: "\uAC8C\uC784 \uC11C\uBC84\uC640\uC758 \uC5F0\uACB0\uC774 \uBD88\uC548\uC815\uD558\uC5EC
+      \uB85C\uBE44\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
