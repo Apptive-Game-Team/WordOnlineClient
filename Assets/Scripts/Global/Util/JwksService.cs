@@ -14,7 +14,7 @@ namespace Global.Util
     /// </summary>
     public static class JwksService
     {
-        private const string JwksPath = "/.well-known/jwks.json";
+        private const string JwksPath = "/well-known/jwks";
         private const int JwksTimeoutSeconds = 10; // seconds
 
         private static readonly Dictionary<string, JwksKey> _cachedKeys =

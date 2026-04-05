@@ -10,9 +10,9 @@ namespace Global.Util
     public class JwksKey
     {
         public string kty; // Key type: "RSA"
-        public string kid; // Key ID
-        public string use; // Usage: "sig"
-        public string alg; // Algorithm: "RS256"
+        public string use; // 용도: 서명 검증 (예: "sig")
+        public string alg; // 알고리즘: RS256
+        public string kid; // 키 식별자 (보통 날짜나 해시값, 예: "2026-04-06-01")
         public string n;   // RSA modulus (Base64URL-encoded)
         public string e;   // RSA exponent (Base64URL-encoded)
     }
