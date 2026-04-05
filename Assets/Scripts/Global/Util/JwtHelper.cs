@@ -128,22 +128,40 @@ namespace Global.Util
                 if (key == null)
                     return false;
 
-                if (key.kty == "RSA")
-                    return VerifyRsaSignature(parts[0] + "." + parts[1], parts[2], key);
+                if (!IsSigningKey(key))
+                {
+                    WDebug.LogWarning($"[JwtHelper] Key '{key.kid}' is not a valid RS256 signing key (use={key.use}, alg={key.alg}).");
+                    return false;
+                }
 
-                WDebug.LogWarning($"[JwtHelper] Unsupported key type: {key.kty}");
-                return false;
+                return VerifyRsaSignature(parts[0] + "." + parts[1], parts[2], key);
             }
 
             // No kid in header: try all cached keys
             return VerifyAgainstAllKeys(parts[0] + "." + parts[1], parts[2]);
         }
 
+        /// <summary>
+        /// Returns true when the JWKS key is intended for RS256 signature verification.
+        /// Checks kty == "RSA", use == "sig", and alg == "RS256".
+        /// Fields that are absent (empty) are treated as acceptable per the JWKS spec.
+        /// </summary>
+        private static bool IsSigningKey(JwksKey key)
+        {
+            if (key.kty != "RSA")
+                return false;
+            if (!string.IsNullOrEmpty(key.use) && key.use != "sig")
+                return false;
+            if (!string.IsNullOrEmpty(key.alg) && key.alg != "RS256")
+                return false;
+            return true;
+        }
+
         private static bool VerifyAgainstAllKeys(string headerAndPayload, string signatureBase64Url)
         {
             foreach (JwksKey candidate in JwksService.GetAllKeys())
             {
-                if (candidate.kty == "RSA" &&
+                if (IsSigningKey(candidate) &&
                     VerifyRsaSignature(headerAndPayload, signatureBase64Url, candidate))
                     return true;
             }
