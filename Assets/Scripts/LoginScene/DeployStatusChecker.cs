@@ -25,7 +25,7 @@ namespace LoginScene
         /// Invokes onResult with true if the server is Healthy, false otherwise.
         /// Displays an appropriate localized message for non-Healthy states.
         /// </summary>
-        public static IEnumerator CheckDeployStatus(Action<bool> onResult)
+        public static IEnumerator CheckDeployStatus(Action<bool, string> onResult)
         {
             var url = ServerList.MatchingServer.url + "/api/deploy/status";
 
@@ -38,8 +38,7 @@ namespace LoginScene
             if (www.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"[CheckDeployStatus] fail: {www.responseCode} / {www.error}");
-                SystemMessageUI.Instance.ShowMessage(serverDown);
-                onResult?.Invoke(false);
+                onResult?.Invoke(false, serverDown.GetLocalizedString());
                 yield break;
             }
 
@@ -52,7 +51,7 @@ namespace LoginScene
             {
                 WDebug.LogError($"[CheckDeployStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
                 SystemMessageUI.Instance.ShowMessage(serverDown);
-                onResult?.Invoke(false);
+                onResult?.Invoke(false, serverDown.GetLocalizedString());
                 yield break;
             }
 
@@ -60,7 +59,7 @@ namespace LoginScene
             {
                 WDebug.LogWarning("[CheckDeployStatus] empty or null status");
                 SystemMessageUI.Instance.ShowMessage(serverDown);
-                onResult?.Invoke(false);
+                onResult?.Invoke(false, serverDown.GetLocalizedString());
                 yield break;
             }
 
@@ -69,20 +68,20 @@ namespace LoginScene
             switch (dto.status.ToUpperInvariant())
             {
                 case "HEALTHY":
-                    onResult?.Invoke(true);
+                    onResult?.Invoke(true, "HEALTHY");
                     break;
                 case "MAINTENANCE":
                     SystemMessageUI.Instance.ShowMessage(serverMaintenance);
-                    onResult?.Invoke(false);
+                    onResult?.Invoke(false, serverMaintenance.GetLocalizedString());
                     break;
                 case "DEPLOYING":
                     SystemMessageUI.Instance.ShowMessage(serverDeploying);
-                    onResult?.Invoke(false);
+                    onResult?.Invoke(false, serverDeploying.GetLocalizedString());
                     break;
                 case "DOWN":
                 default:
                     SystemMessageUI.Instance.ShowMessage(serverDown);
-                    onResult?.Invoke(false);
+                    onResult?.Invoke(false, serverDown.GetLocalizedString());
                     break;
             }
         }

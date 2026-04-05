@@ -1,33 +1,28 @@
 using System.Collections;
 using Global;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace LoginScene
 {
     public class LoginSceneInitializer : MonoBehaviour
     {
-        [SerializeField] private Selectable[] interactableElements;
-
+        [SerializeField] private GameObject penal;
+        [SerializeField] private TMP_Text messageText;
+        
         private IEnumerator Start()
         {
-            SetInteractable(false);
             LoadingPage.Instance.IsLoading = true;
 
-            yield return DeployStatusChecker.CheckDeployStatus(isHealthy =>
+            yield return DeployStatusChecker.CheckDeployStatus((isHealthy, message) =>
             {
                 LoadingPage.Instance.IsLoading = false;
-                SetInteractable(isHealthy);
+                if (!isHealthy)
+                {
+                    penal.SetActive(true);
+                    messageText.text = message;
+                }
             });
-        }
-
-        private void SetInteractable(bool interactable)
-        {
-            foreach (var element in interactableElements)
-            {
-                if (element != null)
-                    element.interactable = interactable;
-            }
         }
     }
 }
