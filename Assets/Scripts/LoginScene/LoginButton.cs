@@ -2,6 +2,7 @@ using System.Collections;
 using Data;
 using Global;
 using Global.Button;
+using Global.Util;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
@@ -45,16 +46,16 @@ namespace LoginScene
                 try
                 {
                     AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
-            
                     SceneContext.JwtToken = authResponseDto.jwt;
-            
-                    SceneManager.LoadScene("LobbyScene");
                 } catch (System.Exception e)
                 {
                     WDebug.LogError("Parsing Error: " + e.Message);
                     SystemMessageUI.Instance.ShowMessage(loginErrorProcessingResponse);
                     ResetButton();
                 }
+                
+                yield return JwksService.FetchJwks();
+                SceneManager.LoadScene("LobbyScene");
             }
         }
 
