@@ -43,6 +43,16 @@ namespace LobbyScene
     
         private IEnumerator LoadUserInfo()
         {
+            bool isHealthy = false;
+            yield return DeployStatusChecker.CheckDeployStatus(result => isHealthy = result);
+
+            if (!isHealthy)
+            {
+                LoadingPage.Instance.IsLoading = false;
+                SceneManager.LoadScene("LoginScene");
+                yield break;
+            }
+
             if (SceneContext.User == null)
             {
                 yield return UserInfoGetter.GetUserInfo();
