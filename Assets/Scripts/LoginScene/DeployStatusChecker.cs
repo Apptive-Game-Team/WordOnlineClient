@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 
-namespace LobbyScene
+namespace LoginScene
 {
     public static class DeployStatusChecker
     {
