@@ -103,6 +103,18 @@ MonoBehaviour:
     m_Key: connectionDelayed
     m_Metadata:
       m_Items: []
+  - m_Id: 7000000000000
+    m_Key: serverMaintenance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7100000000000
+    m_Key: serverDown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7200000000000
+    m_Key: serverDeploying
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

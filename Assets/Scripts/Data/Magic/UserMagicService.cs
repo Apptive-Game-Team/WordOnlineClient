@@ -19,7 +19,7 @@ namespace Data.Magic
                     return;
                 }
 
-                List<CombinedMagicData> list = LocalCombinedMagicData.dataList
+                List<CombinedMagicData> list = LocalCombinedMagicData.GetEffectiveDataList()
                     .Where((data) => userMagicResponse.magicIds.Contains(data.id))
                     .ToList();
                 callback.Invoke(list);

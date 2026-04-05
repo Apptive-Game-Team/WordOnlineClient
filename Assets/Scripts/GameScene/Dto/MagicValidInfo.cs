@@ -9,5 +9,6 @@ namespace GameScene.Dto
         public int updateMana;
         public int id;
         public int magicId;
+        public int frameNum;
     }
 }

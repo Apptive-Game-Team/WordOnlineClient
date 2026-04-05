@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Data;
 using Data.Util;
 using GameScene.Handler;
 using Global;
 using Global.Stomp;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.SceneManagement;
 
 namespace GameScene
 {
@@ -27,12 +27,14 @@ namespace GameScene
         public LocalizedString notConnectedToServer;
         public LocalizedString connectionClosed;
         public LocalizedString connectionDelayed;
+        public LocalizedString frameTimeout;
 
         private IStompTransport _transport;
         private StompSubscriptionRegistry _registry;
         private StompReconnectController _reconnect;
 
         private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
+        private float _lastFrameTime = -1f;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────
 
@@ -120,6 +122,8 @@ namespace GameScene
                 if (elapsed >= 10f)
                 {
                     WDebug.LogError("[STOMP] 연결 타임아웃 (10초)");
+                    SystemMessageUI.Instance.ShowMessage(connectionClosed);
+                    SceneManager.LoadScene("LobbyScene");
                     yield break;
                 }
                 yield return null;
@@ -128,10 +132,24 @@ namespace GameScene
             UnsubscribeFromTopic("match-sub");
             long userId = isSpectator ? 0 : SceneContext.UserID;
             SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", OnFrameInfoReceived, "frame-sub");
+
+            _lastFrameTime = Time.time;
+            while (true)
+            {
+                if (Time.time - _lastFrameTime >= 10f)
+                {
+                    WDebug.LogError("[STOMP] FrameInfo 수신 타임아웃 (10초)");
+                    SystemMessageUI.Instance.ShowMessage(frameTimeout.IsEmpty ? connectionDelayed : frameTimeout);
+                    SceneManager.LoadScene("LobbyScene");
+                    yield break;
+                }
+                yield return new WaitForSeconds(1f);
+            }
         }
 
         private void OnFrameInfoReceived(string json)
         {
+            _lastFrameTime = Time.time;
             _frameInfoHandler.Handler(json);
         }
 
