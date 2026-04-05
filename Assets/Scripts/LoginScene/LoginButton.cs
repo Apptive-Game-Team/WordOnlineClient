@@ -46,18 +46,16 @@ namespace LoginScene
                 try
                 {
                     AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
-            
                     SceneContext.JwtToken = authResponseDto.jwt;
-
-                    yield return JwksService.FetchJwks();
-
-                    SceneManager.LoadScene("LobbyScene");
                 } catch (System.Exception e)
                 {
                     WDebug.LogError("Parsing Error: " + e.Message);
                     SystemMessageUI.Instance.ShowMessage(loginErrorProcessingResponse);
                     ResetButton();
                 }
+                
+                yield return JwksService.FetchJwks();
+                SceneManager.LoadScene("LobbyScene");
             }
         }
 
