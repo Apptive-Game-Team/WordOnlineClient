@@ -11,11 +11,13 @@ namespace Data
         public List<string> cards;
         public int id = IDMaker.GetCardUseInputID();
         public Vector3 position;
-        
+        public int frameNum;
+
         public CardUseInput(List<string> selectedCards, Vector3 pos)
         {
             cards = selectedCards;
             position = pos;
+            frameNum = GameScene.FrameClock.LocalFrame;
         }
     }
 
