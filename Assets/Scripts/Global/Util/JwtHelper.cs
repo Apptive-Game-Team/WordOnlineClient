@@ -1,15 +1,17 @@
 using System;
+using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
 namespace Global.Util
 {
     /// <summary>
-    /// Utility class for reading JWT token claims on the client side.
+    /// Utility class for reading and verifying JWT token claims on the client side.
     ///
-    /// SECURITY NOTE: The JWT signature is intentionally NOT verified here.
-    /// This class is used only for UI visibility decisions (e.g. showing admin
-    /// panels). All privileged operations must be enforced server-side.
+    /// When JWKS has been fetched via <see cref="JwksService"/>, IsAdmin() verifies
+    /// the JWT signature using the RS256 public key from the account server before
+    /// inspecting the scope claim. All privileged operations must still be enforced
+    /// server-side.
     /// </summary>
     public static class JwtHelper
     {
@@ -17,6 +19,51 @@ namespace Global.Util
         private class JwtPayload
         {
             public string scope;
+        }
+
+        [Serializable]
+        private class JwtHeader
+        {
+            public string alg;
+            public string kid;
+        }
+
+        /// <summary>
+        /// Decodes a Base64URL-encoded segment into raw bytes.
+        /// </summary>
+        private static byte[] Base64UrlDecode(string base64Url)
+        {
+            string base64 = base64Url.Replace('-', '+').Replace('_', '/');
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "=";  break;
+            }
+            return Convert.FromBase64String(base64);
+        }
+
+        /// <summary>
+        /// Decodes the header of a JWT token without verifying the signature
+        /// and returns the decoded JSON string.
+        /// </summary>
+        public static string DecodeHeader(string jwtToken)
+        {
+            if (string.IsNullOrEmpty(jwtToken))
+                return null;
+
+            string[] parts = jwtToken.Split('.');
+            if (parts.Length != 3)
+                return null;
+
+            try
+            {
+                byte[] bytes = Base64UrlDecode(parts[0]);
+                return Encoding.UTF8.GetString(bytes);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -32,24 +79,102 @@ namespace Global.Util
             if (parts.Length != 3)
                 return null;
 
-            string payload = parts[1];
-
-            // Base64URL → Base64 conversion
-            payload = payload.Replace('-', '+').Replace('_', '/');
-            switch (payload.Length % 4)
-            {
-                case 2: payload += "=="; break;
-                case 3: payload += "=";  break;
-            }
-
             try
             {
-                byte[] bytes = Convert.FromBase64String(payload);
+                byte[] bytes = Base64UrlDecode(parts[1]);
                 return Encoding.UTF8.GetString(bytes);
             }
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Verifies the JWT signature using the RSA public key fetched from the
+        /// account server via <see cref="JwksService"/>.
+        /// Returns false when the signature is invalid or the required key is not
+        /// found in the JWKS cache.
+        /// </summary>
+        public static bool VerifySignature(string jwtToken)
+        {
+            if (string.IsNullOrEmpty(jwtToken))
+                return false;
+
+            string[] parts = jwtToken.Split('.');
+            if (parts.Length != 3)
+                return false;
+
+            string headerJson = DecodeHeader(jwtToken);
+            if (string.IsNullOrEmpty(headerJson))
+                return false;
+
+            JwtHeader header;
+            try
+            {
+                header = JsonUtility.FromJson<JwtHeader>(headerJson);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            if (header == null)
+                return false;
+
+            if (!string.IsNullOrEmpty(header.kid))
+            {
+                JwksKey key = JwksService.GetKey(header.kid);
+                if (key == null)
+                    return false;
+
+                if (key.kty == "RSA")
+                    return VerifyRsaSignature(parts[0] + "." + parts[1], parts[2], key);
+
+                WDebug.LogWarning($"[JwtHelper] Unsupported key type: {key.kty}");
+                return false;
+            }
+
+            // No kid in header: try all cached keys
+            return VerifyAgainstAllKeys(parts[0] + "." + parts[1], parts[2]);
+        }
+
+        private static bool VerifyAgainstAllKeys(string headerAndPayload, string signatureBase64Url)
+        {
+            foreach (JwksKey candidate in JwksService.GetAllKeys())
+            {
+                if (candidate.kty == "RSA" &&
+                    VerifyRsaSignature(headerAndPayload, signatureBase64Url, candidate))
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool VerifyRsaSignature(string headerAndPayload, string signatureBase64Url, JwksKey key)
+        {
+            try
+            {
+                byte[] data      = Encoding.UTF8.GetBytes(headerAndPayload);
+                byte[] signature = Base64UrlDecode(signatureBase64Url);
+                byte[] modulus   = Base64UrlDecode(key.n);
+                byte[] exponent  = Base64UrlDecode(key.e);
+
+                using RSA rsa = RSA.Create();
+                rsa.ImportParameters(new RSAParameters
+                {
+                    Modulus  = modulus,
+                    Exponent = exponent
+                });
+
+                return rsa.VerifyData(
+                    data, signature,
+                    HashAlgorithmName.SHA256,
+                    RSASignaturePadding.Pkcs1);
+            }
+            catch (Exception ex)
+            {
+                WDebug.LogWarning($"[JwtHelper] RSA signature verification failed: {ex.Message}");
+                return false;
             }
         }
 
@@ -83,10 +208,14 @@ namespace Global.Util
 
         /// <summary>
         /// Returns true when the JWT token's scope contains "WORDONLINE_ADMIN"
-        /// or "SUPER_ADMIN" (case-insensitive).
+        /// or "SUPER_ADMIN" (case-insensitive) AND the signature is valid when
+        /// JWKS keys are available.
         /// </summary>
         public static bool IsAdmin(string jwtToken)
         {
+            if (JwksService.IsFetched && !VerifySignature(jwtToken))
+                return false;
+
             string[] roles = ExtractRoles(jwtToken);
             foreach (string role in roles)
             {

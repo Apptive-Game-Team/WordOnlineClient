@@ -2,6 +2,7 @@ using System.Collections;
 using Data;
 using Global;
 using Global.Button;
+using Global.Util;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
@@ -47,7 +48,9 @@ namespace LoginScene
                     AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
             
                     SceneContext.JwtToken = authResponseDto.jwt;
-            
+
+                    yield return JwksService.FetchJwks();
+
                     SceneManager.LoadScene("LobbyScene");
                 } catch (System.Exception e)
                 {
