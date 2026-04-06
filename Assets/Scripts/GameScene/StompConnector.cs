@@ -33,7 +33,7 @@ namespace GameScene
         private StompSubscriptionRegistry _registry;
         private StompReconnectController _reconnect;
 
-        private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
+        private readonly GeneralHandler _frameInfoHandler = new GeneralHandler();
         private float _lastFrameTime = -1f;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────

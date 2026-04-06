@@ -220,5 +220,16 @@ namespace Simulation.Core
 
         public SimPlayerData GetPlayerData(Master master) => master == Master.LeftPlayer
             ? LeftPlayerData : RightPlayerData;
+
+        /// <summary>
+        /// Spawns an object directly into the simulation (PVE initial objects).
+        /// Returns the new object's ID so callers can map installerId → objectId.
+        /// Must be called after Init() and before the first Step().
+        /// </summary>
+        public int SpawnObject(PrefabType type, Master master, SimVector3 position)
+        {
+            var obj = new SimGameObject(master, type, position, this);
+            return obj.Id;
+        }
     }
 }
