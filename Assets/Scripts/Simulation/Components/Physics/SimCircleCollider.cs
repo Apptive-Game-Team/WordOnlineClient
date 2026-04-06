@@ -26,7 +26,7 @@ namespace Simulation.Core
             if (other is SimCircleCollider circle)
                 return Position - circle.Position;
             if (other is SimEdgeCollider edge)
-                return -(edge.GetDisplacement(this));
+                return edge.GetDisplacement(this) * -1;
             return SimVector3.Zero;
         }
     }

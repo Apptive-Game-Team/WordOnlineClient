@@ -83,7 +83,7 @@ namespace Simulation.Core
                         if (invMassA > Fix64.Zero && rbA != null)
                             rbA.AddVelocity(impulse * invMassA);
                         if (invMassB > Fix64.Zero && rbB != null)
-                            rbB.AddVelocity(-(impulse * invMassB));
+                            rbB.AddVelocity((impulse * invMassB) * -1);
                     }
                 }
             }

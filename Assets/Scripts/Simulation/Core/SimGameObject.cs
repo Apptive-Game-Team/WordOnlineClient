@@ -64,7 +64,7 @@ namespace Simulation.Core
             return false;
         }
 
-        public List<T> GetComponents<T>() where T : SimComponent
+        public List<T> GetComponents<T>()
         {
             var result = new List<T>();
             foreach (var c in _components)

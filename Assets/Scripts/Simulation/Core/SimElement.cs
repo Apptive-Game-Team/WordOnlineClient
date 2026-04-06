@@ -22,6 +22,11 @@ namespace Simulation.Core
             return result;
         }
 
+        public void Add(ElementType e)
+        {
+            _nativeSet.Add(e);
+        }
+
         public bool Has(ElementType e) => _nativeSet.Contains(e) || (_bonusSources.ContainsKey(e) && _bonusSources[e].Count > 0);
         public bool NativeHas(ElementType e) => _nativeSet.Contains(e);
 
