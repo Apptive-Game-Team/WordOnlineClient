@@ -13,6 +13,8 @@ namespace Data
         public string status;
         public string effect;
 
+        public UpdatedObjectDto() { }
+
         public UpdatedObjectDto(SnapshotObjectDto snapshotObjectDto)
         {
             id = snapshotObjectDto.id;

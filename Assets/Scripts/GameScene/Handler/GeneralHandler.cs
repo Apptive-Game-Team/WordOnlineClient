@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Data;
 using GameScene.Dto;
+using Simulation.Bridge;
 using UnityEngine;
 
 namespace GameScene.Handler
@@ -17,6 +18,15 @@ namespace GameScene.Handler
             TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
             switch (infotype.type)
             {
+                // ── Lockstep messages ──
+                case "sessionStart":
+                    LockstepDriver.Instance?.HandleSessionStart(json);
+                    break;
+                case "confirmedFrame":
+                    LockstepDriver.Instance?.HandleConfirmedFrame(json);
+                    break;
+
+                // ── Legacy server-authoritative messages ──
                 case "frame":
                     FrameInfoDto info = JsonUtility.FromJson<FrameInfoDto>(json);
                     deltaFrameHandler.Handler(info);
