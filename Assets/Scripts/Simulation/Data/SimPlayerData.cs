@@ -26,10 +26,10 @@ namespace Simulation.Core
                 p.TryGetValue("mana_regen_rate", out ManaRegenRate);
             }
 
-            if (MaxMana == Fix64.Zero) MaxMana = (Fix64)10;
-            if (ManaRegenRate == Fix64.Zero) ManaRegenRate = (Fix64)1; // 1.0 mana per second
+            if (MaxMana == Fix64.Zero) MaxMana = Fix64.FromInt(10);
+            if (ManaRegenRate == Fix64.Zero) ManaRegenRate = Fix64.FromInt(1); // 1.0 mana per second
 
-            Mana = MaxMana / 2; // Start with half mana
+            Mana = MaxMana / Fix64.FromInt(2); // Start with half mana
         }
 
         public void RegenerateMana(Fix64 deltaTime)
