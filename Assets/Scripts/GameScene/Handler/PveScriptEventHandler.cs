@@ -1,41 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
-using GameScene.Dto;
 using GameScene.Object;
 using GameScene.ServedObjectComponent;
-using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameScene.Handler
 {
-    public class PveScriptEventHandler : IFrameInfoHandler<PveScriptEventInfo>
-    {
-        public void Handler(PveScriptEventInfo pveScriptEvent)
-        {
-            if (pveScriptEvent == null)
-            {
-                return;
-            }
-
-            if (pveScriptEvent.lines != null && pveScriptEvent.lines.Count > 0)
-            {
-                foreach (string line in pveScriptEvent.lines)
-                {
-                    PveDialoguePresenter.ShowLine(pveScriptEvent.speakerObjectId, line);
-                }
-
-                return;
-            }
-
-            if (!string.IsNullOrWhiteSpace(pveScriptEvent.key))
-            {
-                PveDialoguePresenter.ShowLine(pveScriptEvent.speakerObjectId, pveScriptEvent.key);
-            }
-        }
-    }
-
     internal static class PveDialoguePresenter
     {
         public static void ShowLine(int speakerObjectId, string line)
