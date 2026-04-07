@@ -42,6 +42,9 @@ namespace Simulation.Bridge
                 type = obj.Type.ToString()
             };
             ObjectSpawner.Instance.SpawnObject(dto);
+            
+            // Immediately sync state (position, HP, etc.) after creation
+            HandleUpdated(obj);
         }
 
         private void HandleUpdated(SimGameObject obj)
