@@ -109,6 +109,7 @@ namespace Simulation.Bridge
             }
 
             var dto = JsonUtility.FromJson<ConfirmedFrameDto>(json);
+            WDebug.Log($"[Lockstep] Received frame {dto.frameNum} from server");
 
             // Convert inputs
             Dictionary<long, SimInputRequest> inputs = null;

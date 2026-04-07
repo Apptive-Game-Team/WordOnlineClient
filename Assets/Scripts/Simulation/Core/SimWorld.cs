@@ -74,6 +74,13 @@ namespace Simulation.Core
             _magicRegistry = SimMagicRegistry.BuildFromServerData(serverRecipes);
             _magicInputSystem = new SimMagicInputSystem(_magicRegistry, parameters);
 
+            // Initial cards
+            for (int i = 0; i < 5; i++)
+            {
+                LeftCardDeck.DrawCard(LeftPlayerData, 0);
+                RightCardDeck.DrawCard(RightPlayerData, 0);
+            }
+
             // Create player objects and center obstacle
             new SimGameObject(Master.LeftPlayer, PrefabType.Player,
                 SimGameConfig.LEFT_PLAYER_POSITION, this);
