@@ -1,13 +1,16 @@
+using System;
+
 namespace Data
 {
-    [System.Serializable]
+    [Serializable]
     public class ResultInfo
     {
+        public string type = "result";
         public string leftPlayer;
         public string rightPlayer;
-        public int lastLeftPlayerMmr;
-        public int newLeftPlayerMmr;
-        public int lastRightPlayerMmr;
-        public int newRightPlayerMmr;
+        public short lastLeftPlayerMmr;
+        public short lastRightPlayerMmr;
+        public short newLeftPlayerMmr;
+        public short newRightPlayerMmr;
     }
 }
