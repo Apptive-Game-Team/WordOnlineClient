@@ -71,22 +71,19 @@ namespace Simulation.Bridge
             // Parse parameters from cached game config
             var parameters = ParseParameters();
 
+            WDebug.Log("[LockstepDriver] Initializing SimRenderer");
             // Set up renderer bridge FIRST before initialization to catch all spawn events
             _renderer?.Dispose();
             _renderer = new SimRenderer(_world);
 
+            WDebug.Log("[LockstepDriver] Initializing SimWorld with session parameters]");
             // Initialize simulation world (this spawns players and wall)
             _world.Init(dto.rngSeed, leftCards, rightCards, parameters);
-
-            // PVE: spawn initial objects then register scenario events
-            if (dto.initialObjects != null && dto.initialObjects.Count > 0)
-            {
-                WDebug.Log($"[LockstepDriver] Spawn initial objects: {dto.initialObjects.Count} objects");
-                SpawnInitialObjects(dto.initialObjects);
-            }
             
+            // PVE: spawn initial objects then register scenario events
             if (_isPve)
             {
+                SpawnInitialObjects(dto.initialObjects);
                 RegisterScenarioEvents(dto.scenarioEvents);
             }
 

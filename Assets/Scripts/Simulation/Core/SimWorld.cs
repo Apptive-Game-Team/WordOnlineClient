@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Global;
 
 namespace Simulation.Core
 {
@@ -92,7 +93,7 @@ namespace Simulation.Core
             if (IsGameOver) return;
 
             // 0. Update player resources (Mana regen)
-            Fix64 deltaTime = (Fix64)0.05; // 20 FPS (50ms)
+            Fix64 deltaTime = Fix64.FromDouble(0.05); // 20 FPS (50ms)
             LeftPlayerData.RegenerateMana(deltaTime);
             RightPlayerData.RegenerateMana(deltaTime);
 
@@ -174,6 +175,7 @@ namespace Simulation.Core
 
         public void RegisterGameObject(SimGameObject obj)
         {
+            WDebug.Log("[SimWorld] RegisterGameObject");
             _gameObjects.Add(obj);
             _pendingStart.Add(obj);
             OnObjectCreated?.Invoke(obj);
