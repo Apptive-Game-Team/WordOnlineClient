@@ -77,12 +77,14 @@ namespace Simulation.Bridge
 
             // Initialize simulation world (this spawns players and wall)
             _world.Init(dto.rngSeed, leftCards, rightCards, parameters);
+            WDebug.Log($"[Lockstep] SimWorld initialized: {_world.GetGameObjects().Count} objects");
 
             // PVE: spawn initial objects then register scenario events
             if (dto.initialObjects != null && dto.initialObjects.Count > 0)
             {
-                WDebug.Log($"[LockstepDriver] Spawn initial objects: {dto.initialObjects.Count} objects");
+                WDebug.Log($"[Lockstep] Spawning PVE initial objects: {dto.initialObjects.Count}");
                 SpawnInitialObjects(dto.initialObjects);
+                WDebug.Log($"[Lockstep] Total objects after PVE spawn: {_world.GetGameObjects().Count}");
             }
             
             if (_isPve)
