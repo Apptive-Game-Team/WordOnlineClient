@@ -1,3 +1,4 @@
+using GameScene.Dto;
 using UnityEngine;
 
 namespace Data
@@ -8,8 +9,19 @@ namespace Data
         public int id;
         public string master;
         public Vector3 position;
-        public string type;
+        public string type; // enum 대응 가능
 
-        public CreatedObjectDto() { }
+        public CreatedObjectDto()
+        {
+        
+        }
+    
+        public CreatedObjectDto(SnapshotObjectDto objectDto)
+        {
+            id = objectDto.id;
+            master = objectDto.master;
+            position = new Vector3(objectDto.x, objectDto.y, objectDto.z);
+            type = objectDto.prefab;
+        }
     }
 }
