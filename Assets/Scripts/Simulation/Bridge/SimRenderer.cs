@@ -23,6 +23,18 @@ namespace Simulation.Bridge
             _world.OnObjectCreated += HandleCreated;
             _world.OnObjectUpdated += HandleUpdated;
             _world.OnObjectDestroyed += HandleDestroyed;
+
+            // Subscribe to local player's card updates
+            var match = SceneContext.MatchInfo;
+            if (match != null)
+            {
+                bool isLeft = SceneContext.UserID == match.leftUser.id;
+                var myData = isLeft ? _world.LeftPlayerData : _world.RightPlayerData;
+                myData.OnCardAdded += (card) => 
+                {
+                    GameScene.GameSceneUIController.Instance.AddCard(card.ToString());
+                };
+            }
         }
 
         public void Dispose()
@@ -104,10 +116,13 @@ namespace Simulation.Bridge
         public void UpdateUI()
         {
             var match = SceneContext.MatchInfo;
+            if (match == null) return;
+
             bool isLeft = SceneContext.UserID == match.leftUser.id;
             var myData = isLeft ? _world.LeftPlayerData : _world.RightPlayerData;
 
-            GameScene.GameSceneUIController.Instance.UpdateMana(myData.Mana.ToInt());
+            int currentMana = myData.Mana.ToInt();
+            GameScene.GameSceneUIController.Instance.UpdateMana(currentMana);
         }
     }
 }
