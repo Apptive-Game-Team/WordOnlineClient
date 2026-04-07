@@ -132,7 +132,8 @@ namespace GameScene
             UnsubscribeFromTopic("match-sub");
             long userId = isSpectator ? 0 : SceneContext.UserID;
             SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", OnFrameInfoReceived, "frame-sub");
-
+            SendMessageToServer($"/app/game/ready/{sessionId}/{userId}", "{}");
+            
             _lastFrameTime = Time.time;
             while (true)
             {
