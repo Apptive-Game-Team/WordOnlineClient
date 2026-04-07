@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using GameScene.Dto;
+using Global;
 using Simulation.Bridge;
 using UnityEngine;
 
@@ -9,6 +11,7 @@ namespace GameScene.Handler
         public void Handler(string json)
         {
             TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
+            WDebug.Log($"Receive {infotype.type}");
             switch (infotype.type)
             {
                 case "sessionStart":

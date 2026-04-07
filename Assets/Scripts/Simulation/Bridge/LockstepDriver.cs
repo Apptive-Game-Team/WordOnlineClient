@@ -54,6 +54,8 @@ namespace Simulation.Bridge
         /// </summary>
         public void HandleSessionStart(string json)
         {
+            WDebug.Log("[LockstepDriver] start session");
+            
             var dto = JsonUtility.FromJson<SessionStartDto>(json);
             _leftUserId = dto.leftUserId;
             _rightUserId = dto.rightUserId;
@@ -73,9 +75,11 @@ namespace Simulation.Bridge
             _world.Init(dto.rngSeed, leftCards, rightCards, parameters);
 
             // PVE: spawn initial objects then register scenario events
+            WDebug.Log($"[LockstepDriver] Spawn initial objects: {dto.initialObjects.Count} objects");
+            SpawnInitialObjects(dto.initialObjects);
+            
             if (_isPve)
             {
-                SpawnInitialObjects(dto.initialObjects);
                 RegisterScenarioEvents(dto.scenarioEvents);
             }
 
