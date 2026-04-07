@@ -130,7 +130,7 @@ namespace Simulation.Core
             Fix64 a = minV / maxV;
             // More precise atan(a) approximation: a - a^3/3 + a^5/5
             Fix64 a2 = a * a;
-            Fix64 r = a * (Fix64.One - a2 / (Fix64)3 + a2 * a2 / (Fix64)5);
+            Fix64 r = a * (Fix64.One - a2 / Fix64.FromDouble(3) + a2 * a2 / Fix64.FromInt(5));
             r = r * Fix64.FromDouble(0.78539816339); // Correcting factor to make atan(1) = pi/4
 
             if (absY > absX) r = Fix64.HalfPi - r;
@@ -138,6 +138,5 @@ namespace Simulation.Core
             if (y < Fix64.Zero) r = -r;
             return r;
         }
-    }
     }
 }

@@ -80,6 +80,8 @@ namespace Simulation.Bridge
             // Initialize simulation world (this spawns players and wall)
             _world.Init(dto.rngSeed, leftCards, rightCards, parameters);
             
+            _renderer.InitCardAdded(_world);
+            
             // PVE: spawn initial objects then register scenario events
             if (_isPve)
             {
@@ -104,7 +106,6 @@ namespace Simulation.Bridge
             }
 
             var dto = JsonUtility.FromJson<ConfirmedFrameDto>(json);
-            WDebug.Log($"[Lockstep] Received frame {dto.frameNum} from server");
 
             // Convert inputs
             Dictionary<long, SimInputRequest> inputs = null;
@@ -113,6 +114,7 @@ namespace Simulation.Bridge
                 inputs = new Dictionary<long, SimInputRequest>();
                 foreach (var pi in dto.inputs)
                 {
+                    WDebug.Log($"[LockstepDriver] handle input {pi.cards?.Count} cards for user {pi.userId} at position ({pi.x}, {pi.y}, {pi.z})");
                     inputs[pi.userId] = new SimInputRequest
                     {
                         Cards = pi.cards?.Select(ParseCardType).ToList(),

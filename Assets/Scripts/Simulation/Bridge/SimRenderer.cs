@@ -23,7 +23,10 @@ namespace Simulation.Bridge
             _world.OnObjectCreated += HandleCreated;
             _world.OnObjectUpdated += HandleUpdated;
             _world.OnObjectDestroyed += HandleDestroyed;
+        }
 
+        public void InitCardAdded(SimWorld world)
+        {
             // Subscribe to local player's card updates
             var match = SceneContext.MatchInfo;
             if (match != null)

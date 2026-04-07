@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Global;
 
 namespace Simulation.Core
 {
@@ -33,6 +34,7 @@ namespace Simulation.Core
 
         public SimGameObject(Master master, PrefabType type, SimVector3 position, SimWorld world)
         {
+            WDebug.Log($"Creating SimGameObject {type} {master} at {position}");
             Status = SimStatus.Initializing;
             Id = _nextId++;
             Master = master;

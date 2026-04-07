@@ -15,8 +15,8 @@ namespace Simulation.Core
                 var targetPos = target.Position;
                 // Safety check to keep summon within map bounds
                 var spawnPos = new SimVector3(
-                    SimMath.Clamp(targetPos.X, Fix64.Zero, Fix64.FromInt(SimGameConfig.X_MAX)),
-                    SimMath.Clamp(targetPos.Y, Fix64.Zero, Fix64.FromInt(SimGameConfig.Y_MAX)),
+                    SimMath.Clamp(targetPos.X, Fix64.Zero, Fix64.FromInt(SimGameConfig.WIDTH)),
+                    SimMath.Clamp(targetPos.Y, Fix64.Zero, Fix64.FromInt(SimGameConfig.HEIGHT)),
                     targetPos.Z
                 );
 
