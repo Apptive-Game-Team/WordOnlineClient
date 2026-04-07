@@ -566,9 +566,19 @@ namespace Simulation.Core
 
         private static void InitGenericMob(SimGameObject obj)
         {
-            // Fallback for unimplemented prefab types
+            // Fallback for unimplemented prefab types - provides basic stats to avoid errors
+            obj.AddComponent(new SimRigidBody(1));
+            obj.AddComponent(new SimZPhysics());
             obj.AddComponent(new SimCircleCollider(Fix64.One, false));
-            obj.AddComponent(new SimDummyMob(10));
+            obj.AddComponent(new SimAttackMob(
+                10, // hp
+                2,  // speed
+                SimTargetMask.GROUND,
+                1,  // damage
+                Fix64.One, // interval
+                Fix64.FromInt(2) // range
+            ));
+            obj.AddComponent(new SimEffectReceiver());
         }
     }
 }

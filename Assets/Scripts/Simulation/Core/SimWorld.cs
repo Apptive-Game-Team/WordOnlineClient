@@ -91,11 +91,16 @@ namespace Simulation.Core
         {
             if (IsGameOver) return;
 
-            // 0. Draw cards for players
+            // 0. Update player resources (Mana regen)
+            Fix64 deltaTime = (Fix64)0.05; // 20 FPS (50ms)
+            LeftPlayerData.RegenerateMana(deltaTime);
+            RightPlayerData.RegenerateMana(deltaTime);
+
+            // 1. Draw cards for players
             LeftCardDeck.DrawCard(LeftPlayerData, FrameNum);
             RightCardDeck.DrawCard(RightPlayerData, FrameNum);
 
-            // 1. Process magic inputs
+            // 2. Process magic inputs
             if (inputs != null)
             {
                 foreach (var (userId, input) in inputs)
@@ -123,7 +128,7 @@ namespace Simulation.Core
                 }
             }
 
-            // 2. Start any newly registered objects
+            // 3. Start any newly registered objects
             if (_pendingStart.Count > 0)
             {
                 var toStart = new List<SimGameObject>(_pendingStart);
@@ -132,18 +137,21 @@ namespace Simulation.Core
                     obj.Start();
             }
 
-            // 3. Update all non-destroyed objects (component updates)
+            // 4. Update all non-destroyed objects (component updates)
             for (int i = 0; i < _gameObjects.Count; i++)
             {
                 var obj = _gameObjects[i];
                 if (obj.Status != SimStatus.Destroyed)
+                {
                     obj.Update();
+                    MarkUpdated(obj); // Ensure visuals are synced every frame
+                }
             }
 
-            // 4. Physics (collision detection + response)
+            // 5. Physics (collision detection + response)
             _physicSystem.Update(this);
 
-            // 5. Remove destroyed objects + check for game over
+            // 6. Remove destroyed objects + check for game over
             for (int i = _gameObjects.Count - 1; i >= 0; i--)
             {
                 var obj = _gameObjects[i];

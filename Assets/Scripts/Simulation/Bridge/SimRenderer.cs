@@ -104,7 +104,7 @@ namespace Simulation.Bridge
             bool isLeft = SceneContext.UserID == match.leftUser.id;
             var myData = isLeft ? _world.LeftPlayerData : _world.RightPlayerData;
 
-            GameScene.GameSceneUIController.Instance.UpdateMana(myData.Mana);
+            GameScene.GameSceneUIController.Instance.UpdateMana(myData.Mana.ToInt());
         }
     }
 }

@@ -7,7 +7,9 @@ namespace Simulation.Core
         public const int MAX_CARD_NUM = 6;
         public const int MAX_HP = 100;
 
-        public int Mana;
+        public Fix64 Mana;
+        public Fix64 MaxMana;
+        public Fix64 ManaRegenRate;
         public int Hp = MAX_HP;
         public readonly List<SimCardType> Cards = new();
 
@@ -16,6 +18,24 @@ namespace Simulation.Core
         public SimPlayerData(Dictionary<string, Dictionary<string, Fix64>> parameters)
         {
             _parameters = parameters;
+
+            // Load mana parameters
+            if (_parameters.TryGetValue("player", out var p))
+            {
+                p.TryGetValue("max_mana", out MaxMana);
+                p.TryGetValue("mana_regen_rate", out ManaRegenRate);
+            }
+
+            if (MaxMana == Fix64.Zero) MaxMana = (Fix64)10;
+            if (ManaRegenRate == Fix64.Zero) ManaRegenRate = (Fix64)1; // 1.0 mana per second
+
+            Mana = MaxMana / 2; // Start with half mana
+        }
+
+        public void RegenerateMana(Fix64 deltaTime)
+        {
+            Mana += ManaRegenRate * deltaTime;
+            if (Mana > MaxMana) Mana = MaxMana;
         }
 
         public bool AddCard(SimCardType card)
@@ -27,13 +47,13 @@ namespace Simulation.Core
 
         public bool UseCards(List<SimCardType> cards)
         {
-            int totalManaCost = 0;
+            Fix64 totalManaCost = Fix64.Zero;
             var temp = new List<SimCardType>(Cards);
             foreach (var card in cards)
             {
                 string key = card.ToString().ToLower();
                 if (_parameters.TryGetValue(key, out var p) && p.TryGetValue("mana_cost", out var cost))
-                    totalManaCost += cost.ToInt();
+                    totalManaCost += cost;
                 if (!temp.Remove(card)) return false;
             }
             if (totalManaCost > Mana) return false;
@@ -43,7 +63,7 @@ namespace Simulation.Core
                 Cards.Remove(card);
                 string key = card.ToString().ToLower();
                 if (_parameters.TryGetValue(key, out var p) && p.TryGetValue("mana_cost", out var cost))
-                    Mana -= cost.ToInt();
+                    Mana -= cost;
             }
             return true;
         }

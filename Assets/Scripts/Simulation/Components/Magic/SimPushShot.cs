@@ -9,6 +9,7 @@ namespace Simulation.Core
         private readonly int _damage;
         private readonly Fix64 _speed;
         private SimVector3 _direction;
+        private readonly List<SimGameObject> _victims = new();
 
         public SimPushShot(int damage, Fix64 speed)
         {
@@ -25,7 +26,6 @@ namespace Simulation.Core
 
         public override void Start()
         {
-            // Default direction: toward center of map
             if (_direction.SqrMagnitude < Fix64.Epsilon)
             {
                 var center = new SimVector3(Fix64.FromInt(SimGameConfig.X_MID), Fix64.FromInt(SimGameConfig.Y_MID), Fix64.Zero);
@@ -37,8 +37,21 @@ namespace Simulation.Core
         {
             if (_direction.SqrMagnitude < Fix64.Epsilon) return;
 
-            var newPos = GameObject.Position + _direction * _speed * SimGameConfig.DeltaTime;
+            var delta = _direction * _speed * SimGameConfig.DeltaTime;
+            var newPos = GameObject.Position + delta;
             GameObject.SetPosition(newPos);
+
+            // Push victims along with the shot
+            for (int i = _victims.Count - 1; i >= 0; i--)
+            {
+                var victim = _victims[i];
+                if (victim == null || victim.IsDestroyed || !victim.IsActive)
+                {
+                    _victims.RemoveAt(i);
+                    continue;
+                }
+                victim.SetPosition(victim.Position + delta);
+            }
 
             if (SimGameConfig.IsOutOfBounds(newPos))
                 GameObject.Destroy();
@@ -51,7 +64,13 @@ namespace Simulation.Core
             if (other.Master == GameObject.Master) return;
             var mob = other.GetComponent<SimMob>();
             if (mob == null) return;
-            mob.OnDamaged(new AttackInfo(_damage, GameObject.Element.Total()));
+
+            // Apply damage once
+            if (!_victims.Contains(other))
+            {
+                _victims.Add(other);
+                mob.OnDamaged(new AttackInfo(_damage, GameObject.Element.Total()));
+            }
         }
     }
 }
