@@ -12,6 +12,7 @@ namespace Simulation.Core
         public Fix64 ManaRegenRate;
         public int Hp = MAX_HP;
         public readonly List<SimCardType> Cards = new();
+        public event Action<SimCardType> OnCardAdded;
 
         private readonly Dictionary<string, Dictionary<string, Fix64>> _parameters;
 
@@ -42,6 +43,7 @@ namespace Simulation.Core
         {
             if (Cards.Count >= MAX_CARD_NUM) return false;
             Cards.Add(card);
+            OnCardAdded?.Invoke(card);
             return true;
         }
 
