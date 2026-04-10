@@ -32,7 +32,7 @@ namespace Adventures.Scenarios
         {
             if (_scenario.State == State.INACTIVE) return;
 
-            AdventureViewModel.Instance.PlayPVE(Id);
+            AdventureStoryOverlayUI.Play(_scenario, () => AdventureViewModel.Instance.PlayPVE(Id));
         }
 
         public void Setup(Scenario scenario)

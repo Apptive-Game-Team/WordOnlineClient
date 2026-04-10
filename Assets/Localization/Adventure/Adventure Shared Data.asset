@@ -27,6 +27,78 @@ MonoBehaviour:
     m_Key: Fortress
     m_Metadata:
       m_Items: []
+  - m_Id: 11951381000065024
+    m_Key: Player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951398993629184
+    m_Key: pve_nature_slime_nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951468048650240
+    m_Key: pve_water_slime_nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951488680431616
+    m_Key: pve_vine_colony
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951520179654656
+    m_Key: pve_vine_witch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952116706152448
+    m_Key: 1-1_pre_000_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952173715132416
+    m_Key: 1-1_pre_001_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952177456451584
+    m_Key: 1-1_pre_002_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952238559072256
+    m_Key: 1-2_pre_000_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952269424955392
+    m_Key: 1-2_pre_001_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952288257380352
+    m_Key: 1-2_pre_002_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952321639845888
+    m_Key: 1-3_pre_000_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952345773871104
+    m_Key: 1-3_pre_001_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952364224614400
+    m_Key: 1-3_pre_002_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952395698671616
+    m_Key: 1-4_pre_000_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952411360202752
+    m_Key: 1-4_pre_001_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952452426633216
+    m_Key: 1-4_pre_002_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952476497743872
+    m_Key: 1-4_pre_003_right
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
