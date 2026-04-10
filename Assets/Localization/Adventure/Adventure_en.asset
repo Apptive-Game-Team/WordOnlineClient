@@ -30,6 +30,85 @@ MonoBehaviour:
     m_Localized: Forest
     m_Metadata:
       m_Items: []
+  - m_Id: 11951381000065024
+    m_Localized: Player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951398993629184
+    m_Localized: Nature Slime Nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951468048650240
+    m_Localized: Water Slime Nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951488680431616
+    m_Localized: Vine Colony
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11951520179654656
+    m_Localized: Vine Witch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952116706152448
+    m_Localized: "This is the plain closest to the village. It used to be home to
+      nothing but weak monsters\u2026 but lately, there have been way too many slimes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952173715132416
+    m_Localized: "That mass up ahead\u2026 it doesn\u2019t look like just a group
+      of slimes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952177456451584
+    m_Localized: "**Squish\u2026**"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952238559072256
+    m_Localized: "That\u2019s strange\u2026 I can sense not just the energy of the
+      earth, but damp moisture in the air too."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952269424955392
+    m_Localized: "These slimes don\u2019t seem to be all the same kind. Be careful."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952288257380352
+    m_Localized: "**Squish Squish\u2026**"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952321639845888
+    m_Localized: The air grew heavy the moment we stepped into the forest.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952345773871104
+    m_Localized: "These plants aren\u2019t normal. They\u2019re twisted, like something
+      forced them to grow this way."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952364224614400
+    m_Localized: '**Creeeak**'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952395698671616
+    m_Localized: "So this is the deepest part of the forest\u2026 the atmosphere
+      here feels completely different."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952411360202752
+    m_Localized: "Heh\u2026 I didn\u2019t expect you to make it this far."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952452426633216
+    m_Localized: "Be careful. This enemy may be nothing like the ones we\u2019ve
+      faced so far."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11952476497743872
+    m_Localized: "I thought you were just some clumsy little adventurer\u2026 but
+      it seems I\u2019ll have to deal with you myself."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
