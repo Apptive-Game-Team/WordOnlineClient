@@ -27,8 +27,6 @@ namespace TutorialScene
     
         [SerializeField] private TutorialCardUI cardUIPrefab;
         [SerializeField] private GameObject lowerBar;
-    
-        [SerializeField] private TextMeshProUGUI textSystemMsg;
 
         [SerializeField] private CardImageMapper cardImageMapper;
 

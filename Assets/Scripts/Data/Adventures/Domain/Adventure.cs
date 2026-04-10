@@ -10,17 +10,20 @@ namespace Data.Adventures.Domain
     {
         public long Id { get; }
         public State State { get; }
+        public AdventureScenarioStoryData Story { get; }
 
         public Scenario(long id, State state)
         {
             Id = id;
             State = state;
+            Story = null;
         }
 
-        public Scenario(ScenarioDto scenarioDto)
+        public Scenario(ScenarioDto scenarioDto, AdventureScenarioStoryData story)
         {
             Id = scenarioDto.id;
             State = (State)Enum.Parse(typeof(State), scenarioDto.state.ToUpper());
+            Story = story;
         }
     }
 
@@ -47,7 +50,9 @@ namespace Data.Adventures.Domain
             Scenarios = new List<Scenario>();
             foreach (var scenarioDto in stageDto.scenarios)
             {
-                Scenarios.Add(new Scenario(scenarioDto));
+                Scenarios.Add(new Scenario(
+                    scenarioDto,
+                    stageScriptableObject.FindStoryByScenarioId(scenarioDto.id)));
             }
             Scenarios.Sort((a, b) => a.Id.CompareTo(b.Id));
         }

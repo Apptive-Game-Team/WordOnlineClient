@@ -37,7 +37,9 @@ namespace GameScene.ServedObjectComponent
                 updatedObjectDto.position.x, 
                 updatedObjectDto.position.y, 
                 updatedObjectDto.position.z);
-            moveTween = transform.DOMove(nextPosition.Value, GameConfig.FRAME_DURATION).SetEase(Ease.Linear);
+            moveTween = transform.DOMove(nextPosition.Value, GameConfig.FRAME_DURATION)
+                .SetEase(Ease.Linear)
+                .SetLink(transform.gameObject);
             
             UpdateFlip();
         }

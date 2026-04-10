@@ -1,9 +1,54 @@
 using System.Collections.Generic;
+using Data.GameConfig;
 
 namespace Data.Magic
 {
     public static class LocalCombinedMagicData
     {
+        /// <summary>
+        /// Returns the effective recipe list.
+        /// When GameDataManager.Config is available, recipes come from the server
+        /// (authoritative) and display metadata (magicName, spritePath) is merged
+        /// from the local hardcoded list by id.
+        /// Falls back to the full hardcoded list when the server data is not yet loaded.
+        /// </summary>
+        public static List<CombinedMagicData> GetEffectiveDataList()
+        {
+            var config = GameDataManager.Config;
+            if (config?.magicRecipes == null || config.magicRecipes.Count == 0)
+                return dataList;
+
+            var result = new List<CombinedMagicData>(config.magicRecipes.Count);
+            foreach (var serverRecipe in config.magicRecipes)
+            {
+                // Build CardType recipe from server card name strings
+                var recipe = new List<CardType>(serverRecipe.cards.Count);
+                bool valid = true;
+                foreach (var cardName in serverRecipe.cards)
+                {
+                    if (System.Enum.TryParse<CardType>(cardName, out var ct))
+                        recipe.Add(ct);
+                    else
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (!valid) continue;
+
+                // Find local display metadata by id
+                var local = dataList.Find(d => d.id == serverRecipe.id);
+                result.Add(new CombinedMagicData
+                {
+                    id         = serverRecipe.id,
+                    magicName  = local?.magicName ?? serverRecipe.name,
+                    recipe     = recipe,
+                    spritePath = local?.spritePath ?? string.Empty,
+                });
+            }
+            return result;
+        }
+
         public static List<CombinedMagicData> dataList = new()
         {
             new (){id = 1, magicName = "Ember Spirit Swarm", recipe = new () { CardType.Spawn , CardType.Fire}, spritePath = "Game/spawn/ember_spirit"},

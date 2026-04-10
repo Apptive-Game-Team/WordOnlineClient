@@ -26,6 +26,10 @@ MonoBehaviour:
     m_Localized: Mana regeneration and card draw speed are doubled.
     m_Metadata:
       m_Items: []
+  - m_Id: 38521835636121600
+    m_Localized: Connection to the game server is unstable. Returning to the lobby.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

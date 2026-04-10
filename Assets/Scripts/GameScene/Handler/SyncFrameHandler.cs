@@ -16,7 +16,9 @@ namespace GameScene.Handler
                 WDebug.LogError("[SyncFrameHandler] syncFrameInfo is null");
                 return;
             }
-            
+
+            FrameClock.SyncTo(syncFrameInfo.frameNum);
+
             // 마나 UI 업데이트
             GameSceneUIController.Instance.UpdateMana(syncFrameInfo.updatedMana);
             

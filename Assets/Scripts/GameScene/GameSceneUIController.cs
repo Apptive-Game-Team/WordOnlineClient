@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using Data;
 using Data.Magic;
 using GameScene.Card;
-using GameScene.Player;
-using GameScene.ServedObjectComponent;
 using Global;
 using TMPro;
 using UnityEngine;
@@ -20,8 +18,6 @@ namespace GameScene
     
         [SerializeField] private CardUI cardUIPrefab;
         [SerializeField] private GameObject lowerBar;
-    
-        [SerializeField] private TextMeshProUGUI textSystemMsg;
 
         [SerializeField] private CardImageMapper cardImageMapper;
 

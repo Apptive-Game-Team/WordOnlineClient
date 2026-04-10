@@ -106,6 +106,18 @@ MonoBehaviour:
     m_Localized: Connection to the server is delayed..
     m_Metadata:
       m_Items: []
+  - m_Id: 7000000000000
+    m_Localized: The server is currently under maintenance. Please try again later.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7100000000000
+    m_Localized: Unable to connect to the server.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7200000000000
+    m_Localized: The server is being deployed. Please try again later.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

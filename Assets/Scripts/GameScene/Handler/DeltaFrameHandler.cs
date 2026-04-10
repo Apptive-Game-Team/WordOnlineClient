@@ -8,6 +8,8 @@ namespace GameScene.Handler
     {
         public void Handler(FrameInfoDto data)
         {
+            FrameClock.SyncTo(data.frameNum);
+
             // 마나 UI 업데이트
             GameSceneUIController.Instance.UpdateMana(data.updatedMana);
             
