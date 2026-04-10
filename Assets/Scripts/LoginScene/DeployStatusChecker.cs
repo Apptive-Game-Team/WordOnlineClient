@@ -4,6 +4,7 @@ using Data;
 using Global;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
 namespace LoginScene
@@ -16,9 +17,14 @@ namespace LoginScene
             public string status;
         }
 
-        private static readonly LocalizedString serverMaintenance = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "serverMaintenance" };
-        private static readonly LocalizedString serverDown = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "serverDown" };
-        private static readonly LocalizedString serverDeploying = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "serverDeploying" };
+        private static readonly LocalizedString serverMaintenance = new LocalizedString
+            { TableReference = "SystemMessageUI", TableEntryReference = "serverMaintenance" };
+
+        private static readonly LocalizedString serverDown = new LocalizedString
+            { TableReference = "SystemMessageUI", TableEntryReference = "serverDown" };
+
+        private static readonly LocalizedString serverDeploying = new LocalizedString
+            { TableReference = "SystemMessageUI", TableEntryReference = "serverDeploying" };
 
         /// <summary>
         /// Checks the deploy status of the lobby server.
@@ -27,62 +33,71 @@ namespace LoginScene
         /// </summary>
         public static IEnumerator CheckDeployStatus(Action<bool, string> onResult)
         {
-            var url = ServerList.MatchingServer.url + "/api/deploy/status";
-
-            using var www = UnityWebRequest.Get(url);
-            Server.SetAcceptLanguage(www);
-            www.timeout = 10;
-
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
             {
-                WDebug.LogError($"[CheckDeployStatus] fail: {www.responseCode} / {www.error}");
-                onResult?.Invoke(false, serverDown.GetLocalizedString());
-                yield break;
-            }
+                // 1. WebGL에서 LocalizationSettings가 로드될 때까지 비동기 대기 (필수)
+                if (!LocalizationSettings.InitializationOperation.IsDone)
+                {
+                    yield return LocalizationSettings.InitializationOperation;
+                }
 
-            DeployStatusDto dto = null;
-            try
-            {
-                dto = JsonUtility.FromJson<DeployStatusDto>(www.downloadHandler.text);
-            }
-            catch (Exception e)
-            {
-                WDebug.LogError($"[CheckDeployStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
-                SystemMessageUI.Instance.ShowMessage(serverDown);
-                onResult?.Invoke(false, serverDown.GetLocalizedString());
-                yield break;
-            }
+                var url = ServerList.MatchingServer.url + "/api/deploy/status";
 
-            if (dto == null || string.IsNullOrEmpty(dto.status))
-            {
-                WDebug.LogWarning("[CheckDeployStatus] empty or null status");
-                SystemMessageUI.Instance.ShowMessage(serverDown);
-                onResult?.Invoke(false, serverDown.GetLocalizedString());
-                yield break;
-            }
+                using var www = UnityWebRequest.Get(url);
 
-            WDebug.Log("[CheckDeployStatus] server status: " + dto.status);
+                // 2. 이제 내부에서 SelectedLocale에 접근해도 WaitForCompletion() 오류가 발생하지 않습니다.
+                Server.SetAcceptLanguage(www);
+                www.timeout = 10;
 
-            switch (dto.status.ToUpperInvariant())
-            {
-                case "HEALTHY":
-                    onResult?.Invoke(true, "HEALTHY");
-                    break;
-                case "MAINTENANCE":
-                    SystemMessageUI.Instance.ShowMessage(serverMaintenance);
-                    onResult?.Invoke(false, serverMaintenance.GetLocalizedString());
-                    break;
-                case "DEPLOYING":
-                    SystemMessageUI.Instance.ShowMessage(serverDeploying);
-                    onResult?.Invoke(false, serverDeploying.GetLocalizedString());
-                    break;
-                case "DOWN":
-                default:
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    WDebug.LogError($"[CheckDeployStatus] fail: {www.responseCode} / {www.error}");
+                    onResult?.Invoke(false, serverDown.GetLocalizedString());
+                    yield break;
+                }
+
+                DeployStatusDto dto = null;
+                try
+                {
+                    dto = JsonUtility.FromJson<DeployStatusDto>(www.downloadHandler.text);
+                }
+                catch (Exception e)
+                {
+                    WDebug.LogError($"[CheckDeployStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
                     SystemMessageUI.Instance.ShowMessage(serverDown);
                     onResult?.Invoke(false, serverDown.GetLocalizedString());
-                    break;
+                    yield break;
+                }
+
+                if (dto == null || string.IsNullOrEmpty(dto.status))
+                {
+                    WDebug.LogWarning("[CheckDeployStatus] empty or null status");
+                    SystemMessageUI.Instance.ShowMessage(serverDown);
+                    onResult?.Invoke(false, serverDown.GetLocalizedString());
+                    yield break;
+                }
+
+                WDebug.Log("[CheckDeployStatus] server status: " + dto.status);
+
+                switch (dto.status.ToUpperInvariant())
+                {
+                    case "HEALTHY":
+                        onResult?.Invoke(true, "HEALTHY");
+                        break;
+                    case "MAINTENANCE":
+                        SystemMessageUI.Instance.ShowMessage(serverMaintenance);
+                        onResult?.Invoke(false, serverMaintenance.GetLocalizedString());
+                        break;
+                    case "DEPLOYING":
+                        SystemMessageUI.Instance.ShowMessage(serverDeploying);
+                        onResult?.Invoke(false, serverDeploying.GetLocalizedString());
+                        break;
+                    default:
+                        SystemMessageUI.Instance.ShowMessage(serverDown);
+                        onResult?.Invoke(false, serverDown.GetLocalizedString());
+                        break;
+                }
             }
         }
     }
