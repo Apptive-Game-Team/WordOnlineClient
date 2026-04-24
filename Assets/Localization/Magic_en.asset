@@ -274,6 +274,14 @@ MonoBehaviour:
     m_Localized: Life Tree
     m_Metadata:
       m_Items: []
+  - m_Id: 65858562289696768
+    m_Localized: Will O Wisp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65858592945864704
+    m_Localized: Frenzy Totem
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
