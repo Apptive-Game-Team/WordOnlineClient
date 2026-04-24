@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Data;
-using Data.Sse;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,18 +9,42 @@ namespace LobbyScene
 {
     public class MatchQueueApiService : MonoBehaviour
     {
-        [SerializeField] private SseHandler sseHandler;
-
-        public IEnumerator Enqueue(Action<string> callback)
+        public IEnumerator Enqueue(Action<SimpleMessageDto> callback)
         {
-            sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/match/queue/me", callback);
-            yield return null;
+            using var webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/queue/me");
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(webRequest.downloadHandler.text);
+                callback(messageDto);
+            }
+            else
+            {
+                WDebug.LogError($"Enqueue error: {webRequest.error}");
+                callback(null);
+            }
         }
 
-        public IEnumerator MatchPractice(Action<string> callback)
+        public IEnumerator MatchPractice(Action<MatchedInfoDto> callback)
         {
-            sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/match/practice/me", callback);
-            yield return null;
+            using var webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/practice/me");
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(webRequest.downloadHandler.text);
+                callback(matchedInfoDto);
+            }
+            else
+            {
+                WDebug.LogError($"MatchPractice error: {webRequest.error}");
+                callback(null);
+            }
         }
         
         public IEnumerator RemoveFromQueue()

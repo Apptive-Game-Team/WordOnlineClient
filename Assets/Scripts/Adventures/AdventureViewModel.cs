@@ -33,36 +33,14 @@ namespace Adventures
             StartCoroutine(_adventureApi.RequestDebugPVE(scenarioId, HandleDebugSessionCreated, HandleDebugFailure));
         }
 
-        private void HandleCallback(string json)
+        private void HandleCallback(MatchedInfoDto dto)
         {
-            TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
-            switch (typeChecker.type)
+            WDebug.Log("Adventure session matched: transitioning to game scene.");
+            if (dto == null)
             {
-                case "matchedInfoDto":
-                    WDebug.Log("Adventure session matched: transitioning to game scene.");
-                    MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                    OnMatched(matchedInfoDto);
-                    break;
-                case "message":
-                    WDebug.Log("Adventure session message received.");
-                    SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
-                    if (messageDto.message.Contains("Successfully"))
-                    {
-                        WDebug.Log("Adventure session request in progress...");
-                        CurrentState.UpdateData(AdventureState.Requesting);
-                    }
-                    else if (messageDto.message.Contains("Failed"))
-                    {
-                        WDebug.LogWarning("Adventure session request failed.");
-                        CurrentState.UpdateData(AdventureState.Idle);
-                        SystemMessageUI.Instance.ShowMessage("Failed to start adventure session. Please try again.");
-                    }
-
-                    break;
-                default:
-                    WDebug.LogWarning($"Unknown event type received: {typeChecker.type}");
-                    break;
+                CurrentState.UpdateData(AdventureState.Idle);
             }
+            OnMatched(dto);
         }
 
         private void HandleDebugSessionCreated(string json)
