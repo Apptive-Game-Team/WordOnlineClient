@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Global;
 using UnityEngine;
 
 namespace LobbyScene
@@ -8,39 +9,30 @@ namespace LobbyScene
     {
         public event Action OnIdle;
         public event Action OnMatched;
+        public event Action OnMatching;
 
-        private bool _active;
         private bool _waiting;
         private float _timer;
-        private float _interval;
-        private const float MinInterval = 1f;
-        private const float MaxInterval = 5f;
-
-        public void StartPolling()
-        {
-            _active = true;
-            _waiting = false;
-            _timer = 0f;
-            _interval = MinInterval;
-        }
+        private bool _prevOnline;
+        private const float Interval = 2f;
 
         public void StopPolling()
         {
-            _active = false;
             _waiting = false;
             _timer = 0f;
-            _interval = MinInterval;
+            _prevOnline = false;
+            enabled = false;
         }
 
         private void Update()
         {
-            if (!_active || _waiting) return;
+            if (_waiting) return;
 
             _timer += Time.deltaTime;
-            if (_timer < _interval) return;
+            if (_timer < Interval) return;
 
+            WDebug.Log("[Match Status Poller] Checking user status...");
             _timer = 0f;
-            _interval = Mathf.Min(_interval * 2f, MaxInterval);
             _waiting = true;
             StartCoroutine(StatusTracker.GetUserStatus(HandleStatus));
         }
@@ -51,13 +43,19 @@ namespace LobbyScene
             switch (state)
             {
                 case "Online":
-                    StopPolling();
-                    OnIdle?.Invoke();
+                    if (_prevOnline) OnIdle?.Invoke();
+                    else WDebug.Log("[Match Status Poller] Stat: Online - waiting for confirmation.");
+                    _prevOnline = true;
                     break;
                 case "OnPlaying":
-                    Debug.Log("User matched: Transitioning to game scene.");
+                    _prevOnline = false;
+                    Debug.Log("[Match Status Poller] User matched: Transitioning to game scene.");
                     StopPolling();
                     OnMatched?.Invoke();
+                    break;
+                case "OnMatching":
+                    _prevOnline = false;
+                    OnMatching?.Invoke();
                     break;
             }
             yield break;

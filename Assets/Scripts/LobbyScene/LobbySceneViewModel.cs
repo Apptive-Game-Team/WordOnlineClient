@@ -23,6 +23,7 @@ namespace LobbyScene
         {
             base.Awake();
             _poller.OnIdle += () => CurrentState.UpdateData(LobbyState.Idle);
+            _poller.OnMatching += () => CurrentState.UpdateData(LobbyState.Matching);
             _poller.OnMatched += () => StartCoroutine(StatusTracker.RecoverGameSession());
         }
 
@@ -38,8 +39,7 @@ namespace LobbyScene
                     CurrentState.UpdateData(LobbyState.Idle);
                     return;
                 }
-                Debug.Log("Enqueued: starting match poller.");
-                _poller.StartPolling();
+                Debug.Log("Enqueued: waiting for match.");
             }));
         }
 
@@ -67,7 +67,6 @@ namespace LobbyScene
         public void RemoveFromQueue()
         {
             Debug.Log("Remove button clicked: Removing player.");
-            _poller.StopPolling();
             StartCoroutine(_matchQueueApi.RemoveFromQueue());
             CheckIfInQueue();
         }
