@@ -1,6 +1,5 @@
 using System.Collections;
 using Data;
-using GameScene.Dto;
 using Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +8,9 @@ namespace LobbyScene
 {
     public class LobbySceneViewModel : LocalSingletonObject<LobbySceneViewModel>
     {
-        
-        [SerializeField]
-        private MatchQueueApiService _matchQueueApi;
-        
+        [SerializeField] private MatchQueueApiService _matchQueueApi;
+        [SerializeField] private MatchStatusPoller _poller;
+
         public enum LobbyState
         {
             Idle,
@@ -20,145 +18,60 @@ namespace LobbyScene
         }
 
         public StateEvent<LobbyState> CurrentState = new StateEvent<LobbyState>(LobbyState.Idle);
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _poller.OnIdle += () => CurrentState.UpdateData(LobbyState.Idle);
+            _poller.OnMatched += () => StartCoroutine(StatusTracker.RecoverGameSession());
+        }
+
         public void Enqueue()
         {
             Debug.Log("Enqueue button clicked: Enqueueing player.");
             CurrentState.UpdateData(LobbyState.Matching);
-            StartCoroutine(_matchQueueApi.Enqueue(json =>
+            StartCoroutine(_matchQueueApi.Enqueue(messageDto =>
             {
-                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
-                switch (typeChecker.type)
+                if (messageDto == null || messageDto.message.Contains("Failed"))
                 {
-                    case "matchedInfoDto":
-                        Debug.Log("Practice match found: Transitioning to game scene.");
-                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                        OnMatched(matchedInfoDto);
-                        break;
-                    case "message":
-                        Debug.Log("Practice match message received.");
-                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
-                        if (messageDto.message.Contains("Successfully"))
-                        {
-                            Debug.Log("Practice match in progress...");
-                            CurrentState.UpdateData(LobbyState.Matching);
-                            _isPolling = true;
-                        }
-                        else if (messageDto.message.Contains("Failed"))
-                        {
-                            Debug.LogWarning("Practice match failed.");
-                            CurrentState.UpdateData(LobbyState.Idle);
-                        }
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
-                        break;
+                    Debug.LogWarning("Enqueue failed.");
+                    CurrentState.UpdateData(LobbyState.Idle);
+                    return;
                 }
+                Debug.Log("Enqueued: starting match poller.");
+                _poller.StartPolling();
             }));
         }
-        
+
         public void PlayPracticeMatch()
         {
             Debug.Log("Practice button clicked: Starting practice match.");
             CurrentState.UpdateData(LobbyState.Matching);
-            StartCoroutine(_matchQueueApi.MatchPractice(json =>
+            StartCoroutine(_matchQueueApi.MatchPractice(dto =>
             {
-                TypeChecker typeChecker = JsonUtility.FromJson<TypeChecker>(json);
-                switch (typeChecker.type)
-                {
-                    case "matchedInfoDto":
-                        Debug.Log("Practice match found: Transitioning to game scene.");
-                        MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                        OnMatched(matchedInfoDto);
-                        break;
-                    case "message":
-                        Debug.Log("Practice match message received.");
-                        SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(json);
-                        if (messageDto.message.Contains("Successfully"))
-                        {
-                            Debug.Log("Practice match in progress...");
-                            CurrentState.UpdateData(LobbyState.Matching);
-                        }
-                        else if (messageDto.message.Contains("Failed"))
-                        {
-                            Debug.LogWarning("Practice match failed.");
-                            CurrentState.UpdateData(LobbyState.Idle);
-                        }
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown event type received: {typeChecker.type}");
-                        break;
-                }
-            }));
-        }
-        
-        private bool _isPolling = false;
-        private float _pollTimer = 0;
-        private readonly float POLL_INTERVAL = 6.0f;
-
-        private void Update()
-        {
-            if (CurrentState.Data == LobbyState.Matching) 
-            {
-                
-                if (!_isPolling)
-                {
-                    return;
-                }
-                
-                if (_pollTimer > POLL_INTERVAL)
-                {
-                    PollMatchedInfo();
-                    _pollTimer = 0;
-                }
-                
-                _pollTimer += Time.deltaTime;
-            }
-            else
-            {
-                _isPolling = false;
-                _pollTimer = 0;
-            }
-        }
-        
-        public void PollMatchedInfo()
-        {
-            Debug.Log("Automatic polling: checking match status.");
-            StartCoroutine(StatusTracker.GetUserStatus(Handler));
-        }
-
-        private IEnumerator Handler(string state)
-        {
-            switch (state)
-            {
-                case "Online":
+                if (dto != null)
+                    OnMatched(dto);
+                else
                     CurrentState.UpdateData(LobbyState.Idle);
-                    break;
-                case "OnPlaying":
-                    Debug.Log("User matched: Transitioning to game scene.");
-                    yield return StatusTracker.RecoverGameSession();
-                    break;
-            }
+            }));
         }
 
         private void OnMatched(MatchedInfoDto matchedInfoDto)
         {
             SceneContext.MatchInfo = matchedInfoDto;
-            string targetSceneName = "GameScene";
-            if (SceneManager.GetActiveScene().name.Contains(targetSceneName))
-            {
-                return;
-            }
+            const string targetSceneName = "GameScene";
+            if (SceneManager.GetActiveScene().name.Contains(targetSceneName)) return;
             SceneManager.LoadScene(targetSceneName);
         }
-        
+
         public void RemoveFromQueue()
         {
             Debug.Log("Remove button clicked: Removing player.");
+            _poller.StopPolling();
             StartCoroutine(_matchQueueApi.RemoveFromQueue());
             CheckIfInQueue();
         }
-        
+
         public void CheckIfInQueue()
         {
             Debug.Log("Check button clicked: Checking player.");
