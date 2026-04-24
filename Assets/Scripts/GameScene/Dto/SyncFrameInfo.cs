@@ -7,10 +7,9 @@ namespace GameScene.Dto
     public class SyncFrameInfo
     {
         public string type;
-        public int frameNum;
-
+        
         public int remainingTime;
-
+        
         public int updatedMana;
         public int leftPlayerHp;
         public int rightPlayerHp;
