@@ -8,6 +8,7 @@ namespace Data
     {
         public int id;
         public Vector3 position;
+        public string master;
         public int hp;
         public int maxHp;
         public string status;
@@ -17,6 +18,7 @@ namespace Data
         {
             id = snapshotObjectDto.id;
             position = new Vector3(snapshotObjectDto.x, snapshotObjectDto.y, snapshotObjectDto.z);
+            master = snapshotObjectDto.master;
             hp = snapshotObjectDto.hp;
             maxHp = snapshotObjectDto.maxHp;
             status = snapshotObjectDto.status;

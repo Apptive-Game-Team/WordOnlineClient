@@ -96,6 +96,10 @@ namespace Data.Magic
               // 베타 전 마지막 상위 마법 
             new (){id = 50, magicName = "Vine Colony", recipe = new () { CardType.Build , CardType.Nature, CardType.Nature}, spritePath = "Game/build/vine_colony"},
             new (){id = 51, magicName = "Rock Mage", recipe = new () { CardType.Spawn , CardType.Shoot, CardType.Rock}, spritePath = "Game/spawn/rock_mage"},
+            // 신규 제어권 관련 마법
+            new (){id = 21, magicName = "Will O Wisp", recipe = new () { CardType.Shoot , CardType.Fire, CardType.Fire, CardType.Nature}, spritePath = "Game/shoot/will_o_wisp"},
+            new (){id = 23, magicName = "Frenzy Totem", recipe = new () { CardType.Drop , CardType.Fire, CardType.Nature}, spritePath = "Game/drop/frenzy_totem"},
+            
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)

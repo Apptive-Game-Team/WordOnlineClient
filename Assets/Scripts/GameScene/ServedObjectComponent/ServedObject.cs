@@ -19,6 +19,7 @@ namespace GameScene.ServedObjectComponent
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
         [SerializeField] private float _teamIndicatorVerticalOffset = 0.1f;
+        [SerializeField] private float _teamIndicatorHpBarSpacing = 0.08f;
         [SerializeField] private float _teamIndicatorScale = 0.3f;
         [SerializeField] private float _effectScaleReferenceHeight = 1.2f;
         [SerializeField] private float _effectScaleMultiplier = 1f;
@@ -31,6 +32,7 @@ namespace GameScene.ServedObjectComponent
         private string master;
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
+        private ServedObjectHpBar _servedObjectHpBar;
 
         private PositionUpdater _positionUpdater;
 
@@ -81,6 +83,7 @@ namespace GameScene.ServedObjectComponent
 
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
+            UpdateMasterIfNeeded(updatedObjectDto.master);
             _positionUpdater?.UpdatePosition(updatedObjectDto);
 
             if (hp != updatedObjectDto.hp)
@@ -199,6 +202,17 @@ namespace GameScene.ServedObjectComponent
             lastHp = hp;
         }
 
+        private void UpdateMasterIfNeeded(string updatedMaster)
+        {
+            if (string.IsNullOrEmpty(updatedMaster) || string.Equals(master, updatedMaster, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            master = updatedMaster;
+            UpdateTeamIndicator();
+        }
+
         private void EnsureSpriteRenderer()
         {
             if (_spriteRenderer == null)
@@ -287,8 +301,35 @@ namespace GameScene.ServedObjectComponent
                 _teamIndicatorTransform = _teamIndicatorRenderer.transform;
             }
 
-            _teamIndicatorTransform.position = GetSpeechBubbleAnchorWorldPosition(_teamIndicatorVerticalOffset);
+            _teamIndicatorTransform.position = GetTeamIndicatorWorldPosition();
             UpdateTeamIndicatorSorting();
+        }
+
+        private Vector3 GetTeamIndicatorWorldPosition()
+        {
+            if (TryGetHpBarIndicatorWorldPosition(out Vector3 hpBarIndicatorPosition))
+            {
+                return hpBarIndicatorPosition;
+            }
+
+            return GetSpeechBubbleAnchorWorldPosition(_teamIndicatorVerticalOffset);
+        }
+
+        private bool TryGetHpBarIndicatorWorldPosition(out Vector3 position)
+        {
+            if (_servedObjectHpBar == null)
+            {
+                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+            }
+
+            if (_servedObjectHpBar != null &&
+                _servedObjectHpBar.TryGetTopWorldPosition(_teamIndicatorHpBarSpacing, out position))
+            {
+                return true;
+            }
+
+            position = default;
+            return false;
         }
 
         private void UpdateTeamIndicatorSorting()

@@ -17,9 +17,12 @@ namespace GameScene.ServedObjectComponent
         private Image fillImage;
         private Image backgroundImage;
         private bool colorsApplied;
+        private RectTransform rootRectTransform;
+        private string appliedMaster;
     
         private void Awake()
         {
+            rootRectTransform = transform as RectTransform;
             slider = GetComponentInChildren<Slider>();
             if (slider == null)
             {
@@ -47,7 +50,8 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            if (!colorsApplied)
+            string currentMaster = servedObject.GetMaster();
+            if (!colorsApplied || appliedMaster != currentMaster)
             {
                 ApplyTeamColors();
             }
@@ -58,9 +62,15 @@ namespace GameScene.ServedObjectComponent
 
         private void ApplyTeamColors()
         {
+            if (servedObject == null)
+            {
+                return;
+            }
+
+            string currentMaster = servedObject.GetMaster();
             if (fillImage != null)
             {
-                fillImage.color = GetHpFillColor(servedObject.GetMaster());
+                fillImage.color = GetHpFillColor(currentMaster);
             }
 
             if (backgroundImage != null)
@@ -68,6 +78,7 @@ namespace GameScene.ServedObjectComponent
                 backgroundImage.color = DefaultBackgroundColor;
             }
 
+            appliedMaster = currentMaster;
             colorsApplied = true;
         }
 
@@ -96,6 +107,25 @@ namespace GameScene.ServedObjectComponent
                 default:
                     return NeutralHpFillColor;
             }
+        }
+
+        public bool TryGetTopWorldPosition(float verticalOffset, out Vector3 position)
+        {
+            if (rootRectTransform == null)
+            {
+                rootRectTransform = transform as RectTransform;
+            }
+
+            if (rootRectTransform == null)
+            {
+                position = default;
+                return false;
+            }
+
+            Vector3[] corners = new Vector3[4];
+            rootRectTransform.GetWorldCorners(corners);
+            position = (corners[1] + corners[2]) * 0.5f + Vector3.up * verticalOffset;
+            return true;
         }
     }
 }
