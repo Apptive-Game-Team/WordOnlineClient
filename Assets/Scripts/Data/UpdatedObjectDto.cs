@@ -1,3 +1,4 @@
+using GameScene.Dto;
 using UnityEngine;
 
 namespace Data

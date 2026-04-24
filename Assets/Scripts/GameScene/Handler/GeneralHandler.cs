@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameScene.Handler
 {
-    public class GeneralHandler
+    public class GeneralHandler : IFrameInfoHandler<string>
     {
         private readonly DeltaFrameHandler deltaFrameHandler = new DeltaFrameHandler();
         private readonly ResultHandler resultHandler = new ResultHandler();
