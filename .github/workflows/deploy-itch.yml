@@ -35,6 +35,16 @@ jobs:
             Library-WebGL-
             Library-
 
+      - name: Set build defines based on branch
+        id: build_defines
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "deploy" ]]; then
+            echo "CUSTOM_PARAMS=-logFile -" >> $GITHUB_OUTPUT
+          else
+            echo "CUSTOM_PARAMS=-logFile - -customDefines DEV_BUILD" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
         env:
@@ -44,7 +54,7 @@ jobs:
         with:
           unityVersion: 2022.3.22f1
           targetPlatform: WebGL
-          customParameters: -logFile -
+          customParameters: ${{ steps.build_defines.outputs.CUSTOM_PARAMS }}
       - name: Install Butler
         run: |
           curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default

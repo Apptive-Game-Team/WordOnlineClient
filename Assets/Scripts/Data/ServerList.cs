@@ -1,5 +1,3 @@
-using System;
-
 namespace Data
 {
     public static class ServerList
@@ -11,14 +9,11 @@ namespace Data
         //     new Server("로컬", "localhost", 7777)
         // };
 
-        private const string DevDeployType = "DEV";
-
-        // When the DEPLOY_TYPE environment variable is set to "DEV", the matching server
-        // uses the dev host (dev.lobby.ac.yunseong.dev); otherwise the production host is used.
-        private static readonly string MatchingServerHost =
-            Environment.GetEnvironmentVariable("DEPLOY_TYPE") == DevDeployType
-                ? "dev.lobby.ac.yunseong.dev"
-                : "lobby.ac.yunseong.dev";
+#if DEV_BUILD
+        private const string MatchingServerHost = "dev.lobby.ac.yunseong.dev";
+#else
+        private const string MatchingServerHost = "lobby.ac.yunseong.dev";
+#endif
 
         public static readonly Server MatchingServer = new Server("춘천", MatchingServerHost, 443, true);
         // public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
