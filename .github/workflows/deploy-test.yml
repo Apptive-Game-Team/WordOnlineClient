@@ -35,11 +35,6 @@ jobs:
             Library-WebGL-
             Library-
 
-      - name: Set build defines
-        id: build_defines
-        run: |
-          echo "CUSTOM_PARAMS=-logFile - -customDefines DEV_BUILD" >> $GITHUB_OUTPUT
-
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
         env:
@@ -49,7 +44,7 @@ jobs:
         with:
           unityVersion: 2022.3.22f1
           targetPlatform: WebGL
-          customParameters: ${{ steps.build_defines.outputs.CUSTOM_PARAMS }}
+          customParameters: -logFile - -executeMethod BuildScript.BuildDevWebGL
 
       - name: Push to another repo
         run: |
