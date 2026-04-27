@@ -44,7 +44,9 @@ jobs:
         with:
           unityVersion: 2022.3.22f1
           targetPlatform: WebGL
-          customParameters: -logFile - -executeMethod BuildScript.BuildDevWebGL
+          buildName: WebGL
+          buildMethod: BuildScript.BuildDevWebGL
+          customParameters: -logFile -
 
       - name: Push to another repo
         run: |
