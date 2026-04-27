@@ -35,15 +35,10 @@ jobs:
             Library-WebGL-
             Library-
 
-      - name: Set build defines based on branch
+      - name: Set build defines
         id: build_defines
         run: |
-          BRANCH="${{ github.ref_name }}"
-          if [[ "$BRANCH" == "main" || "$BRANCH" == "deploy" ]]; then
-            echo "CUSTOM_PARAMS=-logFile -" >> $GITHUB_OUTPUT
-          else
-            echo "CUSTOM_PARAMS=-logFile - -customDefines DEV_BUILD" >> $GITHUB_OUTPUT
-          fi
+          echo "CUSTOM_PARAMS=-logFile - -customDefines DEV_BUILD" >> $GITHUB_OUTPUT
 
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
