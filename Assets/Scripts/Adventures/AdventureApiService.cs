@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Data;
-using Data.Sse;
+using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,12 +11,25 @@ namespace Adventures
     {
         private const string DebugBaseUrl = "http://localhost:7777";
 
-        [SerializeField] private SseHandler sseHandler;
-
-        public IEnumerator RequestPVE(long scenarioId, Action<string> callback)
+        public IEnumerator RequestPVE(long scenarioId, Action<MatchedInfoDto> callback)
         {
-            sseHandler.StartSse($"{ServerList.MatchingServer.url}/api/scenarios/{scenarioId}/play", callback);
-            yield return null;
+            using var www = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/scenarios/{scenarioId}/play");
+            
+            Server.SetAcceptLanguage(www);
+            Server.SetAuthorization(www);
+            www.downloadHandler = new DownloadHandlerBuffer();
+            
+            yield return www.SendWebRequest();
+            
+            if (www.result != UnityWebRequest.Result.Success)            
+            {
+                WDebug.LogError($"[RequestPVE] fail: {www.responseCode} / {www.error}");
+                callback?.Invoke(null);
+                yield break;
+            }
+            
+            MatchedInfoDto dto = JsonUtility.FromJson<MatchedInfoDto>(www.downloadHandler.text);
+            callback?.Invoke(dto);
         }
 
         public IEnumerator RequestDebugPVE(long scenarioId, Action<string> onSuccess, Action<string> onFailure)

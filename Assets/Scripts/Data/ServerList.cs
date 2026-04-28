@@ -15,8 +15,8 @@ namespace Data
         private const string MatchingServerHost = "lobby.ac.yunseong.dev";
 #endif
 
-        public static readonly Server MatchingServer = new Server("춘천", MatchingServerHost, 443, true);
-        // public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
+        // public static readonly Server MatchingServer = new Server("춘천", MatchingServerHost, 443, true);
+        public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
         
         public static readonly Server AccountServer = new Server("춘천", "account.ac.yunseong.dev", 443, true);
     }
