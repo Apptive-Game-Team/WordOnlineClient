@@ -16,13 +16,12 @@ namespace GameScene.ServedObjectComponent
         private Slider slider;
         private Image fillImage;
         private Image backgroundImage;
+        private Image objectIndicatorImage;
         private bool colorsApplied;
-        private RectTransform rootRectTransform;
         private string appliedMaster;
     
         private void Awake()
         {
-            rootRectTransform = transform as RectTransform;
             slider = GetComponentInChildren<Slider>();
             if (slider == null)
             {
@@ -35,6 +34,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             backgroundImage = FindBackgroundImage();
+            objectIndicatorImage = FindImageByName("ObjectIndicator");
         }
     
         void Update()
@@ -78,16 +78,22 @@ namespace GameScene.ServedObjectComponent
                 backgroundImage.color = DefaultBackgroundColor;
             }
 
+            ApplyObjectIndicator(currentMaster);
             appliedMaster = currentMaster;
             colorsApplied = true;
         }
 
         private Image FindBackgroundImage()
         {
+            return FindImageByName("Background");
+        }
+
+        private Image FindImageByName(string imageName)
+        {
             Image[] images = GetComponentsInChildren<Image>(true);
             foreach (Image image in images)
             {
-                if (image != null && image.name == "Background")
+                if (image != null && image.name == imageName)
                 {
                     return image;
                 }
@@ -109,23 +115,45 @@ namespace GameScene.ServedObjectComponent
             }
         }
 
-        public bool TryGetTopWorldPosition(float verticalOffset, out Vector3 position)
+        public void SetObjectIndicatorMaster(string master)
         {
-            if (rootRectTransform == null)
+            if (objectIndicatorImage == null)
             {
-                rootRectTransform = transform as RectTransform;
+                objectIndicatorImage = FindImageByName("ObjectIndicator");
             }
 
-            if (rootRectTransform == null)
+            ApplyObjectIndicator(master);
+        }
+
+        private void ApplyObjectIndicator(string master)
+        {
+            if (objectIndicatorImage == null)
             {
-                position = default;
-                return false;
+                return;
             }
 
-            Vector3[] corners = new Vector3[4];
-            rootRectTransform.GetWorldCorners(corners);
-            position = (corners[1] + corners[2]) * 0.5f + Vector3.up * verticalOffset;
-            return true;
+            bool hasIndicatorColor = TryGetIndicatorColor(master, out Color indicatorColor);
+            objectIndicatorImage.enabled = hasIndicatorColor;
+            if (hasIndicatorColor)
+            {
+                objectIndicatorImage.color = indicatorColor;
+            }
+        }
+
+        private static bool TryGetIndicatorColor(string master, out Color indicatorColor)
+        {
+            switch (master)
+            {
+                case LeftPlayer:
+                    indicatorColor = LeftHpFillColor;
+                    return true;
+                case RightPlayer:
+                    indicatorColor = RightHpFillColor;
+                    return true;
+                default:
+                    indicatorColor = Color.clear;
+                    return false;
+            }
         }
     }
 }
