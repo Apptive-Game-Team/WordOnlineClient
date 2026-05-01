@@ -24,6 +24,7 @@ namespace GameScene.Object
                 {
                     // create
                     ObjectSpawner.Instance.SpawnObject(new CreatedObjectDto(snapshotObject));
+                    ObjectUpdater.Instance.UpdateObject(new UpdatedObjectDto(snapshotObject));
                 }
                 else
                 {
