@@ -42,6 +42,20 @@ namespace GameScene
             magicHelperUI.RefreshSuggestions();
         }
 
+        public void RemoveCard(string cardName)
+        {
+            foreach (Transform child in lowerBar.transform)
+            {
+                CardUI cardUI = child.GetComponent<CardUI>();
+                if (cardUI != null && cardUI.CardName == cardName)
+                {
+                    Destroy(child.gameObject);
+                    magicHelperUI.RefreshSuggestions();
+                    return;
+                }
+            }
+        }
+
         public List<string> GetAllCards()
         {
             if (lowerBar == null) return new List<string>();

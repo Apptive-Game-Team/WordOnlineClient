@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using GameScene.Dto;
 using GameScene.Object;
@@ -23,10 +23,33 @@ namespace GameScene.Handler
             // // 카드 추가
             try
             {
-                List<string> existedCards = GameSceneUIController.Instance.GetAllCards();
-                List<string> cardData = syncFrameInfo.snapshotResponseDto.myCards.ToList<string>();
-                existedCards.ForEach(x => cardData.Remove(x));
-                cardData.ForEach(x => GameSceneUIController.Instance.AddCard(x));
+                var currentCounts = GameSceneUIController.Instance.GetAllCards()
+                    .GroupBy(x => x)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
+                var targetCounts = syncFrameInfo.snapshotResponseDto.myCards
+                    .GroupBy(x => x)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
+                // 모든 카드 종류 추출 (현재 + 목표)
+                var allCardTypes = currentCounts.Keys.Union(targetCounts.Keys);
+
+                foreach (var card in allCardTypes)
+                {
+                    currentCounts.TryGetValue(card, out int currentCount);
+                    targetCounts.TryGetValue(card, out int targetCount);
+
+                    int diff = targetCount - currentCount;
+
+                    if (diff > 0) // 추가 필요
+                    {
+                        for (int i = 0; i < diff; i++) GameSceneUIController.Instance.AddCard(card);
+                    }
+                    else if (diff < 0) // 삭제 필요
+                    {
+                        for (int i = 0; i < Math.Abs(diff); i++) GameSceneUIController.Instance.RemoveCard(card);
+                    }
+                }
             }
             catch
             {
