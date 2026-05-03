@@ -287,6 +287,34 @@ MonoBehaviour:
     m_Key: leafair
     m_Metadata:
       m_Items: []
+  - m_Id: 69230920849154048
+    m_Key: emberSpiritSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231058833367040
+    m_Key: miniRockSwarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231228421660672
+    m_Key: vineToss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231485041762304
+    m_Key: rockRolling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231817163530240
+    m_Key: windBlade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231930279714816
+    m_Key: windTotem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69232075809480704
+    m_Key: rainCloud
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

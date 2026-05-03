@@ -283,7 +283,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69229639791271936
-    m_Localized: leafair
+    m_Localized: Leafair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69230920849154048
+    m_Localized: Ember Spirit Swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231058833367040
+    m_Localized: Mini Rock Swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231228421660672
+    m_Localized: Vine Toss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231485041762304
+    m_Localized: Rock Rolling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231817163530240
+    m_Localized: Wind Blade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69231930279714816
+    m_Localized: Wind Totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69232075809480704
+    m_Localized: Rain Cloud
     m_Metadata:
       m_Items: []
   references:
