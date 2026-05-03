@@ -314,6 +314,10 @@ MonoBehaviour:
     m_Localized: Rain Cloud
     m_Metadata:
       m_Items: []
+  - m_Id: 69232208460201984
+    m_Localized: Chicken Commando
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

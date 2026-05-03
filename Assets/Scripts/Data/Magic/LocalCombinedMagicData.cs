@@ -103,6 +103,7 @@ namespace Data.Magic
             // 신규 2카드 마법
             new CombinedMagicData(){id = 24, magicName = "Leafair", recipe = new () { CardType.Drop, CardType.Nature}, spritePath = "Game/drop/leafair"},
             new CombinedMagicData(){id = 54, magicName = "Rock Drop", recipe = new () { CardType.Drop, CardType.Rock}, spritePath = "Game/drop/rock_drop"},
+            new CombinedMagicData(){id = 55, magicName = "Chicken Commando", recipe = new () { CardType.Drop, CardType.Wind}, spritePath = "Game/drop/chicken_commando"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)

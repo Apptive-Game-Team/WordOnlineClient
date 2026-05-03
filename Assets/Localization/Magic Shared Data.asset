@@ -315,6 +315,10 @@ MonoBehaviour:
     m_Key: rainCloud
     m_Metadata:
       m_Items: []
+  - m_Id: 69232208460201984
+    m_Key: chickenCommando
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
