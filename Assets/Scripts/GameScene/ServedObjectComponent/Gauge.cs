@@ -1,5 +1,6 @@
-namespace GameScene.Dto
+namespace GameScene.ServedObjectComponent
 {
+    [System.Serializable]
     public class Gauge
     {
         public float value;

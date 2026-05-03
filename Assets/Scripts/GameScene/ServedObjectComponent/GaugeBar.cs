@@ -13,7 +13,7 @@ namespace GameScene.ServedObjectComponent
 
         private void Awake()
         {
-            slider = GetComponent<Slider>();
+            slider = GetComponentInChildren<Slider>();
         }
 
         private void OnEnable()
