@@ -34,7 +34,9 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectHpBar _servedObjectHpBar;
+#if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
+#endif
 
         private PositionUpdater _positionUpdater;
 
@@ -103,6 +105,7 @@ namespace GameScene.ServedObjectComponent
 
         public void SetGizmos(List<Gizmo> gizmos)
         {
+#if UNITY_EDITOR
             if (_gizmoRenderer == null)
             {
                 _gizmoRenderer = GetComponent<ServedObjectGizmoRenderer>();
@@ -113,6 +116,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             _gizmoRenderer.SetGizmos(gizmos);
+#endif
         }
 
         private void HandleStatus(string status)

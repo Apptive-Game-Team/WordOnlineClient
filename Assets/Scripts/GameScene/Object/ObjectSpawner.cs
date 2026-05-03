@@ -29,7 +29,9 @@ namespace GameScene.Object
             
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
+#if UNITY_EDITOR
             servedObject.SetGizmos(createdObjectDto.gizmos);
+#endif
             
             WDebug.Log($"Spawned object: {spawnedObject}, master set to: {createdObjectDto.master}, id set to: {createdObjectDto.id}");
             try
