@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using GameScene.Dto;
+using GameScene.Dto.debug;
 using UnityEngine;
 
 namespace Data
@@ -10,6 +12,7 @@ namespace Data
         public string master;
         public Vector3 position;
         public string type; // enum 대응 가능
+        public List<Gizmo> gizmos;
 
         public CreatedObjectDto()
         {
