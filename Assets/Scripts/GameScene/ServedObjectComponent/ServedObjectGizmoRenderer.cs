@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameScene.Dto.debug;
+using Global;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent
@@ -98,6 +99,7 @@ namespace GameScene.ServedObjectComponent
 
         private void CreateGizmoRenderer(Gizmo gizmo, int index)
         {
+            Debug.Log("[Gizmo] Creating Gizmo Renderer");
             GameObject gizmoObject = new GameObject(GetGizmoObjectName(gizmo, index));
             gizmoObject.transform.SetParent(_gizmoContainer, false);
 
@@ -115,6 +117,7 @@ namespace GameScene.ServedObjectComponent
             lineRenderer.startColor = GetGizmoColor(gizmo.category);
             lineRenderer.endColor = lineRenderer.startColor;
 
+            WDebug.Log($"[Gizmo] Creating gizmo renderer for gizmo at relative position {gizmo.relativePosition}, type: {gizmo.type}, category: {gizmo.category}");
             Vector3[] points = BuildGizmoPoints(gizmo, index);
             lineRenderer.positionCount = points.Length;
             lineRenderer.SetPositions(points);
@@ -216,6 +219,7 @@ namespace GameScene.ServedObjectComponent
 
         private static Vector3[] BuildBoxPoints(Vector3 center, Vector3 boxSize)
         {
+            WDebug.Log($"[Gizmo] Building box points for gizmo at {center} with size {boxSize}");
             Vector3 safeSize = new Vector3(
                 Mathf.Max(boxSize.x, 0.1f),
                 Mathf.Max(boxSize.y, 0.1f),
