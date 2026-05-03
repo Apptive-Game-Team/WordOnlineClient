@@ -2,8 +2,8 @@ namespace GameScene.Dto
 {
     public class Gauge
     {
-        private float value;
-        private float maxValue;
-        private string category; // HP, TTL
+        public float value;
+        public float maxValue;
+        public string category; // HP, TTL
     }
 }
