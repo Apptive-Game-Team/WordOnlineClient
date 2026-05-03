@@ -18,5 +18,6 @@ namespace GameScene.Dto
         public int hp;
         public int maxHp;
         public List<Gizmo> gizmos;
+        public List<Gauge> gauges;
     }
 }

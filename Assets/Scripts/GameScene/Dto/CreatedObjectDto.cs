@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using GameScene.Dto;
 using GameScene.Dto.debug;
 using UnityEngine;
 
-namespace Data
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class CreatedObjectDto

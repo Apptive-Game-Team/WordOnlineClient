@@ -84,6 +84,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundCannon
       objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.04
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

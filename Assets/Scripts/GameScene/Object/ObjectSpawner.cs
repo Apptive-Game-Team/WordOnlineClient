@@ -1,5 +1,6 @@
 using Data;
 using Data.Sound;
+using GameScene.Dto;
 using GameScene.Exception;
 using GameScene.ServedObjectComponent;
 using Global;

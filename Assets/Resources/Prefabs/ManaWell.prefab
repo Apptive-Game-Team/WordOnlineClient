@@ -90,15 +90,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7632411676289019041, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.48
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 7632411676289019041, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.478
+      value: 1.34
       objectReference: {fileID: 0}
     - target: {fileID: 8347068386141385781, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_Name
       value: ManaWell
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.78
       objectReference: {fileID: 0}
     - target: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_Sprite

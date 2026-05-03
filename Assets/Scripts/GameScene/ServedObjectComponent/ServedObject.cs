@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using GameScene.Dto;
 using GameScene.Dto.debug;
 using GameScene.Object;
 using Global;
@@ -28,8 +29,9 @@ namespace GameScene.ServedObjectComponent
         [SerializeField] private float _effectScaleMax = 1.8f;
         public int id;
         private GameObject _effectInstance = null;
-        public int hp;
-        public int maxHp;
+        
+        public List<Gauge> gauges = new List<Gauge>();
+        
         private string master;
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
@@ -44,7 +46,7 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
-        public event Action<int> OnHpChanged;
+        public event Action<Gauge> OnGaugeChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
@@ -75,6 +77,16 @@ namespace GameScene.ServedObjectComponent
             }
         }
 
+        private void OnEnable()
+        {
+            OnGaugeChanged += HandleDamageEffect;
+        }
+
+        private void OnDisable()
+        {
+            OnGaugeChanged -= HandleDamageEffect;
+        }
+
         private void LateUpdate()
         {
             UpdateTeamIndicatorPosition();
@@ -90,17 +102,10 @@ namespace GameScene.ServedObjectComponent
             UpdateMasterIfNeeded(updatedObjectDto.master);
             _positionUpdater?.UpdatePosition(updatedObjectDto);
 
-            if (hp != updatedObjectDto.hp)
-            {
-                OnHpChanged?.Invoke(updatedObjectDto.hp);
-            }
-
-            hp = updatedObjectDto.hp;
-            maxHp = updatedObjectDto.maxHp;
+            HandleGaugeUpdate(updatedObjectDto.gauges);
 
             HandleStatus(updatedObjectDto.status);
             SetEffect(updatedObjectDto.effect);
-            HandleDamageEffect();
         }
 
         public void SetGizmos(List<Gizmo> gizmos)
@@ -207,18 +212,38 @@ namespace GameScene.ServedObjectComponent
 
             return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
         }
-        
-        private void HandleDamageEffect()
+
+        private void HandleGaugeUpdate(List<Gauge> gauges)
         {
-            if (hp < lastHp)
+            foreach (Gauge gauge in gauges)
+            {
+                Gauge temp = this.gauges.Find(existedGauge => existedGauge.category.Equals(gauge.category));
+                if (temp == null)
+                {
+                    this.gauges.Add(gauge);
+                }
+                else
+                {
+                    temp.maxValue = gauge.maxValue;
+                    temp.value = gauge.value;
+                }
+                OnGaugeChanged?.Invoke(gauge);
+            }
+        }
+        
+        private void HandleDamageEffect(Gauge gauge)
+        {
+            if (!gauge.category.Equals("HP")) return;
+            
+            if (gauge.value < lastHp)
             {
                 OnHpDecreased?.Invoke();
             }
-            if (hp > lastHp && hp != maxHp)
+            if (gauge.value > lastHp && !Mathf.Approximately(gauge.value, gauge.maxValue))
             {
                 OnHpIncreased?.Invoke();
             }
-            lastHp = hp;
+            lastHp = (int) gauge.value;
         }
 
         private void UpdateMasterIfNeeded(string updatedMaster)
