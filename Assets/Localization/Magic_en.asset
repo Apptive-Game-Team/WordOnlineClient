@@ -282,6 +282,10 @@ MonoBehaviour:
     m_Localized: Frenzy Totem
     m_Metadata:
       m_Items: []
+  - m_Id: 69229639791271936
+    m_Localized: leafair
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

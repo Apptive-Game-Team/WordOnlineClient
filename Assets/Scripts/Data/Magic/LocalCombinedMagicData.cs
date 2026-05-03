@@ -100,6 +100,8 @@ namespace Data.Magic
             new (){id = 21, magicName = "Will O Wisp", recipe = new () { CardType.Shoot , CardType.Fire, CardType.Fire, CardType.Nature}, spritePath = "Game/shoot/will_o_wisp"},
             new (){id = 23, magicName = "Frenzy Totem", recipe = new () { CardType.Drop , CardType.Fire, CardType.Nature}, spritePath = "Game/drop/frenzy_totem"},
             
+            // 신규 2카드 마법
+            new CombinedMagicData(){id = 24, magicName = "Leafair", recipe = new () { CardType.Drop, CardType.Nature}, spritePath = "Game/drop/leafair"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)
