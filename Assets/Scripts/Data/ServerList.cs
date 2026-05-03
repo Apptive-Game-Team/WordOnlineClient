@@ -9,11 +9,11 @@ namespace Data
         //     new Server("로컬", "localhost", 7777)
         // };
 
-// #if DEV_BUILD
+#if DEV_BUILD
         private const string MatchingServerHost = "dev.lobby.ac.yunseong.dev";
-// #else
-//         private const string MatchingServerHost = "lobby.ac.yunseong.dev";
-// #endif
+#else
+        private const string MatchingServerHost = "lobby.ac.yunseong.dev";
+#endif
 
         public static readonly Server MatchingServer = new Server("춘천", MatchingServerHost, 443, true);
         // public static readonly Server MatchingServer = new Server("춘천", "localhost", 6209, false);
