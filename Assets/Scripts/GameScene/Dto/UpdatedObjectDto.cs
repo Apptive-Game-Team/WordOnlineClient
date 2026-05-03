@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GameScene.Dto;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Data
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class UpdatedObjectDto

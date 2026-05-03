@@ -1,8 +1,8 @@
 using System;
-using Data;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using GameScene.Dto;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent

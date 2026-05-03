@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameScene.Dto.debug;
+using GameScene.ServedObjectComponent;
 
 namespace GameScene.Dto
 {
