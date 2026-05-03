@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Data;
+using GameScene.Dto.debug;
 using GameScene.Object;
 using Global;
 using UnityEngine;
@@ -32,6 +34,7 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectHpBar _servedObjectHpBar;
+        private ServedObjectGizmoRenderer _gizmoRenderer;
 
         private PositionUpdater _positionUpdater;
 
@@ -79,7 +82,7 @@ namespace GameScene.ServedObjectComponent
         {
             return master;
         }
-
+        
         public void UpdateObject(UpdatedObjectDto updatedObjectDto)
         {
             UpdateMasterIfNeeded(updatedObjectDto.master);
@@ -89,14 +92,27 @@ namespace GameScene.ServedObjectComponent
             {
                 OnHpChanged?.Invoke(updatedObjectDto.hp);
             }
+
             hp = updatedObjectDto.hp;
             maxHp = updatedObjectDto.maxHp;
 
             HandleStatus(updatedObjectDto.status);
-            
-            // TODO - Add Logic for Animation, State, Effect Atc
             SetEffect(updatedObjectDto.effect);
             HandleDamageEffect();
+        }
+
+        public void SetGizmos(List<Gizmo> gizmos)
+        {
+            if (_gizmoRenderer == null)
+            {
+                _gizmoRenderer = GetComponent<ServedObjectGizmoRenderer>();
+                if (_gizmoRenderer == null)
+                {
+                    _gizmoRenderer = gameObject.AddComponent<ServedObjectGizmoRenderer>();
+                }
+            }
+
+            _gizmoRenderer.SetGizmos(gizmos);
         }
 
         private void HandleStatus(string status)
@@ -152,7 +168,7 @@ namespace GameScene.ServedObjectComponent
             ApplyEffectScale(_effectInstance.transform);
         }
         
-        private Transform GetActualTransform()
+        public Transform GetActualTransform()
         {
             if (_actualTransform != null)
             {

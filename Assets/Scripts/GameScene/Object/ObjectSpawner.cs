@@ -29,6 +29,7 @@ namespace GameScene.Object
             
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
+            servedObject.SetGizmos(createdObjectDto.gizmos);
             
             WDebug.Log($"Spawned object: {spawnedObject}, master set to: {createdObjectDto.master}, id set to: {createdObjectDto.id}");
             try

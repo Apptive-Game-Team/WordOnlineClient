@@ -25,6 +25,7 @@ namespace Data
             master = objectDto.master;
             position = new Vector3(objectDto.x, objectDto.y, objectDto.z);
             type = objectDto.prefab;
+            gizmos = objectDto.gizmos;
         }
     }
 }
