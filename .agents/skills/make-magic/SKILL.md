@@ -25,7 +25,7 @@ If the request includes server work, only handle the client portion here.
 1. Inspect a nearby magic of the same family first.
 2. Update `LocalCombinedMagicData.dataList` with the new `CombinedMagicData` entry:
    use the server magic id, the display name, the exact recipe card order used by nearby entries, and the `Resources` sprite path without file extension.
-3. Add a new localization key to `Magic Shared Data.asset`.
+3. Add a new localization key tuple to `Magic Shared Data.asset`.
 4. Add matching English and Korean localized values using the same `m_Id` in both locale assets.
 5. Add or validate the prefab in `Assets/Resources/Prefabs/<Name>.prefab`.
 6. Confirm the prefab name matches what the server-created object type will load through `Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}")`.
@@ -49,6 +49,8 @@ If the request includes server work, only handle the client portion here.
 ## Prefab Rules
 
 - Prefer copying a nearby prefab of the same family and editing the instance overrides instead of building a YAML prefab from scratch.
+- If the magic family has a matching abstract base under `Assets/Resources/Prefabs/Abstract`, use that base pattern first. Prefer duplicating a nearby concrete variant that already inherits from the abstract prefab, then only override the root name and the sprite, audio, or other references you actually need.
+- For example, explode-family magic should follow the `Assets/Resources/Prefabs/Abstract/AbstractExplode.prefab` pattern by duplicating an existing variant such as `LeafExplode.prefab`.
 - Keep the prefab filename in PascalCase, for example `Leafair.prefab` or `FrenzyTotem.prefab`.
 - Keep the in-prefab root name aligned with the magic object name expected by the server.
 - If a prefab already exists, validate it instead of recreating it.
