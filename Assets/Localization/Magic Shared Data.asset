@@ -319,6 +319,10 @@ MonoBehaviour:
     m_Key: chickenCommando
     m_Metadata:
       m_Items: []
+  - m_Id: 69232350000000000
+    m_Key: overgrowth
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
