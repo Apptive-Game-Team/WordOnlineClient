@@ -1,7 +1,8 @@
-using GameScene.Dto;
+using System.Collections.Generic;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 
-namespace Data
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class UpdatedObjectDto
@@ -9,10 +10,9 @@ namespace Data
         public int id;
         public Vector3 position;
         public string master;
-        public int hp;
-        public int maxHp;
         public string status;
         public string effect;
+        public List<Gauge> gauges;
         
         public UpdatedObjectDto() { }
 
@@ -20,10 +20,9 @@ namespace Data
         {
             id = snapshotObjectDto.id;
             position = new Vector3(snapshotObjectDto.x, snapshotObjectDto.y, snapshotObjectDto.z);
-            hp = snapshotObjectDto.hp;
-            maxHp = snapshotObjectDto.maxHp;
             status = snapshotObjectDto.status;
             effect = snapshotObjectDto.effect;
+            gauges = snapshotObjectDto.gauges;
         }
     }
 }

@@ -123,6 +123,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.28
       objectReference: {fileID: 0}
+    - target: {fileID: 1799249546358094163, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799249546358094163, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2109636590089158751, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -159,6 +167,10 @@ PrefabInstance:
       propertyPath: attackSound
       value: 
       objectReference: {fileID: 8300000, guid: fe0f942cdd343584d90c300209bd8518, type: 3}
+    - target: {fileID: 5854729007614687354, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: servedObject
+      value: 
+      objectReference: {fileID: 2382569080358241624}
     - target: {fileID: 6414493381832372974, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.03
@@ -223,6 +235,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindTotem
       objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.796
+      objectReference: {fileID: 0}
     - target: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -251,6 +275,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4482838688472848121, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
   m_PrefabInstance: {fileID: 3434044365886374736}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2382569080358241624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1060800969627125256, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+  m_PrefabInstance: {fileID: 3434044365886374736}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664926474594645861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &6283774115668339200 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}

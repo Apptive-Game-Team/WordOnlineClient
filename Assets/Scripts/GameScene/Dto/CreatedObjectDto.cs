@@ -1,7 +1,8 @@
-using GameScene.Dto;
+using System.Collections.Generic;
+using GameScene.Dto.debug;
 using UnityEngine;
 
-namespace Data
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class CreatedObjectDto
@@ -10,6 +11,7 @@ namespace Data
         public string master;
         public Vector3 position;
         public string type; // enum 대응 가능
+        public List<Gizmo> gizmos;
 
         public CreatedObjectDto()
         {
@@ -22,6 +24,7 @@ namespace Data
             master = objectDto.master;
             position = new Vector3(objectDto.x, objectDto.y, objectDto.z);
             type = objectDto.prefab;
+            gizmos = objectDto.gizmos;
         }
     }
 }

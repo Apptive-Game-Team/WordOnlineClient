@@ -36,6 +36,23 @@ namespace GameScene.ServedObjectComponent
             backgroundImage = FindBackgroundImage();
             objectIndicatorImage = FindImageByName("ObjectIndicator");
         }
+
+        void Start()
+        {
+            if (servedObject == null)
+            {
+                servedObject = GetComponentInParent<ServedObject>();
+            }
+
+            servedObject.OnGaugeChanged += gauge =>
+            {
+                if (gauge.category.Equals("HP"))
+                {
+                    slider.maxValue = gauge.maxValue;
+                    slider.value = gauge.value;
+                }
+            };
+        }
     
         void Update()
         {
@@ -44,20 +61,11 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            if (servedObject == null)
-            {
-                servedObject = GetComponentInParent<ServedObject>();
-                return;
-            }
-
             string currentMaster = servedObject.GetMaster();
             if (!colorsApplied || appliedMaster != currentMaster)
             {
                 ApplyTeamColors();
             }
-        
-            slider.maxValue = servedObject.maxHp;
-            slider.value = servedObject.hp;
         }
 
         private void ApplyTeamColors()

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using GameScene.Dto.debug;
+using GameScene.ServedObjectComponent;
 
 namespace GameScene.Dto
 {
@@ -15,5 +18,7 @@ namespace GameScene.Dto
         public string effect;
         public int hp;
         public int maxHp;
+        public List<Gizmo> gizmos;
+        public List<Gauge> gauges;
     }
 }
