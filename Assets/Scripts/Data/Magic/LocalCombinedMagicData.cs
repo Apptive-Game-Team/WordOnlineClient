@@ -105,6 +105,7 @@ namespace Data.Magic
             new CombinedMagicData(){id = 54, magicName = "Rock Drop", recipe = new () { CardType.Drop, CardType.Rock}, spritePath = "Game/drop/rock_drop"},
             new CombinedMagicData(){id = 55, magicName = "Chicken Commando", recipe = new () { CardType.Drop, CardType.Wind}, spritePath = "Game/drop/chicken_commando"},
             new (){id = 56, magicName = "Overgrowth", recipe = new () { CardType.Explode , CardType.Nature}, spritePath = "Game/explode/overgrowth"},
+            new (){id = 57, magicName = "Crater", recipe = new () { CardType.Build , CardType.Fire}, spritePath = "Game/build/crater"},
         };
         
         public static CombinedMagicData GetCombinedMagicData(string name)

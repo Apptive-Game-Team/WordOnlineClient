@@ -323,6 +323,10 @@ MonoBehaviour:
     m_Key: overgrowth
     m_Metadata:
       m_Items: []
+  - m_Id: 69232450000000000
+    m_Key: crater
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

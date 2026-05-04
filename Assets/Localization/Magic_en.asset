@@ -322,6 +322,10 @@ MonoBehaviour:
     m_Localized: Overgrowth
     m_Metadata:
       m_Items: []
+  - m_Id: 69232450000000000
+    m_Localized: Crater
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
