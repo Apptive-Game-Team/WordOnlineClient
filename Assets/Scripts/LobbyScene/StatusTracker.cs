@@ -50,24 +50,24 @@ namespace LobbyScene
             }
 
             StatusDto dto = null;
+            bool jsonParseError = false;
             try { dto = JsonUtility.FromJson<StatusDto>(www.downloadHandler.text); }
             catch (Exception e)
             {
                 WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
-                handler.Invoke(null);
-                yield break;
+                jsonParseError = true;
             }
 
-            if (dto == null || string.IsNullOrEmpty(dto.status))
+            if (jsonParseError || dto == null || string.IsNullOrEmpty(dto.status))
             {
                 WDebug.LogWarning("[GetUserStatus] empty status");
-                handler.Invoke(null);
+                yield return handler.Invoke(null);
                 yield break;
             }
 
             WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
 
-            handler.Invoke(dto.status);
+            yield return handler.Invoke(dto.status);
         }
 
         private static IEnumerator HandleUserStatus(string status)
