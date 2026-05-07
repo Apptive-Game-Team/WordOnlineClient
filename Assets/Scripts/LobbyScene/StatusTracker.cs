@@ -54,18 +54,20 @@ namespace LobbyScene
             catch (Exception e)
             {
                 WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
+                handler.Invoke(null);
                 yield break;
             }
 
             if (dto == null || string.IsNullOrEmpty(dto.status))
             {
                 WDebug.LogWarning("[GetUserStatus] empty status");
+                handler.Invoke(null);
                 yield break;
             }
 
             WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
 
-            yield return handler.Invoke(dto.status);
+            handler.Invoke(dto.status);
         }
 
         private static IEnumerator HandleUserStatus(string status)

@@ -40,6 +40,10 @@ namespace LobbyScene
         private IEnumerator HandleStatus(string state)
         {
             _waiting = false;
+
+            if (state == null)
+                yield return null;
+            
             switch (state)
             {
                 case "Online":
