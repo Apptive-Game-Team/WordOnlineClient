@@ -326,6 +326,14 @@ MonoBehaviour:
     m_Localized: Crater
     m_Metadata:
       m_Items: []
+  - m_Id: 70132200897875968
+    m_Localized: Zap mouse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70132293805903872
+    m_Localized: Rallying Torch
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
