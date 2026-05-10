@@ -11,18 +11,21 @@ namespace Data.Magic
 
         public void GetCombinedMagicData(Action<List<CombinedMagicData>> callback)
         {
-            apiClient.GetUserMagic(userMagicResponse =>
+            MagicInfoDataSource.Instance.GetMagics(_ =>
             {
-                if (userMagicResponse == null)
+                apiClient.GetUserMagic(userMagicResponse =>
                 {
-                    callback.Invoke(null);
-                    return;
-                }
+                    if (userMagicResponse == null)
+                    {
+                        callback.Invoke(null);
+                        return;
+                    }
 
-                List<CombinedMagicData> list = LocalCombinedMagicData.GetEffectiveDataList()
-                    .Where((data) => userMagicResponse.magicIds.Contains(data.id))
-                    .ToList();
-                callback.Invoke(list);
+                    List<CombinedMagicData> list = LocalCombinedMagicData.GetEffectiveDataList()
+                        .Where((data) => userMagicResponse.magicIds.Contains(data.id))
+                        .ToList();
+                    callback.Invoke(list);
+                });
             });
         }
     }
