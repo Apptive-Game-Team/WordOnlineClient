@@ -38,6 +38,7 @@ namespace LobbyScene
             WDebug.Log("LobbyUIController Start");
             LoadingPage.Instance.IsLoading = true;
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
+            MagicInfoDataSource.Instance.RefreshMagics();
             StartCoroutine(LoadUserInfo());
         }
     
@@ -381,7 +382,7 @@ namespace LobbyScene
 
         private static bool TryResolveMagicSprite(long rewardId, out Sprite sprite)
         {
-            sprite = LocalCombinedMagicData.dataList
+            sprite = LocalCombinedMagicData.GetEffectiveDataList()
                 .FirstOrDefault(magicData => magicData.id == rewardId)
                 ?.GetSprite();
             return sprite != null;

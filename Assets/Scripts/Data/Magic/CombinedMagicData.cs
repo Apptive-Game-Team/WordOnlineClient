@@ -6,13 +6,20 @@ namespace Data.Magic
     public class CombinedMagicData
     {
         public long id;
-        public string magicName;
+        public string localizationKey;
+        public string resourceName;
         public List<CardType> recipe;
-        public string spritePath;
+
+        private const string SpriteResourceRoot = "Game/sprites";
         
         public Sprite GetSprite()
         {
-            return Resources.Load<Sprite>(spritePath);
+            if (string.IsNullOrEmpty(resourceName))
+            {
+                return null;
+            }
+
+            return Resources.Load<Sprite>($"{SpriteResourceRoot}/{resourceName}");
         }
     }
 }

@@ -1,7 +1,6 @@
 using Data;
 using Data.Localization;
 using Data.Magic;
-using Data.Util;
 using GameScene.Card;
 using TMPro;
 using UnityEngine;
@@ -34,7 +33,7 @@ namespace MagicBookScene
                 cardObj.transform.SetParent(cardsParent, false);
             }
 
-            nameText.text = await LocaleUtils.GetStringAsync("Magic", StringUtils.ToCamelCase(data.magicName));
+            nameText.text = await LocaleUtils.GetStringAsync("Magic", data.localizationKey);
         }
     }
 }
