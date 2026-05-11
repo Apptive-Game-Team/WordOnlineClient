@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data.Magic;
+using Global;
 using UnityEngine;
 
 namespace MagicBookScene
@@ -14,15 +15,22 @@ namespace MagicBookScene
         
         private void Awake()
         {
-            userMagicApiClient.GetUserMagic((response) =>
+            var savedMagicJson = PlayerPrefs.GetString(MagicInfoDataSource.PlayerPrefsKeyName, string.Empty);
+            WDebug.Log($"[MagicInfoFactory] Saved magic json: {savedMagicJson}");
+
+            MagicInfoDataSource.Instance.GetMagics(_ =>
             {
-                CreateAllMagicInfo(response.magicIds);
+                userMagicApiClient.GetUserMagic(response =>
+                {
+                    CreateAllMagicInfo(response?.magicIds);
+                });
             });
         }
         
         private void CreateAllMagicInfo(List<long> userMagicIds = null)
         {
-            foreach (var data in LocalCombinedMagicData.dataList)
+            userMagicIds ??= new List<long>();
+            foreach (var data in LocalCombinedMagicData.GetEffectiveDataList())
             {
                 bool active = userMagicIds.Contains(data.id);
                 CreateMagicInfo(data, active);

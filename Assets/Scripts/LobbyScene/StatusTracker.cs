@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Data;
+using Data.Magic;
 using Global;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -118,7 +119,7 @@ namespace LobbyScene
                 string json = getSessionReq.downloadHandler.text;
                 MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
                 SceneContext.MatchInfo = matchedInfoDto;
-                SceneManager.LoadScene("GameScene");
+                MagicInfoDataSource.Instance.RefreshMagics(_ => SceneManager.LoadScene("GameScene"));
             } catch (Exception e)
             {
                 WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
