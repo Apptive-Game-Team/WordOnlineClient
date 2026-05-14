@@ -335,6 +335,10 @@ MonoBehaviour:
     m_Key: rallyingTorch
     m_Metadata:
       m_Items: []
+  - m_Id: 73103741614686208
+    m_Key: razorGale
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Data;
+using Data.Magic;
 using Global;
 using Global.Button;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace LobbyScene.Debugger
 
             DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, "left", SceneContext.UserID);
-            SceneManager.LoadScene("GameScene");
+            MagicInfoDataSource.Instance.RefreshMagics(_ => SceneManager.LoadScene("GameScene"));
         }
 
         private IEnumerator EnterDebugSession()
@@ -67,7 +68,7 @@ namespace LobbyScene.Debugger
 
             DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, side, SceneContext.UserID);
-            SceneManager.LoadScene("GameScene");
+            MagicInfoDataSource.Instance.RefreshMagics(_ => SceneManager.LoadScene("GameScene"));
         }
     }
 }

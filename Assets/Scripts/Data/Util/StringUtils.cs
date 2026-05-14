@@ -34,6 +34,24 @@ namespace Data.Util
 
             return sb.ToString();
         }
+
+        public static string ToPascalCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            var words = input.Split(new char[] { ' ', '_', '-' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                sb.Append(char.ToUpper(word[0], CultureInfo.InvariantCulture));
+                if (word.Length > 1)
+                    sb.Append(word.Substring(1).ToLower(CultureInfo.InvariantCulture));
+            }
+
+            return sb.ToString();
+        }
     }
 
 }
