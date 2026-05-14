@@ -334,6 +334,10 @@ MonoBehaviour:
     m_Localized: Rallying Torch
     m_Metadata:
       m_Items: []
+  - m_Id: 73103741614686208
+    m_Localized: Razor Gale
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
