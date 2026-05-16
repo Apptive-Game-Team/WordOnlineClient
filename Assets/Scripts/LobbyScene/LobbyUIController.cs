@@ -32,6 +32,8 @@ namespace LobbyScene
         public LocalizedString noDecksAvailable;
         public LocalizedString deckSelectionFailed;
         public LocalizedString deckSelectionSuccess;
+        
+        private bool initializing = true;
     
         private void Start()
         {
@@ -116,12 +118,12 @@ namespace LobbyScene
             UpdateCaption(names[idx]);
         
             LoadingPage.Instance.IsLoading = false;
+            initializing = false;
         }
 
         // 3) 드랍다운에서 선택 바뀌었을 때
         public void OnDropdownChanged(int newIndex)
         {
-        
             var selected = userDecks[newIndex];
             DeckSceneContext.CurrentDeck = selected;     // 컨텍스트 갱신
             WDebug.Log($"index: {newIndex} 선택된 덱: {selected.name} (ID: {selected.id})");
@@ -145,7 +147,8 @@ namespace LobbyScene
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage(deckSelectionSuccess);
+                if (!initializing)
+                    SystemMessageUI.Instance.ShowMessage(deckSelectionSuccess);
                 WDebug.Log("덱 선택 성공: " + www.downloadHandler.text);
             }
         }
