@@ -338,6 +338,14 @@ MonoBehaviour:
     m_Localized: Razor Gale
     m_Metadata:
       m_Items: []
+  - m_Id: 73103810000000000
+    m_Localized: Bubble Generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73103910000000000
+    m_Localized: Electric Tower
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
