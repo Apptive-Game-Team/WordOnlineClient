@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LobbyScene.SettingPage
 {
@@ -21,6 +22,9 @@ namespace LobbyScene.SettingPage
                 case "GuestRegister":
                     pageStack.Push(guestRegisterPage);
                     break;
+                case "Profile":
+                    SceneManager.LoadScene("ProfileScene");
+                    return;
                 default:
                     pageStack.Push(settingPage);
                     break;
