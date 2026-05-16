@@ -5,5 +5,6 @@ namespace Data
     {
         public long id;
         public long selectedDeckId;
+        public int mmr;
     }
 }
