@@ -10,8 +10,11 @@ namespace Global
             get => _data;
             private set
             {
+                if (!_data.Equals(value))
+                {
+                    OnStateChange?.Invoke(value);
+                }
                 _data = value;
-                OnStateChange?.Invoke(_data);
             }
         }
 
