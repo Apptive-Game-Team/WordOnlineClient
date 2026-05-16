@@ -47,7 +47,7 @@ namespace LobbyScene
             }
         }
         
-        public IEnumerator RemoveFromQueue()
+        public IEnumerator RemoveFromQueue(Action<bool> callback = null)
         {
             using var webRequest = new UnityWebRequest($"{ServerList.MatchingServer.url}/api/match/queue/me", "DELETE");
         
@@ -55,6 +55,14 @@ namespace LobbyScene
             Server.SetAuthorization(webRequest);
             
             yield return webRequest.SendWebRequest();
+
+            bool isSuccess = webRequest.result == UnityWebRequest.Result.Success;
+            if (!isSuccess)
+            {
+                WDebug.LogError($"RemoveFromQueue error: {webRequest.error}");
+            }
+
+            callback?.Invoke(isSuccess);
         }
     
         public IEnumerator IsMeInQueue(Action<LobbySceneViewModel.LobbyState> callback)
