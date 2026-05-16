@@ -22,6 +22,7 @@ Use C# with 4-space indentation and K&R braces, matching the existing codebase. 
 
 ## Commit & Pull Request Guidelines
 Recent history favors short Conventional Commit subjects such as `feat: ...`, `refactor: ...`, and `chore: ...`. Keep the subject imperative and specific. Pull requests should include a short behavior summary, linked issue or ticket, test notes, and screenshots or short clips for UI or scene changes.
+Branch names should follow `<issue-label>/<issue-num>`, for example `feature/299`.
 
 ## Configuration Notes
 `DEV_BUILD` controls development server routing for WebGL builds. Avoid editing generated Unity metadata by hand unless the change is intentional, and keep `ProjectSettings/ProjectVersion.txt` in sync with the Unity version used for the change.
