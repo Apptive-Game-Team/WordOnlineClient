@@ -80,6 +80,18 @@ MonoBehaviour:
     m_Localized: Reward
     m_Metadata:
       m_Items: []
+  - m_Id: 73852343517437952
+    m_Localized: Searching for a match...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852596178116608
+    m_Localized: Matchmaking failed. Please try again later.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852848838795264
+    m_Localized: Matchmaking canceled.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

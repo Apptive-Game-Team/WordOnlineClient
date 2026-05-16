@@ -75,6 +75,18 @@ MonoBehaviour:
     m_Key: Reward
     m_Metadata:
       m_Items: []
+  - m_Id: 73852343517437952
+    m_Key: MatchingStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852596178116608
+    m_Key: MatchingFail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852848838795264
+    m_Key: MatchingCancel
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

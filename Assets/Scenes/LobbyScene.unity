@@ -275,8 +275,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 834ace8abdef40cca28c589d7c9dd90a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   bgmSlider: {fileID: 1040094668}
   uiSlider: {fileID: 1784838528}
   gameSlider: {fileID: 548905673}
@@ -1502,7 +1502,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
     m_TableEntryReference:
       m_KeyId: 2169947283456
-      m_Key: 
+      m_Key:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -1926,7 +1926,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
     m_TableEntryReference:
       m_KeyId: 21722735079055360
-      m_Key: 
+      m_Key:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -3983,7 +3983,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
     m_TableEntryReference:
       m_KeyId: 2384909557760
-      m_Key: 
+      m_Key:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -9217,6 +9217,7 @@ GameObject:
   - component: {fileID: 2065755164}
   - component: {fileID: 2065755166}
   - component: {fileID: 2065755167}
+  - component: {fileID: 2065755168}
   m_Layer: 5
   m_Name: LobbyUIController
   m_TagString: Untagged
@@ -9426,6 +9427,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 896868ad4e4114f119044b6dacdb4b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2065755168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065755157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1243caf5b3b7405a97608f82e6236161, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  viewModel: {fileID: 2065755165}
+  matchingStartMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
+    m_TableEntryReference:
+      m_KeyId: 73852343517437952
+      m_Key:
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  matchingFailMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
+    m_TableEntryReference:
+      m_KeyId: 73852596178116608
+      m_Key:
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  matchingCancelMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:3c47a636d3d4a4d6aad778789441531a
+    m_TableEntryReference:
+      m_KeyId: 73852848838795264
+      m_Key:
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2068123405
 GameObject:
   m_ObjectHideFlags: 0
