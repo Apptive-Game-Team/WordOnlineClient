@@ -339,6 +339,14 @@ MonoBehaviour:
     m_Key: razorGale
     m_Metadata:
       m_Items: []
+  - m_Id: 73103810000000000
+    m_Key: bubbleGenerator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73103910000000000
+    m_Key: electricTower
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
