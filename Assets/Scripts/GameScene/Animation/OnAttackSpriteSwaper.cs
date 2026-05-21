@@ -33,18 +33,6 @@ namespace GameScene.Animation
         {
             StartCoroutine(SwapSpriteCoroutine());
         }
-
-        private float timer = 0;
-        private void Update()
-        {
-            timer += Time.deltaTime;
-            if (timer >= 1)
-            {
-                timer = 0;
-                SwapSprite();
-            }
-            
-        }
         
         private IEnumerator SwapSpriteCoroutine()
         {
