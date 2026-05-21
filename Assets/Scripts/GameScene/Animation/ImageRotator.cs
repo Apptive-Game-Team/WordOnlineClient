@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace GameScene
+namespace GameScene.Animation
 {
     public class ImageRotator : MonoBehaviour
     {
