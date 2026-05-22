@@ -41,7 +41,7 @@ namespace LobbyScene
             WDebug.Log("LobbyUIController Start");
             LoadingPage.Instance.IsLoading = true;
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
-            StartCoroutine(GameDataManager.Instance.Initialize());
+            ParametersDataSource.Instance.RefreshParameters();
             MagicInfoDataSource.Instance.RefreshMagics();
             StartCoroutine(LoadUserInfo());
         }

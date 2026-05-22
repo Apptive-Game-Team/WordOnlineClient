@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using Data.Versioning;
 
-namespace Data.Magic
+namespace Data.GameConfig
 {
     [Serializable]
-    public class MagicInfoResponse : IVersionedResponse
+    public class ParametersResponse : IVersionedResponse
     {
         public bool requiresRefresh;
         public string version;
         public string source_url;
-        public List<MagicInfoDto> magics;
+        public List<GameParameterData> parameters;
 
         public bool RequiresRefresh
         {
