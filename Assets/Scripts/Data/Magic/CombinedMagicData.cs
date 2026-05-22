@@ -6,6 +6,7 @@ namespace Data.Magic
     public class CombinedMagicData
     {
         public long id;
+        public string serverName;
         public string localizationKey;
         public string resourceName;
         public List<CardType> recipe;

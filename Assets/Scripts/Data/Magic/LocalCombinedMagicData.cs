@@ -77,6 +77,7 @@ namespace Data.Magic
                 result.Add(new CombinedMagicData
                 {
                     id = serverRecipe.Id,
+                    serverName = serverRecipe.Name,
                     localizationKey = StringUtils.ToCamelCase(serverRecipe.Name),
                     resourceName = StringUtils.ToPascalCase(serverRecipe.Name),
                     recipe = recipe,
