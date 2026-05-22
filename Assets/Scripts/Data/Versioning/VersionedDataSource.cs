@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using Global;
 using UnityEngine;
 
 namespace Data.Versioning
 {
-    public abstract class VersionedDataSource<TClient, TResponse> : MonoBehaviour
+    public abstract class VersionedDataSource<TSelf, TClient, TResponse> : SingletonObject<TSelf>
+        where TSelf : VersionedDataSource<TSelf, TClient, TResponse>
         where TClient : VersionedApiClient<TResponse>, new()
         where TResponse : class, IVersionedResponse
     {
@@ -14,8 +16,9 @@ namespace Data.Versioning
         protected string Version { get; set; }
         protected string SourceUrl { get; private set; }
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Client = new TClient();
             LoadFromPlayerPrefs();
         }
@@ -103,5 +106,22 @@ namespace Data.Versioning
         protected abstract void InitializeData();
         protected abstract void ProcessResponse(TResponse response);
         protected abstract TResponse BuildSaveResponse();
+
+        protected static TSelf GetOrCreateInstance(string runtimeObjectName)
+        {
+            if (Instance != null)
+            {
+                return Instance;
+            }
+
+            var existing = FindObjectOfType<TSelf>();
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var host = new GameObject(runtimeObjectName);
+            return host.AddComponent<TSelf>();
+        }
     }
 }

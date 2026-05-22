@@ -36,7 +36,7 @@ namespace Data.GameConfig
                 return string.Empty;
             }
 
-            var parameters = GameDataManager.Config?.parameters;
+            var parameters = ParametersDataSource.GetCachedParameters();
             if (parameters == null || parameters.Count == 0)
             {
                 return string.Empty;

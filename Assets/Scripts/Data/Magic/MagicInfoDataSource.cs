@@ -2,48 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data.Versioning;
-using UnityEngine;
 
 namespace Data.Magic
 {
-    public class MagicInfoDataSource : VersionedDataSource<MagicInfoApiClient, MagicInfoResponse>
+    public class MagicInfoDataSource : VersionedDataSource<MagicInfoDataSource, MagicInfoApiClient, MagicInfoResponse>
     {
         public const string PlayerPrefsKeyName = "MagicInfoData";
 
         private const string RuntimeObjectName = nameof(MagicInfoDataSource);
 
-        private static MagicInfoDataSource instance;
-
         protected override string PlayerPrefsKey => PlayerPrefsKeyName;
 
         private List<MagicInfoDto> magics;
 
-        public static MagicInfoDataSource Instance
-        {
-            get
-            {
-                EnsureInstance();
-                return instance;
-            }
-        }
+        public new static MagicInfoDataSource Instance => GetOrCreateInstance(RuntimeObjectName);
 
-        public static IReadOnlyList<MagicInfoDto> GetCachedMagics()
-        {
-            return Instance.magics;
-        }
-
-        protected override void Awake()
-        {
-            if (instance != null && instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            base.Awake();
-        }
+        public static IReadOnlyList<MagicInfoDto> GetCachedMagics() => Instance.magics;
 
         protected override void InitializeData()
         {
@@ -80,24 +54,6 @@ namespace Data.Magic
         {
             yield return UpdateData();
             callback?.Invoke(magics);
-        }
-
-        private static void EnsureInstance()
-        {
-            if (instance != null)
-            {
-                return;
-            }
-
-            var existing = FindObjectOfType<MagicInfoDataSource>();
-            if (existing != null)
-            {
-                instance = existing;
-                return;
-            }
-
-            var host = new GameObject(RuntimeObjectName);
-            instance = host.AddComponent<MagicInfoDataSource>();
         }
     }
 }
