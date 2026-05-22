@@ -7,15 +7,15 @@ namespace Data.Magic
     [Serializable]
     public class MagicInfoResponse : IVersionedResponse
     {
-        public bool changed;
+        public bool requiresRefresh;
         public string version;
         public string source_url;
         public List<MagicInfoDto> magics;
 
-        public bool Changed
+        public bool RequiresRefresh
         {
-            get => changed;
-            set => changed = value;
+            get => requiresRefresh;
+            set => requiresRefresh = value;
         }
 
         public string Version

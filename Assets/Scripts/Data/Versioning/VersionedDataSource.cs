@@ -32,7 +32,7 @@ namespace Data.Versioning
             {
                 if (response != null)
                 {
-                    if (response.Changed)
+                    if (response.RequiresRefresh)
                     {
                         ProcessResponse(response);
                     }
@@ -69,7 +69,7 @@ namespace Data.Versioning
             }
 
             // Derived data sources provide the domain payload; the base layer stamps shared metadata.
-            saved.Changed = true;
+            saved.RequiresRefresh = true;
             saved.Version = Version;
             saved.SourceUrl = SourceUrl ?? Client.SourceUrl;
 
