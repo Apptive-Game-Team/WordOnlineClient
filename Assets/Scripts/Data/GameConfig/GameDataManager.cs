@@ -23,19 +23,31 @@ namespace Data.GameConfig
         private const string PrefKeyVersion = "GameData.Version";
         private const string PrefKeyConfig  = "GameData.Config";
 
-        public static GameDataManager Instance { get; private set; }
+        private const string RuntimeObjectName = nameof(GameDataManager);
+
+        private static GameDataManager instance;
+
+        public static GameDataManager Instance
+        {
+            get
+            {
+                EnsureInstance();
+                return instance;
+            }
+        }
 
         /// <summary>The live game configuration. Null until Initialize() completes.</summary>
         public static GameConfigData Config { get; private set; }
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
-            Instance = this;
+
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
@@ -55,9 +67,15 @@ namespace Data.GameConfig
                 && PlayerPrefs.HasKey(PrefKeyConfig))
             {
                 LoadFromPrefs();
-                WDebug.Log($"[GameDataManager] Loaded from cache (version={cachedVersion})");
-                onComplete?.Invoke(true);
-                yield break;
+                if (HasUsableConfig())
+                {
+                    WDebug.Log($"[GameDataManager] Loaded from cache (version={cachedVersion})");
+                    LogConfigSummary();
+                    onComplete?.Invoke(true);
+                    yield break;
+                }
+
+                WDebug.LogWarning("[GameDataManager] Cached config is incomplete. Fetching fresh config.");
             }
 
             if (serverVersion == null && PlayerPrefs.HasKey(PrefKeyConfig))
@@ -65,6 +83,7 @@ namespace Data.GameConfig
                 // Network unavailable but we have a cached copy — use it
                 LoadFromPrefs();
                 WDebug.LogWarning("[GameDataManager] Network unavailable, using stale cache");
+                LogConfigSummary();
                 onComplete?.Invoke(true);
                 yield break;
             }
@@ -90,12 +109,19 @@ namespace Data.GameConfig
             Config = freshConfig;
             SaveToPrefs(serverVersion, freshConfig);
             WDebug.Log($"[GameDataManager] Config refreshed (version={serverVersion})");
+            LogConfigSummary();
             onComplete?.Invoke(true);
+        }
+
+        private static bool HasUsableConfig()
+        {
+            return Config?.parameters != null && Config.parameters.Count > 0;
         }
 
         private void LoadFromPrefs()
         {
             string json = PlayerPrefs.GetString(PrefKeyConfig);
+            WDebug.Log($"[GameDataManager] Cached config json: {json}");
             Config = JsonUtility.FromJson<GameConfigData>(json);
         }
 
@@ -107,11 +133,31 @@ namespace Data.GameConfig
             PlayerPrefs.Save();
         }
 
+        private static void LogConfigSummary()
+        {
+            if (Config == null)
+            {
+                WDebug.LogWarning("[GameDataManager] Config is null.");
+                return;
+            }
+
+            var parameters = Config.parameters;
+            WDebug.Log(
+                "[GameDataManager] Config loaded: "
+                + $"version={Config.version}, "
+                + $"magicRecipes={Config.magicRecipes?.Count ?? 0}, "
+                + $"cards={Config.cards?.Count ?? 0}, "
+                + $"elementalChart={Config.elementalChart?.Count ?? 0}, "
+                + $"parameters={parameters?.Count ?? 0}");
+            WDebug.Log($"[GameDataManager] Parsed config json: {JsonUtility.ToJson(Config)}");
+        }
+
         private IEnumerator FetchVersion(Action<string> callback)
         {
             string url = $"{ServerList.MatchingServer.url}/api/data/version";
             using UnityWebRequest req = UnityWebRequest.Get(url);
             Server.SetAcceptLanguage(req);
+            Server.SetAuthorization(req);
             yield return req.SendWebRequest();
 
             if (req.result == UnityWebRequest.Result.Success)
@@ -121,7 +167,9 @@ namespace Data.GameConfig
             }
             else
             {
-                WDebug.LogWarning($"[GameDataManager] Version check failed: {req.error}");
+                WDebug.LogWarning(
+                    $"[GameDataManager] Version check failed: url={url}, "
+                    + $"code={req.responseCode}, error={req.error}, body={req.downloadHandler.text}");
                 callback(null);
             }
         }
@@ -131,18 +179,42 @@ namespace Data.GameConfig
             string url = $"{ServerList.MatchingServer.url}/api/data/config";
             using UnityWebRequest req = UnityWebRequest.Get(url);
             Server.SetAcceptLanguage(req);
+            Server.SetAuthorization(req);
             yield return req.SendWebRequest();
 
             if (req.result == UnityWebRequest.Result.Success)
             {
-                var config = JsonUtility.FromJson<GameConfigData>(req.downloadHandler.text);
+                string rawJson = req.downloadHandler.text;
+                WDebug.Log($"[GameDataManager] Config raw json: {rawJson}");
+
+                var config = JsonUtility.FromJson<GameConfigData>(rawJson);
                 callback(config);
             }
             else
             {
-                WDebug.LogError($"[GameDataManager] Config fetch failed: {req.error}");
+                WDebug.LogError(
+                    $"[GameDataManager] Config fetch failed: url={url}, "
+                    + $"code={req.responseCode}, error={req.error}, body={req.downloadHandler.text}");
                 callback(null);
             }
+        }
+
+        private static void EnsureInstance()
+        {
+            if (instance != null)
+            {
+                return;
+            }
+
+            var existing = FindObjectOfType<GameDataManager>();
+            if (existing != null)
+            {
+                instance = existing;
+                return;
+            }
+
+            var host = new GameObject(RuntimeObjectName);
+            instance = host.AddComponent<GameDataManager>();
         }
     }
 }

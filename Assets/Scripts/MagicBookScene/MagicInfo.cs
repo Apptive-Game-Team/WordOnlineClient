@@ -1,4 +1,5 @@
 using Data;
+using Data.GameConfig;
 using Data.Localization;
 using Data.Magic;
 using GameScene.Card;
@@ -13,6 +14,7 @@ namespace MagicBookScene
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private Transform cardsParent;
         [SerializeField] private Image magicImage;
+        [SerializeField] private TMP_Text statsText;
         
         [SerializeField] private CardImageMapper mapper;
 
@@ -34,6 +36,11 @@ namespace MagicBookScene
             }
 
             nameText.text = await LocaleUtils.GetStringAsync("Magic", data.localizationKey);
+            if (statsText != null)
+            {
+                statsText.text = GameParameterResolver.GetMagicDisplayStats(data);
+                statsText.gameObject.SetActive(!string.IsNullOrWhiteSpace(statsText.text));
+            }
         }
     }
 }

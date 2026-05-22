@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Data;
 using Data.Deck;
+using Data.GameConfig;
 using Data.Magic;
 using DeckScene;
 using GameScene.Card;
@@ -40,6 +41,7 @@ namespace LobbyScene
             WDebug.Log("LobbyUIController Start");
             LoadingPage.Instance.IsLoading = true;
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
+            StartCoroutine(GameDataManager.Instance.Initialize());
             MagicInfoDataSource.Instance.RefreshMagics();
             StartCoroutine(LoadUserInfo());
         }
