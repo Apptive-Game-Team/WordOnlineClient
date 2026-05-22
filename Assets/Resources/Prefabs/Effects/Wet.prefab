@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5099450576668582137}
+  - component: {fileID: 5686196955048082783}
   m_Layer: 0
   m_Name: Wet
   m_TagString: Untagged
@@ -32,6 +33,23 @@ Transform:
   - {fileID: 5938567179711533982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5686196955048082783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729798136192403716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0e232b46fa4646a31a77dab92a3bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 5256125276953354620}
+  sprites:
+  - {fileID: 21300000, guid: afc1eaa7ff6eb4a7899b5cdc85fdef92, type: 3}
+  - {fileID: 21300000, guid: 569f6d6a5cc804068ae19455ab533e42, type: 3}
+  rotateInterval: 0.5
 --- !u!1 &1794285580122300336
 GameObject:
   m_ObjectHideFlags: 0
