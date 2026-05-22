@@ -32,7 +32,11 @@ namespace Data.Versioning
             {
                 if (response != null)
                 {
-                    ProcessResponse(response);
+                    if (response.Changed)
+                    {
+                        ProcessResponse(response);
+                    }
+
                     ApplyFetchedMetadata(response);
                     SaveToPlayerPrefs();
                 }
@@ -65,6 +69,7 @@ namespace Data.Versioning
             }
 
             // Derived data sources provide the domain payload; the base layer stamps shared metadata.
+            saved.Changed = true;
             saved.Version = Version;
             saved.SourceUrl = SourceUrl ?? Client.SourceUrl;
 

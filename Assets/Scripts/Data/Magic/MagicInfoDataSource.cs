@@ -52,18 +52,10 @@ namespace Data.Magic
 
         protected override void ProcessResponse(MagicInfoResponse response)
         {
-            if (response.magics != null)
-            {
-                // Server payloads replace the cached set so removed magics do not linger locally.
-                magics = new List<MagicInfoDto>(response.magics);
-
-                return;
-            }
-
-            if (magics == null || magics.Count == 0)
-            {
-                Version = null;
-            }
+            // Server payloads replace the cached set so removed magics do not linger locally.
+            magics = response.magics != null
+                ? new List<MagicInfoDto>(response.magics)
+                : new List<MagicInfoDto>();
         }
 
         protected override MagicInfoResponse BuildSaveResponse()
