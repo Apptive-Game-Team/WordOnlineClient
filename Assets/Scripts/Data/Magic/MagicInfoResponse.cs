@@ -7,6 +7,7 @@ namespace Data.Magic
     public class MagicInfoResponse
     {
         public string version;
+        public string source_url;
         public List<MagicInfoDto> magics;
     }
 }

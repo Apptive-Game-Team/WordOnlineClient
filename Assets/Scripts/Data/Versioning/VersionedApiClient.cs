@@ -9,6 +9,7 @@ namespace Data.Versioning
     public abstract class VersionedApiClient<TResponse>
     {
         protected abstract string Endpoint { get; }
+        public string SourceUrl => Endpoint;
         protected virtual void OnSuccessRawJson(string json) { }
 
         public IEnumerator Get(Action<TResponse> onSuccess, string currentVersion = null)

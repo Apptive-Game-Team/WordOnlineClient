@@ -24,5 +24,12 @@ Use C# with 4-space indentation and K&R braces, matching the existing codebase. 
 Recent history favors short Conventional Commit subjects such as `feat: ...`, `refactor: ...`, and `chore: ...`. Keep the subject imperative and specific. Pull requests should include a short behavior summary, linked issue or ticket, test notes, and screenshots or short clips for UI or scene changes.
 Branch names should follow `<issue-label>/<issue-num>`, for example `feature/299`.
 
+## Agent Workflow
+When work starts from a new request, follow this order unless the user explicitly says otherwise:
+1. Create or identify the GitHub issue for the task.
+2. Create or switch to the branch that matches `<issue-label>/<issue-num>`.
+3. Implement and verify the change.
+4. Open a pull request that references the issue and includes test notes.
+
 ## Configuration Notes
 `DEV_BUILD` controls development server routing for WebGL builds. Avoid editing generated Unity metadata by hand unless the change is intentional, and keep `ProjectSettings/ProjectVersion.txt` in sync with the Unity version used for the change.

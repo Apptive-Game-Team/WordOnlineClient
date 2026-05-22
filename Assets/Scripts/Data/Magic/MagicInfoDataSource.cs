@@ -17,6 +17,7 @@ namespace Data.Magic
         protected override string PlayerPrefsKey => PlayerPrefsKeyName;
 
         private List<MagicInfoDto> magics;
+        private string sourceUrl;
 
         public static MagicInfoDataSource Instance
         {
@@ -52,30 +53,16 @@ namespace Data.Magic
 
         protected override void ProcessResponse(MagicInfoResponse response)
         {
-            if (response.magics != null && response.magics.Count > 0)
+            if (response.magics != null)
             {
-                if (magics == null)
-                {
-                    magics = new List<MagicInfoDto>();
-                }
-
-                foreach (var incomingMagic in response.magics)
-                {
-                    var existingIndex = magics.FindIndex(magic => magic.id == incomingMagic.id);
-                    if (existingIndex >= 0)
-                    {
-                        magics[existingIndex] = incomingMagic;
-                    }
-                    else
-                    {
-                        magics.Add(incomingMagic);
-                    }
-                }
+                magics = new List<MagicInfoDto>(response.magics);
 
                 if (!string.IsNullOrEmpty(response.version))
                 {
                     Version = response.version;
                 }
+
+                sourceUrl = response.source_url;
 
                 return;
             }
@@ -83,15 +70,17 @@ namespace Data.Magic
             if (magics == null || magics.Count == 0)
             {
                 Version = null;
+                sourceUrl = null;
             }
         }
 
         protected override void SaveToPlayerPrefs()
         {
-            var hasMagicData = magics != null && magics.Count > 0;
+            var hasMagicData = magics != null;
             var json = JsonUtility.ToJson(new MagicInfoResponse
             {
                 version = hasMagicData ? Version : null,
+                source_url = hasMagicData ? sourceUrl ?? Client?.SourceUrl : null,
                 magics = hasMagicData ? magics : new List<MagicInfoDto>()
             });
             PlayerPrefs.SetString(PlayerPrefsKey, json);
@@ -110,6 +99,11 @@ namespace Data.Magic
 
         private IEnumerator RefreshMagicsRoutine(Action<List<MagicInfoDto>> callback)
         {
+            if (!string.Equals(sourceUrl, Client.SourceUrl, StringComparison.Ordinal))
+            {
+                Version = null;
+            }
+
             yield return UpdateData();
             callback?.Invoke(magics);
         }
