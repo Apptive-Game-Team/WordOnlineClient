@@ -22,6 +22,7 @@ namespace Data.Versioning
 
         protected IEnumerator UpdateData()
         {
+            // A source URL change means the old version token is no longer valid for delta fetches.
             if (!string.Equals(SourceUrl, Client.SourceUrl, StringComparison.Ordinal))
             {
                 Version = null;
@@ -63,6 +64,7 @@ namespace Data.Versioning
                 return;
             }
 
+            // Derived data sources provide the domain payload; the base layer stamps shared metadata.
             saved.Version = Version;
             saved.SourceUrl = SourceUrl ?? Client.SourceUrl;
 

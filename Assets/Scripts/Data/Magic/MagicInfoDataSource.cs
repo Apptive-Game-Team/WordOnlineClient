@@ -54,6 +54,7 @@ namespace Data.Magic
         {
             if (response.magics != null)
             {
+                // Server payloads replace the cached set so removed magics do not linger locally.
                 magics = new List<MagicInfoDto>(response.magics);
 
                 return;
