@@ -17,7 +17,6 @@ namespace Data.Magic
         protected override string PlayerPrefsKey => PlayerPrefsKeyName;
 
         private List<MagicInfoDto> magics;
-        private string sourceUrl;
 
         public static MagicInfoDataSource Instance
         {
@@ -57,34 +56,21 @@ namespace Data.Magic
             {
                 magics = new List<MagicInfoDto>(response.magics);
 
-                if (!string.IsNullOrEmpty(response.version))
-                {
-                    Version = response.version;
-                }
-
-                sourceUrl = response.source_url;
-
                 return;
             }
 
             if (magics == null || magics.Count == 0)
             {
                 Version = null;
-                sourceUrl = null;
             }
         }
 
-        protected override void SaveToPlayerPrefs()
+        protected override MagicInfoResponse BuildSaveResponse()
         {
-            var hasMagicData = magics != null;
-            var json = JsonUtility.ToJson(new MagicInfoResponse
+            return new MagicInfoResponse
             {
-                version = hasMagicData ? Version : null,
-                source_url = hasMagicData ? sourceUrl ?? Client?.SourceUrl : null,
-                magics = hasMagicData ? magics : new List<MagicInfoDto>()
-            });
-            PlayerPrefs.SetString(PlayerPrefsKey, json);
-            PlayerPrefs.Save();
+                magics = magics ?? new List<MagicInfoDto>()
+            };
         }
 
         public void GetMagics(Action<List<MagicInfoDto>> callback)
@@ -99,11 +85,6 @@ namespace Data.Magic
 
         private IEnumerator RefreshMagicsRoutine(Action<List<MagicInfoDto>> callback)
         {
-            if (!string.Equals(sourceUrl, Client.SourceUrl, StringComparison.Ordinal))
-            {
-                Version = null;
-            }
-
             yield return UpdateData();
             callback?.Invoke(magics);
         }

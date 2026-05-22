@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,11 +6,13 @@ namespace Data.Versioning
 {
     public abstract class VersionedDataSource<TClient, TResponse> : MonoBehaviour
         where TClient : VersionedApiClient<TResponse>, new()
+        where TResponse : class, IVersionedResponse
     {
         protected abstract string PlayerPrefsKey { get; }
 
         protected TClient Client { get; private set; }
         protected string Version { get; set; }
+        protected string SourceUrl { get; private set; }
 
         protected virtual void Awake()
         {
@@ -19,11 +22,17 @@ namespace Data.Versioning
 
         protected IEnumerator UpdateData()
         {
+            if (!string.Equals(SourceUrl, Client.SourceUrl, StringComparison.Ordinal))
+            {
+                Version = null;
+            }
+
             yield return Client.Get(response =>
             {
                 if (response != null)
                 {
                     ProcessResponse(response);
+                    ApplyFetchedMetadata(response);
                     SaveToPlayerPrefs();
                 }
             }, Version);
@@ -42,11 +51,50 @@ namespace Data.Versioning
             if (saved != null)
             {
                 ProcessResponse(saved);
+                ApplyCachedMetadata(saved);
             }
+        }
+
+        protected virtual void SaveToPlayerPrefs()
+        {
+            var saved = BuildSaveResponse();
+            if (saved == null)
+            {
+                return;
+            }
+
+            saved.Version = Version;
+            saved.SourceUrl = SourceUrl ?? Client.SourceUrl;
+
+            var json = JsonUtility.ToJson(saved);
+            PlayerPrefs.SetString(PlayerPrefsKey, json);
+            PlayerPrefs.Save();
+        }
+
+        private void ApplyCachedMetadata(TResponse response)
+        {
+            if (!string.IsNullOrEmpty(response.Version))
+            {
+                Version = response.Version;
+            }
+
+            SourceUrl = response.SourceUrl;
+        }
+
+        private void ApplyFetchedMetadata(TResponse response)
+        {
+            if (!string.IsNullOrEmpty(response.Version))
+            {
+                Version = response.Version;
+            }
+
+            SourceUrl = !string.IsNullOrEmpty(response.SourceUrl)
+                ? response.SourceUrl
+                : Client.SourceUrl;
         }
 
         protected abstract void InitializeData();
         protected abstract void ProcessResponse(TResponse response);
-        protected abstract void SaveToPlayerPrefs();
+        protected abstract TResponse BuildSaveResponse();
     }
 }
