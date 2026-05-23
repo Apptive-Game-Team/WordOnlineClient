@@ -22,6 +22,8 @@ namespace TutorialScene
             cardInputSender = FindObjectOfType<TutorialCardSender>();
             currentAimObj = Instantiate(aimObject);
             currentRangeObj = Instantiate(rangeObject);
+            currentAimObj.SetActive(false);
+            currentRangeObj.SetActive(false);
         
             currentSkillIndicator = Instantiate(circleSkillIndicator);
             currentSkillIndicator.SetActive(false);
@@ -31,12 +33,9 @@ namespace TutorialScene
         {
             if (!cardInputSender.IsFieldSelectMode())
             {
-                if (currentAimObj.activeSelf)
-                {
-                    currentAimObj.SetActive(false);
-                    currentRangeObj.SetActive(false);
-                    if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
-                }
+                currentAimObj.SetActive(false);
+                currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
 
                 return;
             }

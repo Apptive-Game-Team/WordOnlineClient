@@ -4,26 +4,46 @@ namespace GameScene
 {
     public class CircleSkillIndicator : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
-        [SerializeField] private float zPlane = 0f; // 마우스를 투영할 월드 z값
+        [SerializeField] private float groundDiameterAtScaleOne = 1f;
+        private SpriteRenderer spriteRenderer;
 
-        void Awake()
+        private void Awake()
         {
-            if (!cam) cam = Camera.main; // MainCamera 태그 확인!
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        void Update()
+        public void SetIndicator(Vector3 position, float radius)
         {
-            if (!cam) return;
+            transform.position = position;
+            transform.localScale = GetScaleForRadius(radius);
+        }
 
-            var sp = Input.mousePosition;
-            // 카메라에서 zPlane까지의 거리
-            float dist = Mathf.Abs(zPlane - cam.transform.position.z);
-            sp.z = dist;
+        private Vector3 GetScaleForRadius(float radius)
+        {
+            if (radius <= 0f)
+            {
+                return new Vector3(0f, 0f, 1f);
+            }
 
-            var world = cam.ScreenToWorldPoint(sp);
-            world.z = zPlane; // 정확히 원하는 z로 고정
-            transform.position = world;
+            float groundDiameter = GetGroundDiameterAtScaleOne();
+            float targetDiameter = radius * 2f;
+            float scale = targetDiameter / groundDiameter;
+            return new Vector3(scale, scale, 1f);
+        }
+
+        private float GetGroundDiameterAtScaleOne()
+        {
+            if (groundDiameterAtScaleOne > 0f)
+            {
+                return groundDiameterAtScaleOne;
+            }
+
+            if (spriteRenderer == null || spriteRenderer.sprite == null)
+            {
+                return 1f;
+            }
+
+            return Mathf.Max(spriteRenderer.sprite.bounds.size.x, Mathf.Epsilon);
         }
     }
 }
