@@ -10,17 +10,15 @@ namespace Data.GameConfig
     {
         private static readonly string[] DisplayParamOrder =
         {
-            "damage",
             "hp",
+            "damage",
             "duration",
             "radius",
-            "range",
             "attack_range",
             "attack_interval",
             "speed",
             "count",
             "quantity",
-            "mana_cost"
         };
 
         private static readonly HashSet<string> HiddenParams = new()
