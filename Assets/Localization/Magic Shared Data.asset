@@ -347,6 +347,14 @@ MonoBehaviour:
     m_Key: electricTower
     m_Metadata:
       m_Items: []
+  - m_Id: 73104010000000000
+    m_Key: fireLordSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73104110000000000
+    m_Key: dimensionToad
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
