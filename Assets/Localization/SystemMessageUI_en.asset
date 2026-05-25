@@ -118,6 +118,18 @@ MonoBehaviour:
     m_Localized: The server is being deployed. Please try again later.
     m_Metadata:
       m_Items: []
+  - m_Id: 7300000000000
+    m_Localized: Delete this deck?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7400000000000
+    m_Localized: Failed to delete deck.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7500000000000
+    m_Localized: Deck deleted.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -73,6 +73,32 @@ namespace DeckScene
             yield return SendDeckRequest(url, "PUT", dto, "PUT 덱 페이로드", "덱 수정 실패", callback);
         }
 
+        public IEnumerator DeleteDeck(long deckId, Action<bool> callback)
+        {
+            string url = $"{ServerList.MatchingServer.url}/api/users/mine/decks/{deckId}";
+            using var request = new UnityWebRequest(url, "DELETE")
+            {
+                downloadHandler = new DownloadHandlerBuffer()
+            };
+
+            Server.SetAuthorization(request);
+            Server.SetAcceptLanguage(request);
+
+            yield return request.SendWebRequest();
+
+            bool isSuccess = request.result == UnityWebRequest.Result.Success;
+            if (!isSuccess)
+            {
+                WDebug.LogError($"덱 삭제 실패: {request.responseCode} / {request.error}\n{request.downloadHandler.text}");
+            }
+            else
+            {
+                WDebug.Log($"DELETE 덱 성공: {request.downloadHandler.text}");
+            }
+
+            callback?.Invoke(isSuccess);
+        }
+
         private IEnumerator SendDeckRequest(
             string url,
             string method,

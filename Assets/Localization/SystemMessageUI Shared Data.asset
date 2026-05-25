@@ -115,6 +115,18 @@ MonoBehaviour:
     m_Key: serverDeploying
     m_Metadata:
       m_Items: []
+  - m_Id: 7300000000000
+    m_Key: deckDeletionConfirmMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7400000000000
+    m_Key: deckDeletionFailedMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7500000000000
+    m_Key: deckDeletionSuccessMessage
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

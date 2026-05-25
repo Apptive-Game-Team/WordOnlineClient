@@ -16,6 +16,7 @@ namespace DeckScene
         private readonly GameObject cardInDeckItemPrefab;
         private readonly GameObject createDeckPrefab;
         private readonly Button submitDeckButton;
+        private readonly Button removeDeckButton;
         private readonly InputField deckNameInputField;
 
         private readonly Action<DeckResponseDto> onDeckSelected;
@@ -32,6 +33,7 @@ namespace DeckScene
             GameObject cardInDeckItemPrefab,
             GameObject createDeckPrefab,
             Button submitDeckButton,
+            Button removeDeckButton,
             InputField deckNameInputField,
             Action<DeckResponseDto> onDeckSelected,
             Action onNewDeckSelected,
@@ -46,6 +48,7 @@ namespace DeckScene
             this.cardInDeckItemPrefab = cardInDeckItemPrefab;
             this.createDeckPrefab = createDeckPrefab;
             this.submitDeckButton = submitDeckButton;
+            this.removeDeckButton = removeDeckButton;
             this.deckNameInputField = deckNameInputField;
             this.onDeckSelected = onDeckSelected;
             this.onNewDeckSelected = onNewDeckSelected;
@@ -64,6 +67,27 @@ namespace DeckScene
         {
             submitDeckButton.onClick.RemoveAllListeners();
             submitDeckButton.onClick.AddListener(() => onSubmit?.Invoke());
+        }
+
+        public void BindRemove(Action onRemove)
+        {
+            if (removeDeckButton == null)
+            {
+                return;
+            }
+
+            removeDeckButton.onClick.RemoveAllListeners();
+            removeDeckButton.onClick.AddListener(() => onRemove?.Invoke());
+        }
+
+        public void SetRemoveButtonActive(bool isActive)
+        {
+            if (removeDeckButton == null)
+            {
+                return;
+            }
+
+            removeDeckButton.gameObject.SetActive(isActive);
         }
 
         public void RenderDecks(DeckResponseDto[] decks)

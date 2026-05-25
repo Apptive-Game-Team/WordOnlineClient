@@ -20,10 +20,13 @@ namespace DeckScene
         public GameObject cardInDeckItemPrefab;        // 덱 카드 UI 프리팹
         public GameObject createDeckPrefab;        // 덱 생성 UI 프리팹
         public Button submitDeckButton;        // 덱 제출 버튼
+        public Button removeDeckButton;        // 덱 삭제 버튼
         public InputField deckNameInputField; // 덱 이름 입력 필드
+        [SerializeField] private ConfirmationDialogController deleteConfirmDialogBehaviour;
 
-        [SerializeField] private DeckManagementViewModel viewModel;
+        private DeckManagementViewModel viewModel;
         private DeckManagementView view;
+        private IConfirmationDialog deleteConfirmDialog;
         
         public LocalizedString newDeck;
         public LocalizedString deckCreationFailed;
@@ -33,13 +36,19 @@ namespace DeckScene
         public LocalizedString errorCardCount;
         public LocalizedString errorAttributeCount;
         public LocalizedString errorMagicCount;
+
+        [Header("Delete")]
+        public LocalizedString deckDeletionConfirmMessage;
+        public LocalizedString deckDeletionFailedMessage;
+        public LocalizedString deckDeletionSuccessMessage;
         
         private void Awake()
         {
-            viewModel = GetComponent<DeckManagementViewModel>();
-            if (viewModel == null)
+            viewModel = new DeckManagementViewModel();
+            deleteConfirmDialog = deleteConfirmDialogBehaviour as IConfirmationDialog;
+            if (deleteConfirmDialogBehaviour != null && deleteConfirmDialog == null)
             {
-                viewModel = gameObject.AddComponent<DeckManagementViewModel>();
+                WDebug.LogWarning("Deck delete confirmation dialog does not implement IConfirmationDialog.");
             }
 
             view = new DeckManagementView(
@@ -51,6 +60,7 @@ namespace DeckScene
                 cardInDeckItemPrefab,
                 createDeckPrefab,
                 submitDeckButton,
+                removeDeckButton,
                 deckNameInputField,
                 OnDeckSelected,
                 OnNewDeckSelected,
@@ -58,6 +68,8 @@ namespace DeckScene
                 OnCardInDeckSelected
             );
             view.BindSubmit(OnDeckSubmit);
+            view.BindRemove(OnDeckRemove);
+            UpdateRemoveButton();
         }
 
         private void Start()
@@ -69,7 +81,7 @@ namespace DeckScene
                 PopulateOwnedCardsList();
             }
 
-            viewModel.LoadAll(OnLoadCompleted);
+            StartCoroutine(viewModel.LoadAll(OnLoadCompleted));
         }
 
         private void OnLoadCompleted(bool isSuccess)
@@ -105,6 +117,7 @@ namespace DeckScene
             WDebug.Log($"OnDeckSelected: {deck.name} (ID: {deck.id})");
             viewModel.SelectDeck(deck);
             view.SetDeckName(viewModel.CurrentDeck.name);
+            UpdateRemoveButton();
 
             ReloadDeckList();
         }
@@ -116,6 +129,7 @@ namespace DeckScene
             string newDeckString = await newDeck.GetLocalizedStringAsync().Task;
             viewModel.SelectNewDeck(newDeckString);
             view.SetDeckName(viewModel.CurrentDeck.name);
+            UpdateRemoveButton();
             ReloadDeckList();
         }
 
@@ -146,7 +160,40 @@ namespace DeckScene
                 return;
             }
 
-            viewModel.SubmitCurrentDeck(view.DeckName, OnDeckSubmitted);
+            StartCoroutine(viewModel.SubmitCurrentDeck(view.DeckName, OnDeckSubmitted));
+        }
+
+        private void OnDeckRemove()
+        {
+            WDebug.Log("OnDeckRemove");
+            if (!viewModel.CanDeleteCurrentDeck)
+            {
+				WDebug.Log(viewModel.CurrentMode);
+				WDebug.Log(viewModel.CurrentDeck);
+                return;
+            }
+
+            if (deleteConfirmDialog == null)
+            {
+                WDebug.LogWarning("Deck delete confirmation dialog is not assigned.");
+                return;
+            }
+            WDebug.Log("OnDeckRemove");
+            deleteConfirmDialog.Show(deckDeletionConfirmMessage, DeleteCurrentDeck);
+        }
+
+        private void DeleteCurrentDeck()
+        {
+            StartCoroutine(viewModel.DeleteCurrentDeck(OnDeckDeleted));
+        }
+
+        private void OnDeckDeleted(bool isSuccess)
+        {
+            SystemMessageUI.Instance.ShowMessage(isSuccess ? deckDeletionSuccessMessage : deckDeletionFailedMessage);
+            if (isSuccess)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
         private void OnDeckSubmitted(DeckEditMode mode, bool isSuccess)
@@ -180,6 +227,11 @@ namespace DeckScene
                     SystemMessageUI.Instance.ShowMessage(errorCardCount);
                     break;
             }
+        }
+
+        private void UpdateRemoveButton()
+        {
+            view.SetRemoveButtonActive(viewModel.CanDeleteCurrentDeck);
         }
     }
 }

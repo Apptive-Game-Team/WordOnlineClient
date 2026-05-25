@@ -49,6 +49,14 @@ MonoBehaviour:
     m_Key: Go to Sign In
     m_Metadata:
       m_Items: []
+  - m_Id: 77279489225121792
+    m_Key: Remove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77283521352163328
+    m_Key: Confirm
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

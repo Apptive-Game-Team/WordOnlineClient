@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using Data.Deck;
-using UnityEngine;
 
 namespace DeckScene
 {
@@ -21,7 +20,7 @@ namespace DeckScene
         MagicCount
     }
 
-    public class DeckManagementViewModel : MonoBehaviour
+    public class DeckManagementViewModel
     {
         private static DeckResponseDto[] cachedUserDecks;
         private static CardDto[] cachedOwnedCards;
@@ -33,11 +32,7 @@ namespace DeckScene
         public DeckResponseDto CurrentDeck { get; private set; }
         public DeckEditMode CurrentMode { get; private set; } = DeckEditMode.None;
         public bool HasCachedData => UserDecks.Length > 0 && OwnedCards.Length > 0;
-
-        public void LoadAll(Action<bool> callback)
-        {
-            StartCoroutine(LoadAllCoroutine(callback));
-        }
+        public bool CanDeleteCurrentDeck => CurrentMode == DeckEditMode.Update && CurrentDeck != null;
 
         public void SelectDeck(DeckResponseDto deck)
         {
@@ -133,30 +128,7 @@ namespace DeckScene
             return DeckValidationError.None;
         }
 
-        public void SubmitCurrentDeck(string deckName, Action<DeckEditMode, bool> callback)
-        {
-            if (CurrentDeck == null)
-            {
-                callback?.Invoke(CurrentMode, false);
-                return;
-            }
-
-            DeckRequestDto requestDto = new DeckRequestDto
-            {
-                name = deckName,
-                cardIds = CurrentDeck.cards.Select(c => c.id).ToArray()
-            };
-
-            if (CurrentMode == DeckEditMode.Create)
-            {
-                StartCoroutine(deckApiClient.CreateDeck(requestDto, isSuccess => callback?.Invoke(DeckEditMode.Create, isSuccess)));
-                return;
-            }
-
-            StartCoroutine(deckApiClient.UpdateDeck(CurrentDeck.id, requestDto, isSuccess => callback?.Invoke(DeckEditMode.Update, isSuccess)));
-        }
-
-        private IEnumerator LoadAllCoroutine(Action<bool> callback)
+        public IEnumerator LoadAll(Action<bool> callback)
         {
             CardDto[] ownedCards = null;
             yield return deckApiClient.GetOwnedCards(cards => ownedCards = cards);
@@ -178,6 +150,40 @@ namespace DeckScene
             cachedUserDecks = userDecks;
             DeckSceneContext.OwnedCards = cachedOwnedCards;
             callback?.Invoke(true);
+        }
+
+        public IEnumerator SubmitCurrentDeck(string deckName, Action<DeckEditMode, bool> callback)
+        {
+            if (CurrentDeck == null)
+            {
+                callback?.Invoke(CurrentMode, false);
+                yield break;
+            }
+
+            DeckRequestDto requestDto = new DeckRequestDto
+            {
+                name = deckName,
+                cardIds = CurrentDeck.cards.Select(c => c.id).ToArray()
+            };
+
+            if (CurrentMode == DeckEditMode.Create)
+            {
+                yield return deckApiClient.CreateDeck(requestDto, isSuccess => callback?.Invoke(DeckEditMode.Create, isSuccess));
+                yield break;
+            }
+
+            yield return deckApiClient.UpdateDeck(CurrentDeck.id, requestDto, isSuccess => callback?.Invoke(DeckEditMode.Update, isSuccess));
+        }
+
+        public IEnumerator DeleteCurrentDeck(Action<bool> callback)
+        {
+            if (!CanDeleteCurrentDeck)
+            {
+                callback?.Invoke(false);
+                yield break;
+            }
+
+            yield return deckApiClient.DeleteDeck(CurrentDeck.id, callback);
         }
 
         private static DeckResponseDto CloneDeck(DeckResponseDto deck)
