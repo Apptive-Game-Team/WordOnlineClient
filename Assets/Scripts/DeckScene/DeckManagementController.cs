@@ -22,7 +22,7 @@ namespace DeckScene
         public Button submitDeckButton;        // 덱 제출 버튼
         public InputField deckNameInputField; // 덱 이름 입력 필드
 
-        private DeckManagementViewModel viewModel;
+        [SerializeField] private DeckManagementViewModel viewModel;
         private DeckManagementView view;
         
         public LocalizedString newDeck;

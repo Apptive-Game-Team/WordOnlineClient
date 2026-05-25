@@ -2059,7 +2059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 114.09497}
+  m_AnchoredPosition: {x: 100, y: 114.094986}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1031497877
@@ -2510,7 +2510,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 318034335}
   m_HandleRect: {fileID: 318034334}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3108,8 +3108,9 @@ GameObject:
   - component: {fileID: 2065755159}
   - component: {fileID: 2065755158}
   - component: {fileID: 2065755163}
+  - component: {fileID: 2065755164}
   m_Layer: 5
-  m_Name: LobbyUIController
+  m_Name: DeckController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3226,6 +3227,7 @@ MonoBehaviour:
   createDeckPrefab: {fileID: 2206886970295234043, guid: ddc10a1af089fed4d8a8547866d40073, type: 3}
   submitDeckButton: {fileID: 812343961}
   deckNameInputField: {fileID: 1379006795}
+  viewModel: {fileID: 2065755164}
   newDeck:
     m_TableReference:
       m_TableCollectionName: GUID:8d48c82df41cc46e1af6de4a9b33e57b
@@ -3301,6 +3303,18 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &2065755164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065755157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7870940bcf4501887bd297db934f7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2121949644
 PrefabInstance:
   m_ObjectHideFlags: 0
