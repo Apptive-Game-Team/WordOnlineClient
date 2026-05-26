@@ -29,13 +29,13 @@ For a new server magic named `Fire Lord Spirit`, the client-side localization/ic
 
 Do not add a fake local `CombinedMagicData` entry, ask for a server id, or edit `LocalCombinedMagicData.cs` for ordinary new-magic client work.
 
-Sprite canvas sizes are tiered by unit size:
+Sprite max dimensions are tiered by unit size:
 
 - small unit: `128x128`
 - middle unit: `192x192`
 - big unit: `256x256`
 
-Trim transparent padding before final sizing. Then keep the canvas square and transparent. Preserve the subject's aspect ratio and add transparent padding instead of stretching the art.
+Resize within the tier limit while preserving aspect ratio, then trim transparent padding as the final image step. A tightly trimmed sprite is more important than a square canvas; do not add transparent padding just to make the file square.
 
 Default character sprite style: right-facing, simple flat cartoon, not flashy, no outer/dark contour line, and no extra effects, particles, aura, environment, ground, shadow, or other surrounding description.
 

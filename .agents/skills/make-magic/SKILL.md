@@ -34,7 +34,7 @@ If the request includes server work, only handle the client portion here.
    - Match the existing sprite style: readable small icon silhouette, game-friendly fantasy object/creature/effect, transparent background when appropriate, centered composition, and similar color saturation/edge treatment.
    - Generate or edit the image with the image-generation workflow when a new bitmap is needed; use existing art directly only when the user asks for reuse.
    - Save the sprite as `Assets/Resources/Game/sprites/<PascalCaseServerName>.png` so it matches `CombinedMagicData.resourceName`.
-   - Trim transparent padding from the generated subject first, then resize it to the correct transparent square canvas for its unit tier: small unit `128x128`, middle unit `192x192`, big unit `256x256`.
+   - Resize by unit tier, then trim transparent padding as the final image step. Trimming is more important than forcing a square canvas.
    - If the image is created outside Unity, ensure the `.png` exists and add or preserve the `.meta` file through normal Unity import when possible.
 6. If a runtime prefab is needed, hand prefab wiring to `make-prefab` and keep the prefab name aligned with the sprite/resource name.
 7. Ignore unrelated working-tree changes unless the user explicitly asks to include them.
@@ -77,18 +77,19 @@ If the request includes server work, only handle the client portion here.
 - Prefer transparent PNG output for object, creature, projectile, and effect sprites. Backgrounds should be transparent unless the nearest existing family uses a filled field/effect texture.
 - Keep the subject centered, right-facing, and legible at small sizes. Characters should face toward the right side of the image unless the user explicitly asks for another direction.
 - Use a simple flat cartoon style. Avoid flashy rendering, outer/dark contour lines, fine details, text, photorealism, complex scenes, and any description of effects or environment around the character.
-- Trim transparent padding before final sizing, for example `magick input.png -trim +repage trimmed.png`.
-- Use a transparent square canvas by unit tier after trimming: small `128x128`, middle `192x192`, big `256x256`.
-- Preserve aspect ratio when resizing. Center the subject with transparent padding; do not stretch the image to fill the square.
+- Use unit tier sizes as maximum dimensions, not required square canvases: small max `128x128`, middle max `192x192`, big max `256x256`.
+- Preserve aspect ratio when resizing; do not stretch the image.
+- Trim transparent padding after resizing, for example `magick input.png -resize 256x256 -trim +repage output.png`.
+- Final sprite files should be tightly trimmed around the subject. Do not add transparent padding just to make the file square.
 - Typical finalization command:
-  `magick trimmed.png -background none -gravity center -resize 256x256 -extent 256x256 output.png`
+  `magick input.png -resize 256x256 -trim +repage output.png`
 - Use `magick identify` or equivalent inspection to verify dimensions and alpha after generation.
 
 ## Validation
 
 - Search for the new key across `Assets/Localization` and confirm it appears in the shared asset plus both locale assets.
 - Confirm the expected server-derived localization key and PascalCase sprite filename. `LocalCombinedMagicData.cs` should normally remain unedited for a new magic.
-- If an image was created, confirm the sprite exists at `Assets/Resources/Game/sprites/<PascalCaseServerName>.png`, inspect its dimensions/format/alpha, and compare it visually against the chosen reference images.
+- If an image was created, confirm the sprite exists at `Assets/Resources/Game/sprites/<PascalCaseServerName>.png`, inspect its dimensions/format/alpha, verify it is trimmed rather than padded to a square canvas, and compare it visually against the chosen reference images.
 - If the request included prefab work, confirm the paired `make-prefab` task completed with matching names and paths.
 
 ## Example
