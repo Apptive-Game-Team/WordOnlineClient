@@ -1,37 +1,41 @@
-using Global;
 using UnityEngine;
 
 namespace GameScene
 {
     public class LineSkillIndicator : MonoBehaviour
     {
-        private Camera _camera;
+        private Vector3 startPosition;
+        private Vector3 targetPosition;
 
-        private void Start()
+        public void SetIndicator(Vector3 startPosition, Vector3 targetPosition, float range)
         {
-            _camera = Camera.main;
+            this.startPosition = startPosition;
+            this.targetPosition = targetPosition;
+            transform.position = startPosition;
+            transform.localScale = new Vector3(GetScaleForLength(range), transform.localScale.y, transform.localScale.z);
+            UpdateRotation();
         }
 
-        private void OnEnable()
+        private float GetScaleForLength(float length)
         {
-            if (SceneContext.Me.Equals("RightPlayer"))
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null || spriteRenderer.sprite == null || length <= 0f)
             {
-                transform.position = new Vector3(17, 5, 0);
+                return 0f;
             }
-            else
-            {
-                transform.position = new Vector3(1, 5, 0);
-            }   
+
+            return length / spriteRenderer.sprite.bounds.size.x;
         }
 
-        void Update()
+        private void UpdateRotation()
         {
-            Vector3 mouseWorld = _camera.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorld.z = 0;
+            Vector3 direction = targetPosition - startPosition;
+            if (direction.sqrMagnitude <= Mathf.Epsilon)
+            {
+                return;
+            }
 
-            Vector3 direction = mouseWorld - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }

@@ -1,6 +1,8 @@
 using Data;
+using Data.GameConfig;
 using Data.Magic;
 using GameScene.Card;
+using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
 using UnityEngine;
@@ -25,8 +27,11 @@ namespace GameScene
             cardInputSender = FindObjectOfType<CardInputSender>();
             currentAimObj = Instantiate(aimObject);
             currentRangeObj = Instantiate(rangeObject);
-        
+            currentAimObj.SetActive(false);
+            currentRangeObj.SetActive(false);
+
             currentSkillIndicator = Instantiate(circleSkillIndicator);
+            currentSkillIndicatorPrefabRef = circleSkillIndicator;
             currentSkillIndicator.SetActive(false);
         }
 
@@ -34,12 +39,9 @@ namespace GameScene
         {
             if (!cardInputSender.IsFieldSelectMode())
             {
-                if (currentAimObj.activeSelf)
-                {
-                    currentAimObj.SetActive(false);
-                    currentRangeObj.SetActive(false);
-                    if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
-                }
+                currentAimObj.SetActive(false);
+                currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
 
                 return;
             }
@@ -48,11 +50,19 @@ namespace GameScene
             currentRangeObj.SetActive(true);
 
 
-            var md = LocalMagicData.GetMagicData(cardInputSender.GetMagicName());
-            currentRangeObj.transform.localScale = Vector3.one * (2 * md.range);
+            if (!TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius))
+            {
+                currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
+                return;
+            }
+
+            Vector3 casterPosition = GetCasterPosition();
+            SetCircleWorldRadius(currentRangeObj, range);
+            currentRangeObj.transform.position = casterPosition;
 
 
-            bool wantLine = md.name == "Shoot";
+            bool wantLine = IsLineMagic(magicData);
             GameObject wantedPrefab = wantLine ? lineSkillIndicator : circleSkillIndicator;
 
 
@@ -60,20 +70,19 @@ namespace GameScene
             {
                 if (currentSkillIndicator != null) Destroy(currentSkillIndicator);
                 currentSkillIndicator = Instantiate(wantedPrefab);
-                currentSkillIndicatorPrefabRef = wantedPrefab; 
+                currentSkillIndicatorPrefabRef = wantedPrefab;
             }
 
 
             if (!currentSkillIndicator.activeSelf) currentSkillIndicator.SetActive(true);
 
-            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            currentAimObj.transform.position = mouseWorldPos;
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouseWorldPos.z = 0f;
+            Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
+            currentAimObj.transform.position = previewPosition;
+            UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
-            currentRangeObj.transform.position = SceneContext.Me.Equals("RightPlayer")
-                ? new Vector3(17, 5, 0)
-                : new Vector3(1, 5, 0);
-
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
             if (Input.GetMouseButtonUp(0))
             {
@@ -85,7 +94,122 @@ namespace GameScene
                 cardInputSender.SetExpectedMagicUI();
             }
         }
-    
+
         private GameObject currentSkillIndicatorPrefabRef;
+
+        private Vector3 GetCasterPosition()
+        {
+            ServedObject caster = FindPlayerObject(SceneContext.Me);
+            if (caster != null)
+            {
+                Vector3 position = caster.transform.position;
+                position.z = 0f;
+                return position;
+            }
+
+            WDebug.LogWarning($"[FieldSelector] Could not find caster object for {SceneContext.Me}.");
+            return currentRangeObj.transform.position;
+        }
+
+        private static ServedObject FindPlayerObject(string master)
+        {
+            PlayerNameSetter[] playerNameSetters = FindObjectsByType<PlayerNameSetter>(FindObjectsSortMode.None);
+            foreach (PlayerNameSetter playerNameSetter in playerNameSetters)
+            {
+                ServedObject servedObject = playerNameSetter.GetComponent<ServedObject>();
+                if (servedObject != null && servedObject.GetMaster() == master)
+                {
+                    return servedObject;
+                }
+            }
+
+            return null;
+        }
+
+        private static Vector3 ClampToRange(Vector3 targetPosition, Vector3 origin, float range)
+        {
+            float safeRange = Mathf.Max(range, 0f);
+            Vector3 offset = targetPosition - origin;
+            offset.z = 0f;
+            if (offset.sqrMagnitude <= safeRange * safeRange)
+            {
+                return targetPosition;
+            }
+
+            return origin + offset.normalized * safeRange;
+        }
+
+        private bool TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius)
+        {
+            magicData = null;
+            range = 0f;
+            radius = 0f;
+
+            if (!cardInputSender.TryGetCurrentMagicData(out magicData))
+            {
+                WDebug.LogWarning("[FieldSelector] Could not resolve current magic data.");
+                return false;
+            }
+
+            if (!GameParameterResolver.TryGetMagicParameter(magicData, "range", out range))
+            {
+                WDebug.LogWarning($"[FieldSelector] Could not find range parameter for {magicData.serverName}.");
+                return false;
+            }
+
+            GameParameterResolver.TryGetMagicParameter(magicData, "radius", out radius);
+            return true;
+        }
+
+        private static bool IsLineMagic(CombinedMagicData magicData)
+        {
+            return magicData.recipe != null && magicData.recipe.Contains(CardType.Shoot) ||
+                   IsSameMagicName(magicData.serverName, "Shoot") ||
+                   IsSameMagicName(magicData.resourceName, "Shoot") ||
+                   IsSameMagicName(magicData.localizationKey, "Shoot");
+        }
+
+        private static bool IsSameMagicName(string value, string expected)
+        {
+            return string.Equals(value, expected, System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void UpdateSkillIndicator(
+            bool isLine,
+            Vector3 casterPosition,
+            Vector3 previewPosition,
+            float range,
+            float radius)
+        {
+            if (isLine)
+            {
+                LineSkillIndicator lineIndicator = currentSkillIndicator.GetComponent<LineSkillIndicator>();
+                if (lineIndicator != null)
+                {
+                    lineIndicator.SetIndicator(casterPosition, previewPosition, range);
+                }
+                return;
+            }
+
+            CircleSkillIndicator circleIndicator = currentSkillIndicator.GetComponent<CircleSkillIndicator>();
+            if (circleIndicator != null)
+            {
+                circleIndicator.SetIndicator(previewPosition, radius);
+            }
+        }
+
+        private static void SetCircleWorldRadius(GameObject indicator, float radius)
+        {
+            SpriteRenderer spriteRenderer = indicator.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null || spriteRenderer.sprite == null || radius <= 0f)
+            {
+                indicator.transform.localScale = new Vector3(0f, 0f, 1f);
+                return;
+            }
+
+            float spriteDiameter = Mathf.Max(spriteRenderer.sprite.bounds.size.x, spriteRenderer.sprite.bounds.size.y);
+            float scale = (radius * 2f) / spriteDiameter;
+            indicator.transform.localScale = new Vector3(scale, scale, 1f);
+        }
     }
 }

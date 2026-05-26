@@ -86,6 +86,13 @@ MonoBehaviour:
     - Locale-ko-KR
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7941bccd84c22ed47ab6592519070263
+    m_Address: MagicBook_ko-KR
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ko-KR
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: abe3dff8f2d6645bea4564a536ee182f, type: 2}
   m_SchemaSet:

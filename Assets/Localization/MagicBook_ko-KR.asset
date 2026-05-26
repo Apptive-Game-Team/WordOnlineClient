@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MagicBook_ko-KR
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: a5fb4d045cc352340a0b295aafdb7db4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1000000
+    m_Localized: "작은 물 슬라임 무리를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000001
+    m_Localized: "불꽃 탄환을 발사합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000002
+    m_Localized: "간헐천을 소환해 피해를 주고 공중으로 띄웁니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000003
+    m_Localized: "지상유닛을 공격하는 대포를 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000004
+    m_Localized: "공중유닛을 범위 공격하는 타워를 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000005
+    m_Localized: "마나를 회복하는 우물을 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000006
+    m_Localized: "지상과 공중 유닛을 원거리 공격하는 궁수를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000007
+    m_Localized: "크고 단단한 바위 골렘을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000008
+    m_Localized: "플레이어를 우선 공격하는 폭풍 기수를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000009
+    m_Localized: "빠르고 공중을 날아다니는 천둥 정령을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000010
+    m_Localized: "주변을 불태우고 적들을 불태우는 불꽃 정령을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000011
+    m_Localized: "낙뢰를 소환해 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000012
+    m_Localized: "적들을 불태우는 마그마 정령을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000013
+    m_Localized: "아군을 회복시키는 토템을 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000014
+    m_Localized: "모래 폭풍을 일으켜 적을 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000015
+    m_Localized: "회오리바람으로 적들을 쓸어버립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000016
+    m_Localized: "넓은 범위에 운석들을 떨어트려 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000017
+    m_Localized: "주변을 축축하게 하는 운룡을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000018
+    m_Localized: "돌진해서 공격하는 천둥새 무리를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000019
+    m_Localized: "크고 다소 느린 나무 골렘을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000020
+    m_Localized: "덩굴의 힘을 가진 정령을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000021
+    m_Localized: "덩굴로 적들을 퇴치하는 식물을 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000022
+    m_Localized: "두개의 바위로 적들을 타격하는 마법사를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000023
+    m_Localized: "작은 씨앗 정령 무리를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000024
+    m_Localized: "작은 불씨 정령 무리를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000025
+    m_Localized: "작은 바위 쌍둥이를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000026
+    m_Localized: "적들을 향해 자폭 공격을 하는 바람 정령을 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000027
+    m_Localized: "뜨거운 마그마 폭발을 일으킵니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000028
+    m_Localized: "적들을 일정한 방향으로 날려버리는 바람 토템을 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000029
+    m_Localized: "바위를 발사하는 작은 포탑을 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000030
+    m_Localized: "주변을 회복시키는 생명의 나무를 심습니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000031
+    m_Localized: "관통하는 날카로운 바람 칼날을 날립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000032
+    m_Localized: "덩굴을 일렬로 소환해 적을 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000033
+    m_Localized: "밀려오는 물결로 적들을 밀쳐내며 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000034
+    m_Localized: "적과 벽에 충돌하면 튕기는 바위를 발사합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000035
+    m_Localized: "적들 사이를 튕기며 공격하는 전기를 발사합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000036
+    m_Localized: "비를 내리는 구름을 생성합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000037
+    m_Localized: "신비한 도깨비불을 발사해 적의 통제권을 가져옵니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000038
+    m_Localized: "적들을 광란시키는 토템을 떨어뜨립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000039
+    m_Localized: "수리하는 이파리로 아군 건물을 회복시키고 지속 시간을 늘립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000040
+    m_Localized: "하늘에서 바위를 떨어뜨립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000041
+    m_Localized: "공중에서 닭 특공대를 투입합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000042
+    m_Localized: "과성장을 일으켜 작은 생명을 성장시킵니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000043
+    m_Localized: "주변에 불덩이를 뿜는 분화구를 생성합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000044
+    m_Localized: "건물을 좋아하는 겁쟁이 전기 쥐를 소환합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000045
+    m_Localized: "아군을 끌어모으는 횃불을 떨어뜨립니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000046
+    m_Localized: "전기 폭발로 주변 적을 공격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000047
+    m_Localized: "날카로운 돌풍을 소환해 지속적으로 적들을 타격합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000048
+    m_Localized: "아군을 보호하는 거품 생성기를 설치합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000049
+    m_Localized: "튕기는 전기를 발사하는 전기 타워를 설치합니다."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

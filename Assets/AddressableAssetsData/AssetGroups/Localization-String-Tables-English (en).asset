@@ -86,6 +86,13 @@ MonoBehaviour:
     - Locale-en
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c852be194b408145948e2380588eea2
+    m_Address: MagicBook_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: abe3dff8f2d6645bea4564a536ee182f, type: 2}
   m_SchemaSet:

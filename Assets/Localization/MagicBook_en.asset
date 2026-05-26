@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MagicBook_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: a5fb4d045cc352340a0b295aafdb7db4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1000000
+    m_Localized: "Summons a swarm of small water slimes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000001
+    m_Localized: "Fires a flaming projectile."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000002
+    m_Localized: "Summons a geyser that deals damage and launches enemies into the air."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000003
+    m_Localized: "Builds a cannon that attacks ground units."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000004
+    m_Localized: "Builds a tower that deals area damage to flying units."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000005
+    m_Localized: "Builds a well that restores mana."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000006
+    m_Localized: "Summons an archer that attacks ground and flying units from range."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000007
+    m_Localized: "Summons a large, sturdy rock golem."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000008
+    m_Localized: "Summons a storm rider that prioritizes attacking the player."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000009
+    m_Localized: "Summons a fast thunder spirit that flies through the air."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000010
+    m_Localized: "Summons a fire spirit that burns nearby enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000011
+    m_Localized: "Calls down lightning to attack enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000012
+    m_Localized: "Summons a magma spirit that burns enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000013
+    m_Localized: "Places a totem that heals allies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000014
+    m_Localized: "Creates a sandstorm that attacks enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000015
+    m_Localized: "Sweeps enemies away with a tornado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000016
+    m_Localized: "Drops meteors over a wide area."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000017
+    m_Localized: "Summons a cloud dragon that dampens the area around it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000018
+    m_Localized: "Summons a flock of thunderbirds that charge at enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000019
+    m_Localized: "Summons a large but somewhat slow tree golem."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000020
+    m_Localized: "Summons a spirit with the power of vines."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000021
+    m_Localized: "Plants a vine colony that fends off enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000022
+    m_Localized: "Summons a mage that strikes enemies with two rocks."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000023
+    m_Localized: "Summons a swarm of small seed spirits."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000024
+    m_Localized: "Summons a swarm of small ember spirits."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000025
+    m_Localized: "Summons a pair of small rock twins."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000026
+    m_Localized: "Summons a wind spirit that rushes toward enemies and explodes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000027
+    m_Localized: "Triggers a scorching magma explosion."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000028
+    m_Localized: "Places a wind totem that blows enemies in a fixed direction."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000029
+    m_Localized: "Builds a small turret that fires rocks."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000030
+    m_Localized: "Plants a life tree that heals nearby allies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000031
+    m_Localized: "Launches a sharp wind blade that pierces through enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000032
+    m_Localized: "Summons a line of vines to attack enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000033
+    m_Localized: "Calls a surging tide that damages and pushes enemies back."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000034
+    m_Localized: "Launches a rolling rock that bounces off enemies and walls."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000035
+    m_Localized: "Fires lightning that bounces between enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000036
+    m_Localized: "Creates a cloud that rains over the area."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000037
+    m_Localized: "Fires a mysterious will-o'-wisp that takes control of enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000038
+    m_Localized: "Drops a totem that drives enemies into a frenzy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000039
+    m_Localized: "Sends repairing leaves that heal allied buildings and extend their duration."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000040
+    m_Localized: "Drops a rock from the sky."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000041
+    m_Localized: "Deploys a chicken commando from the air."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000042
+    m_Localized: "Triggers overgrowth to grow small lifeforms."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000043
+    m_Localized: "Creates a crater that spits fireballs around it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000044
+    m_Localized: "Summons a cowardly electric mouse that loves buildings."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000045
+    m_Localized: "Drops a torch that rallies nearby allies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000046
+    m_Localized: "Strikes nearby enemies with an electric explosion."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000047
+    m_Localized: "Summons a razor gale that continuously damages enemies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000048
+    m_Localized: "Builds a bubble generator that protects allies."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000049
+    m_Localized: "Builds an electric tower that fires bouncing lightning."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
