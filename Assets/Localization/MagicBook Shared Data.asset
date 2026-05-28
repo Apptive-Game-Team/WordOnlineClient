@@ -215,6 +215,26 @@ MonoBehaviour:
     m_Key: electric_tower
     m_Metadata:
       m_Items: []
+  - m_Id: 1864653363056640
+    m_Key: dimension_toad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864718152470528
+    m_Key: fire_load_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864733830778880
+    m_Key: bubble_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864741510549504
+    m_Key: shock_overload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507520
+    m_Key: towerback
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
