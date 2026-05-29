@@ -106,13 +106,15 @@ namespace LobbyScene
             // 드랍다운 옵션 클리어 후 추가
             deckDropdown.ClearOptions();
             deckDropdown.AddOptions(names);
-        
+            
             // 현재 선택된 덱 인덱스 찾아 세팅
             int idx = userDecks
                 .Select(d => d.id)
                 .ToList()
                 .IndexOf(SceneContext.User.selectedDeckId);
-            idx = Mathf.Clamp(idx, 0, names.Count - 1);
+
+            //
+            if (idx == -1) StartCoroutine(SelectDeckCoroutine(userDecks[0].id));
 
             deckDropdown.value = idx;
             deckDropdown.RefreshShownValue();

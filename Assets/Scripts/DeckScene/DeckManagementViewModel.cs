@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Data.Deck;
+using Global;
 
 namespace DeckScene
 {
@@ -168,11 +169,42 @@ namespace DeckScene
 
             if (CurrentMode == DeckEditMode.Create)
             {
-                yield return deckApiClient.CreateDeck(requestDto, isSuccess => callback?.Invoke(DeckEditMode.Create, isSuccess));
+                bool isSuccess = false;
+                DeckResponseDto createdDeck = null;
+                yield return deckApiClient.CreateDeck(requestDto, (success, deck) =>
+                {
+                    isSuccess = success;
+                    createdDeck = deck;
+                });
+
+                if (isSuccess)
+                {
+                    long createdDeckId = createdDeck?.id ?? 0;
+                    if (createdDeckId <= 0)
+                    {
+                        yield return ResolveDeckId(requestDto, deckId => createdDeckId = deckId);
+                    }
+
+                    if (createdDeckId > 0)
+                    {
+                        CurrentDeck.id = createdDeckId;
+                        yield return SelectSubmittedDeck(createdDeckId);
+                    }
+                }
+
+                callback?.Invoke(DeckEditMode.Create, isSuccess);
                 yield break;
             }
 
-            yield return deckApiClient.UpdateDeck(CurrentDeck.id, requestDto, isSuccess => callback?.Invoke(DeckEditMode.Update, isSuccess));
+            bool updateSuccess = false;
+            yield return deckApiClient.UpdateDeck(CurrentDeck.id, requestDto, isSuccess => updateSuccess = isSuccess);
+
+            if (updateSuccess)
+            {
+                yield return SelectSubmittedDeck(CurrentDeck.id);
+            }
+
+            callback?.Invoke(DeckEditMode.Update, updateSuccess);
         }
 
         public IEnumerator DeleteCurrentDeck(Action<bool> callback)
@@ -199,6 +231,36 @@ namespace DeckScene
                 name = deck.name,
                 cards = deck.cards?.ToArray() ?? Array.Empty<CardDto>()
             };
+        }
+
+        private IEnumerator SelectSubmittedDeck(long deckId)
+        {
+            bool isSelected = false;
+            yield return deckApiClient.SelectDeck(deckId, success => isSelected = success);
+
+            if (isSelected && SceneContext.User != null)
+            {
+                SceneContext.User.selectedDeckId = deckId;
+            }
+        }
+
+        private IEnumerator ResolveDeckId(DeckRequestDto requestDto, Action<long> callback)
+        {
+            DeckResponseDto[] decks = null;
+            yield return deckApiClient.GetDecks(result => decks = result);
+
+            DeckResponseDto matchingDeck = decks?
+                .Where(deck => deck.name == requestDto.name && HasSameCards(deck, requestDto.cardIds))
+                .LastOrDefault();
+
+            callback?.Invoke(matchingDeck?.id ?? 0);
+        }
+
+        private static bool HasSameCards(DeckResponseDto deck, long[] cardIds)
+        {
+            long[] deckCardIds = deck.cards?.Select(card => card.id).OrderBy(id => id).ToArray() ?? Array.Empty<long>();
+            long[] requestCardIds = cardIds?.OrderBy(id => id).ToArray() ?? Array.Empty<long>();
+            return deckCardIds.SequenceEqual(requestCardIds);
         }
     }
 }
