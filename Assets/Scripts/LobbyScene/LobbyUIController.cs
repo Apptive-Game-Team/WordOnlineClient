@@ -88,7 +88,7 @@ namespace LobbyScene
             {
                 SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
                 WDebug.LogWarning("덱이 하나도 없습니다.");
-                SceneManager.LoadScene("LoginScene");
+                SceneManager.LoadScene("ManageDeckScene");
                 yield break;
             }
         
