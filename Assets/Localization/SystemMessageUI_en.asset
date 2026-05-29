@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4155870535680
-    m_Localized: Deck must contain 10 cards!
+    m_Localized: Deck must contain 15 cards!
     m_Metadata:
       m_Items: []
   - m_Id: 4207498223616
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4240255737856
-    m_Localized: Deck must contain at least 2 magic types!
+    m_Localized: Deck must contain at least 3 magic types!
     m_Metadata:
       m_Items: []
   - m_Id: 4272048562176
