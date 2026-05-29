@@ -62,7 +62,7 @@ namespace DeckScene
 
             int ownedCount = card.count;
             int inDeckCount = CurrentDeck.cards.Count(c => c.id == card.id);
-            if (CurrentDeck.cards.Length >= 10 || inDeckCount >= ownedCount)
+            if (CurrentDeck.cards.Length >= 15 || inDeckCount >= ownedCount)
             {
                 return false;
             }
@@ -110,7 +110,7 @@ namespace DeckScene
                 .Distinct()
                 .Count();
 
-            if (CurrentDeck.cards.Length != 10)
+            if (CurrentDeck.cards.Length != 15)
             {
                 return DeckValidationError.CardCount;
             }
@@ -120,7 +120,7 @@ namespace DeckScene
                 return DeckValidationError.AttributeCount;
             }
 
-            if (magicCount < 2)
+            if (magicCount < 3)
             {
                 return DeckValidationError.MagicCount;
             }
