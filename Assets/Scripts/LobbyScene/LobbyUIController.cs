@@ -114,7 +114,11 @@ namespace LobbyScene
                 .IndexOf(SceneContext.User.selectedDeckId);
 
             //
-            if (idx == -1) StartCoroutine(SelectDeckCoroutine(userDecks[0].id));
+            if (idx == -1)
+            {
+                StartCoroutine(SelectDeckCoroutine(userDecks[0].id));
+                idx = 0;
+            }
 
             deckDropdown.value = idx;
             deckDropdown.RefreshShownValue();
