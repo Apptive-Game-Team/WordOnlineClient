@@ -354,6 +354,18 @@ MonoBehaviour:
     m_Localized: Dimension Toad
     m_Metadata:
       m_Items: []
+  - m_Id: 78335189718503424
+    m_Localized: Bubble Spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335217098919936
+    m_Localized: Shock Overload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335231510548480
+    m_Localized: Towerback
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
