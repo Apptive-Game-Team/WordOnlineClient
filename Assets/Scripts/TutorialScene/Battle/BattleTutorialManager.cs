@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using Data;
+using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -8,9 +10,8 @@ using UnityEngine.SceneManagement;
 
 namespace TutorialScene
 {
-    public class BattleTutorialManager : MonoBehaviour
+    public class BattleTutorialManager : LocalSingletonObject<BattleTutorialManager>
     {
-        public static BattleTutorialManager Instance;
         [SerializeField] TutorialCardSender _cardSender;
         [SerializeField] TutorialData _tutorialData;
         [SerializeField] TextMeshProUGUI _dialogueText;
@@ -21,15 +22,11 @@ namespace TutorialScene
         private bool _usedWaterArcher;
         private bool _usedAnyCard;
         private bool _enemyDead;
+        public event Action OnEnd; 
 
-        private void Awake()
+        protected override void Awake()
         {        
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
+            base.Awake();
             
             _cardSender.MagicUsed += OnMagicUsed;
             _cardSender.SingleCardUsed += OnSingleCardUsed;
@@ -84,6 +81,7 @@ namespace TutorialScene
                 }
             }
 
+            OnEnd?.Invoke();
             SceneManager.LoadScene(_tutorialData.lobbySceneName);
         }
 
