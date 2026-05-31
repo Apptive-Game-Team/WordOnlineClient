@@ -56,7 +56,7 @@ namespace GameScene.ServedObjectComponent
     
         void Update()
         {
-            if (slider == null)
+            if (slider == null || servedObject == null)
             {
                 return;
             }
