@@ -132,7 +132,7 @@ namespace TutorialScene
         {
             rightUserHp-= hpReduce;
             UpdateUserHps(100, rightUserHp);
-            if(rightUserHp <= 0) TutorialManager.Instance.NotifyEnemyDead();
+            if(rightUserHp <= 0) BattleTutorialManager.Instance.NotifyEnemyDead();
         }
     }
 }

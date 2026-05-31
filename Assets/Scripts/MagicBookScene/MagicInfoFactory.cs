@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Data.Magic;
 using Global;
+using TutorialScene;
 using UnityEngine;
 
 namespace MagicBookScene
@@ -40,6 +41,7 @@ namespace MagicBookScene
         private void OnClickMagicButton(CombinedMagicData data)
         {
             magicInfo.Init(data);
+            FindObjectOfType<MagicBookTutorialController>()?.NotifyMagicSelected();
         }
         
         private void CreateMagicInfo(CombinedMagicData data, bool active = true)

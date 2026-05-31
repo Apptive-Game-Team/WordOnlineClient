@@ -1,6 +1,7 @@
 using Data;
 using Data.Deck;
 using Global;
+using TutorialScene;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
@@ -139,6 +140,7 @@ namespace DeckScene
             if (viewModel.TryAddOwnedCard(card))
             {
                 ReloadDeckList();
+                NotifyTutorialDeckCardCountChanged();
             }
         }
 
@@ -147,6 +149,7 @@ namespace DeckScene
             if (viewModel.TryRemoveCard(card))
             {
                 ReloadDeckList();
+                NotifyTutorialDeckCardCountChanged();
             }
         }
 
@@ -209,6 +212,11 @@ namespace DeckScene
 
             if (isSuccess)
             {
+                if (TryNotifyTutorialDeckSaved())
+                {
+                    return;
+                }
+
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
@@ -232,6 +240,33 @@ namespace DeckScene
         private void UpdateRemoveButton()
         {
             view.SetRemoveButtonActive(viewModel.CanDeleteCurrentDeck);
+        }
+
+        private void NotifyTutorialDeckCardCountChanged()
+        {
+            DeckTutorialController tutorialController = FindObjectOfType<DeckTutorialController>();
+            tutorialController?.NotifyDeckCardCountChanged(viewModel.CurrentDeck?.cards?.Length ?? 0);
+        }
+
+        private bool TryNotifyTutorialDeckSaved()
+        {
+            if (GlobalTutorialManager.Instance == null ||
+                GlobalTutorialManager.Instance.CurrentProgress != OnboardingProgress.Deck_CreateDeck)
+            {
+                return false;
+            }
+
+            DeckTutorialController tutorialController = FindObjectOfType<DeckTutorialController>();
+            if (tutorialController != null)
+            {
+                tutorialController.NotifyDeckSaved();
+            }
+            else
+            {
+                GlobalTutorialManager.Instance.NotifyDeckSaved();
+            }
+
+            return true;
         }
     }
 }

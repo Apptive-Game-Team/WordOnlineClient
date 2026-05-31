@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 namespace TutorialScene
 {
-    public class TutorialManager : MonoBehaviour
+    public class BattleTutorialManager : MonoBehaviour
     {
-        public static TutorialManager Instance;
+        public static BattleTutorialManager Instance;
         [SerializeField] TutorialCardSender _cardSender;
         [SerializeField] TutorialData _tutorialData;
         [SerializeField] TextMeshProUGUI _dialogueText;
