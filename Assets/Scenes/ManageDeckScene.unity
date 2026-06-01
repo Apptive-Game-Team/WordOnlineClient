@@ -2212,13 +2212,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mask: {fileID: 910000001}
+  targetClickBlocker: {fileID: 0}
   panel: {fileID: 997700345}
   deckManagementController: {fileID: 2065755163}
-  cardTypeArea: {fileID: 2124729584}
-  deckRuleArea: {fileID: 2065755157}
-  deckListArea: {fileID: 1369032380}
-  ownedCardsArea: {fileID: 2124729584}
-  currentDeckCardsArea: {fileID: 1031497875}
+  cardTypeArea: {fileID: 0}
+  deckRuleArea: {fileID: 0}
+  deckListArea: {fileID: 664978337}
+  ownedCardsArea: {fileID: 282030229}
+  currentDeckCardsArea: {fileID: 53430957}
   saveButton: {fileID: 812343961}
   returnToLobbyButton: {fileID: 2121949650}
 --- !u!1 &960724207
@@ -2456,7 +2457,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 114.09497}
+  m_AnchoredPosition: {x: 100, y: 114.094986}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1031497877
@@ -3009,8 +3010,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 318034335}
   m_HandleRect: {fileID: 318034334}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.50000006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

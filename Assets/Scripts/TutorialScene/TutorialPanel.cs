@@ -27,7 +27,7 @@ namespace TutorialScene
         {
             ResolveChildren();
             Root.SetActive(true);
-            Root.transform.SetAsFirstSibling();
+            Root.transform.SetAsLastSibling();
             SetSide(side);
 
             SetMessage(messageKey);

@@ -61,22 +61,22 @@ namespace TutorialScene
 
         public void ShowMatchButton(System.Action onNext)
         {
-            Show("onboarding.matching.matchPlayers", matchButton != null ? matchButton.transform : null, onNext);
+            Show("onboarding.matching.matchPlayers", matchButton != null ? matchButton.transform : null, onNext, true);
         }
 
         public void ShowBotButton(System.Action onNext)
         {
-            Show("onboarding.matching.matchBot", botButton != null ? botButton.transform : null, onNext);
+            Show("onboarding.matching.matchBot", botButton != null ? botButton.transform : null, onNext, true);
         }
 
         public void ShowAdventureButton(System.Action onNext)
         {
-            Show("onboarding.matching.adventure", adventureButton != null ? adventureButton.transform : null, onNext);
+            Show("onboarding.matching.adventure", adventureButton != null ? adventureButton.transform : null, onNext, true);
         }
 
         public void ShowMenuButton(System.Action onNext)
         {
-            Show("onboarding.menu.optionsProfile", menuButton != null ? menuButton.transform : null, onNext);
+            Show("onboarding.menu.optionsProfile", menuButton != null ? menuButton.transform : null, onNext, true);
         }
     }
 }
