@@ -1,7 +1,9 @@
 namespace TutorialScene
 {
-    public class ITutorialState
+    public interface ITutorialState
     {
-        
+        void Enter();
+        void Update();
+        void Exit();
     }
 }

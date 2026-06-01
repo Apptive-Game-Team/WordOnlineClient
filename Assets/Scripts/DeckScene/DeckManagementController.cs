@@ -1,7 +1,7 @@
+using System;
 using Data;
 using Data.Deck;
 using Global;
-using TutorialScene;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
@@ -42,6 +42,10 @@ namespace DeckScene
         public LocalizedString deckDeletionConfirmMessage;
         public LocalizedString deckDeletionFailedMessage;
         public LocalizedString deckDeletionSuccessMessage;
+
+        public event Action NewDeckSelected;
+        public event Action<int> DeckCardCountChanged;
+        public event Func<bool> DeckSaved;
         
         private void Awake()
         {
@@ -132,6 +136,7 @@ namespace DeckScene
             view.SetDeckName(viewModel.CurrentDeck.name);
             UpdateRemoveButton();
             ReloadDeckList();
+            NewDeckSelected?.Invoke();
         }
 
         private void OnOwnedCardSelected(CardDto card)
@@ -140,7 +145,7 @@ namespace DeckScene
             if (viewModel.TryAddOwnedCard(card))
             {
                 ReloadDeckList();
-                NotifyTutorialDeckCardCountChanged();
+                NotifyDeckCardCountChanged();
             }
         }
 
@@ -149,7 +154,7 @@ namespace DeckScene
             if (viewModel.TryRemoveCard(card))
             {
                 ReloadDeckList();
-                NotifyTutorialDeckCardCountChanged();
+                NotifyDeckCardCountChanged();
             }
         }
 
@@ -212,7 +217,7 @@ namespace DeckScene
 
             if (isSuccess)
             {
-                if (TryNotifyTutorialDeckSaved())
+                if (NotifyDeckSaved())
                 {
                     return;
                 }
@@ -242,31 +247,25 @@ namespace DeckScene
             view.SetRemoveButtonActive(viewModel.CanDeleteCurrentDeck);
         }
 
-        private void NotifyTutorialDeckCardCountChanged()
+        private void NotifyDeckCardCountChanged()
         {
-            DeckTutorialController tutorialController = FindObjectOfType<DeckTutorialController>();
-            tutorialController?.NotifyDeckCardCountChanged(viewModel.CurrentDeck?.cards?.Length ?? 0);
+            DeckCardCountChanged?.Invoke(viewModel.CurrentDeck?.cards?.Length ?? 0);
         }
 
-        private bool TryNotifyTutorialDeckSaved()
+        private bool NotifyDeckSaved()
         {
-            if (GlobalTutorialManager.Instance == null ||
-                GlobalTutorialManager.Instance.CurrentProgress != OnboardingProgress.Deck_CreateDeck)
+            if (DeckSaved == null)
             {
                 return false;
             }
 
-            DeckTutorialController tutorialController = FindObjectOfType<DeckTutorialController>();
-            if (tutorialController != null)
+            bool isHandled = false;
+            foreach (Func<bool> handler in DeckSaved.GetInvocationList())
             {
-                tutorialController.NotifyDeckSaved();
-            }
-            else
-            {
-                GlobalTutorialManager.Instance.NotifyDeckSaved();
+                isHandled |= handler();
             }
 
-            return true;
+            return isHandled;
         }
     }
 }

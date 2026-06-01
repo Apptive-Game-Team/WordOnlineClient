@@ -13,7 +13,9 @@ namespace TutorialScene
         Deck_EnterScene,
         Deck_ExplainCard,
         Deck_ExplainDeck,
+        Deck_SelectCreateDeck,
         Deck_CreateDeck,
+        Deck_SaveDeck,
         Deck_ReturnToLobby,
 
         // MagicBook
@@ -21,8 +23,9 @@ namespace TutorialScene
         MagicBook_ExplainMagicBook,
         MagicBook_SelectMagic,
         MagicBook_ExplainMagicInfo,
+        MagicBook_OpenElementChart,
         MagicBook_ReturnToLobby,
-        
+
         // Common
         Common_SelectDeck,
         Common_ExplainMatch,
