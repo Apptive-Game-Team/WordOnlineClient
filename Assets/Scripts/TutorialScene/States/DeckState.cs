@@ -109,7 +109,7 @@ namespace TutorialScene
 
         private void CompleteDeckState()
         {
-            GlobalTutorialManager.Instance.FinishOnboarding();
+            GlobalTutorialManager.Instance.CompleteTask(new MagicBookState());
         }
 
         private void UnbindLobby()

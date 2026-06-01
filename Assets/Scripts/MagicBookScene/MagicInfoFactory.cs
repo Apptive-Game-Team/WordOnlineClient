@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using System;
 using Data.Magic;
 using Global;
-using TutorialScene;
 using UnityEngine;
 
 namespace MagicBookScene
@@ -13,6 +13,8 @@ namespace MagicBookScene
         [SerializeField] private MagicInfo magicInfo;
         
         [SerializeField] private UserMagicApiClient userMagicApiClient;
+
+        public event Action MagicSelected;
         
         private void Awake()
         {
@@ -41,7 +43,7 @@ namespace MagicBookScene
         private void OnClickMagicButton(CombinedMagicData data)
         {
             magicInfo.Init(data);
-            FindObjectOfType<MagicBookTutorialController>()?.NotifyMagicSelected();
+            MagicSelected?.Invoke();
         }
         
         private void CreateMagicInfo(CombinedMagicData data, bool active = true)
