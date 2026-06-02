@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using Data.Magic;
 using Global;
 using UnityEngine;
@@ -12,6 +13,8 @@ namespace MagicBookScene
         [SerializeField] private MagicInfo magicInfo;
         
         [SerializeField] private UserMagicApiClient userMagicApiClient;
+
+        public event Action MagicSelected;
         
         private void Awake()
         {
@@ -40,6 +43,7 @@ namespace MagicBookScene
         private void OnClickMagicButton(CombinedMagicData data)
         {
             magicInfo.Init(data);
+            MagicSelected?.Invoke();
         }
         
         private void CreateMagicInfo(CombinedMagicData data, bool active = true)

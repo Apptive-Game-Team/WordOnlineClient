@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Onboarding_ko-KR
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: b5ac3a473b3a4861826623f6cd9603af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 318000000001
+    m_Localized: "튜토리얼을 하시겠습니까?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000002
+    m_Localized: "처음이라면 짧은 튜토리얼로 덱, 마법서, 매칭, 메뉴를 안내해 드릴게요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000003
+    m_Localized: "네"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000004
+    m_Localized: "아니요"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000005
+    m_Localized: "덱"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000006
+    m_Localized: "마법 카드와 속성 카드가 있어요. 보통 두 카드를 조합해 마법을 시전합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000007
+    m_Localized: "덱은 총 15장으로 구성합니다. 마법은 최대 3가지, 속성은 최소 2가지를 넣어야 해요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000008
+    m_Localized: "이제 나만의 덱을 직접 만들어 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000009
+    m_Localized: "덱을 완성하고 저장하기 전까지는 다른 화면으로 이동할 수 없어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000010
+    m_Localized: "15장을 모두 채웠어요. 저장 버튼을 눌러 덱을 저장하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000011
+    m_Localized: "덱 저장이 끝났어요. 로비 버튼을 눌러 돌아가세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000012
+    m_Localized: "마법서"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000013
+    m_Localized: "마법서에서는 마법들의 자세한 정보를 볼 수 있어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000014
+    m_Localized: "예시로 풀씨 슬라임을 살펴볼게요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000015
+    m_Localized: "속성표 버튼을 눌러 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000016
+    m_Localized: "마법서 안내가 끝났어요. 로비 버튼을 눌러 돌아가세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000017
+    m_Localized: "매칭"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000018
+    m_Localized: "오른쪽 드롭다운에서 사용할 덱을 선택할 수 있어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000019
+    m_Localized: "사람들과 매치해 실력을 겨뤄 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000020
+    m_Localized: "봇과 매치해 부담 없이 연습할 수도 있어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000021
+    m_Localized: "모험을 즐길 수 있어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000022
+    m_Localized: "메뉴"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000023
+    m_Localized: "메뉴에서는 옵션과 내 프로필을 볼 수 있어요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000024
+    m_Localized: "온보딩이 완료되었습니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000025
+    m_Localized: "다음"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000026
+    m_Localized: "완료"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000027
+    m_Localized: "덱 버튼을 눌러 덱 화면으로 이동하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000028
+    m_Localized: "카드 리스트에서 카드를 골라 현재 덱에 넣어 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000029
+    m_Localized: "마법서 버튼을 눌러 마법서 화면으로 이동하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000030
+    m_Localized: "아무 마법이나 클릭해 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000031
+    m_Localized: "마법 설명을 읽어 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000032
+    m_Localized: "속성표에서 속성 관계를 확인할 수 있어요."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

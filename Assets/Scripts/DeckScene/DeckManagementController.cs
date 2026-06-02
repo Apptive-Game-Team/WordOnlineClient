@@ -1,3 +1,4 @@
+using System;
 using Data;
 using Data.Deck;
 using Global;
@@ -41,6 +42,10 @@ namespace DeckScene
         public LocalizedString deckDeletionConfirmMessage;
         public LocalizedString deckDeletionFailedMessage;
         public LocalizedString deckDeletionSuccessMessage;
+
+        public event Action NewDeckSelected;
+        public event Action<int> DeckCardCountChanged;
+        public event Func<bool> DeckSaved;
         
         private void Awake()
         {
@@ -131,6 +136,7 @@ namespace DeckScene
             view.SetDeckName(viewModel.CurrentDeck.name);
             UpdateRemoveButton();
             ReloadDeckList();
+            NewDeckSelected?.Invoke();
         }
 
         private void OnOwnedCardSelected(CardDto card)
@@ -139,6 +145,7 @@ namespace DeckScene
             if (viewModel.TryAddOwnedCard(card))
             {
                 ReloadDeckList();
+                NotifyDeckCardCountChanged();
             }
         }
 
@@ -147,6 +154,7 @@ namespace DeckScene
             if (viewModel.TryRemoveCard(card))
             {
                 ReloadDeckList();
+                NotifyDeckCardCountChanged();
             }
         }
 
@@ -209,6 +217,11 @@ namespace DeckScene
 
             if (isSuccess)
             {
+                if (NotifyDeckSaved())
+                {
+                    return;
+                }
+
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
@@ -232,6 +245,27 @@ namespace DeckScene
         private void UpdateRemoveButton()
         {
             view.SetRemoveButtonActive(viewModel.CanDeleteCurrentDeck);
+        }
+
+        private void NotifyDeckCardCountChanged()
+        {
+            DeckCardCountChanged?.Invoke(viewModel.CurrentDeck?.cards?.Length ?? 0);
+        }
+
+        private bool NotifyDeckSaved()
+        {
+            if (DeckSaved == null)
+            {
+                return false;
+            }
+
+            bool isHandled = false;
+            foreach (Func<bool> handler in DeckSaved.GetInvocationList())
+            {
+                isHandled |= handler();
+            }
+
+            return isHandled;
         }
     }
 }

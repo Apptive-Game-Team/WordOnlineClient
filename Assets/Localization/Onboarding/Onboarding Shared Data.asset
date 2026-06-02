@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Onboarding Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Onboarding
+  m_TableCollectionNameGuidString: b5ac3a473b3a4861826623f6cd9603af
+  m_Entries:
+  - m_Id: 318000000001
+    m_Key: onboarding.tutorialPrompt.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000002
+    m_Key: onboarding.tutorialPrompt.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000003
+    m_Key: onboarding.tutorialPrompt.yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000004
+    m_Key: onboarding.tutorialPrompt.no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000005
+    m_Key: onboarding.deck.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000006
+    m_Key: onboarding.deck.cardTypes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000007
+    m_Key: onboarding.deck.rules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000008
+    m_Key: onboarding.deck.createDeck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000009
+    m_Key: onboarding.deck.cannotLeave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000010
+    m_Key: onboarding.deck.saveEnabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000011
+    m_Key: onboarding.deck.returnToLobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000012
+    m_Key: onboarding.magicBook.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000013
+    m_Key: onboarding.magicBook.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000014
+    m_Key: onboarding.magicBook.grassSeedSlime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000015
+    m_Key: onboarding.magicBook.elementChart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000016
+    m_Key: onboarding.magicBook.returnToLobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000017
+    m_Key: onboarding.matching.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000018
+    m_Key: onboarding.matching.deckDropdown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000019
+    m_Key: onboarding.matching.matchPlayers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000020
+    m_Key: onboarding.matching.matchBot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000021
+    m_Key: onboarding.matching.adventure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000022
+    m_Key: onboarding.menu.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000023
+    m_Key: onboarding.menu.optionsProfile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000024
+    m_Key: onboarding.complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000025
+    m_Key: onboarding.common.next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000026
+    m_Key: onboarding.common.done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000027
+    m_Key: onboarding.deck.openDeck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000028
+    m_Key: onboarding.deck.selectCards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000029
+    m_Key: onboarding.magicBook.openMagicBook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000030
+    m_Key: onboarding.magicBook.selectAnyMagic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000031
+    m_Key: onboarding.magicBook.readMagicInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000032
+    m_Key: onboarding.magicBook.chartDescription
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 318000000000
+  references:
+    version: 2
+    RefIds:
+    - rid: 318000000000
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1772338629000
