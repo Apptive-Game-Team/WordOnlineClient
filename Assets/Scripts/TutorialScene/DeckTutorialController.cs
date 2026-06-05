@@ -81,8 +81,8 @@ namespace TutorialScene
                 "onboarding.deck.selectCards",
                 new[]
                 {
-                    ownedCardsArea != null ? ownedCardsArea.transform : null,
-                    currentDeckCardsArea != null ? currentDeckCardsArea.transform : null
+                    currentDeckCardsArea != null ? currentDeckCardsArea.transform : null,
+                    ownedCardsArea != null ? ownedCardsArea.transform : null
                 },
                 null,
                 TutorialPanelSide.Right);
@@ -90,7 +90,13 @@ namespace TutorialScene
 
         public void ShowSaveDeck()
         {
-            Show("onboarding.deck.saveEnabled", saveButton != null ? saveButton.transform : null, TutorialPanelSide.Right);
+            Show("onboarding.deck.saveEnabled",
+                new[]
+                {
+                    currentDeckCardsArea != null ? currentDeckCardsArea.transform : null,
+                    ownedCardsArea != null ? ownedCardsArea.transform : null
+                },
+                null, TutorialPanelSide.Right);
         }
 
         public void ShowReturnToLobby()

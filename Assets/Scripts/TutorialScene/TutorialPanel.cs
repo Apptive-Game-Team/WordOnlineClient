@@ -94,6 +94,14 @@ namespace TutorialScene
                 return;
             }
 
+            rectTransform.anchorMin = side == TutorialPanelSide.Right
+                ? Vector2.one
+                : new Vector2(0, 1);
+            
+            rectTransform.anchorMax = side == TutorialPanelSide.Right
+                ? Vector2.one
+                : new Vector2(0, 1);
+
             rectTransform.anchoredPosition = side == TutorialPanelSide.Right
                 ? rightAnchoredPosition
                 : leftAnchoredPosition;
