@@ -79,6 +79,9 @@ namespace Data.Magic
                     id = serverRecipe.Id,
                     serverName = serverRecipe.Name,
                     localizationKey = StringUtils.ToCamelCase(serverRecipe.Name),
+                    textLocalizationKey = string.IsNullOrWhiteSpace(serverRecipe.Text)
+                        ? StringUtils.ToSnakeCase(serverRecipe.Name)
+                        : serverRecipe.Text,
                     resourceName = StringUtils.ToPascalCase(serverRecipe.Name),
                     recipe = recipe,
                 });

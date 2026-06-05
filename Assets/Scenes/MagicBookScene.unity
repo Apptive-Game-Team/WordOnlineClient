@@ -2181,6 +2181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mask: {fileID: 910100003}
+  targetClickBlocker: {fileID: 0}
   panel: {fileID: 319991133}
   magicInfoFactory: {fileID: 895110165}
   magicBookArea: {fileID: 447473942}
@@ -3146,6 +3147,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1508735206}
   m_CullTransparentMesh: 1
+--- !u!1 &1652558686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1652558688}
+  - component: {fileID: 1652558687}
+  m_Layer: 0
+  m_Name: TabButtonGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1652558687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652558686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f54df6f7d9b409eb21fef57a0ef761f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1216604707}
+  - {fileID: 683999010}
+  selectedIndex: 0
+  addClickListeners: 1
+  selectedOffset: {x: 0, y: -8}
+  selectedScale: {x: 0.96, y: 0.96, z: 1}
+  selectedColor: {r: 0.78, g: 0.78, b: 0.78, a: 1}
+--- !u!4 &1652558688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652558686}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.057612, y: 2.0469606, z: 126.38679}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1684976467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3289,8 +3342,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 643807740}
   m_HandleRect: {fileID: 643807739}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3853,7 +3906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 355, y: -170.29501}
+  m_AnchoredPosition: {x: 355, y: -170.29507}
   m_SizeDelta: {x: 700, y: 1281.17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3033667924934099274
@@ -4219,3 +4272,4 @@ SceneRoots:
   - {fileID: 1684976467}
   - {fileID: 1094966912}
   - {fileID: 503158824}
+  - {fileID: 1652558688}

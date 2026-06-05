@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data.Deck;
+using Data.Magic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,11 +20,13 @@ namespace DeckScene
         private readonly Button submitDeckButton;
         private readonly Button removeDeckButton;
         private readonly InputField deckNameInputField;
+        private readonly HaveCardMagicPopup ownedCardMagicPopup;
 
         private readonly Action<DeckResponseDto> onDeckSelected;
         private readonly Action onNewDeckSelected;
         private readonly Action<CardDto> onOwnedCardSelected;
         private readonly Action<CardDto> onCardInDeckSelected;
+        private readonly Func<CardDto, IReadOnlyList<CombinedMagicData>> getOwnedCardMagicSuggestions;
 
         public DeckManagementView(
             Transform deckListContainer,
@@ -38,7 +42,9 @@ namespace DeckScene
             Action<DeckResponseDto> onDeckSelected,
             Action onNewDeckSelected,
             Action<CardDto> onOwnedCardSelected,
-            Action<CardDto> onCardInDeckSelected)
+            Action<CardDto> onCardInDeckSelected,
+            HaveCardMagicPopup ownedCardMagicPopup,
+            Func<CardDto, IReadOnlyList<CombinedMagicData>> getOwnedCardMagicSuggestions)
         {
             this.deckListContainer = deckListContainer;
             this.deckPrefab = deckPrefab;
@@ -54,6 +60,8 @@ namespace DeckScene
             this.onNewDeckSelected = onNewDeckSelected;
             this.onOwnedCardSelected = onOwnedCardSelected;
             this.onCardInDeckSelected = onCardInDeckSelected;
+            this.ownedCardMagicPopup = ownedCardMagicPopup;
+            this.getOwnedCardMagicSuggestions = getOwnedCardMagicSuggestions;
         }
 
         public string DeckName => deckNameInputField.text;
@@ -123,6 +131,21 @@ namespace DeckScene
                 Button button = item.GetComponent<Button>();
 
                 ui.Init(card.name, card.count, card.unlocked, card.unlockText, card.progressText);
+                CardDto localCard = card;
+                ui.BindHover(
+                    hovered =>
+                    {
+                        if (!localCard.unlocked || ownedCardMagicPopup == null)
+                        {
+                            return;
+                        }
+
+                        ownedCardMagicPopup.Show(
+                            getOwnedCardMagicSuggestions?.Invoke(localCard),
+                            hovered.transform as RectTransform);
+                    },
+                    () => ownedCardMagicPopup?.Hide()
+                );
 
                 button.onClick.RemoveAllListeners();
                 button.interactable = card.unlocked;
@@ -132,7 +155,6 @@ namespace DeckScene
                     continue;
                 }
 
-                CardDto localCard = card;
                 button.onClick.AddListener(() => onOwnedCardSelected?.Invoke(localCard));
             }
         }

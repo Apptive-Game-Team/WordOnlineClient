@@ -5,11 +5,12 @@ using GameScene.Card;
 using Global;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DeckScene
 {
-    public class CardItemUI : MonoBehaviour
+    public class CardItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TextMeshProUGUI cardNameText;
         [SerializeField] private TextMeshProUGUI cardManaText;
@@ -25,6 +26,8 @@ namespace DeckScene
         [SerializeField] private Image cardArtImage;
 
         private static readonly Color LockedColor = new Color(0f, 0f, 0f, 0.85f);
+        private System.Action<CardItemUI> onPointerEnter;
+        private System.Action onPointerExit;
 
         public void Init(string cName, int count)
         {
@@ -63,6 +66,22 @@ namespace DeckScene
                 cardArtImage.color = LockedColor;
                 bg.color = LockedColor;
             }
+        }
+
+        public void BindHover(System.Action<CardItemUI> onEnter, System.Action onExit)
+        {
+            onPointerEnter = onEnter;
+            onPointerExit = onExit;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            onPointerEnter?.Invoke(this);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            onPointerExit?.Invoke();
         }
     }
 }

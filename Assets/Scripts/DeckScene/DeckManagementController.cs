@@ -23,6 +23,9 @@ namespace DeckScene
         public Button submitDeckButton;        // 덱 제출 버튼
         public Button removeDeckButton;        // 덱 삭제 버튼
         public InputField deckNameInputField; // 덱 이름 입력 필드
+        [SerializeField] private HaveCardMagicPopup ownedCardMagicPopup;
+        [SerializeField] private DeckMagicInfoButton deckMagicInfoButton;
+        [SerializeField] private DeckRequirementStatusText deckRequirementStatusText;
         [SerializeField] private ConfirmationDialogController deleteConfirmDialogBehaviour;
 
         private DeckManagementViewModel viewModel;
@@ -50,6 +53,12 @@ namespace DeckScene
         private void Awake()
         {
             viewModel = new DeckManagementViewModel();
+            ownedCardMagicPopup ??= FindObjectOfType<HaveCardMagicPopup>(true);
+            if (ownedCardMagicPopup == null)
+            {
+                WDebug.LogWarning("HaveCardMagicPopup is not assigned in ManageDeckScene.");
+            }
+
             deleteConfirmDialog = deleteConfirmDialogBehaviour as IConfirmationDialog;
             if (deleteConfirmDialogBehaviour != null && deleteConfirmDialog == null)
             {
@@ -70,11 +79,15 @@ namespace DeckScene
                 OnDeckSelected,
                 OnNewDeckSelected,
                 OnOwnedCardSelected,
-                OnCardInDeckSelected
+                OnCardInDeckSelected,
+                ownedCardMagicPopup,
+                viewModel.GetOwnedCardMagicSuggestions
             );
             view.BindSubmit(OnDeckSubmit);
             view.BindRemove(OnDeckRemove);
+            deckMagicInfoButton?.Init(viewModel.GetCurrentDeckAvailableMagics);
             UpdateRemoveButton();
+            UpdateDeckRequirements();
         }
 
         private void Start()
@@ -99,6 +112,7 @@ namespace DeckScene
 
             PopulateDeckList();
             PopulateOwnedCardsList();
+            UpdateDeckRequirements();
             LoadingPage.Instance.IsLoading = false;
         }
         
@@ -125,6 +139,7 @@ namespace DeckScene
             UpdateRemoveButton();
 
             ReloadDeckList();
+            UpdateDeckRequirements();
         }
 
         private async void OnNewDeckSelected()
@@ -136,6 +151,7 @@ namespace DeckScene
             view.SetDeckName(viewModel.CurrentDeck.name);
             UpdateRemoveButton();
             ReloadDeckList();
+            UpdateDeckRequirements();
             NewDeckSelected?.Invoke();
         }
 
@@ -145,6 +161,7 @@ namespace DeckScene
             if (viewModel.TryAddOwnedCard(card))
             {
                 ReloadDeckList();
+                UpdateDeckRequirements();
                 NotifyDeckCardCountChanged();
             }
         }
@@ -154,6 +171,7 @@ namespace DeckScene
             if (viewModel.TryRemoveCard(card))
             {
                 ReloadDeckList();
+                UpdateDeckRequirements();
                 NotifyDeckCardCountChanged();
             }
         }
@@ -245,6 +263,21 @@ namespace DeckScene
         private void UpdateRemoveButton()
         {
             view.SetRemoveButtonActive(viewModel.CanDeleteCurrentDeck);
+        }
+
+        private void UpdateDeckRequirements()
+        {
+            DeckRequirementSummary summary = viewModel.GetCurrentDeckSummary();
+            bool canSubmit = viewModel.CanSubmitCurrentDeck;
+
+            if (deckRequirementStatusText != null)
+            {
+                deckRequirementStatusText.Render(summary, canSubmit);
+            }
+            else if (submitDeckButton != null)
+            {
+                submitDeckButton.interactable = canSubmit;
+            }
         }
 
         private void NotifyDeckCardCountChanged()

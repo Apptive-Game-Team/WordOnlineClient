@@ -4,6 +4,7 @@ using Data;
 using Data.GameConfig;
 using Data.Localization;
 using Data.Magic;
+using Data.Util;
 using GameScene.Card;
 using TMPro;
 using UnityEngine;
@@ -64,13 +65,19 @@ namespace MagicBookScene
         private static IEnumerable<string> GetMagicBookKeyCandidates(CombinedMagicData data)
         {
             var yielded = new HashSet<string>();
+            TryYield(data.textLocalizationKey, yielded, out string textLocalizationKey);
+            if (textLocalizationKey != null)
+            {
+                yield return textLocalizationKey;
+            }
+
             TryYield(data.serverName, yielded, out string serverName);
             if (serverName != null)
             {
                 yield return serverName;
             }
 
-            TryYield(ToSnakeCase(data.localizationKey), yielded, out string snakeLocalizationKey);
+            TryYield(StringUtils.ToSnakeCase(data.localizationKey), yielded, out string snakeLocalizationKey);
             if (snakeLocalizationKey != null)
             {
                 yield return snakeLocalizationKey;
@@ -108,28 +115,6 @@ namespace MagicBookScene
             }
 
             return $"{currentText}\n\n{additionalText}";
-        }
-
-        private static string ToSnakeCase(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return value;
-            }
-
-            var chars = new List<char>();
-            for (var i = 0; i < value.Length; i++)
-            {
-                char current = value[i];
-                if (char.IsUpper(current) && i > 0)
-                {
-                    chars.Add('_');
-                }
-
-                chars.Add(char.ToLowerInvariant(current));
-            }
-
-            return new string(chars.ToArray());
         }
     }
 }

@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Data;
 using Data.Deck;
+using Data.Magic;
 using Global;
+using Global.Util;
 
 namespace DeckScene
 {
@@ -21,6 +25,20 @@ namespace DeckScene
         MagicCount
     }
 
+    public readonly struct DeckRequirementSummary
+    {
+        public DeckRequirementSummary(int cardCount, int magicTypeCount, int attributeTypeCount)
+        {
+            CardCount = cardCount;
+            MagicTypeCount = magicTypeCount;
+            AttributeTypeCount = attributeTypeCount;
+        }
+
+        public int CardCount { get; }
+        public int MagicTypeCount { get; }
+        public int AttributeTypeCount { get; }
+    }
+
     public class DeckManagementViewModel
     {
         private static DeckResponseDto[] cachedUserDecks;
@@ -34,6 +52,7 @@ namespace DeckScene
         public DeckEditMode CurrentMode { get; private set; } = DeckEditMode.None;
         public bool HasCachedData => UserDecks.Length > 0 && OwnedCards.Length > 0;
         public bool CanDeleteCurrentDeck => CurrentMode == DeckEditMode.Update && CurrentDeck != null;
+        public bool CanSubmitCurrentDeck => ValidateCurrentDeck() == DeckValidationError.None;
 
         public void SelectDeck(DeckResponseDto deck)
         {
@@ -129,8 +148,72 @@ namespace DeckScene
             return DeckValidationError.None;
         }
 
+        public DeckRequirementSummary GetCurrentDeckSummary()
+        {
+            if (CurrentDeck == null)
+            {
+                return new DeckRequirementSummary(0, 0, 0);
+            }
+
+            return new DeckRequirementSummary(
+                CurrentDeck.cards?.Length ?? 0,
+                CountDistinctCardNamesByType("Magic"),
+                CountDistinctCardNamesByType("Type")
+            );
+        }
+
+        public IReadOnlyList<CombinedMagicData> GetOwnedCardMagicSuggestions(CardDto card)
+        {
+            if (!TryGetCardType(card, out CardType cardType))
+            {
+                return Array.Empty<CombinedMagicData>();
+            }
+
+            return LocalCombinedMagicData.GetEffectiveDataList()
+                .Where(magic => magic.recipe != null && magic.recipe.Contains(cardType))
+                .OrderByDescending(magic => magic.recipe.Count)
+                .ThenBy(magic => magic.localizationKey)
+                .Take(3)
+                .ToList();
+        }
+
+        public IReadOnlyList<CombinedMagicData> GetCurrentDeckAvailableMagics()
+        {
+            var cardCounts = new Dictionary<CardType, int>();
+            foreach (CardDto card in CurrentDeck?.cards ?? Array.Empty<CardDto>())
+            {
+                if (!TryGetCardType(card, out CardType cardType))
+                {
+                    continue;
+                }
+
+                if (!cardCounts.TryAdd(cardType, 1))
+                {
+                    cardCounts[cardType]++;
+                }
+            }
+
+            if (cardCounts.Count == 0)
+            {
+                return Array.Empty<CombinedMagicData>();
+            }
+
+            return LocalCombinedMagicData.GetEffectiveDataList()
+                .Where(magic => CanMake(magic.recipe, cardCounts))
+                .OrderByDescending(magic => magic.recipe.Count)
+                .ThenBy(magic => magic.localizationKey)
+                .ToList();
+        }
+
         public IEnumerator LoadAll(Action<bool> callback)
         {
+            bool magicLoaded = false;
+            MagicInfoDataSource.Instance.RefreshMagics(_ => magicLoaded = true);
+            while (!magicLoaded)
+            {
+                yield return null;
+            }
+
             CardDto[] ownedCards = null;
             yield return deckApiClient.GetOwnedCards(cards => ownedCards = cards);
             if (ownedCards == null)
@@ -261,6 +344,48 @@ namespace DeckScene
             long[] deckCardIds = deck.cards?.Select(card => card.id).OrderBy(id => id).ToArray() ?? Array.Empty<long>();
             long[] requestCardIds = cardIds?.OrderBy(id => id).ToArray() ?? Array.Empty<long>();
             return deckCardIds.SequenceEqual(requestCardIds);
+        }
+
+        private int CountDistinctCardNamesByType(string type)
+        {
+            return CurrentDeck?.cards?
+                .Where(c => c.type == type)
+                .Select(c => c.name)
+                .Distinct()
+                .Count() ?? 0;
+        }
+
+        private static bool TryGetCardType(CardDto card, out CardType cardType)
+        {
+            cardType = CardType.Dummy;
+            return card != null && CardNameMapper.TryMapToCardType(card.name, out cardType);
+        }
+
+        private static bool CanMake(IList<CardType> recipe, Dictionary<CardType, int> cardCounts)
+        {
+            if (recipe == null || recipe.Count == 0)
+            {
+                return false;
+            }
+
+            var need = new Dictionary<CardType, int>();
+            foreach (CardType cardType in recipe)
+            {
+                if (!need.TryAdd(cardType, 1))
+                {
+                    need[cardType]++;
+                }
+            }
+
+            foreach (var item in need)
+            {
+                if (!cardCounts.TryGetValue(item.Key, out int have) || have < item.Value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

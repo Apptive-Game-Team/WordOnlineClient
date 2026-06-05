@@ -8,10 +8,12 @@ namespace Data.Magic
     {
         public long id;
         public string name;
+        public string text;
         public List<string> cards;
 
         public long Id => id;
         public string Name => name;
+        public string Text => text;
         public IReadOnlyList<string> Cards => cards;
     }
 }
