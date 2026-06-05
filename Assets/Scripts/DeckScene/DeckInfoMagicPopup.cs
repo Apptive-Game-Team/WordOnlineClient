@@ -22,11 +22,12 @@ namespace DeckScene
         private int detailRequestId;
         private Coroutine pendingClearDetailCoroutine;
         private bool keepDetailWhilePointerInside;
+        private HoverPopupTransition hoverTransition;
 
         private void Awake()
         {
             panelRoot ??= gameObject;
-            SetDetailVisible(false);
+            hoverTransition = new HoverPopupTransition(this);
             Hide();
         }
 
@@ -81,7 +82,7 @@ namespace DeckScene
             }
 
             DeckMagicPopupItem item = DeckMagicPopupItem.Create(itemRoot);
-            item.Bind(magic, ShowDetail, RequestClearDetail);
+            item.Bind(magic, RequestShowDetail, RequestClearDetail);
         }
 
         private void AddEmptyItem()
@@ -99,19 +100,23 @@ namespace DeckScene
             text.alignment = TextAlignmentOptions.Center;
         }
 
-        private async void ShowDetail(CombinedMagicData magic, RectTransform anchor)
+        private void RequestShowDetail(CombinedMagicData magic, RectTransform anchor)
         {
             if (magic == null)
             {
                 return;
             }
 
-            int requestId = ++detailRequestId;
+            ClearDetail();
             CancelPendingClearDetail();
             keepDetailWhilePointerInside = false;
-            SetDetailVisible(true);
-            PlaceDetailNextTo(anchor);
+            int requestId = ++detailRequestId;
+            hoverTransition ??= new HoverPopupTransition(this);
+            hoverTransition.RunAfterDelay(() => ShowDetail(magic, anchor, requestId));
+        }
 
+        private async void ShowDetail(CombinedMagicData magic, RectTransform anchor, int requestId)
+        {
             string localizedName = await GetLocalizedTextAsync("Magic", magic.localizationKey, magic.localizationKey);
             string localizedText = await GetLocalizedTextAsync("MagicBook", magic.textLocalizationKey, string.Empty);
             if (requestId != detailRequestId)
@@ -119,24 +124,28 @@ namespace DeckScene
                 return;
             }
 
-            if (detailNameText != null)
-            {
-                detailNameText.text = localizedName;
-            }
-
-            if (detailTextText != null)
-            {
-                detailTextText.text = localizedText;
-                detailTextText.gameObject.SetActive(!string.IsNullOrWhiteSpace(localizedText));
-            }
-
             RectTransform root = GetDetailRoot();
-            if (root != null)
+            hoverTransition ??= new HoverPopupTransition(this);
+            hoverTransition.ShowNow(root != null ? root.gameObject : null, () =>
             {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(root);
-            }
+                if (detailNameText != null)
+                {
+                    detailNameText.text = localizedName;
+                }
 
-            PlaceDetailNextTo(anchor);
+                if (detailTextText != null)
+                {
+                    detailTextText.text = localizedText;
+                    detailTextText.gameObject.SetActive(!string.IsNullOrWhiteSpace(localizedText));
+                }
+
+                if (root != null)
+                {
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(root);
+                }
+
+                PlaceDetailNextTo(anchor);
+            });
         }
 
         private void ClearDetail()
@@ -156,7 +165,9 @@ namespace DeckScene
                 detailTextText.gameObject.SetActive(false);
             }
 
-            SetDetailVisible(false);
+            RectTransform root = GetDetailRoot();
+            hoverTransition ??= new HoverPopupTransition(this);
+            hoverTransition.HideImmediate(root != null ? root.gameObject : null);
         }
 
         private void RequestClearDetail()
@@ -200,15 +211,6 @@ namespace DeckScene
             return root != null
                 && root.gameObject.activeInHierarchy
                 && RectTransformUtility.RectangleContainsScreenPoint(root, Input.mousePosition, GetCanvasCamera(root));
-        }
-
-        private void SetDetailVisible(bool isVisible)
-        {
-            RectTransform root = GetDetailRoot();
-            if (root != null)
-            {
-                root.gameObject.SetActive(isVisible);
-            }
         }
 
         private void PlaceDetailNextTo(RectTransform anchor)

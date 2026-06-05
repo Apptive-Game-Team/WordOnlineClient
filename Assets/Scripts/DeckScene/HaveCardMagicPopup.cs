@@ -14,9 +14,12 @@ namespace DeckScene
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private Transform itemRoot;
 
+        private HoverPopupTransition hoverTransition;
+
         private void Awake()
         {
             panelRoot ??= gameObject;
+            hoverTransition = new HoverPopupTransition(this);
             Hide();
         }
 
@@ -42,19 +45,23 @@ namespace DeckScene
                 }
             }
 
-            panelRoot.SetActive(true);
-            if (panelRoot.transform is RectTransform panelRect)
+            hoverTransition ??= new HoverPopupTransition(this);
+            hoverTransition.ShowAfterDelay(panelRoot, () =>
             {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(panelRect);
-            }
+                if (panelRoot.transform is RectTransform panelRect)
+                {
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(panelRect);
+                }
 
-            PlaceNextTo(anchor);
+                PlaceNextTo(anchor);
+            });
         }
 
         public void Hide()
         {
             GameObject root = panelRoot != null ? panelRoot : gameObject;
-            root.SetActive(false);
+            hoverTransition ??= new HoverPopupTransition(this);
+            hoverTransition.HideImmediate(root);
         }
 
         private void AddMagicItem(CombinedMagicData magic)
