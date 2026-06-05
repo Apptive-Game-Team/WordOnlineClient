@@ -43,6 +43,11 @@ namespace DeckScene
             }
 
             panelRoot.SetActive(true);
+            if (panelRoot.transform is RectTransform panelRect)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(panelRect);
+            }
+
             PlaceNextTo(anchor);
         }
 
@@ -74,7 +79,7 @@ namespace DeckScene
             GameObject textObject = new GameObject("EmptyMagicText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
             textObject.transform.SetParent(itemRoot, false);
             var text = textObject.GetComponent<TextMeshProUGUI>();
-            text.text = "가능한 마법 없음";
+            text.text = "None";
             text.fontSize = 18f;
             text.alignment = TextAlignmentOptions.Center;
         }
@@ -119,9 +124,10 @@ namespace DeckScene
                 return;
             }
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, screenPoint, GetCanvasCamera(parentRect), out Vector2 localPoint))
+            Camera camera = GetCanvasCamera(parentRect);
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(parentRect, screenPoint, camera, out Vector3 worldPoint))
             {
-                panelRect.anchoredPosition = localPoint;
+                panelRect.position = worldPoint;
             }
         }
 

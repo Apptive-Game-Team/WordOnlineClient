@@ -52,6 +52,40 @@ namespace Data.Util
 
             return sb.ToString();
         }
+
+        public static string ToSnakeCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            var sb = new StringBuilder();
+            var previousWasSeparator = false;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                char current = input[i];
+                if (current == ' ' || current == '_' || current == '-')
+                {
+                    if (sb.Length > 0 && !previousWasSeparator)
+                    {
+                        sb.Append('_');
+                        previousWasSeparator = true;
+                    }
+
+                    continue;
+                }
+
+                if (char.IsUpper(current) && sb.Length > 0 && !previousWasSeparator)
+                {
+                    sb.Append('_');
+                }
+
+                sb.Append(char.ToLower(current, CultureInfo.InvariantCulture));
+                previousWasSeparator = false;
+            }
+
+            return sb.ToString();
+        }
     }
 
 }

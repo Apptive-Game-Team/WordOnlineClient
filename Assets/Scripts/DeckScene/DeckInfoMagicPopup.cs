@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using Data;
 using Data.Localization;
 using Data.Magic;
 using TMPro;
@@ -11,20 +11,31 @@ namespace DeckScene
     public class DeckInfoMagicPopup : MonoBehaviour
     {
         private const float DetailAnchorOffset = 12f;
-        private const float DetailRecipeIconSize = 42f;
-        private const float DetailRecipeIconSpacing = 4f;
+        private const float DetailExitGraceSeconds = 0.05f;
 
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private Transform itemRoot;
+        [SerializeField] private RectTransform detailRoot;
         [SerializeField] private TMP_Text detailNameText;
-        [SerializeField] private Transform detailRecipeIconRoot;
+        [SerializeField] private TMP_Text detailTextText;
 
         private int detailRequestId;
+        private Coroutine pendingClearDetailCoroutine;
+        private bool keepDetailWhilePointerInside;
 
         private void Awake()
         {
             panelRoot ??= gameObject;
+            SetDetailVisible(false);
             Hide();
+        }
+
+        private void Update()
+        {
+            if (keepDetailWhilePointerInside && !IsPointerInsideDetail())
+            {
+                ClearDetail();
+            }
         }
 
         public void Show(IReadOnlyList<CombinedMagicData> magics)
@@ -50,6 +61,7 @@ namespace DeckScene
 
         public void Hide()
         {
+            ClearDetail();
             GameObject root = panelRoot != null ? panelRoot : gameObject;
             root.SetActive(false);
         }
@@ -69,7 +81,7 @@ namespace DeckScene
             }
 
             DeckMagicPopupItem item = DeckMagicPopupItem.Create(itemRoot);
-            item.Bind(magic, ShowDetail, ClearDetail);
+            item.Bind(magic, ShowDetail, RequestClearDetail);
         }
 
         private void AddEmptyItem()
@@ -82,7 +94,7 @@ namespace DeckScene
             GameObject textObject = new GameObject("EmptyMagicText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
             textObject.transform.SetParent(itemRoot, false);
             var text = textObject.GetComponent<TextMeshProUGUI>();
-            text.text = "가능한 마법 없음";
+            text.text = "None";
             text.fontSize = 18f;
             text.alignment = TextAlignmentOptions.Center;
         }
@@ -95,9 +107,13 @@ namespace DeckScene
             }
 
             int requestId = ++detailRequestId;
+            CancelPendingClearDetail();
+            keepDetailWhilePointerInside = false;
+            SetDetailVisible(true);
             PlaceDetailNextTo(anchor);
 
-            string localizedName = await LocaleUtils.GetStringAsync("Magic", magic.localizationKey);
+            string localizedName = await GetLocalizedTextAsync("Magic", magic.localizationKey, magic.localizationKey);
+            string localizedText = await GetLocalizedTextAsync("MagicBook", magic.textLocalizationKey, string.Empty);
             if (requestId != detailRequestId)
             {
                 return;
@@ -105,17 +121,28 @@ namespace DeckScene
 
             if (detailNameText != null)
             {
-                detailNameText.text = string.IsNullOrWhiteSpace(localizedName)
-                    ? magic.localizationKey
-                    : localizedName;
+                detailNameText.text = localizedName;
             }
 
-            RenderRecipeIcons(detailRecipeIconRoot, magic.recipe, 42f);
+            if (detailTextText != null)
+            {
+                detailTextText.text = localizedText;
+                detailTextText.gameObject.SetActive(!string.IsNullOrWhiteSpace(localizedText));
+            }
+
+            RectTransform root = GetDetailRoot();
+            if (root != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(root);
+            }
+
             PlaceDetailNextTo(anchor);
         }
 
         private void ClearDetail()
         {
+            CancelPendingClearDetail();
+            keepDetailWhilePointerInside = false;
             detailRequestId++;
 
             if (detailNameText != null)
@@ -123,8 +150,65 @@ namespace DeckScene
                 detailNameText.text = string.Empty;
             }
 
-            ClearChildren(detailRecipeIconRoot);
+            if (detailTextText != null)
+            {
+                detailTextText.text = string.Empty;
+                detailTextText.gameObject.SetActive(false);
+            }
 
+            SetDetailVisible(false);
+        }
+
+        private void RequestClearDetail()
+        {
+            if (!isActiveAndEnabled)
+            {
+                ClearDetail();
+                return;
+            }
+
+            CancelPendingClearDetail();
+            pendingClearDetailCoroutine = StartCoroutine(ClearDetailAfterPointerCheck());
+        }
+
+        private IEnumerator ClearDetailAfterPointerCheck()
+        {
+            yield return new WaitForSecondsRealtime(DetailExitGraceSeconds);
+            pendingClearDetailCoroutine = null;
+
+            keepDetailWhilePointerInside = IsPointerInsideDetail();
+            if (!keepDetailWhilePointerInside)
+            {
+                ClearDetail();
+            }
+        }
+
+        private void CancelPendingClearDetail()
+        {
+            if (pendingClearDetailCoroutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(pendingClearDetailCoroutine);
+            pendingClearDetailCoroutine = null;
+        }
+
+        private bool IsPointerInsideDetail()
+        {
+            RectTransform root = GetDetailRoot();
+            return root != null
+                && root.gameObject.activeInHierarchy
+                && RectTransformUtility.RectangleContainsScreenPoint(root, Input.mousePosition, GetCanvasCamera(root));
+        }
+
+        private void SetDetailVisible(bool isVisible)
+        {
+            RectTransform root = GetDetailRoot();
+            if (root != null)
+            {
+                root.gameObject.SetActive(isVisible);
+            }
         }
 
         private void PlaceDetailNextTo(RectTransform anchor)
@@ -149,22 +233,31 @@ namespace DeckScene
                 return;
             }
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, screenPoint, GetCanvasCamera(parentRect), out Vector2 localPoint))
+            Camera camera = GetCanvasCamera(parentRect);
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(parentRect, screenPoint, camera, out Vector3 worldPoint))
             {
-                detailRect.anchoredPosition = ClampToParent(detailRect, parentRect, localPoint);
+                detailRect.position = worldPoint;
+                detailRect.localPosition = ClampToParent(detailRect, parentRect);
             }
         }
 
         private RectTransform GetDetailRoot()
         {
-            if (detailNameText != null && detailNameText.transform.parent is RectTransform nameParent)
+            if (detailRoot != null)
             {
-                return nameParent;
+                return detailRoot;
             }
 
-            if (detailRecipeIconRoot != null && detailRecipeIconRoot.parent is RectTransform recipeParent)
+            if (detailNameText != null && detailNameText.transform.parent is RectTransform nameParent)
             {
-                return recipeParent;
+                detailRoot = nameParent;
+                return detailRoot;
+            }
+
+            if (detailTextText != null && detailTextText.transform.parent is RectTransform textParent)
+            {
+                detailRoot = textParent;
+                return detailRoot;
             }
 
             return null;
@@ -183,102 +276,6 @@ namespace DeckScene
             }
         }
 
-        private static void RenderRecipeIcons(Transform root, IEnumerable<CardType> recipe, float iconSize)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            EnsureGridLayout(root, iconSize);
-            ClearChildren(root);
-            if (recipe == null)
-            {
-                return;
-            }
-
-            int count = 0;
-            foreach (CardType cardType in recipe)
-            {
-                Image icon = CreateImage(root, "RecipeIcon", iconSize);
-                icon.sprite = DeckCardSpriteResolver.GetCardSprite(cardType);
-                icon.preserveAspect = true;
-                count++;
-            }
-
-            ResizeRecipeRoot(root, count, iconSize);
-            if (root is RectTransform rectTransform)
-            {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-            }
-        }
-
-        private static Image CreateImage(Transform root, string name, float size)
-        {
-            var iconObject = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
-            iconObject.transform.SetParent(root, false);
-            iconObject.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
-            var layout = iconObject.GetComponent<LayoutElement>();
-            layout.minWidth = size;
-            layout.minHeight = size;
-            layout.preferredWidth = size;
-            layout.preferredHeight = size;
-            return iconObject.GetComponent<Image>();
-        }
-
-        private static void EnsureGridLayout(Transform root, float iconSize)
-        {
-            var horizontalLayout = root.GetComponent<HorizontalLayoutGroup>();
-            if (horizontalLayout != null)
-            {
-                Destroy(horizontalLayout);
-            }
-
-            var gridLayout = root.GetComponent<GridLayoutGroup>();
-            if (gridLayout == null)
-            {
-                gridLayout = root.gameObject.AddComponent<GridLayoutGroup>();
-            }
-
-            gridLayout.cellSize = new Vector2(iconSize, iconSize);
-            gridLayout.spacing = new Vector2(DetailRecipeIconSpacing, 0f);
-            gridLayout.startAxis = GridLayoutGroup.Axis.Horizontal;
-            gridLayout.constraint = GridLayoutGroup.Constraint.FixedRowCount;
-            gridLayout.constraintCount = 1;
-        }
-
-        private static void ResizeRecipeRoot(Transform root, int iconCount, float iconSize)
-        {
-            if (root is not RectTransform rectTransform)
-            {
-                return;
-            }
-
-            float width = iconCount <= 0
-                ? 0f
-                : (iconSize * iconCount) + (DetailRecipeIconSpacing * (iconCount - 1));
-
-            rectTransform.sizeDelta = new Vector2(width, iconSize);
-            var layout = root.GetComponent<LayoutElement>() ?? root.gameObject.AddComponent<LayoutElement>();
-            layout.minWidth = width;
-            layout.preferredWidth = width;
-            layout.minHeight = iconSize;
-            layout.preferredHeight = iconSize;
-        }
-
-        private static void ClearChildren(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            foreach (Transform child in root)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-
         private static Camera GetCanvasCamera(Component component)
         {
             Canvas canvas = component.GetComponentInParent<Canvas>();
@@ -287,19 +284,33 @@ namespace DeckScene
                 : null;
         }
 
-        private static Vector2 ClampToParent(RectTransform rect, RectTransform parent, Vector2 anchoredPosition)
+        private static async System.Threading.Tasks.Task<string> GetLocalizedTextAsync(string tableName, string key, string fallback)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return fallback;
+            }
+
+            string localized = await LocaleUtils.GetStringAsync(tableName, key);
+            return string.IsNullOrWhiteSpace(localized) || localized == key
+                ? fallback
+                : localized;
+        }
+
+        private static Vector3 ClampToParent(RectTransform rect, RectTransform parent)
         {
             Rect parentRect = parent.rect;
             Rect rectRect = rect.rect;
+            Vector3 localPosition = rect.localPosition;
 
             float minX = parentRect.xMin;
             float maxX = parentRect.xMax - rectRect.width;
             float minY = parentRect.yMin + (rectRect.height * 0.5f);
             float maxY = parentRect.yMax - (rectRect.height * 0.5f);
 
-            anchoredPosition.x = Mathf.Clamp(anchoredPosition.x, minX, Mathf.Max(minX, maxX));
-            anchoredPosition.y = Mathf.Clamp(anchoredPosition.y, minY, Mathf.Max(minY, maxY));
-            return anchoredPosition;
+            localPosition.x = Mathf.Clamp(localPosition.x, minX, Mathf.Max(minX, maxX));
+            localPosition.y = Mathf.Clamp(localPosition.y, minY, Mathf.Max(minY, maxY));
+            return localPosition;
         }
     }
 }
