@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: MagicBook Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: MagicBook
+  m_TableCollectionNameGuidString: a5fb4d045cc352340a0b295aafdb7db4
+  m_Entries:
+  - m_Id: 1000000
+    m_Key: water_slime_swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000001
+    m_Key: fire_shot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000002
+    m_Key: water_explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000003
+    m_Key: cannon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000004
+    m_Key: tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000005
+    m_Key: mana_well
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000006
+    m_Key: aqua_archer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000007
+    m_Key: rock_golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000008
+    m_Key: storm_rider
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000009
+    m_Key: thunder_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000010
+    m_Key: fire_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000011
+    m_Key: lightning_drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000012
+    m_Key: magma_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000013
+    m_Key: healing_totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000014
+    m_Key: sand_storm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000015
+    m_Key: tornado_strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000016
+    m_Key: meteor_shower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000017
+    m_Key: cloud_dragon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000018
+    m_Key: thunder_bird_swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000019
+    m_Key: tree_golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000020
+    m_Key: vine_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000021
+    m_Key: vine_colony
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000022
+    m_Key: rock_mage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000023
+    m_Key: seed_spirit_swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000024
+    m_Key: ember_spirit_swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000025
+    m_Key: mini_rock_swarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000026
+    m_Key: wind_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000027
+    m_Key: magma_explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000028
+    m_Key: wind_totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000029
+    m_Key: rock_turret
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000030
+    m_Key: life_tree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000031
+    m_Key: wind_blade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000032
+    m_Key: vine_toss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000033
+    m_Key: tide_call
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000034
+    m_Key: rock_rolling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000035
+    m_Key: chain_lightning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000036
+    m_Key: rain_cloud
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000037
+    m_Key: will_o_wisp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000038
+    m_Key: frenzy_totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000039
+    m_Key: leafair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000040
+    m_Key: rock_drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000041
+    m_Key: chicken_commando
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000042
+    m_Key: overgrowth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000043
+    m_Key: crater
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000044
+    m_Key: zap_mouse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000045
+    m_Key: rallying_torch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000046
+    m_Key: lightning_explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000047
+    m_Key: razor_gale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000048
+    m_Key: bubble_generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000049
+    m_Key: electric_tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864653363056640
+    m_Key: dimension_toad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864718152470528
+    m_Key: fire_lord_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864733830778880
+    m_Key: bubble_spirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864741510549504
+    m_Key: shock_overload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507520
+    m_Key: towerback
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4203348817207623685
+  references:
+    version: 2
+    RefIds:
+    - rid: 4203348817207623685
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1779535914526

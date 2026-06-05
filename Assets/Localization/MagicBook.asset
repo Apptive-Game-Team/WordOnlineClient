@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: MagicBook
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: a5fb4d045cc352340a0b295aafdb7db4, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 7941bccd84c22ed47ab6592519070263, type: 2}
+  - {fileID: 11400000, guid: 8c852be194b408145948e2380588eea2, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []

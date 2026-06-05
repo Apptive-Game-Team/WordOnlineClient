@@ -87,6 +87,17 @@ namespace GameScene.Card
                 _currentCardNameList.Find(c => c.Contains("Shoot"));
             return result;
         }
+
+        public bool TryGetCurrentMagicData(out CombinedMagicData data)
+        {
+            if (combinedMagicResolver == null)
+            {
+                data = null;
+                return false;
+            }
+
+            return combinedMagicResolver.TryResolve(GetCurrentRecipeTypes(), out data);
+        }
     
         private void CancelAll()
         {

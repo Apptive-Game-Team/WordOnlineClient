@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Onboarding_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: b5ac3a473b3a4861826623f6cd9603af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 318000000001
+    m_Localized: "Would you like to start the tutorial?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000002
+    m_Localized: "If this is your first time, we will briefly introduce decks, the magic book, matching, and the menu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000003
+    m_Localized: "Yes"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000004
+    m_Localized: "No"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000005
+    m_Localized: "Deck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000006
+    m_Localized: "There are magic cards and attribute cards. Most spells are cast by combining one of each."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000007
+    m_Localized: "A deck has 15 cards. It must include up to 3 magic types and at least 2 attribute types."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000008
+    m_Localized: "Now build your own deck."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000009
+    m_Localized: "You cannot leave this screen until your deck is complete and saved."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000010
+    m_Localized: "You have selected all 15 cards. Press Save to store your deck."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000011
+    m_Localized: "Your deck is saved. Press the lobby button to return."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000012
+    m_Localized: "Magic Book"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000013
+    m_Localized: "The magic book shows detailed information about spells."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000014
+    m_Localized: "Let's look at Grass Seed Slime as an example."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000015
+    m_Localized: "Press the element chart button."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000016
+    m_Localized: "The magic book guide is complete. Press the lobby button to return."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000017
+    m_Localized: "Matching"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000018
+    m_Localized: "Use the dropdown on the right to choose your deck."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000019
+    m_Localized: "Match with other players to test your skills."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000020
+    m_Localized: "You can also match against bots for relaxed practice."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000021
+    m_Localized: "You can enjoy adventures."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000022
+    m_Localized: "Menu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000023
+    m_Localized: "The menu lets you open Options and My Profile."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000024
+    m_Localized: "Onboarding complete."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000025
+    m_Localized: "Next"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000026
+    m_Localized: "Done"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000027
+    m_Localized: "Press the Deck button to open the deck screen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000028
+    m_Localized: "Choose cards from the card list and add them to your current deck."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000029
+    m_Localized: "Press the Magic Book button to open the magic book screen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000030
+    m_Localized: "Click any magic."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000031
+    m_Localized: "Read the magic description."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000032
+    m_Localized: "The chart shows element relationships."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

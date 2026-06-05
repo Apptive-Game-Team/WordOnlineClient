@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Data;
 using Data.Deck;
+using Data.GameConfig;
 using Data.Magic;
 using DeckScene;
 using GameScene.Card;
@@ -32,12 +33,15 @@ namespace LobbyScene
         public LocalizedString noDecksAvailable;
         public LocalizedString deckSelectionFailed;
         public LocalizedString deckSelectionSuccess;
+        
+        private bool initializing = true;
     
         private void Start()
         {
             WDebug.Log("LobbyUIController Start");
             LoadingPage.Instance.IsLoading = true;
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
+            ParametersDataSource.Instance.RefreshParameters();
             MagicInfoDataSource.Instance.RefreshMagics();
             StartCoroutine(LoadUserInfo());
         }
@@ -84,7 +88,7 @@ namespace LobbyScene
             {
                 SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
                 WDebug.LogWarning("덱이 하나도 없습니다.");
-                SceneManager.LoadScene("LoginScene");
+                SceneManager.LoadScene("ManageDeckScene");
                 yield break;
             }
         
@@ -102,13 +106,19 @@ namespace LobbyScene
             // 드랍다운 옵션 클리어 후 추가
             deckDropdown.ClearOptions();
             deckDropdown.AddOptions(names);
-        
+            
             // 현재 선택된 덱 인덱스 찾아 세팅
             int idx = userDecks
                 .Select(d => d.id)
                 .ToList()
                 .IndexOf(SceneContext.User.selectedDeckId);
-            idx = Mathf.Clamp(idx, 0, names.Count - 1);
+
+            //
+            if (idx == -1)
+            {
+                StartCoroutine(SelectDeckCoroutine(userDecks[0].id));
+                idx = 0;
+            }
 
             deckDropdown.value = idx;
             deckDropdown.RefreshShownValue();
@@ -116,12 +126,12 @@ namespace LobbyScene
             UpdateCaption(names[idx]);
         
             LoadingPage.Instance.IsLoading = false;
+            initializing = false;
         }
 
         // 3) 드랍다운에서 선택 바뀌었을 때
         public void OnDropdownChanged(int newIndex)
         {
-        
             var selected = userDecks[newIndex];
             DeckSceneContext.CurrentDeck = selected;     // 컨텍스트 갱신
             WDebug.Log($"index: {newIndex} 선택된 덱: {selected.name} (ID: {selected.id})");
@@ -145,7 +155,8 @@ namespace LobbyScene
             }
             else
             {
-                SystemMessageUI.Instance.ShowMessage(deckSelectionSuccess);
+                if (!initializing)
+                    SystemMessageUI.Instance.ShowMessage(deckSelectionSuccess);
                 WDebug.Log("덱 선택 성공: " + www.downloadHandler.text);
             }
         }

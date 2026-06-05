@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2169947283456
-    m_Key: Magic Book
+    m_Key: MagicBook
     m_Metadata:
       m_Items: []
   - m_Id: 2251874623488
@@ -73,6 +73,34 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 53195004118929408
     m_Key: Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852343517437952
+    m_Key: MatchingStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852596178116608
+    m_Key: MatchingFail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73852848838795264
+    m_Key: MatchingCancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73968719141789696
+    m_Key: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76055082351853568
+    m_Key: ElementChart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76055172051238912
+    m_Key: Dictionary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76055400473034752
+    m_Key: New Entry
     m_Metadata:
       m_Items: []
   m_Metadata:

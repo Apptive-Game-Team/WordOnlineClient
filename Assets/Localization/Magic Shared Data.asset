@@ -339,6 +339,34 @@ MonoBehaviour:
     m_Key: razorGale
     m_Metadata:
       m_Items: []
+  - m_Id: 73103810000000000
+    m_Key: bubbleGenerator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73103910000000000
+    m_Key: electricTower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73104010000000000
+    m_Key: fireLordSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73104110000000000
+    m_Key: dimensionToad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335189718503424
+    m_Key: bubbleSpirit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335217098919936
+    m_Key: shockOverload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335231510548480
+    m_Key: towerback
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -50,6 +50,14 @@ MonoBehaviour:
     m_Localized: Go to Sign In
     m_Metadata:
       m_Items: []
+  - m_Id: 77279489225121792
+    m_Localized: Remove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77283521352163328
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

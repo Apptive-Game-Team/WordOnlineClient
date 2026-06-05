@@ -1,3 +1,4 @@
+using System;
 using Data.Sound;
 using Sound;
 using UnityEngine;
@@ -6,6 +7,7 @@ namespace Global.Button
 {
     public abstract class ButtonBase : MonoBehaviour
     {
+        public event Action OnClick;
 
         private AudioSource _audioSource;
         private AudioSource AudioSource
@@ -25,6 +27,7 @@ namespace Global.Button
         public virtual void ButtonEvent()
         {
             PlayUISound();
+            OnClick?.Invoke();
             OnClickButton();
         }
 

@@ -186,6 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2380005482251267882}
+  - component: {fileID: 8145349350731494144}
   m_Layer: 0
   m_Name: Burn
   m_TagString: Untagged
@@ -209,3 +210,20 @@ Transform:
   - {fileID: 5551651546424698560}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8145349350731494144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9040664404873696730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0e232b46fa4646a31a77dab92a3bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 2034759565399695195}
+  sprites:
+  - {fileID: 21300000, guid: c93cff3e424e7413d950932af0a4d755, type: 3}
+  - {fileID: 21300000, guid: cd35e776621dd417cae529696309fa74, type: 3}
+  rotateInterval: 0.5

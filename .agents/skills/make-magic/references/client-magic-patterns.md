@@ -11,20 +11,33 @@ Use this reference when you need exact client file examples for a new magic.
 - `Assets/Resources/Prefabs/*.prefab`
 - `Assets/Resources/Game/*/*.png`
 
-## Leafair example
+## Current server-derived data pattern
 
-Current client data already shows the expected pattern:
+Current client data does not maintain a local magic recipe list. `LocalCombinedMagicData` builds display data from server-provided magic records and returns an empty list when no cached server payload is available:
 
-- `LocalCombinedMagicData` contains:
-  `id = 24`
-  `magicName = "Leafair"`
-  `recipe = new () { CardType.Drop, CardType.Nature }`
-  `spritePath = "Game/drop/leafair"`
-- `Magic Shared Data.asset` contains the key `leafair`
-- `Magic_en.asset` contains `leafair`
-- `Magic_ko-KR.asset` contains the Korean text `술이파리`
-- `Assets/Resources/Prefabs/Leafair.prefab` exists
-- `Assets/Resources/Game/drop/leafair.png` exists
+- `id`, server name, and recipe cards come from the server response.
+- `localizationKey` is derived with `StringUtils.ToCamelCase(serverRecipe.Name)`.
+- `resourceName` is derived with `StringUtils.ToPascalCase(serverRecipe.Name)`.
+- `CombinedMagicData.GetSprite()` loads `Assets/Resources/Game/sprites/{resourceName}.png`.
+
+For a new server magic named `Fire Lord Spirit`, the client-side localization/icon pattern is:
+
+- `Magic Shared Data.asset` contains the key `fireLordSpirit`.
+- `Magic_en.asset` contains `Fire Lord Spirit`.
+- `Magic_ko-KR.asset` contains the Korean display text.
+- `Assets/Resources/Game/sprites/FireLordSpirit.png` exists.
+
+Do not add a fake local `CombinedMagicData` entry, ask for a server id, or edit `LocalCombinedMagicData.cs` for ordinary new-magic client work.
+
+Sprite max dimensions are tiered by unit size:
+
+- small unit: `128x128`
+- middle unit: `192x192`
+- big unit: `256x256`
+
+Resize within the tier limit while preserving aspect ratio, then trim transparent padding as the final image step. A tightly trimmed sprite is more important than a square canvas; do not add transparent padding just to make the file square.
+
+Default character sprite style: right-facing, simple flat cartoon, not flashy, no outer/dark contour line, and no extra effects, particles, aura, environment, ground, shadow, or other surrounding description.
 
 ## Nearby prefab examples
 
@@ -40,6 +53,6 @@ Use the closest family match when duplicating a prefab:
 
 ## Notes
 
-- The gameplay icon path in `LocalCombinedMagicData` comes from `Resources.Load<Sprite>(spritePath)`.
+- The gameplay icon path comes from `Resources.Load<Sprite>($"Game/sprites/{resourceName}")`.
 - Runtime world objects load from `Resources/Prefabs` through `ObjectSpawner`.
 - The current working tree may include unrelated changes such as `Assets/Scripts/Data/ServerList.cs`; do not fold those into a magic task unless the user asks for it.
