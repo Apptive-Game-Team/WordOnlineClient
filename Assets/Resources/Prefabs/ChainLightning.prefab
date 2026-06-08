@@ -195,7 +195,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba41200a22dc02449be61e601e9a2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AfterImagePrefab: {fileID: 468314681180972983, guid: ec48247db96c8b3468863c78bed3e0e4, type: 3}
+  servedObject: {fileID: 5838226653793143268}
+  sourceRenderer: {fileID: 2555408739639926963}
+  spawnInterval: 0.1
+  lifetime: 1
+  alphaMultiplier: 0.35
+  endScaleMultiplier: 0.2
+  initialPoolSize: 8
+  isSpawned: 1
 --- !u!114 &5838226653793143268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +216,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 2555408739639926963}
+  _actualTransform: {fileID: 0}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []

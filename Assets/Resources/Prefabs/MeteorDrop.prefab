@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2715395281370167880, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.2875
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 2715395281370167880, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.285
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 3650954007380220348, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_LocalPosition.x
@@ -71,5 +71,49 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4705269614485497549, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7263950596706113183}
   m_SourcePrefab: {fileID: 100100000, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+--- !u!114 &3419487700863449916 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1088561502640704175, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+  m_PrefabInstance: {fileID: 2337136317207998867}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6999531506464986974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &6564404468497111571 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8896401521967180672, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+  m_PrefabInstance: {fileID: 2337136317207998867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6999531506464986974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4705269614485497549, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+  m_PrefabInstance: {fileID: 2337136317207998867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7263950596706113183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6999531506464986974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba41200a22dc02449be61e601e9a2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 3419487700863449916}
+  sourceRenderer: {fileID: 6564404468497111571}
+  spawnInterval: 0.2
+  lifetime: 2
+  alphaMultiplier: 0.35
+  endScaleMultiplier: 0.2
+  initialPoolSize: 8
+  isSpawned: 1

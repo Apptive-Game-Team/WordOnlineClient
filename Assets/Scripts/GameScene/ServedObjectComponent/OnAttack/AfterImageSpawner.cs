@@ -1,42 +1,138 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent.OnAttack
 {
     public class AfterImageSpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject AfterImagePrefab;
-        private ServedObject servedObject;
+        [SerializeField] private SpriteRenderer sourceRenderer;
+        [SerializeField] private float spawnInterval = 0.05f;
+        [SerializeField] private float lifetime = 0.35f;
+        [SerializeField] private float alphaMultiplier = 0.35f;
+        [SerializeField] private float endScaleMultiplier = 0.2f;
+        [SerializeField] private int initialPoolSize = 8;
         
-        bool isSpawned = false;
+        private WaitForSeconds spawnDelay;
+        private Transform poolRoot;
+        private readonly Queue<SpriteAfterImageFade> inactiveAfterImages = new Queue<SpriteAfterImageFade>();
+        private bool isDestroyed;
+
         private void Start()
         {
-            servedObject = transform.parent.GetComponentInChildren<ServedObject>();
-            servedObject.OnAttack += SetSpawned;
+            CreatePoolRoot();
+            PreloadPool();
+            spawnDelay = new WaitForSeconds(Mathf.Max(0.01f, spawnInterval));
             StartCoroutine(PlayAfterImage());
         }
         
         private void OnDestroy()
         {
-            servedObject.OnAttack -= SetSpawned;
-        }
+            isDestroyed = true;
 
-
-        private void SetSpawned()
-        {
-            isSpawned = true;
+            if (poolRoot != null)
+            {
+                Destroy(poolRoot.gameObject);
+            }
         }
         
         private IEnumerator PlayAfterImage()
         {
             while (true)
             {
-                if (isSpawned)
-                {
-                    Instantiate(AfterImagePrefab, transform.position, Quaternion.identity);
-                    yield return new WaitForSeconds(0.05f);        
-                }
+                yield return spawnDelay;    
+                
+                CreateAfterImage();
+                
             }
+        }
+        
+        private void CreatePoolRoot()
+        {
+            GameObject root = new GameObject($"{name}AfterImagePool");
+            poolRoot = root.transform;
+        }
+
+        private void PreloadPool()
+        {
+            int poolSize = Mathf.Max(0, initialPoolSize);
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                ReturnAfterImage(CreatePooledAfterImage());
+            }
+        }
+
+        private void CreateAfterImage()
+        {
+            if (sourceRenderer == null || sourceRenderer.sprite == null)
+            {
+                return;
+            }
+
+            SpriteAfterImageFade afterImageFade = GetAfterImage();
+            GameObject afterImage = afterImageFade.gameObject;
+            afterImage.transform.position = sourceRenderer.transform.position;
+            afterImage.transform.rotation = sourceRenderer.transform.rotation;
+            afterImage.transform.localScale = sourceRenderer.transform.lossyScale;
+
+            SpriteRenderer afterImageRenderer = afterImage.GetComponent<SpriteRenderer>();
+            CopyRenderer(sourceRenderer, afterImageRenderer);
+
+            afterImage.SetActive(true);
+            afterImageFade.Play(Mathf.Max(0.01f, lifetime), endScaleMultiplier, ReturnAfterImage);
+        }
+
+        private SpriteAfterImageFade GetAfterImage()
+        {
+            if (inactiveAfterImages.Count > 0)
+            {
+                return inactiveAfterImages.Dequeue();
+            }
+
+            return CreatePooledAfterImage();
+        }
+
+        private SpriteAfterImageFade CreatePooledAfterImage()
+        {
+            GameObject afterImage = new GameObject("AfterImage");
+            afterImage.transform.SetParent(poolRoot, false);
+            afterImage.AddComponent<SpriteRenderer>();
+            return afterImage.AddComponent<SpriteAfterImageFade>();
+        }
+
+        private void ReturnAfterImage(SpriteAfterImageFade afterImageFade)
+        {
+            if (afterImageFade == null)
+            {
+                return;
+            }
+
+            if (isDestroyed)
+            {
+                Destroy(afterImageFade.gameObject);
+                return;
+            }
+
+            afterImageFade.gameObject.SetActive(false);
+            inactiveAfterImages.Enqueue(afterImageFade);
+        }
+
+        private void CopyRenderer(SpriteRenderer source, SpriteRenderer target)
+        {
+            target.sprite = source.sprite;
+            target.sharedMaterial = source.sharedMaterial;
+            target.flipX = source.flipX;
+            target.flipY = source.flipY;
+            target.drawMode = source.drawMode;
+            target.size = source.size;
+            target.maskInteraction = source.maskInteraction;
+            target.sortingLayerID = source.sortingLayerID;
+            target.sortingOrder = source.sortingOrder - 1;
+
+            Color color = source.color;
+            color.a = Mathf.Clamp01(color.a * alphaMultiplier);
+            target.color = color;
         }
     }
 }
