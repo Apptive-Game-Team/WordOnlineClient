@@ -22,6 +22,16 @@ namespace GameScene
         [SerializeField] private GameObject lineSkillIndicator;
         [SerializeField] private GameObject circleSkillIndicator;
 
+        private const float GroundZ = 0f;
+        private static readonly CardType[] IndicatorPriority =
+        {
+            CardType.Spawn,
+            CardType.Build,
+            CardType.Explode,
+            CardType.Drop,
+            CardType.Shoot
+        };
+
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
@@ -76,9 +86,15 @@ namespace GameScene
 
             if (!currentSkillIndicator.activeSelf) currentSkillIndicator.SetActive(true);
 
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorldPos.z = 0f;
-            Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
+            Camera mainCamera = Camera.main;
+            if (mainCamera == null)
+            {
+                WDebug.LogWarning("[FieldSelector] Could not find main camera.");
+                return;
+            }
+
+            Vector3 groundMouseWorldPos = GetMousePositionOnZPlane(mainCamera, Input.mousePosition, GroundZ);
+            Vector3 previewPosition = ClampToRange(groundMouseWorldPos, casterPosition, range);
             currentAimObj.transform.position = previewPosition;
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
@@ -86,7 +102,7 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                cardInputSender.SendInput(mouseWorldPos);
+                cardInputSender.SendInput(groundMouseWorldPos);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
@@ -103,7 +119,7 @@ namespace GameScene
             if (caster != null)
             {
                 Vector3 position = caster.transform.position;
-                position.z = 0f;
+                position.z = GroundZ;
                 return position;
             }
 
@@ -163,10 +179,34 @@ namespace GameScene
 
         private static bool IsLineMagic(CombinedMagicData magicData)
         {
-            return magicData.recipe != null && magicData.recipe.Contains(CardType.Shoot) ||
-                   IsSameMagicName(magicData.serverName, "Shoot") ||
-                   IsSameMagicName(magicData.resourceName, "Shoot") ||
-                   IsSameMagicName(magicData.localizationKey, "Shoot");
+            return GetPrimaryIndicatorType(magicData) == CardType.Shoot;
+        }
+
+        private static CardType GetPrimaryIndicatorType(CombinedMagicData magicData)
+        {
+            if (magicData.recipe != null)
+            {
+                foreach (CardType cardType in IndicatorPriority)
+                {
+                    if (magicData.recipe.Contains(cardType))
+                    {
+                        return cardType;
+                    }
+                }
+            }
+
+            foreach (CardType cardType in IndicatorPriority)
+            {
+                string cardTypeName = cardType.ToString();
+                if (IsSameMagicName(magicData.serverName, cardTypeName) ||
+                    IsSameMagicName(magicData.resourceName, cardTypeName) ||
+                    IsSameMagicName(magicData.localizationKey, cardTypeName))
+                {
+                    return cardType;
+                }
+            }
+
+            return CardType.Dummy;
         }
 
         private static bool IsSameMagicName(string value, string expected)
@@ -210,6 +250,20 @@ namespace GameScene
             float spriteDiameter = Mathf.Max(spriteRenderer.sprite.bounds.size.x, spriteRenderer.sprite.bounds.size.y);
             float scale = (radius * 2f) / spriteDiameter;
             indicator.transform.localScale = new Vector3(scale, scale, 1f);
+        }
+
+        private static Vector3 GetMousePositionOnZPlane(Camera camera, Vector3 screenPosition, float z)
+        {
+            Ray ray = camera.ScreenPointToRay(screenPosition);
+            Plane plane = new Plane(Vector3.forward, new Vector3(0f, 0f, z));
+            if (plane.Raycast(ray, out float distance))
+            {
+                return ray.GetPoint(distance);
+            }
+
+            Vector3 fallbackPosition = camera.ScreenToWorldPoint(screenPosition);
+            fallbackPosition.z = z;
+            return fallbackPosition;
         }
     }
 }
