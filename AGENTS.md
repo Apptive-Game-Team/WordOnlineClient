@@ -17,6 +17,8 @@ CI uses GitHub Actions:
 ## Coding Style & Naming Conventions
 Use C# with 4-space indentation and K&R braces, matching the existing codebase. Keep classes and public members in `PascalCase`, private fields in `camelCase`, and scene/domain folders aligned with namespaces where possible. Prefer descriptive MonoBehaviour names such as `GameSceneUIController` and keep shared infrastructure in `Assets/Scripts/Global`.
 
+For visual styling, layout, colors, shapes, and typography guidelines, follow the [DESIGN.md](file:///Users/jeong-yunseong/development/word-online/dev/word-online/client/.agents/docs/DESIGN.md) design system spec.
+
 ## Testing Guidelines
 `com.unity.test-framework` is installed, but there are no dedicated `Tests` assemblies in the current tree. For new automated tests, create Edit Mode or Play Mode test assemblies under `Assets/Tests` and name files `*Tests.cs`. At minimum, validate scene flow and WebGL-specific behavior manually in the Editor before opening a PR.
 
@@ -30,6 +32,9 @@ When work starts from a new request, follow this order unless the user explicitl
 2. Create or switch to the branch that matches `<issue-label>/<issue-num>`.
 3. Implement and verify the change.
 4. Open a pull request that references the issue and includes test notes.
+
+For Unity Editor automation through MCP, use the project skill at
+`.agents/skills/unity-mcp-orchestrator/SKILL.md`.
 
 ## Configuration Notes
 `DEV_BUILD` controls development server routing for WebGL builds. Avoid editing generated Unity metadata by hand unless the change is intentional, and keep `ProjectSettings/ProjectVersion.txt` in sync with the Unity version used for the change.
