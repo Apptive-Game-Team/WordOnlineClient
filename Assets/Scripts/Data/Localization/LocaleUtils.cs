@@ -21,7 +21,7 @@ namespace Data.Localization
                 };
                 var handle = localizedString.GetLocalizedStringAsync();
                 
-                await handle.Task.ConfigureAwait(false);
+                await handle.Task;
 
                 return handle.Result;
             }

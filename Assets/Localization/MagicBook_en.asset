@@ -244,6 +244,34 @@ MonoBehaviour:
     m_Localized: Summons a Mini Rock Spirit carrying a anti-air tower on its back.
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507521
+    m_Localized: Sort
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507522
+    m_Localized: Attribute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507523
+    m_Localized: Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507524
+    m_Localized: All
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507525
+    m_Localized: Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507526
+    m_Localized: Attribute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507527
+    m_Localized: Card Count
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
