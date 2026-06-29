@@ -235,6 +235,34 @@ MonoBehaviour:
     m_Key: towerback
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507521
+    m_Key: filter.sort
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507522
+    m_Key: filter.attribute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507523
+    m_Key: filter.actionType
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507524
+    m_Key: filter.all
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507525
+    m_Key: filter.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507526
+    m_Key: filter.attributeSort
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507527
+    m_Key: filter.cardCount
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
