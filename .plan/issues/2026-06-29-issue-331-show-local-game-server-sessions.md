@@ -10,14 +10,15 @@ Show admin session rows from both the configured lobby server and an optional lo
 
 ## Non-goals
 
-- Do not change game server APIs.
+- Do not change server-to-server game session APIs.
 - Do not make the local game server required for admin page load.
 - Do not redesign the admin page layout beyond the source distinction needed for this feature.
 
 ## Context / Constraints
 
 - Current admin flow is `RoomUIFactory` -> `AdminViewModel.FetchRoomList` -> `RoomApiClient.GetRoomList`.
-- `RoomApiClient` only calls `ServerList.MatchingServer.url + "/api/game-sessions"`.
+- Lobby exposes client-facing session list at `/api/game-sessions`.
+- Game server exposes server-to-server session list at `/api/server/game-sessions`; direct admin UI must use the new admin/debug endpoint `/api/debug/game-sessions`.
 - Local server can be absent; its request must fail closed and preserve lobby results.
 - Existing prefab already shows `serverUrl`, so source distinction can be added in code with existing UI fields plus minimal color styling.
 
@@ -30,11 +31,11 @@ Show admin session rows from both the configured lobby server and an optional lo
 ## Validation
 - **Commands run:** `git diff --check`; `dotnet build client.sln`; `dotnet build Assembly-CSharp.csproj --no-restore`.
 - **Expected output:** Whitespace check passes. Unity C# compile should succeed in Editor/CI.
-- **Actual output:** `git diff --check` passed. Both `dotnet build` commands hung after printing MSBuild version and were killed after no further output.
+- **Actual output:** `git diff --check` passed before and after endpoint correction. Both `dotnet build` commands hung after printing MSBuild version and were killed after no further output.
 
 ## Risks & Rollback
-- **Risks:** Unity serialization/prefab fields can limit visual changes without Editor import; local server CORS/network behavior may differ in WebGL builds.
+- **Risks:** Unity serialization/prefab fields can limit visual changes without Editor import; local server CORS/network behavior may differ in WebGL builds; client and game PRs must land together for local direct fetch.
 - **Rollback steps:** Revert the branch or remove the local source from `RoomApiClient`.
 
 ## Open Questions
-- None for first implementation; assume local endpoint path matches lobby `/api/game-sessions`.
+- None. Verified local game server path differs from lobby path.

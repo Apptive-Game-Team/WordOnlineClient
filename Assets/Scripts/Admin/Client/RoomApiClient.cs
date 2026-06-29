@@ -11,7 +11,8 @@ namespace Admin.Client
     public class RoomApiClient
     {
         private const string LocalGameServerUrl = "http://localhost:7777";
-        private const string GameSessionsPath = "/api/game-sessions";
+        private const string LobbyGameSessionsPath = "/api/game-sessions";
+        private const string LocalGameSessionsPath = "/api/debug/game-sessions";
         private const int OptionalSourceTimeoutSeconds = 2;
 
         public IEnumerator GetRoomList(Action<RoomList> callback)
@@ -20,6 +21,7 @@ namespace Admin.Client
 
             yield return FetchRoomList(
                 ServerList.MatchingServer.url,
+                LobbyGameSessionsPath,
                 "Lobby",
                 false,
                 false,
@@ -27,6 +29,7 @@ namespace Admin.Client
 
             yield return FetchRoomList(
                 LocalGameServerUrl,
+                LocalGameSessionsPath,
                 "Local",
                 true,
                 true,
@@ -37,12 +40,13 @@ namespace Admin.Client
 
         private IEnumerator FetchRoomList(
             string baseUrl,
+            string path,
             string sourceName,
             bool isLocalSource,
             bool optional,
             Action<RoomList> callback)
         {
-            string url = baseUrl + GameSessionsPath;
+            string url = baseUrl + path;
 
             using UnityWebRequest request = UnityWebRequest.Get(url);
 
@@ -90,6 +94,10 @@ namespace Admin.Client
                 roomInfo.sourceName = sourceName;
                 roomInfo.sourceBaseUrl = baseUrl;
                 roomInfo.isLocalSource = isLocalSource;
+                if (isLocalSource)
+                {
+                    roomInfo.serverUrl = baseUrl;
+                }
             }
         }
 
