@@ -1,6 +1,7 @@
 using System;
 using Admin.Client;
 using Admin.Dto;
+using Data;
 using UnityEngine;
 
 namespace Admin
@@ -9,6 +10,7 @@ namespace Admin
     {
         private readonly RoomApiClient roomApiClient = new RoomApiClient();
         private readonly DebugApiClient debugApiClient = new DebugApiClient();
+        private readonly AdminMatchApiClient adminMatchApiClient = new AdminMatchApiClient();
 
         public void FetchRoomList(Action<RoomList> callback)
         {
@@ -23,6 +25,11 @@ namespace Admin
         public void SpawnPrefab(DebugSpawnPrefabRequestDto dto, Action<DebugActionResponseDto> callback)
         {
             StartCoroutine(debugApiClient.SpawnPrefab(dto, callback));
+        }
+
+        public void MatchBots(BotMatchRequestDto dto, Action<MatchedInfoDto> callback)
+        {
+            StartCoroutine(adminMatchApiClient.MatchBots(dto, callback));
         }
 
         public void FetchMagics(Action<DebugMagicDto[]> callback)
