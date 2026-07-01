@@ -1,6 +1,5 @@
 using GameScene.Card;
 using GameScene.Dto;
-using Global;
 
 namespace GameScene.Handler
 {
@@ -8,23 +7,7 @@ namespace GameScene.Handler
     {
         public void Handler(MagicValidInfo magicValid)
         {
-            if (magicValid.valid)
-            {
-                foreach (CardUI cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                {
-                    cardUI.Destroy();
-                }
-            }
-            else
-            {
-                foreach (var cardUI in CardInputSender.inputRequestDict[magicValid.id])
-                {
-                    cardUI.SetCardActive(false);
-                }
-                SystemMessageUI.Instance.ShowMessage(magicValid.message);
-                WDebug.Log("[Magic Valid]" + magicValid.message);
-            }
-            CardInputSender.inputRequestDict.Remove(magicValid.id);
+            CardInputSender.Instance.HandleInputResponse(magicValid);
         }
     }
 }
