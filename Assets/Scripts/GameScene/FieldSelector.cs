@@ -12,26 +12,27 @@ namespace GameScene
 {
     public class FieldSelector : MonoBehaviour
     {
+        private const int RangeIndicatorSortingOrder = 5;
+        private const int AimIndicatorSortingOrder = 16;
+        private const float AimIndicatorRadius = 0.18f;
+
         CardInputSender cardInputSender;
         private GameObject currentAimObj;
         private GameObject currentRangeObj;
         private GameObject currentSkillIndicator;
-
-        [SerializeField] private GameObject aimObject;
-        [SerializeField] private GameObject rangeObject;
-        [SerializeField] private GameObject lineSkillIndicator;
-        [SerializeField] private GameObject circleSkillIndicator;
+        private bool currentSkillIndicatorIsLine;
+        private string lastLoggedMagicParameterKey;
 
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
-            currentAimObj = Instantiate(aimObject);
-            currentRangeObj = Instantiate(rangeObject);
+            currentAimObj = CreateAimIndicator();
+            currentRangeObj = CreateRangeIndicator();
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
 
-            currentSkillIndicator = Instantiate(circleSkillIndicator);
-            currentSkillIndicatorPrefabRef = circleSkillIndicator;
+            currentSkillIndicator = CreateCircleSkillIndicator();
+            currentSkillIndicatorIsLine = false;
             currentSkillIndicator.SetActive(false);
         }
 
@@ -56,21 +57,20 @@ namespace GameScene
                 if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
                 return;
             }
+            LogMagicParametersIfChanged(magicData, range, radius);
 
             Vector3 casterPosition = GetCasterPosition();
-            SetCircleWorldRadius(currentRangeObj, range);
-            currentRangeObj.transform.position = casterPosition;
+            SetCircleWorldRadius(currentRangeObj, casterPosition, range);
 
 
             bool wantLine = IsLineMagic(magicData);
-            GameObject wantedPrefab = wantLine ? lineSkillIndicator : circleSkillIndicator;
 
 
-            if (currentSkillIndicator == null || !ReferenceEquals(currentSkillIndicatorPrefabRef, wantedPrefab))
+            if (currentSkillIndicator == null || currentSkillIndicatorIsLine != wantLine)
             {
                 if (currentSkillIndicator != null) Destroy(currentSkillIndicator);
-                currentSkillIndicator = Instantiate(wantedPrefab);
-                currentSkillIndicatorPrefabRef = wantedPrefab;
+                currentSkillIndicator = wantLine ? CreateLineSkillIndicator() : CreateCircleSkillIndicator();
+                currentSkillIndicatorIsLine = wantLine;
             }
 
 
@@ -94,8 +94,6 @@ namespace GameScene
                 cardInputSender.SetExpectedMagicUI();
             }
         }
-
-        private GameObject currentSkillIndicatorPrefabRef;
 
         private Vector3 GetCasterPosition()
         {
@@ -186,7 +184,7 @@ namespace GameScene
                 LineSkillIndicator lineIndicator = currentSkillIndicator.GetComponent<LineSkillIndicator>();
                 if (lineIndicator != null)
                 {
-                    lineIndicator.SetIndicator(casterPosition, previewPosition, range);
+                    lineIndicator.SetIndicator(casterPosition, previewPosition, range, radius);
                 }
                 return;
             }
@@ -198,18 +196,70 @@ namespace GameScene
             }
         }
 
-        private static void SetCircleWorldRadius(GameObject indicator, float radius)
+        private static void SetCircleWorldRadius(GameObject indicator, Vector3 position, float radius)
         {
-            SpriteRenderer spriteRenderer = indicator.GetComponent<SpriteRenderer>();
-            if (spriteRenderer == null || spriteRenderer.sprite == null || radius <= 0f)
+            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
+            if (shapeRenderer == null)
             {
-                indicator.transform.localScale = new Vector3(0f, 0f, 1f);
+                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            }
+
+            shapeRenderer.SetCircle(position, radius, true, RangeIndicatorSortingOrder, 0f);
+        }
+
+        private static void ConfigureAimIndicator(GameObject indicator)
+        {
+            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
+            if (shapeRenderer == null)
+            {
+                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            }
+
+            if (shapeRenderer != null)
+            {
+                shapeRenderer.SetLocalCircle(AimIndicatorRadius, AimIndicatorSortingOrder);
+            }
+        }
+
+        private static GameObject CreateAimIndicator()
+        {
+            GameObject indicator = new GameObject("AimIndicator");
+            indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            ConfigureAimIndicator(indicator);
+            return indicator;
+        }
+
+        private static GameObject CreateRangeIndicator()
+        {
+            GameObject indicator = new GameObject("RangeIndicator");
+            indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            return indicator;
+        }
+
+        private static GameObject CreateLineSkillIndicator()
+        {
+            GameObject indicator = new GameObject("LineSkillIndicator");
+            indicator.AddComponent<LineSkillIndicator>();
+            return indicator;
+        }
+
+        private static GameObject CreateCircleSkillIndicator()
+        {
+            GameObject indicator = new GameObject("CircleSkillIndicator");
+            indicator.AddComponent<CircleSkillIndicator>();
+            return indicator;
+        }
+
+        private void LogMagicParametersIfChanged(CombinedMagicData magicData, float range, float radius)
+        {
+            string key = $"{magicData.serverName}:{range:F3}:{radius:F3}";
+            if (lastLoggedMagicParameterKey == key)
+            {
                 return;
             }
 
-            float spriteDiameter = Mathf.Max(spriteRenderer.sprite.bounds.size.x, spriteRenderer.sprite.bounds.size.y);
-            float scale = (radius * 2f) / spriteDiameter;
-            indicator.transform.localScale = new Vector3(scale, scale, 1f);
+            lastLoggedMagicParameterKey = key;
+            WDebug.Log($"[FieldSelector] magic={magicData.serverName}, range={range:F3}, radius={radius:F3}");
         }
     }
 }
