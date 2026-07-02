@@ -14,8 +14,6 @@ namespace GameScene
         [SerializeField] private Button fieldButton;
         private bool lastActive = false;
         private Coroutine _moveBarCoroutine;
-
-        [SerializeField] private CardInputSender cardInputSender;
     
         private void Awake()
         {
@@ -23,6 +21,11 @@ namespace GameScene
         
             manaBarButton.onClick.AddListener(() =>
             {
+                if (CardInputSender.Instance.IsWaitingInputResponse())
+                {
+                    return;
+                }
+
                 isActive = true;
             });
             fieldButton.onClick.AddListener(() =>
@@ -33,7 +36,7 @@ namespace GameScene
 
         private void Update()
         {
-            if (cardInputSender.IsFieldSelectMode())
+            if (CardInputSender.Instance.IsFieldSelectMode() || CardInputSender.Instance.IsWaitingInputResponse())
             {
                 isActive = false;
             }

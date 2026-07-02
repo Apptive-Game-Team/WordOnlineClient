@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492fb62ce1775be40819de0535e86ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
 --- !u!114 &723352056661017150
 MonoBehaviour:

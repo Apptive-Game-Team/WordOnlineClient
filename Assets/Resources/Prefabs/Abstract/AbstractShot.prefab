@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04a82f25266b41de897d3f62f7d93eb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   prefab: {fileID: 6630687504928479194, guid: 8d2ff5932544147bab8e9fb89bdb9269, type: 3}
 --- !u!114 &310021187152718444
 MonoBehaviour:
@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   visualGameObject: {fileID: 5745790288218242455}
   ShadowSpriteRenderer: {fileID: 1711364869096585375}
 --- !u!114 &1293051082466908419
@@ -171,12 +171,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _spriteRenderer: {fileID: 7077577480859934061}
+  _actualTransform: {fileID: 0}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []
 --- !u!1 &5745790288218242455
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8537340873913773527}
   - component: {fileID: 7077577480859934061}
+  - component: {fileID: 1138579671453471593}
   m_Layer: 0
   m_Name: actualObject
   m_TagString: Untagged
@@ -261,6 +268,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1138579671453471593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745790288218242455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd90c7abb3534869ae221a3a28779995, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  targetTransform: {fileID: 8537340873913773527}
+  startScaleMultiplier: 0.15
+  duration: 0.28
+  ease: 27
 --- !u!1001 &4189109966395547509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -311,7 +334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2723268868756094270, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: servedObject
-      value: 
+      value:
       objectReference: {fileID: 1293051082466908419}
     - target: {fileID: 5251973200035102780, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
       propertyPath: m_Name

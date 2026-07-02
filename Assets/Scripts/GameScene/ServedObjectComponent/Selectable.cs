@@ -7,13 +7,11 @@ namespace GameScene.ServedObjectComponent
     [RequireComponent(typeof(BoxCollider2D))]
     public class Selectable : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] private CardInputSender cardInputSender;
         [SerializeField] private Camera worldCamera;
 
         void Awake()
         {
             if (!worldCamera) worldCamera = Camera.main;
-            if (!cardInputSender) cardInputSender = FindObjectOfType<CardInputSender>();
         
             var box = GetComponent<BoxCollider2D>();
             var sr  = GetComponent<SpriteRenderer>() ?? GetComponentInChildren<SpriteRenderer>();
@@ -31,10 +29,9 @@ namespace GameScene.ServedObjectComponent
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!cardInputSender) return;
             var pos = transform.parent.position;
         
-            cardInputSender.SendInput(pos);
+            CardInputSender.Instance.SendInput(pos);
         }
     }
 }

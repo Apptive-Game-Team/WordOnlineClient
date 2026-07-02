@@ -28,13 +28,13 @@ namespace GameScene.ServedObjectComponent
         [SerializeField] private float _effectScaleMin = 0.8f;
         [SerializeField] private float _effectScaleMax = 1.8f;
         public int id;
-        private GameObject _effectInstance = null;
         
         public List<Gauge> gauges = new List<Gauge>();
         
         private string master;
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
+        private ServedObjectEffectRenderer _effectRenderer;
         private ServedObjectHpBar _servedObjectHpBar;
 #if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
@@ -105,7 +105,8 @@ namespace GameScene.ServedObjectComponent
             HandleGaugeUpdate(updatedObjectDto.gauges);
 
             HandleStatus(updatedObjectDto.status);
-            SetEffect(updatedObjectDto.effect);
+            EnsureEffectRenderer();
+            _effectRenderer.SetEffects(updatedObjectDto.effects);
         }
 
         public void SetGizmos(List<Gizmo> gizmos)
@@ -147,36 +148,6 @@ namespace GameScene.ServedObjectComponent
             }
         }
         
-        private void SetEffect(string effect)
-        {
-            if (effect.Equals("None") || string.IsNullOrEmpty(effect))
-            {
-                if (_effectInstance != null)
-                {
-                    Destroy(_effectInstance);
-                    _effectInstance = null;
-                }
-                return;
-            }
-            
-            GameObject effectPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{effect}");
-            if (effectPrefab == null)
-            {
-                WDebug.LogWarning($"Effect prefab '{effect}' not found.");
-                return;
-            }
-            if (_effectInstance != null)
-            {
-                Destroy(_effectInstance);
-            }
-            
-            Transform actualTransform = GetActualTransform();
-            _effectInstance = Instantiate(effectPrefab, actualTransform);
-            _effectInstance.transform.localPosition = Vector3.zero;
-            _effectInstance.transform.localRotation = Quaternion.identity;
-            ApplyEffectScale(_effectInstance.transform);
-        }
-        
         public Transform GetActualTransform()
         {
             if (_actualTransform != null)
@@ -211,6 +182,22 @@ namespace GameScene.ServedObjectComponent
             }
 
             return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
+        }
+
+        private void EnsureEffectRenderer()
+        {
+            if (_effectRenderer != null)
+            {
+                return;
+            }
+
+            _effectRenderer = new ServedObjectEffectRenderer(
+                GetActualTransform,
+                GetSpriteWorldHeight,
+                _effectScaleReferenceHeight,
+                _effectScaleMultiplier,
+                _effectScaleMin,
+                _effectScaleMax);
         }
 
         private void HandleGaugeUpdate(List<Gauge> gauges)
@@ -263,26 +250,6 @@ namespace GameScene.ServedObjectComponent
             {
                 _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             }
-        }
-
-        private void ApplyEffectScale(Transform effectTransform)
-        {
-            if (effectTransform == null)
-            {
-                return;
-            }
-
-            float spriteWorldHeight = GetSpriteWorldHeight();
-            if (spriteWorldHeight <= 0f || _effectScaleReferenceHeight <= 0f)
-            {
-                effectTransform.localScale = Vector3.one;
-                return;
-            }
-
-            float scaleFactor = spriteWorldHeight / _effectScaleReferenceHeight;
-            scaleFactor *= _effectScaleMultiplier;
-            scaleFactor = Mathf.Clamp(scaleFactor, _effectScaleMin, _effectScaleMax);
-            effectTransform.localScale = Vector3.one * scaleFactor;
         }
 
         private float GetSpriteWorldHeight()

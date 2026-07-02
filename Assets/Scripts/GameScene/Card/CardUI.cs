@@ -59,8 +59,13 @@ namespace GameScene.Card
         
         public void OnCardClicked()
         {
+            CardInputSender cardInputSender = CardInputSender.Instance;
+            if (cardInputSender.IsWaitingInputResponse())
+            {
+                return;
+            }
+
             cardSound.Play();
-            CardInputSender cardInputSender = FindObjectOfType<CardInputSender>();
             if (isActive)
             {
                 PlayerFeedbackController.Instance.CancelCardSelectFeedback();

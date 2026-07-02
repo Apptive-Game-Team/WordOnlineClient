@@ -6,23 +6,29 @@ namespace GameScene
 {
     public class MagicCombineButton : MonoBehaviour
     {
-    
-        [SerializeField] private CardInputSender _cardInputSender;
+
         [SerializeField] private Image _buttonImage;
     
         private void Update()
         {
-            _buttonImage.color = _cardInputSender.IsFieldSelectMode() ? Color.gray : Color.white;
+            _buttonImage.color = CardInputSender.Instance.IsFieldSelectMode() || CardInputSender.Instance.IsWaitingInputResponse()
+                ? Color.gray
+                : Color.white;
         }
     
         public void OnClickCombineButton()
         {
-            if (_cardInputSender.IsFieldSelectMode())
+            if (CardInputSender.Instance.IsWaitingInputResponse())
             {
-                _cardInputSender.Cancel();
+                return;
+            }
+
+            if (CardInputSender.Instance.IsFieldSelectMode())
+            {
+                CardInputSender.Instance.Cancel();
             } else
             {
-                _cardInputSender.Confirm();
+                CardInputSender.Instance.Confirm();
             }
         }
     }

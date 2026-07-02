@@ -11,7 +11,7 @@ namespace GameScene.Dto
         public Vector3 position;
         public string master;
         public string status;
-        public string effect;
+        public List<string> effects;
         public List<Gauge> gauges;
         
         public UpdatedObjectDto() { }
@@ -21,7 +21,7 @@ namespace GameScene.Dto
             id = snapshotObjectDto.id;
             position = new Vector3(snapshotObjectDto.x, snapshotObjectDto.y, snapshotObjectDto.z);
             status = snapshotObjectDto.status;
-            effect = snapshotObjectDto.effect;
+            effects = snapshotObjectDto.effects;
             gauges = snapshotObjectDto.gauges;
         }
     }

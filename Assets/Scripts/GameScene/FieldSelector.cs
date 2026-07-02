@@ -12,7 +12,6 @@ namespace GameScene
 {
     public class FieldSelector : MonoBehaviour
     {
-        CardInputSender cardInputSender;
         private GameObject currentAimObj;
         private GameObject currentRangeObj;
         private GameObject currentSkillIndicator;
@@ -24,7 +23,6 @@ namespace GameScene
 
         void Start()
         {
-            cardInputSender = FindObjectOfType<CardInputSender>();
             currentAimObj = Instantiate(aimObject);
             currentRangeObj = Instantiate(rangeObject);
             currentAimObj.SetActive(false);
@@ -37,7 +35,7 @@ namespace GameScene
 
         void Update()
         {
-            if (!cardInputSender.IsFieldSelectMode())
+            if (!CardInputSender.Instance.IsFieldSelectMode())
             {
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
@@ -86,12 +84,12 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                cardInputSender.SendInput(mouseWorldPos);
+                CardInputSender.Instance.SendInput(mouseWorldPos);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
                 currentSkillIndicator.SetActive(false);
-                cardInputSender.SetExpectedMagicUI();
+                CardInputSender.Instance.SetExpectedMagicUI();
             }
         }
 
@@ -145,7 +143,7 @@ namespace GameScene
             range = 0f;
             radius = 0f;
 
-            if (!cardInputSender.TryGetCurrentMagicData(out magicData))
+            if (!CardInputSender.Instance.TryGetCurrentMagicData(out magicData))
             {
                 WDebug.LogWarning("[FieldSelector] Could not resolve current magic data.");
                 return false;
