@@ -1,4 +1,5 @@
 using GameScene.Card;
+using Global;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,13 +13,20 @@ namespace GameScene.ServedObjectComponent
         {
             if (!worldCamera) worldCamera = Camera.main;
         
-            var box = GetComponent<BoxCollider>();
+            var sr  = GetComponent<SpriteRenderer>() ?? GetComponentInChildren<SpriteRenderer>();
+            GameObject colliderObject = sr != null ? sr.gameObject : gameObject;
+            var box = colliderObject.GetComponent<BoxCollider>();
             if (box == null)
             {
-                box = gameObject.AddComponent<BoxCollider>();
+                box = colliderObject.AddComponent<BoxCollider>();
             }
 
-            var sr  = GetComponent<SpriteRenderer>() ?? GetComponentInChildren<SpriteRenderer>();
+            if (box == null)
+            {
+                WDebug.LogWarning($"{nameof(Selectable)} could not create a BoxCollider for {colliderObject.name}.");
+                return;
+            }
+
             if (sr && sr.sprite)
             {
                 var b = sr.sprite.bounds;

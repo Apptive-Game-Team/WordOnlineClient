@@ -152,6 +152,11 @@ namespace GameScene.ServedObjectComponent
     
         public static void Swing(Transform tr, float angle, float duration)
         {
+            if (tr == null)
+            {
+                return;
+            }
+
             Sequence seq = DOTween.Sequence();
             seq.SetLink(tr.gameObject);
             seq
