@@ -4,13 +4,38 @@ namespace GameScene
 {
     public class LineSkillIndicator : MonoBehaviour
     {
+        private const int SkillIndicatorSortingOrder = 14;
+
         private Vector3 startPosition;
         private Vector3 targetPosition;
+        private SpriteRenderer spriteRenderer;
+        private SkillIndicatorShapeRenderer shapeRenderer;
 
-        public void SetIndicator(Vector3 startPosition, Vector3 targetPosition, float range)
+        private void Awake()
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            shapeRenderer = GetComponent<SkillIndicatorShapeRenderer>();
+            if (shapeRenderer == null)
+            {
+                shapeRenderer = gameObject.AddComponent<SkillIndicatorShapeRenderer>();
+            }
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = false;
+            }
+        }
+
+        public void SetIndicator(Vector3 startPosition, Vector3 targetPosition, float range, float radius)
         {
             this.startPosition = startPosition;
             this.targetPosition = targetPosition;
+            if (shapeRenderer != null)
+            {
+                shapeRenderer.SetLine(startPosition, targetPosition, range, SkillIndicatorSortingOrder, radius * 2f);
+                return;
+            }
+
             transform.position = startPosition;
             transform.localScale = new Vector3(GetScaleForLength(range), transform.localScale.y, transform.localScale.z);
             UpdateRotation();

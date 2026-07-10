@@ -2837,10 +2837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ff1260f2fe64c744a51a6f570367fdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimObject: {fileID: 2447219156604120118, guid: 6a077560b2d207c45a5370956111607c, type: 3}
-  rangeObject: {fileID: 5845405123677339574, guid: 5c1f9e2143488e04892409791be56cac, type: 3}
-  lineSkillIndicator: {fileID: 2999418561354271793, guid: 6a2da9b67068c0342bcda7a1a3ed080f, type: 3}
-  circleSkillIndicator: {fileID: 2721951590753058823, guid: b72fca00cecfd4444b20f54957aad096, type: 3}
 --- !u!1 &1455971595
 GameObject:
   m_ObjectHideFlags: 0
