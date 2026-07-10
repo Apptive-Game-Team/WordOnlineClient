@@ -8,7 +8,7 @@ namespace GameScene.ServedObjectComponent
 
         [SerializeField] private Transform shadowTransform;
         [SerializeField] private SpriteRenderer shadowRenderer;
-        [SerializeField] private float groundY = 0f;
+        [SerializeField] private float groundY = 0.01f;
         [SerializeField] private float maxHeight = 5f;
         [SerializeField] private float scaleGrowthPerHeight = 0.12f;
         [SerializeField] private float minAlphaMultiplier = 0.2f;
