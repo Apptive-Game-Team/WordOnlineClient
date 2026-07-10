@@ -65,5 +65,38 @@ jobs:
       - name: Push to Itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+          ITCH_USER_RAW: ${{ secrets.ITCH_USER }}
+          ITCH_GAME_RAW: ${{ secrets.ITCH_GAME }}
         run: |
-          ./butler push build/WebGL/WebGL ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
+          itch_user="${ITCH_USER_RAW#https://}"
+          itch_user="${itch_user#http://}"
+          itch_user="${itch_user%%\?*}"
+          itch_user="${itch_user%%\#*}"
+          itch_user="${itch_user%/}"
+
+          if [[ "$itch_user" == itch.io/profile/* ]]; then
+            itch_user="${itch_user#itch.io/profile/}"
+          elif [[ "$itch_user" == *".itch.io"* ]]; then
+            itch_user="${itch_user%%.itch.io*}"
+          fi
+          itch_user="${itch_user%%/*}"
+
+          itch_game="${ITCH_GAME_RAW#https://}"
+          itch_game="${itch_game#http://}"
+          itch_game="${itch_game%%\?*}"
+          itch_game="${itch_game%%\#*}"
+          itch_game="${itch_game%/}"
+
+          if [[ "$itch_game" == *".itch.io/"* ]]; then
+            itch_game="${itch_game#*.itch.io/}"
+          elif [[ "$itch_game" == */* ]]; then
+            itch_game="${itch_game##*/}"
+          fi
+          itch_game="${itch_game%%:*}"
+
+          if [[ -z "$itch_user" || -z "$itch_game" ]]; then
+            echo "Failed to parse ITCH_USER/ITCH_GAME secrets into a valid itch.io target."
+            exit 1
+          fi
+
+          ./butler push build/WebGL/WebGL "${itch_user}/${itch_game}:webgl"
