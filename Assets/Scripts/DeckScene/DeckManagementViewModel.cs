@@ -207,12 +207,7 @@ namespace DeckScene
 
         public IEnumerator LoadAll(Action<bool> callback)
         {
-            bool magicLoaded = false;
-            MagicInfoDataSource.Instance.RefreshMagics(_ => magicLoaded = true);
-            while (!magicLoaded)
-            {
-                yield return null;
-            }
+            yield return GameDataRefresh.Refresh();
 
             CardDto[] ownedCards = null;
             yield return deckApiClient.GetOwnedCards(cards => ownedCards = cards);

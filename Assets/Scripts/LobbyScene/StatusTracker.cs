@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Data;
-using Data.Magic;
 using Global;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -114,17 +113,21 @@ namespace LobbyScene
                 yield break;
             }
         
+            MatchedInfoDto matchedInfoDto;
             try
             {
                 string json = getSessionReq.downloadHandler.text;
-                MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-                SceneContext.MatchInfo = matchedInfoDto;
-                MagicInfoDataSource.Instance.RefreshMagics(_ => SceneManager.LoadScene("GameScene"));
-            } catch (Exception e)
+                matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+            }
+            catch (Exception e)
             {
                 WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
                 yield break;
             }
+
+            SceneContext.MatchInfo = matchedInfoDto;
+            yield return GameDataRefresh.Refresh();
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

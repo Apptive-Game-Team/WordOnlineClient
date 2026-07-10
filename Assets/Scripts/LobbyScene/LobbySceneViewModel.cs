@@ -1,6 +1,5 @@
 using System;
 using Data;
-using Data.Magic;
 using Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,7 +66,7 @@ namespace LobbyScene
             SceneContext.MatchInfo = matchedInfoDto;
             const string targetSceneName = "GameScene";
             if (SceneManager.GetActiveScene().name.Contains(targetSceneName)) return;
-            MagicInfoDataSource.Instance.RefreshMagics(_ => SceneManager.LoadScene(targetSceneName));
+            StartCoroutine(GameDataRefresh.Refresh(() => SceneManager.LoadScene(targetSceneName)));
         }
 
         public void RemoveFromQueue()

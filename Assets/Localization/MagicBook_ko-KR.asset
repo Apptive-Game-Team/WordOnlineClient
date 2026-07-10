@@ -285,6 +285,34 @@ MonoBehaviour:
       \uB4F1\uC5D0 \uC778 \uAF2C\uB9C8 \uB3CC \uC815\uB839\uC744 \uC18C\uD658\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507521
+    m_Localized: "\uC815\uB82C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507522
+    m_Localized: "\uC18D\uC131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507523
+    m_Localized: "\uD0C0\uC785"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507524
+    m_Localized: "\uC804\uCCB4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507525
+    m_Localized: "\uC774\uB984"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507526
+    m_Localized: "\uC18D\uC131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507527
+    m_Localized: "\uCE74\uB4DC \uC218"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

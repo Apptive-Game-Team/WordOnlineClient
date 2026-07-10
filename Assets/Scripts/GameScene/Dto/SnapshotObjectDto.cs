@@ -15,7 +15,7 @@ namespace GameScene.Dto
         public float z;
         public string master;
         public string status;
-        public string effect;
+        public List<string> effects;
         public int hp;
         public int maxHp;
         public List<Gizmo> gizmos;

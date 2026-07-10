@@ -6,8 +6,9 @@ namespace GameScene.Dto
         public string type;
         public string message;
         public bool valid;
-        public int updateMana;
+        public string resultCode;
+        public int updatedMana;
         public int id;
-        public int magicId;
+        public long magicId;
     }
 }

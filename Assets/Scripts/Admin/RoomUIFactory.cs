@@ -15,6 +15,11 @@ namespace Admin
         
         private void OnRoomListFetched(Dto.RoomList roomList)
         {
+            if (roomList?.rooms == null)
+            {
+                return;
+            }
+
             foreach (var roomInfo in roomList.rooms)
             {
                 var roomUIGameObject = Instantiate(roomUIPrefab, contentTransform);

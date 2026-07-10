@@ -12,7 +12,10 @@ namespace LobbyScene
         public void OnPointerClick(PointerEventData eventData)
         {
             // Dropdown 클릭 시마다 서버에서 덱 리스트 새로 가져오기
-            controller.StartCoroutine(controller.FetchDecks());
+            if (controller != null)
+            {
+                controller.StartCoroutine(controller.FetchDecks());    
+            }
         }
     }
 }

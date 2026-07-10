@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 737759428226846977}
   - component: {fileID: 8429849414117516277}
   - component: {fileID: 5512554885556831495}
+  - component: {fileID: 4227765710803359785}
   m_Layer: 0
   m_Name: TornadoStrike
   m_TagString: Untagged
@@ -193,8 +194,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df9bc8796b9d56d4780b036a2d1528bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   appliedTransform: {fileID: 3632793050788502734}
 --- !u!114 &5512554885556831495
 MonoBehaviour:
@@ -206,9 +207,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2de688a310124c238a96800ee8f30bf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _spriteRenderer: {fileID: 6294209296427915767}
+  _actualTransform: {fileID: 0}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []
+--- !u!114 &4227765710803359785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4491772784460150989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd90c7abb3534869ae221a3a28779995, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  targetTransform: {fileID: 3632793050788502734}
+  startScaleMultiplier: 0.15
+  duration: 0.28
+  ease: 27
