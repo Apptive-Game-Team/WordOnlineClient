@@ -122,8 +122,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.28, y: 1.11}
     newSize: {x: 1.7066667, y: 1.7066667}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,7 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492fb62ce1775be40819de0535e86ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
 --- !u!1 &7556005377799559492
 GameObject:
@@ -155,9 +154,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8841690536847902715}
-  - component: {fileID: 2594164038376950415}
   - component: {fileID: 3003403705979211347}
   - component: {fileID: 6548991394052526327}
+  - component: {fileID: -4060257510263865404}
   m_Layer: 0
   m_Name: AbstractSlime
   m_TagString: Untagged
@@ -183,20 +182,6 @@ Transform:
   - {fileID: 3664870540858154723}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2594164038376950415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7556005377799559492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 2688331890862289096}
-  ShadowSpriteRenderer: {fileID: 5346230977396259881}
 --- !u!114 &3003403705979211347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,9 +208,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6137335418506685782}
+  _actualTransform: {fileID: 0}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []
+--- !u!114 &-4060257510263865404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7556005377799559492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf15bf1c0374da0a5805dfcc3d1d3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowTransform: {fileID: 0}
+  shadowRenderer: {fileID: 0}
+  groundY: 0.01
+  maxHeight: 5
+  scaleGrowthPerHeight: 0.12
+  minAlphaMultiplier: 0.2
 --- !u!1 &9073358497309748316
 GameObject:
   m_ObjectHideFlags: 0

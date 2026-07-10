@@ -18,7 +18,7 @@ namespace GameScene.Object.Projectile
             switch (projectileDto.end.targetType)
             {
                 case "position":
-                    transform.DOMove(projectileDto.end.GetVector3(), projectileDto.duration)
+                    transform.DOMove(ProjectileUtil.GetPosition(projectileDto.end), projectileDto.duration)
                         .SetEase(Ease.Linear);
                     break;
                 case "reference":

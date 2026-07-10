@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4511551496717632115}
-  - component: {fileID: 3221306574538961878}
   - component: {fileID: 6170484188252552760}
   m_Layer: 0
   m_Name: AbstractProjectile
@@ -36,20 +35,6 @@ Transform:
   - {fileID: 9059872726774364298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3221306574538961878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468314681180972983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 3538530097640421217}
-  ShadowSpriteRenderer: {fileID: 5424013223348296819}
 --- !u!114 &6170484188252552760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.146377
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -208,11 +193,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
---- !u!212 &5424013223348296819 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 7760543578565574637, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
-  m_PrefabInstance: {fileID: 2375378381473883038}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9059872726774364298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}

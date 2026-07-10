@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4511551496717632115}
-  - component: {fileID: -1496843627675793758}
   - component: {fileID: 4478155701689786802}
   m_Layer: 0
   m_Name: ChainAfterImage
@@ -34,19 +33,6 @@ Transform:
   - {fileID: 1765737571185325821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1496843627675793758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468314681180972983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccdad89155dca84981874ab49c42552, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 6658725962119111321}
 --- !u!114 &4478155701689786802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +57,6 @@ GameObject:
   - component: {fileID: 1765737571185325821}
   - component: {fileID: 2387072130947770595}
   - component: {fileID: 2573570555370904157}
-  - component: {fileID: 4676769089991046970}
   m_Layer: 0
   m_Name: act
   m_TagString: Untagged
@@ -159,16 +144,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.5
---- !u!114 &4676769089991046970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6658725962119111321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccdad89155dca84981874ab49c42552, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 6658725962119111321}

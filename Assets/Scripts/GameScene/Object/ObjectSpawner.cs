@@ -2,6 +2,7 @@ using Data;
 using Data.Sound;
 using GameScene.Dto;
 using GameScene.Exception;
+using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using Global;
 using Unity.VisualScripting;
@@ -25,6 +26,7 @@ namespace GameScene.Object
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
+            PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
             

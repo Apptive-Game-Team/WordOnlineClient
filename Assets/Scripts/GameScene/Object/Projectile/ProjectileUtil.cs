@@ -8,13 +8,19 @@ namespace GameScene.Object.Projectile
     {
         public static Quaternion GetRotation(ProjectileDto dto)
         {
-            Vector3 start = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.start));
-            Vector3 end = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.end));
-            Vector3 dir = end - start;
+            Vector3 start = GetPosition(dto.start);
+            Vector3 end = GetPosition(dto.end);
+            Camera camera = Camera.main;
+            Vector3 dir = camera != null
+                ? camera.WorldToScreenPoint(end) - camera.WorldToScreenPoint(start)
+                : end - start;
             
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            
-            return Quaternion.Euler(0, 0, angle);
+            Quaternion screenRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            return camera != null
+                ? camera.transform.rotation * screenRotation
+                : screenRotation;
         }
 
         public static Vector3 GetPosition(ProjectileTarget target)

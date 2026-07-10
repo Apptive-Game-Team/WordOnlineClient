@@ -1,5 +1,6 @@
 using System;
 using Admin.Dto;
+using GameScene;
 using Global;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,19 +14,23 @@ namespace Admin
         [SerializeField] private DebugItemUI itemPrefab;
         [SerializeField] private GameObject magicParent;
         [SerializeField] private GameObject prefabParent;
-        [SerializeField] private GameObject selectionIndicator; // Optional: visual feedback for selection mode
         [SerializeField] private TMPro.TMP_Dropdown masterDropdown; // Dropdown for LeftPlayer, RightPlayer, None
+
+        private const int SelectionIndicatorSortingOrder = 16;
+        private const float SelectionIndicatorRadius = 0.18f;
 
         private enum SelectionType { None, Magic, Prefab }
         private SelectionType currentSelectionType = SelectionType.None;
         private int selectedMagicId;
         private string selectedPrefabId;
         private string selectedMaster = "None";
+        private GameObject selectionIndicator;
 
         private void Start()
         {
             if (adminViewModel == null) adminViewModel = FindObjectOfType<AdminViewModel>();
-            if (selectionIndicator != null) selectionIndicator.SetActive(false);
+            selectionIndicator = CreateSelectionIndicator();
+            selectionIndicator.SetActive(false);
             
             InitializeMasterSelection();
             RefreshLists();
@@ -187,6 +192,14 @@ namespace Admin
         {
             currentSelectionType = SelectionType.None;
             if (selectionIndicator != null) selectionIndicator.SetActive(false);
+        }
+
+        private static GameObject CreateSelectionIndicator()
+        {
+            GameObject indicator = new GameObject("DebugSelectionIndicator");
+            SkillIndicatorShapeRenderer shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            shapeRenderer.SetLocalCircle(SelectionIndicatorRadius, SelectionIndicatorSortingOrder);
+            return indicator;
         }
     }
 }

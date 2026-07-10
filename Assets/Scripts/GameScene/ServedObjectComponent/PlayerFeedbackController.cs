@@ -34,34 +34,49 @@ namespace GameScene.ServedObjectComponent
 
         public void PlayCardSelectFeedback()
         {
-            if (PlayerObject == null)
+            Transform spriteTr = GetPlayerVisualTransform();
+            if (spriteTr == null)
             {
-                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for card select feedback.");
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player visual for card select feedback.");
                 return;
             }
-            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
+
             DOTweenAction.RotatePlayerUseCard(spriteTr);
         }
+
         public void CancelCardSelectFeedback()
         {
-            if (PlayerObject == null)
+            Transform spriteTr = GetPlayerVisualTransform();
+            if (spriteTr == null)
             {
-                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for cancel feedback.");
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player visual for cancel feedback.");
                 return;
             }
-            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
+
             DOTweenAction.RotatePlayerCancelCard(spriteTr);
         }
 
         public void UseMagicFeedback()
         {
-            if (PlayerObject == null)
+            Transform spriteTr = GetPlayerVisualTransform();
+            if (spriteTr == null)
             {
-                Debug.LogWarning("[PlayerFeedbackController] Could not find player object for magic feedback.");
+                Debug.LogWarning("[PlayerFeedbackController] Could not find player visual for magic feedback.");
                 return;
             }
-            Transform spriteTr = PlayerObject.transform.Find("PlayerImage");
+
             DOTweenAction.RotatePlayerUseMagic(spriteTr);
+        }
+
+        private Transform GetPlayerVisualTransform()
+        {
+            if (PlayerObject == null)
+            {
+                return null;
+            }
+
+            ServedObject servedObject = PlayerObject.GetComponent<ServedObject>();
+            return servedObject != null ? servedObject.GetActualTransform() : null;
         }
     }
 }
