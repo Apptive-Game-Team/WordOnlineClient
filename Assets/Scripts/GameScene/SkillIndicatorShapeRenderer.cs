@@ -296,16 +296,32 @@ namespace GameScene
 
         // ─── Line ────────────────────────────────────────────────────────────────
 
+        // 반원 캡 세그먼트 수 (클수록 부드럽고, 삼각형 수 증가)
+        private const int CapSegments = 16;
+
         private void BuildLineMesh(float length, float halfWidth)
         {
-            // 로컬 XZ polygon (사각형): origin = 플레이어 위치, 로컬 X축 방향으로 length 만큼 연장
-            var polygon = new List<Vector2>(4)
+            // Stadium(rounded rectangle) polygon:
+            //  - 우측 반원 캡 (center: length, 0),  각도 -90° → +90° (CCW)
+            //  - 좌측 반원 캡 (center: 0,      0),  각도 +90° → +270° (CCW)
+            int totalVerts = CapSegments * 2 + 2; // 각 반원 CapSegments+1개 점, 연결 2개
+            var polygon = new List<Vector2>(totalVerts);
+
+            // 우측 캡: X = length, 반시계 방향 (아래 → 위)
+            for (int i = 0; i <= CapSegments; i++)
             {
-                new Vector2(0f,      -halfWidth),
-                new Vector2(length,  -halfWidth),
-                new Vector2(length,   halfWidth),
-                new Vector2(0f,       halfWidth),
-            };
+                float angle = Mathf.PI * (-0.5f + (float)i / CapSegments); // -90° → +90°
+                polygon.Add(new Vector2(length + Mathf.Cos(angle) * halfWidth,
+                                                Mathf.Sin(angle) * halfWidth));
+            }
+
+            // 좌측 캡: X = 0, 반시계 방향 (위 → 아래)
+            for (int i = 0; i <= CapSegments; i++)
+            {
+                float angle = Mathf.PI * (0.5f + (float)i / CapSegments); // 90° → 270°
+                polygon.Add(new Vector2(0f + Mathf.Cos(angle) * halfWidth,
+                                             Mathf.Sin(angle) * halfWidth));
+            }
 
             // 월드 XZ 공간에서 필드 경계로 클리핑 후 로컬 XZ로 역변환
             List<Vector2> clipped = ClipPolygonToFieldInWorldSpace(polygon);
