@@ -8,8 +8,8 @@ namespace GameScene.Object.Projectile
     {
         public static Quaternion GetRotation(ProjectileDto dto)
         {
-            Vector3 start = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.start));
-            Vector3 end = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.end));
+            Vector3 start = GetPosition(dto.start);
+            Vector3 end = GetPosition(dto.end);
             Camera camera = Camera.main;
             Vector3 dir = camera != null
                 ? camera.WorldToScreenPoint(end) - camera.WorldToScreenPoint(start)

@@ -7,22 +7,36 @@ namespace GameScene.ServedObjectComponent
     {
         private const string LeftPlayer = "LeftPlayer";
         private const string RightPlayer = "RightPlayer";
+        private const string HpCategory = "HP";
+        private const float FallbackCanvasWidth = 100f;
+        private const float FallbackCanvasHeight = 20f;
         private static readonly Color LeftHpFillColor = new Color(0.92f, 0.24f, 0.24f, 1f);
         private static readonly Color RightHpFillColor = new Color(0.25f, 0.55f, 0.98f, 1f);
         private static readonly Color NeutralHpFillColor = new Color(0.46f, 0.92f, 0.47f, 1f);
         private static readonly Color DefaultBackgroundColor = new Color(0f, 0f, 0f, 0.45f);
 
         [SerializeField] private ServedObject servedObject;
+        [SerializeField] private float verticalOffset = 0.15f;
+        [SerializeField] private float widthMultiplier = 0.85f;
+        [SerializeField] private Vector2 worldWidthRange = new Vector2(0.65f, 1.15f);
         private Slider slider;
+        private RectTransform canvasRectTransform;
         private Image fillImage;
         private Image backgroundImage;
         private Image objectIndicatorImage;
         private bool colorsApplied;
         private string appliedMaster;
+        private bool subscribedToGaugeChanges;
     
         private void Awake()
         {
             slider = GetComponentInChildren<Slider>();
+            Canvas canvas = GetComponentInChildren<Canvas>();
+            if (canvas != null)
+            {
+                canvasRectTransform = canvas.GetComponent<RectTransform>();
+            }
+
             if (slider == null)
             {
                 return;
@@ -37,26 +51,27 @@ namespace GameScene.ServedObjectComponent
             objectIndicatorImage = FindImageByName("ObjectIndicator");
         }
 
-        void Start()
+        private void OnEnable()
         {
-            if (servedObject == null)
-            {
-                servedObject = GetComponentInParent<ServedObject>();
-            }
+            SubscribeToGaugeChanges();
+        }
 
-            servedObject.OnGaugeChanged += gauge =>
-            {
-                if (gauge.category.Equals("HP"))
-                {
-                    slider.maxValue = gauge.maxValue;
-                    slider.value = gauge.value;
-                }
-            };
+        private void OnDisable()
+        {
+            UnsubscribeFromGaugeChanges();
+        }
+
+        private void Start()
+        {
+            ResolveServedObject();
+            SubscribeToGaugeChanges();
+            ApplyExistingHpGauge();
+            NormalizeTransform();
         }
     
-        void Update()
+        private void Update()
         {
-            if (slider == null || servedObject == null)
+            if (slider == null || !ResolveServedObject())
             {
                 return;
             }
@@ -66,6 +81,132 @@ namespace GameScene.ServedObjectComponent
             {
                 ApplyTeamColors();
             }
+        }
+
+        private void LateUpdate()
+        {
+            if (!ResolveServedObject())
+            {
+                return;
+            }
+
+            NormalizeTransform();
+        }
+
+        private bool ResolveServedObject()
+        {
+            if (servedObject != null)
+            {
+                return true;
+            }
+
+            servedObject = GetComponentInParent<ServedObject>();
+            return servedObject != null;
+        }
+
+        private void SubscribeToGaugeChanges()
+        {
+            if (subscribedToGaugeChanges || !ResolveServedObject())
+            {
+                return;
+            }
+
+            servedObject.OnGaugeChanged += OnGaugeUpdated;
+            subscribedToGaugeChanges = true;
+        }
+
+        private void UnsubscribeFromGaugeChanges()
+        {
+            if (!subscribedToGaugeChanges || servedObject == null)
+            {
+                return;
+            }
+
+            servedObject.OnGaugeChanged -= OnGaugeUpdated;
+            subscribedToGaugeChanges = false;
+        }
+
+        private void OnGaugeUpdated(Gauge gauge)
+        {
+            if (slider == null || !gauge.category.Equals(HpCategory))
+            {
+                return;
+            }
+
+            slider.maxValue = gauge.maxValue;
+            slider.value = gauge.value;
+        }
+
+        private void ApplyExistingHpGauge()
+        {
+            if (servedObject == null)
+            {
+                return;
+            }
+
+            Gauge hpGauge = servedObject.gauges.Find(gauge => gauge.category.Equals(HpCategory));
+            if (hpGauge != null)
+            {
+                OnGaugeUpdated(hpGauge);
+            }
+        }
+
+        private void NormalizeTransform()
+        {
+            transform.position = servedObject.GetSpeechBubbleAnchorWorldPosition(verticalOffset);
+            transform.rotation = Quaternion.identity;
+
+            if (canvasRectTransform == null)
+            {
+                return;
+            }
+
+            canvasRectTransform.position = transform.position;
+            canvasRectTransform.rotation = Quaternion.identity;
+            canvasRectTransform.localPosition = Vector3.zero;
+
+            Vector2 canvasSize = canvasRectTransform.rect.size;
+            float canvasWidth = canvasSize.x > 0f ? canvasSize.x : FallbackCanvasWidth;
+            float canvasHeight = canvasSize.y > 0f ? canvasSize.y : FallbackCanvasHeight;
+            float desiredWorldWidth = GetDesiredWorldWidth();
+            float desiredWorldHeight = desiredWorldWidth * canvasHeight / canvasWidth;
+            Vector3 parentScale = transform.lossyScale;
+
+            canvasRectTransform.localScale = new Vector3(
+                SafeDivide(desiredWorldWidth, canvasWidth * Mathf.Abs(parentScale.x)),
+                SafeDivide(desiredWorldHeight, canvasHeight * Mathf.Abs(parentScale.y)),
+                1f);
+        }
+
+        private float GetDesiredWorldWidth()
+        {
+            float objectSize = GetObjectWorldSize();
+            float desiredWidth = objectSize > 0f ? objectSize * widthMultiplier : worldWidthRange.x;
+            return Mathf.Clamp(desiredWidth, worldWidthRange.x, worldWidthRange.y);
+        }
+
+        private float GetObjectWorldSize()
+        {
+            Transform actualTransform = servedObject.GetActualTransform();
+            if (actualTransform != null && actualTransform.TryGetComponent(out SpriteRenderer spriteRenderer))
+            {
+                Bounds bounds = spriteRenderer.bounds;
+                return Mathf.Max(bounds.size.x, bounds.size.y);
+            }
+
+            SpriteRenderer fallbackRenderer = servedObject.GetComponentInChildren<SpriteRenderer>();
+            if (fallbackRenderer == null)
+            {
+                return 0f;
+            }
+
+            Bounds fallbackBounds = fallbackRenderer.bounds;
+            return Mathf.Max(fallbackBounds.size.x, fallbackBounds.size.y);
+        }
+
+        private static float SafeDivide(float numerator, float denominator)
+        {
+            return denominator > Mathf.Epsilon ? numerator / denominator : 1f;
         }
 
         private void ApplyTeamColors()

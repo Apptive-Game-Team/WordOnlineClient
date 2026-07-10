@@ -23,6 +23,12 @@ namespace GameScene
         private bool currentSkillIndicatorIsLine;
         private string lastLoggedMagicParameterKey;
 
+        [SerializeField] private GameObject aimObject;
+        [SerializeField] private GameObject rangeObject;
+        [SerializeField] private GameObject lineSkillIndicator;
+        [SerializeField] private GameObject circleSkillIndicator;
+        [SerializeField] private Collider groundCollider;
+        [SerializeField] private string groundObjectName = "PopupBookGround";
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
@@ -130,17 +136,20 @@ namespace GameScene
         private static Vector3 ClampToRange(Vector3 targetPosition, Vector3 origin, float range)
         {
             float safeRange = Mathf.Max(range, 0f);
-            Vector3 offset = targetPosition - origin;
-            offset.y = 0f;
+            Vector3 flattenedTarget = targetPosition;
+            flattenedTarget.y = origin.y;
+            Vector3 offset = flattenedTarget - origin;
             if (offset.sqrMagnitude <= safeRange * safeRange)
             {
                 return targetPosition;
             }
 
-            return origin + offset.normalized * safeRange;
+            Vector3 clampedPosition = origin + offset.normalized * safeRange;
+            clampedPosition.y = targetPosition.y;
+            return clampedPosition;
         }
 
-        private static bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
+        private bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
         {
             groundPosition = Vector3.zero;
             Camera camera = Camera.main;
@@ -149,16 +158,62 @@ namespace GameScene
                 return false;
             }
 
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             Ray ray = camera.ScreenPointToRay(screenPosition);
+            if (TryGetGroundCollider(out Collider resolvedGroundCollider) &&
+                resolvedGroundCollider.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            {
+                groundPosition = hit.point;
+                return true;
+            }
+
+            Plane groundPlane = TryGetGroundCollider(out resolvedGroundCollider)
+                ? new Plane(resolvedGroundCollider.transform.up, resolvedGroundCollider.transform.position)
+                : new Plane(Vector3.up, Vector3.zero);
             if (!groundPlane.Raycast(ray, out float distance))
             {
                 return false;
             }
 
             groundPosition = ray.GetPoint(distance);
-            groundPosition.y = 0f;
             return true;
+        }
+
+        private bool TryGetGroundCollider(out Collider resolvedGroundCollider)
+        {
+            if (groundCollider != null)
+            {
+                resolvedGroundCollider = groundCollider;
+                return true;
+            }
+
+            if (!string.IsNullOrEmpty(groundObjectName))
+            {
+                GameObject groundObject = GameObject.Find(groundObjectName);
+                if (groundObject != null && groundObject.TryGetComponent(out groundCollider))
+                {
+                    resolvedGroundCollider = groundCollider;
+                    return true;
+                }
+            }
+
+            resolvedGroundCollider = FindObjectByName<Collider>("Ground") ??
+                                     FindObjectByName<Collider>("Panel");
+            groundCollider = resolvedGroundCollider;
+            return resolvedGroundCollider != null;
+        }
+
+        private static T FindObjectByName<T>(string namePart) where T : Component
+        {
+            T[] components = FindObjectsByType<T>(FindObjectsSortMode.None);
+            foreach (T component in components)
+            {
+                if (component != null && component.name.Contains(namePart, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return component;
+                }
+            }
+
+            return null;
         }
 
         private bool TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius)

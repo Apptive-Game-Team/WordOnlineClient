@@ -161,12 +161,6 @@ namespace GameScene.ServedObjectComponent
                 return _actualTransform;
             }
             
-            var simpleZVisualizer = GetComponentInChildren<SimpleZVisualizer>();
-            if (simpleZVisualizer != null)
-            {
-                _actualTransform = simpleZVisualizer.ActualTransform;
-                return _actualTransform;
-            }
             _actualTransform = transform;
             return _actualTransform;
         }
