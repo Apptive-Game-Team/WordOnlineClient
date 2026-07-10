@@ -67,12 +67,11 @@ namespace GameScene.Object
             if (!prefab)
             {
                 spawnedObject = new GameObject(createdObjectDto.type);
-                spawnedObject.transform.position = GameCoordinateConverter.ToUnity(createdObjectDto.position);
+                spawnedObject.transform.position = createdObjectDto.position;
             }
             else 
             {
-                Vector3 unityPosition = GameCoordinateConverter.ToUnity(createdObjectDto.position);
-                spawnedObject = Instantiate(prefab, unityPosition, prefab.transform.rotation);
+                spawnedObject = Instantiate(prefab, createdObjectDto.position, prefab.transform.rotation);
             }
             
             WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {createdObjectDto.position}");

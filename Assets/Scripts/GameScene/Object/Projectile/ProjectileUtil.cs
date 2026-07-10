@@ -1,5 +1,4 @@
 using GameScene.Dto.Projectile;
-using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ namespace GameScene.Object.Projectile
             switch (target.targetType)
             {
                 case "position":
-                    return GameCoordinateConverter.ToUnity(new Vector3(target.x, target.y, target.z));
+                    return new Vector3(target.x, target.y, target.z);
                 case "reference":
                     ServedObject servedObject = ObjectContainer.Instance.FindById(target.id);
                     if (servedObject != null)

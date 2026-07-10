@@ -1,5 +1,4 @@
 using GameScene.Card;
-using GameScene.PopupBook;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -35,7 +34,7 @@ namespace GameScene.ServedObjectComponent
         public void OnPointerClick(PointerEventData eventData)
         {
             Transform target = transform.parent != null ? transform.parent : transform;
-            Vector3 pos = GameCoordinateConverter.ToServer(target.position);
+            Vector3 pos = target.position;
         
             CardInputSender.Instance.SendInput(pos);
         }

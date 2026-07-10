@@ -3,7 +3,6 @@ using Data.GameConfig;
 using Data.Magic;
 using GameScene.Card;
 using GameScene.Player;
-using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using Global;
 using UnityEngine;
@@ -88,7 +87,7 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                CardInputSender.Instance.SendInput(GameCoordinateConverter.ToServer(mouseWorldPos));
+                CardInputSender.Instance.SendInput(mouseWorldPos);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
