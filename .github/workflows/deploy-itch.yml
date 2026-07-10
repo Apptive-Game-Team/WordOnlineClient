@@ -68,7 +68,8 @@ jobs:
           ITCH_USER_RAW: ${{ secrets.ITCH_USER }}
           ITCH_GAME_RAW: ${{ secrets.ITCH_GAME }}
         run: |
-          itch_user="${ITCH_USER_RAW#https://}"
+          itch_user="${ITCH_USER_RAW//[$'\t\r\n ']}"
+          itch_user="${itch_user#https://}"
           itch_user="${itch_user#http://}"
           itch_user="${itch_user%%\?*}"
           itch_user="${itch_user%%\#*}"
@@ -81,18 +82,33 @@ jobs:
           fi
           itch_user="${itch_user%%/*}"
 
-          itch_game="${ITCH_GAME_RAW#https://}"
+          itch_game="${ITCH_GAME_RAW//[$'\t\r\n ']}"
+          itch_game="${itch_game#https://}"
           itch_game="${itch_game#http://}"
           itch_game="${itch_game%%\?*}"
           itch_game="${itch_game%%\#*}"
           itch_game="${itch_game%/}"
+          derived_user=""
 
           if [[ "$itch_game" == *".itch.io/"* ]]; then
+            derived_user="${itch_game%%.itch.io/*}"
             itch_game="${itch_game#*.itch.io/}"
           elif [[ "$itch_game" == */* ]]; then
-            itch_game="${itch_game##*/}"
+            game_prefix="${itch_game%%/*}"
+            game_suffix="${itch_game#*/}"
+
+            if [[ "$game_suffix" != */* ]]; then
+              derived_user="$game_prefix"
+              itch_game="$game_suffix"
+            else
+              itch_game="${itch_game##*/}"
+            fi
           fi
           itch_game="${itch_game%%:*}"
+
+          if [[ -n "$derived_user" ]]; then
+            itch_user="$derived_user"
+          fi
 
           if [[ -z "$itch_user" || -z "$itch_game" ]]; then
             echo "Failed to parse ITCH_USER/ITCH_GAME secrets into a valid itch.io target."
