@@ -37,8 +37,8 @@ GitHub 저장소의 **Settings > Secrets and variables > Actions** 에서 아래
 | 시크릿 이름 | 설명 | 획득 방법 |
 |---|---|---|
 | `BUTLER_CREDENTIALS` | itch.io API 키 | 아래 [itch.io API 키 발급 방법](#itchio-api-키-발급-방법) 참고 |
-| `ITCH_USER` | itch.io 계정 사용자명 | itch.io 프로필 URL에서 확인 (예: `https://itch.io/profile` → 사용자명 부분). 사용자명 대신 프로필 URL 전체를 넣어도 워크플로우에서 자동으로 사용자명을 추출합니다. |
-| `ITCH_GAME` | itch.io 게임 슬러그(slug) | itch.io 게임 대시보드 URL에서 확인 (예: `https://사용자명.itch.io/게임슬러그` → 게임슬러그 부분). 슬러그 대신 게임 URL 전체를 넣어도 워크플로우에서 자동으로 슬러그를 추출합니다. |
+| `ITCH_USER` | itch.io 계정 사용자명 | itch.io 프로필 URL에서 확인 (예: `https://itch.io/profile` → 사용자명 부분) |
+| `ITCH_GAME` | itch.io 게임 슬러그(slug) | itch.io 게임 대시보드 URL에서 확인 (예: `https://사용자명.itch.io/게임슬러그` → 게임슬러그 부분) |
 
 ---
 
