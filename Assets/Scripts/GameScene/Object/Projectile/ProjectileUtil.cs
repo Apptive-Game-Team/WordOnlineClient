@@ -1,4 +1,5 @@
 using GameScene.Dto.Projectile;
+using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using UnityEngine;
 
@@ -10,11 +11,17 @@ namespace GameScene.Object.Projectile
         {
             Vector3 start = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.start));
             Vector3 end = ZVisualizer.CalculateZAppliedPosition(GetPosition(dto.end));
-            Vector3 dir = end - start;
+            Camera camera = Camera.main;
+            Vector3 dir = camera != null
+                ? camera.WorldToScreenPoint(end) - camera.WorldToScreenPoint(start)
+                : end - start;
             
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            
-            return Quaternion.Euler(0, 0, angle);
+            Quaternion screenRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            return camera != null
+                ? camera.transform.rotation * screenRotation
+                : screenRotation;
         }
 
         public static Vector3 GetPosition(ProjectileTarget target)
@@ -22,7 +29,7 @@ namespace GameScene.Object.Projectile
             switch (target.targetType)
             {
                 case "position":
-                    return new Vector3(target.x, target.y, target.z);
+                    return GameCoordinateConverter.ToUnity(new Vector3(target.x, target.y, target.z));
                 case "reference":
                     ServedObject servedObject = ObjectContainer.Instance.FindById(target.id);
                     if (servedObject != null)

@@ -3,6 +3,7 @@ using Data.GameConfig;
 using Data.Magic;
 using GameScene.Card;
 using GameScene.Player;
+using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using Global;
 using UnityEngine;
@@ -74,8 +75,11 @@ namespace GameScene
 
             if (!currentSkillIndicator.activeSelf) currentSkillIndicator.SetActive(true);
 
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorldPos.z = 0f;
+            if (!TryGetGroundPosition(Input.mousePosition, out Vector3 mouseWorldPos))
+            {
+                return;
+            }
+
             Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
             currentAimObj.transform.position = previewPosition;
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
@@ -84,7 +88,7 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                CardInputSender.Instance.SendInput(mouseWorldPos);
+                CardInputSender.Instance.SendInput(GameCoordinateConverter.ToServer(mouseWorldPos));
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
@@ -101,7 +105,7 @@ namespace GameScene
             if (caster != null)
             {
                 Vector3 position = caster.transform.position;
-                position.z = 0f;
+                position.y = 0f;
                 return position;
             }
 
@@ -128,13 +132,34 @@ namespace GameScene
         {
             float safeRange = Mathf.Max(range, 0f);
             Vector3 offset = targetPosition - origin;
-            offset.z = 0f;
+            offset.y = 0f;
             if (offset.sqrMagnitude <= safeRange * safeRange)
             {
                 return targetPosition;
             }
 
             return origin + offset.normalized * safeRange;
+        }
+
+        private static bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
+        {
+            groundPosition = Vector3.zero;
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return false;
+            }
+
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+            Ray ray = camera.ScreenPointToRay(screenPosition);
+            if (!groundPlane.Raycast(ray, out float distance))
+            {
+                return false;
+            }
+
+            groundPosition = ray.GetPoint(distance);
+            groundPosition.y = 0f;
+            return true;
         }
 
         private bool TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius)

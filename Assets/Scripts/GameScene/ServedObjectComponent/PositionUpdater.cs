@@ -3,6 +3,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using GameScene.Dto;
+using GameScene.PopupBook;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent
@@ -33,10 +34,7 @@ namespace GameScene.ServedObjectComponent
             {
                 transform.position = nextPosition.Value;
             }
-            nextPosition = new Vector3(
-                updatedObjectDto.position.x, 
-                updatedObjectDto.position.y, 
-                updatedObjectDto.position.z);
+            nextPosition = GameCoordinateConverter.ToUnity(updatedObjectDto.position);
             moveTween = transform.DOMove(nextPosition.Value, GameConfig.FRAME_DURATION)
                 .SetEase(Ease.Linear)
                 .SetLink(transform.gameObject);

@@ -15,6 +15,7 @@ namespace GameScene
         public void SetIndicator(Vector3 position, float radius)
         {
             transform.position = position;
+            transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             transform.localScale = GetScaleForRadius(radius);
         }
 

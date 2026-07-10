@@ -2,6 +2,7 @@ using Data;
 using Data.Sound;
 using GameScene.Dto;
 using GameScene.Exception;
+using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using Global;
 using Unity.VisualScripting;
@@ -25,6 +26,7 @@ namespace GameScene.Object
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
+            PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
             
@@ -65,11 +67,12 @@ namespace GameScene.Object
             if (!prefab)
             {
                 spawnedObject = new GameObject(createdObjectDto.type);
-                spawnedObject.transform.position = createdObjectDto.position;
+                spawnedObject.transform.position = GameCoordinateConverter.ToUnity(createdObjectDto.position);
             }
             else 
             {
-                spawnedObject = Instantiate(prefab, createdObjectDto.position, prefab.transform.rotation);
+                Vector3 unityPosition = GameCoordinateConverter.ToUnity(createdObjectDto.position);
+                spawnedObject = Instantiate(prefab, unityPosition, prefab.transform.rotation);
             }
             
             WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {createdObjectDto.position}");

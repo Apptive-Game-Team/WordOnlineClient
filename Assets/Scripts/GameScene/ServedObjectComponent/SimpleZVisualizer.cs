@@ -20,9 +20,7 @@ namespace GameScene.ServedObjectComponent
     
         public static Vector3 CalculateZAppliedPosition(Vector3 position)
         {
-            Vector3 visualPosition = position;
-            visualPosition.y += position.z / 2;
-            return visualPosition;
+            return position;
         }
     }
 }

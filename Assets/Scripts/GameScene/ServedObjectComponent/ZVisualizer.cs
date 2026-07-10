@@ -9,7 +9,7 @@ namespace GameScene.ServedObjectComponent
     
         [SerializeField] private SpriteRenderer ShadowSpriteRenderer;
 
-        private float Z => transform.position.z;
+        private float Z => transform.position.y;
 
         private void Update()
         {
