@@ -5,7 +5,7 @@ namespace GameScene
     public class SkillIndicatorShapeRenderer : MonoBehaviour
     {
         private const int CircleSegments = 64;
-        private const float DefaultZOffset = -0.02f;
+        private const float DefaultSurfaceOffset = 0.02f;
 
         private static readonly Color DefaultFillColor = new Color(0.95f, 0.62f, 0.18f, 0.24f);
         private static readonly Color DefaultEdgeColor = new Color(0.18f, 0.88f, 0.82f, 0.62f);
@@ -51,7 +51,7 @@ namespace GameScene
             EnsureRenderers();
             DisableSpriteRenderer();
 
-            transform.position = new Vector3(position.x, position.y, DefaultZOffset);
+            transform.position = GetSurfacePosition(position);
             transform.rotation = Quaternion.identity;
             transform.localScale = Vector3.one;
 
@@ -108,7 +108,7 @@ namespace GameScene
             }
 
             Vector3 direction = targetPosition - startPosition;
-            direction.z = 0f;
+            direction.y = 0f;
             if (direction.sqrMagnitude <= Mathf.Epsilon)
             {
                 SetVisible(false);
@@ -118,8 +118,8 @@ namespace GameScene
             SetVisible(true);
             SetSorting(sortingOrder);
 
-            transform.position = new Vector3(startPosition.x, startPosition.y, DefaultZOffset);
-            transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            transform.position = GetSurfacePosition(startPosition);
+            transform.rotation = Quaternion.Euler(0f, -Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg, 0f);
             transform.localScale = Vector3.one;
 
             float halfWidth = Mathf.Max(width, 0.01f) * 0.5f;
@@ -232,7 +232,7 @@ namespace GameScene
             for (int i = 0; i < CircleSegments; i++)
             {
                 float angle = Mathf.PI * 2f * i / CircleSegments;
-                circleVertices[i + 1] = new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0f);
+                circleVertices[i + 1] = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
             }
 
             Mesh mesh = GetShapeMesh();
@@ -256,16 +256,16 @@ namespace GameScene
             for (int i = 0; i < CircleSegments; i++)
             {
                 float angle = Mathf.PI * 2f * i / CircleSegments;
-                edgeRenderer.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0f));
+                edgeRenderer.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius));
             }
         }
 
         private void BuildLineMesh(float length, float halfWidth)
         {
-            lineVertices[0] = new Vector3(0f, -halfWidth, 0f);
-            lineVertices[1] = new Vector3(length, -halfWidth, 0f);
-            lineVertices[2] = new Vector3(length, halfWidth, 0f);
-            lineVertices[3] = new Vector3(0f, halfWidth, 0f);
+            lineVertices[0] = new Vector3(0f, 0f, -halfWidth);
+            lineVertices[1] = new Vector3(length, 0f, -halfWidth);
+            lineVertices[2] = new Vector3(length, 0f, halfWidth);
+            lineVertices[3] = new Vector3(0f, 0f, halfWidth);
 
             Mesh mesh = GetShapeMesh();
             mesh.Clear();
@@ -284,10 +284,16 @@ namespace GameScene
             edgeRenderer.endWidth = 0.035f;
             edgeRenderer.startColor = DefaultEdgeColor;
             edgeRenderer.endColor = DefaultEdgeColor;
-            edgeRenderer.SetPosition(0, new Vector3(0f, -halfWidth, 0f));
-            edgeRenderer.SetPosition(1, new Vector3(length, -halfWidth, 0f));
-            edgeRenderer.SetPosition(2, new Vector3(length, halfWidth, 0f));
-            edgeRenderer.SetPosition(3, new Vector3(0f, halfWidth, 0f));
+            edgeRenderer.SetPosition(0, new Vector3(0f, 0f, -halfWidth));
+            edgeRenderer.SetPosition(1, new Vector3(length, 0f, -halfWidth));
+            edgeRenderer.SetPosition(2, new Vector3(length, 0f, halfWidth));
+            edgeRenderer.SetPosition(3, new Vector3(0f, 0f, halfWidth));
+        }
+
+        private static Vector3 GetSurfacePosition(Vector3 position)
+        {
+            position.y += DefaultSurfaceOffset;
+            return position;
         }
 
         private Mesh GetShapeMesh()
@@ -315,8 +321,8 @@ namespace GameScene
             {
                 int triangleIndex = i * 3;
                 circleTriangles[triangleIndex] = 0;
-                circleTriangles[triangleIndex + 1] = i + 1;
-                circleTriangles[triangleIndex + 2] = i == CircleSegments - 1 ? 1 : i + 2;
+                circleTriangles[triangleIndex + 1] = i == CircleSegments - 1 ? 1 : i + 2;
+                circleTriangles[triangleIndex + 2] = i + 1;
             }
 
             for (int i = 0; i < circleColors.Length; i++)

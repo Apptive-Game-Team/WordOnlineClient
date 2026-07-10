@@ -88,7 +88,7 @@ namespace GameScene
             }
 
             Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
-            currentAimObj.transform.position = previewPosition;
+            SetAimIndicator(currentAimObj, previewPosition);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
@@ -110,8 +110,7 @@ namespace GameScene
             if (caster != null)
             {
                 Vector3 position = caster.transform.position;
-                position.y = 0f;
-                return position;
+                return TryProjectToGround(position, out Vector3 groundPosition) ? groundPosition : position;
             }
 
             WDebug.LogWarning($"[FieldSelector] Could not find caster object for {SceneContext.Me}.");
@@ -176,6 +175,32 @@ namespace GameScene
 
             groundPosition = ray.GetPoint(distance);
             return true;
+        }
+
+        private bool TryProjectToGround(Vector3 worldPosition, out Vector3 groundPosition)
+        {
+            if (!TryGetGroundCollider(out Collider resolvedGroundCollider))
+            {
+                groundPosition = worldPosition;
+                return false;
+            }
+
+            Ray downRay = new Ray(worldPosition + Vector3.up * 100f, Vector3.down);
+            if (resolvedGroundCollider.Raycast(downRay, out RaycastHit hit, 200f))
+            {
+                groundPosition = hit.point;
+                return true;
+            }
+
+            Plane groundPlane = new Plane(resolvedGroundCollider.transform.up, resolvedGroundCollider.transform.position);
+            if (groundPlane.Raycast(downRay, out float distance))
+            {
+                groundPosition = downRay.GetPoint(distance);
+                return true;
+            }
+
+            groundPosition = worldPosition;
+            return false;
         }
 
         private bool TryGetGroundCollider(out Collider resolvedGroundCollider)
@@ -298,6 +323,17 @@ namespace GameScene
             {
                 shapeRenderer.SetLocalCircle(AimIndicatorRadius, AimIndicatorSortingOrder);
             }
+        }
+
+        private static void SetAimIndicator(GameObject indicator, Vector3 position)
+        {
+            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
+            if (shapeRenderer == null)
+            {
+                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            }
+
+            shapeRenderer.SetCircle(position, AimIndicatorRadius, true, AimIndicatorSortingOrder, 0f);
         }
 
         private static GameObject CreateAimIndicator()
