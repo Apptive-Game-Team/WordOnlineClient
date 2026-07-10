@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3293512053745346964}
-  - component: {fileID: 1199219331992406620}
   - component: {fileID: 4217503714343169093}
   - component: {fileID: 7140850829614563192}
+  - component: {fileID: 4829594306251277883}
   m_Layer: 0
   m_Name: AbstractRangeMob
   m_TagString: Untagged
@@ -37,20 +37,6 @@ Transform:
   - {fileID: 5578864975448036440}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1199219331992406620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578785568479126700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 6549550444793914684}
-  ShadowSpriteRenderer: {fileID: 4136661604417585136}
 --- !u!114 &4217503714343169093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,9 +65,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 3630220617462090093}
   _actualTransform: {fileID: 0}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []
+--- !u!114 &4829594306251277883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578785568479126700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf15bf1c0374da0a5805dfcc3d1d3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowTransform: {fileID: 0}
+  shadowRenderer: {fileID: 0}
+  groundY: 0.01
+  maxHeight: 5
+  scaleGrowthPerHeight: 0.12
+  minAlphaMultiplier: 0.2
 --- !u!1 &975721718613834590
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +459,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12187cc5e87e3478b9baaa8db3c83da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  servedObject: {fileID: 0}
+  verticalOffset: 0.15
+  widthMultiplier: 0.85
+  worldWidthRange: {x: 0.65, y: 1.15}
 --- !u!1 &6459325199153748933
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +710,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1.71, y: 1.5175}
+    oldSize: {x: 1.28, y: 1.18}
     newSize: {x: 5.51, y: 4.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -718,7 +731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492fb62ce1775be40819de0535e86ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
 --- !u!114 &3708748492312874875
 MonoBehaviour:
@@ -872,10 +884,5 @@ PrefabInstance:
 --- !u!4 &1123237681839364873 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
-  m_PrefabInstance: {fileID: 5970262975781027869}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &4136661604417585136 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 7760543578565574637, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
   m_PrefabInstance: {fileID: 5970262975781027869}
   m_PrefabAsset: {fileID: 0}

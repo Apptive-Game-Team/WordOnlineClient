@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElectricShot
       objectReference: {fileID: 0}
-    - target: {fileID: 3221306574538961878, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-      propertyPath: visualGameObject
-      value: 
-      objectReference: {fileID: 1197159383070809998}
-    - target: {fileID: 3221306574538961878, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-      propertyPath: ShadowSpriteRenderer
-      value: 
-      objectReference: {fileID: 7693202820503631004}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

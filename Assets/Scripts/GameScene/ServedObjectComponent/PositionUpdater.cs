@@ -33,10 +33,7 @@ namespace GameScene.ServedObjectComponent
             {
                 transform.position = nextPosition.Value;
             }
-            nextPosition = new Vector3(
-                updatedObjectDto.position.x, 
-                updatedObjectDto.position.y, 
-                updatedObjectDto.position.z);
+            nextPosition = updatedObjectDto.position;
             moveTween = transform.DOMove(nextPosition.Value, GameConfig.FRAME_DURATION)
                 .SetEase(Ease.Linear)
                 .SetLink(transform.gameObject);

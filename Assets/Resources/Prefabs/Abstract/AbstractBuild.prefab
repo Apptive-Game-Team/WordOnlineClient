@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492fb62ce1775be40819de0535e86ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInputSender: {fileID: 0}
   worldCamera: {fileID: 0}
 --- !u!114 &3847265105902224156
 MonoBehaviour:
@@ -268,8 +267,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7043489956950792422}
-  - component: {fileID: 7066668946435068093}
   - component: {fileID: 1060800969627125256}
+  - component: {fileID: 3955698778964225119}
   m_Layer: 0
   m_Name: AbstractBuild
   m_TagString: Untagged
@@ -295,20 +294,6 @@ Transform:
   - {fileID: 2707287461265946569}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7066668946435068093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8347068386141385781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2964914392e24668b538026124a6516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualGameObject: {fileID: 790713194785081376}
-  ShadowSpriteRenderer: {fileID: 4539336992273368013}
 --- !u!114 &1060800969627125256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +315,25 @@ MonoBehaviour:
   _effectScaleMin: 0.8
   _effectScaleMax: 1.8
   id: 0
+  gauges: []
+--- !u!114 &3955698778964225119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8347068386141385781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf15bf1c0374da0a5805dfcc3d1d3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowTransform: {fileID: 0}
+  shadowRenderer: {fileID: 0}
+  groundY: 0.01
+  maxHeight: 5
+  scaleGrowthPerHeight: 0.12
+  minAlphaMultiplier: 0.2
 --- !u!1001 &4420678522536806558
 PrefabInstance:
   m_ObjectHideFlags: 0

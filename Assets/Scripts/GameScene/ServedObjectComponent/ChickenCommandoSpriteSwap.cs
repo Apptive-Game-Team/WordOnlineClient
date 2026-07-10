@@ -16,7 +16,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            Sprite targetSprite = transform.position.z > heightThreshold ? elevatedSprite : defaultSprite;
+            Sprite targetSprite = transform.position.y > heightThreshold ? elevatedSprite : defaultSprite;
             if (targetSprite != null && spriteRenderer.sprite != targetSprite)
             {
                 spriteRenderer.sprite = targetSprite;

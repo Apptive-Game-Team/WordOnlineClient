@@ -40,7 +40,7 @@ namespace Data.GameConfig
                 return string.Empty;
             }
 
-            var objectNames = GetDisplayObjectNamesForMagic(parameters, magic);
+            var objectNames = GetObjectNamesForMagic(parameters, magic);
             if (objectNames.Count == 0)
             {
                 return string.Empty;
@@ -70,45 +70,6 @@ namespace Data.GameConfig
             }
 
             return string.Join("\n\n", blocks);
-        }
-
-        private static List<string> GetDisplayObjectNamesForMagic(
-            IReadOnlyList<GameParameterData> parameters,
-            CombinedMagicData magic)
-        {
-            var objectNames = GetObjectNamesForMagicByName(parameters, magic);
-            if (objectNames.Count > 0)
-            {
-                return objectNames;
-            }
-
-            if (!TryGetMagicFamilyObjectName(magic, out var familyObjectName))
-            {
-                return objectNames;
-            }
-
-            return parameters.Any(parameter => IsSameName(parameter.gameObjectName, familyObjectName))
-                ? new List<string> { familyObjectName }
-                : objectNames;
-        }
-
-        private static List<string> GetObjectNamesForMagicByName(
-            IReadOnlyList<GameParameterData> parameters,
-            CombinedMagicData magic)
-        {
-            var candidates = new[]
-            {
-                magic.serverName,
-                ToSnakeCase(magic.resourceName),
-                ToSnakeCase(magic.localizationKey),
-                magic.localizationKey
-            };
-
-            return candidates
-                .Where(candidate => !string.IsNullOrWhiteSpace(candidate))
-                .Where(candidate => parameters.Any(parameter => IsSameName(parameter.gameObjectName, candidate)))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
         }
 
         public static bool TryGetMagicParameter(CombinedMagicData magic, string paramName, out float value)
