@@ -10,8 +10,23 @@ namespace GameScene.ServedObjectComponent.Effect
         [SerializeField] private float contractScale = 0.86f;
         [SerializeField] private float burstScale = 1.35f;
         [SerializeField] private float duration = 0.3f;
+        [SerializeField] private AudioClip releaseSound;
+        [SerializeField] private float soundVolume = 0.3f;
 
         private Sequence sequence;
+        private AudioSource audioSource;
+
+        private void Awake()
+        {
+            if (releaseSound == null)
+            {
+                return;
+            }
+
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.volume = soundVolume;
+        }
 
         private void Start()
         {
@@ -26,6 +41,8 @@ namespace GameScene.ServedObjectComponent.Effect
 
         private void Play()
         {
+            audioSource?.PlayOneShot(releaseSound);
+
             if (spriteRenderer == null)
             {
                 spriteRenderer = GetComponent<SpriteRenderer>();
@@ -55,7 +72,10 @@ namespace GameScene.ServedObjectComponent.Effect
                 .OnComplete(() =>
                 {
                     SetAlpha(0f);
-                    Destroy(gameObject);
+                    float audioTail = releaseSound == null
+                        ? 0f
+                        : Mathf.Max(0f, releaseSound.length - duration);
+                    Destroy(gameObject, audioTail);
                 });
 
             SetAlpha(baseAlpha);

@@ -309,3 +309,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 1269473178231215529}
+  soundProfile: 7

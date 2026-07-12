@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 1753495551214140852}
+  soundProfile: 5
 --- !u!114 &3161304730001016725 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7643070402292094288, guid: 6028185801a9445fa9435ec49e794354, type: 3}

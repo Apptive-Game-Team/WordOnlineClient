@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedTransform: {fileID: 2438347918309700505}
+  soundProfile: 6
 --- !u!114 &8053666857831631440
 MonoBehaviour:
   m_ObjectHideFlags: 0

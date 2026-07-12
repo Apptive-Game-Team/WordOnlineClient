@@ -8,6 +8,7 @@ namespace GameScene.ServedObjectComponent.Motion
         protected override void Awake()
         { 
             DOTweenAction.HopMob(appliedTransform, _duration);
+            StartMotionSound(MotionSoundProfile.Hop, _duration * 2f, _duration * 2f);
         }
     }
 }

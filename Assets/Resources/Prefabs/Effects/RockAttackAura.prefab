@@ -101,3 +101,5 @@ MonoBehaviour:
   contractScale: 0.86
   burstScale: 1.35
   duration: 0.3
+  releaseSound: {fileID: 8300000, guid: b37ba056c43f9494297d770723057684, type: 3}
+  soundVolume: 0.3
