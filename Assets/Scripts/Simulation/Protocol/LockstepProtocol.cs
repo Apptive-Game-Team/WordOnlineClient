@@ -145,4 +145,23 @@ namespace GameScene.Simulation.Protocol
             return true;
         }
     }
+
+    public sealed class LockstepParticipantPolicy
+    {
+        private readonly long[] networkParticipantIds;
+        public IReadOnlyList<long> NetworkParticipantIds => networkParticipantIds;
+        public bool RequiresPeerHash => networkParticipantIds.Length > 1;
+
+        public LockstepParticipantPolicy(params long[] participantIds)
+        {
+            if (participantIds == null) throw new ArgumentNullException(nameof(participantIds));
+            SortedSet<long> network = new SortedSet<long>();
+            for (int index = 0; index < participantIds.Length; index++)
+                if (participantIds[index] >= 0) network.Add(participantIds[index]);
+            networkParticipantIds = new long[network.Count]; network.CopyTo(networkParticipantIds);
+            if (networkParticipantIds.Length == 0) throw new InvalidOperationException("Session requires one network participant");
+        }
+
+        public bool RequiresNetworkFrame(long participantId) => participantId >= 0 && Array.BinarySearch(networkParticipantIds, participantId) >= 0;
+    }
 }
