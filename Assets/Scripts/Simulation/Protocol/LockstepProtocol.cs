@@ -164,4 +164,19 @@ namespace GameScene.Simulation.Protocol
 
         public bool RequiresNetworkFrame(long participantId) => participantId >= 0 && Array.BinarySearch(networkParticipantIds, participantId) >= 0;
     }
+
+    public static class LockstepVersionValidator
+    {
+        public static void Validate(LockstepSessionStartMessage start)
+        {
+            if (start == null) throw new ArgumentNullException(nameof(start));
+            if (start.protocolVersion != LockstepVersions.Protocol ||
+                !string.Equals(start.simulationVersion, LockstepVersions.Simulation, StringComparison.Ordinal) ||
+                !string.Equals(start.configVersion, LockstepVersions.Config, StringComparison.Ordinal))
+                throw new InvalidOperationException(
+                    "Lockstep version mismatch: protocol=" + start.protocolVersion +
+                    ", simulation=" + (start.simulationVersion ?? "<null>") +
+                    ", config=" + (start.configVersion ?? "<null>"));
+        }
+    }
 }

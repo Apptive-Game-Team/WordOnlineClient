@@ -34,7 +34,7 @@ namespace GameScene.Simulation.Pve
             }
             if (target == null) return null;
             string card = cards[random.NextInt(cards.Length)];
-            return new ConfirmedInputMessage { userId = botUserId, input = new FrameInputMessage { sequence = sequence++, type = "USE_CARD", id = 0, cards = new[] { card }, position = new ProtocolVector3 { x = (float)(decimal)target.Position.X, y = 0, z = (float)(decimal)target.Position.Y } } };
+            return new ConfirmedInputMessage { userId = botUserId, input = new FrameInputMessage { sequence = sequence++, type = "useMagic", id = 0, cards = new[] { card }, position = new ProtocolVector3 { x = (float)(decimal)target.Position.X, y = 0, z = (float)(decimal)target.Position.Y } } };
         }
     }
 }

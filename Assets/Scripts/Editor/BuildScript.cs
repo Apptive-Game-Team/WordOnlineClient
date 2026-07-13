@@ -30,7 +30,7 @@ public static class BuildScript
             scenes = scenes,
             locationPathName = outputPath,
             target = BuildTarget.WebGL,
-            options = BuildOptions.None
+            options = devBuild ? BuildOptions.Development : BuildOptions.None
         });
 
         if (report.summary.result != BuildResult.Succeeded)
