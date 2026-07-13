@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using BEPUphysics;
 using BEPUutilities;
 using FixMath.NET;
+using GameScene.Simulation.Objects;
+using GameScene.Simulation.Protocol;
 
 namespace GameScene.Simulation.Core
 {
@@ -14,14 +16,20 @@ namespace GameScene.Simulation.Core
         private readonly List<SimulationEntity> entities = new List<SimulationEntity>();
         private readonly DeterministicRandom random;
         private readonly Space physicsSpace;
+        private readonly SimulationPrefabRegistry prefabRegistry;
         private int nextEntityId;
 
         public int FrameNumber { get; private set; }
         public IReadOnlyList<SimulationEntity> Entities => entities;
         public ulong RandomDrawCount => random.DrawCount;
 
-        public SimulationWorld(long seed)
+        public SimulationWorld(long seed) : this(seed, SimulationPrefabRegistry.CreateCore())
         {
+        }
+
+        public SimulationWorld(long seed, SimulationPrefabRegistry prefabRegistry)
+        {
+            this.prefabRegistry = prefabRegistry ?? throw new ArgumentNullException(nameof(prefabRegistry));
             random = new DeterministicRandom(seed);
             physicsSpace = new Space(null);
             physicsSpace.TimeStepSettings.TimeStepDuration = FixedDeltaTime;
@@ -30,10 +38,70 @@ namespace GameScene.Simulation.Core
 
         public SimulationEntity Spawn(long ownerUserId, SimVector2 position)
         {
-            SimulationEntity entity = new SimulationEntity(nextEntityId++, ownerUserId, position);
+            return Spawn(SimulationPrefabRegistry.DefaultPrefabId, ownerUserId, position);
+        }
+
+        public SimulationEntity Spawn(string prefabId, long ownerUserId, SimVector2 position)
+        {
+            return SpawnWithId(nextEntityId, prefabId, ownerUserId, position);
+        }
+
+        public SimulationEntity SpawnWithId(int entityId, string prefabId, long ownerUserId, SimVector2 position)
+        {
+            SimulationPrefabDefinition prefab = prefabRegistry.GetRequired(prefabId);
+            if (entityId < nextEntityId)
+            {
+                SimulationEntity existing = FindRequired(entityId);
+                if (!existing.IsDestroyed &&
+                    existing.OwnerUserId == ownerUserId &&
+                    string.Equals(existing.PrefabId, prefabId, StringComparison.Ordinal) &&
+                    existing.Position.Equals(position))
+                    return existing;
+                throw new InvalidOperationException("Conflicting simulation spawn for entity: " + entityId);
+            }
+            if (entityId != nextEntityId)
+                throw new InvalidOperationException("Simulation entity ID must be next expected ID " + nextEntityId + ": " + entityId);
+
+            SimulationEntity entity = new SimulationEntity(entityId, ownerUserId, position, prefab, FrameNumber);
             entities.Add(entity);
+            nextEntityId = checked(nextEntityId + 1);
             physicsSpace.Add(entity.Body);
             return entity;
+        }
+
+        public void ApplyBootstrap(LockstepSessionStartMessage sessionStart)
+        {
+            if (sessionStart == null) throw new ArgumentNullException(nameof(sessionStart));
+            IReadOnlyList<BootstrapEventMessage> bootstrapEvents = sessionStart.bootstrapEvents;
+            if (bootstrapEvents == null) throw new ArgumentNullException(nameof(bootstrapEvents));
+            if (FrameNumber != 0 || entities.Count != 0)
+                throw new InvalidOperationException("Bootstrap can only be applied to an empty initial world");
+
+            List<BootstrapEventMessage> orderedEvents = new List<BootstrapEventMessage>(bootstrapEvents.Count);
+            for (int index = 0; index < bootstrapEvents.Count; index++)
+            {
+                if (bootstrapEvents[index] == null) throw new ArgumentException("Bootstrap event cannot be null");
+                orderedEvents.Add(bootstrapEvents[index]);
+            }
+            orderedEvents.Sort((left, right) => left.sequence.CompareTo(right.sequence));
+            for (int index = 1; index < orderedEvents.Count; index++)
+            {
+                if (orderedEvents[index - 1].sequence == orderedEvents[index].sequence)
+                    throw new InvalidOperationException("Duplicate bootstrap sequence: " + orderedEvents[index].sequence);
+            }
+            for (int index = 0; index < orderedEvents.Count; index++)
+                ValidateBootstrapEvent(orderedEvents[index], sessionStart);
+            for (int index = 0; index < orderedEvents.Count; index++)
+                ApplyBootstrapEvent(orderedEvents[index], sessionStart);
+        }
+
+        public bool Destroy(int entityId)
+        {
+            SimulationEntity entity = FindRequired(entityId);
+            if (entity.IsDestroyed) return false;
+            physicsSpace.Remove(entity.Body);
+            entity.Destroy(FrameNumber);
+            return true;
         }
 
         public void Step(IReadOnlyList<SimulationInput> confirmedInputs)
@@ -95,16 +163,42 @@ namespace GameScene.Simulation.Core
                     Spawn(input.UserId, input.Value);
                     break;
                 case SimulationInputType.Destroy:
-                    SimulationEntity entity = FindRequired(input.EntityId);
-                    if (!entity.IsDestroyed)
-                    {
-                        physicsSpace.Remove(entity.Body);
-                        entity.Destroy();
-                    }
+                    Destroy(input.EntityId);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(input), input.Type, "Unknown input type");
             }
+        }
+
+        private void ApplyBootstrapEvent(BootstrapEventMessage bootstrapEvent, LockstepSessionStartMessage sessionStart)
+        {
+            Spawn(
+                SimulationPrefabRegistry.PlayerPrefabId,
+                BootstrapOwnerUserId(bootstrapEvent, sessionStart),
+                new SimVector2((Fix64)(decimal)bootstrapEvent.position.x, (Fix64)(decimal)bootstrapEvent.position.y));
+        }
+
+        private void ValidateBootstrapEvent(
+            BootstrapEventMessage bootstrapEvent,
+            LockstepSessionStartMessage sessionStart)
+        {
+            if (!string.Equals(bootstrapEvent.type, "SPAWN_PLAYER", StringComparison.Ordinal))
+                throw new InvalidOperationException("Unsupported bootstrap event: " + bootstrapEvent.type);
+            if (bootstrapEvent.position == null)
+                throw new InvalidOperationException("Bootstrap position is required for sequence " + bootstrapEvent.sequence);
+            BootstrapOwnerUserId(bootstrapEvent, sessionStart);
+            prefabRegistry.GetRequired(SimulationPrefabRegistry.PlayerPrefabId);
+        }
+
+        private static long BootstrapOwnerUserId(
+            BootstrapEventMessage bootstrapEvent,
+            LockstepSessionStartMessage sessionStart)
+        {
+            if (string.Equals(bootstrapEvent.master, "LeftPlayer", StringComparison.Ordinal))
+                return sessionStart.leftUserId;
+            if (string.Equals(bootstrapEvent.master, "RightPlayer", StringComparison.Ordinal))
+                return sessionStart.rightUserId;
+            throw new InvalidOperationException("Unsupported bootstrap master: " + bootstrapEvent.master);
         }
 
         private SimulationEntity FindRequired(int entityId)
