@@ -1,6 +1,6 @@
 using System;
 
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     public readonly struct SimVector2 : IEquatable<SimVector2>
     {

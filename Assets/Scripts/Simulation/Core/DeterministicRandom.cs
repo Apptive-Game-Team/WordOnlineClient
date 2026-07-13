@@ -1,6 +1,6 @@
 using System;
 
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     /// <summary>Xoshiro128** with SplitMix64 seed expansion.</summary>
     public sealed class DeterministicRandom

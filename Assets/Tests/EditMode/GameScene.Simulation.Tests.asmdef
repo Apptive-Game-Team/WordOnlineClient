@@ -1,8 +1,8 @@
 {
-    "name": "WordOnline.Simulation.Tests",
-    "rootNamespace": "WordOnline.Simulation.Tests",
+    "name": "GameScene.Simulation.Tests",
+    "rootNamespace": "GameScene.Simulation.Tests",
     "references": [
-        "WordOnline.Simulation"
+        "GameScene.Simulation"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using WordOnline.Simulation.Core;
+using GameScene.Simulation.Core;
 
-namespace WordOnline.Simulation.Tests
+namespace GameScene.Simulation.Tests
 {
     public sealed class DeterministicSimulationTests
     {

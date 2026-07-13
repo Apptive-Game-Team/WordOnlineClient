@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     /// <summary>
     /// Signed Q47.16 fixed-point value. Simulation code must construct values from

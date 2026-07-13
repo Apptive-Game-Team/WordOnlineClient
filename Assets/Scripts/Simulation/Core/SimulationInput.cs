@@ -1,4 +1,4 @@
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     public enum SimulationInputType : byte
     {

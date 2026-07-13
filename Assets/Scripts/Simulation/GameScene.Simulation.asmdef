@@ -1,6 +1,6 @@
 {
-    "name": "WordOnline.Simulation",
-    "rootNamespace": "WordOnline.Simulation",
+    "name": "GameScene.Simulation",
+    "rootNamespace": "GameScene.Simulation",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

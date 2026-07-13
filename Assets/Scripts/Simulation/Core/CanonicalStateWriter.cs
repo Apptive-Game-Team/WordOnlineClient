@@ -1,6 +1,6 @@
 using System;
 
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     /// <summary>
     /// Stable little-endian state serializer and FNV-1a 64-bit hash accumulator.

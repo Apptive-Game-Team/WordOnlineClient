@@ -5,7 +5,7 @@ It is intentionally smaller than the gameplay port tracked by #348.
 
 ## Runtime boundary
 
-- `WordOnline.Simulation` has no Unity engine references.
+- `GameScene.Simulation` has no Unity engine references.
 - Unity input, networking, rendering, animation, audio, and interpolation stay outside the assembly.
 - The simulation advances only through confirmed frames. Rendering must never mutate simulation state.
 

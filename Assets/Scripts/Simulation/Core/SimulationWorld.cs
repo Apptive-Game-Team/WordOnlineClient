@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WordOnline.Simulation.Core
+namespace GameScene.Simulation.Core
 {
     /// <summary>Minimal deterministic vertical slice; gameplay systems build on this boundary.</summary>
     public sealed class SimulationWorld
