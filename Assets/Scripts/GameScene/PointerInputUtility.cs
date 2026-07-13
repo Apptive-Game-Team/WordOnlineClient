@@ -3,6 +3,7 @@ using GameScene.ServedObjectComponent;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Selectable = GameScene.ServedObjectComponent.Selectable;
 
 namespace GameScene
 {
