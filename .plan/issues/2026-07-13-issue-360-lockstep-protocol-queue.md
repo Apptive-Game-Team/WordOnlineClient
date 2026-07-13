@@ -3,7 +3,7 @@
 - Date: 2026-07-13
 - GitHub Issue: https://github.com/Apptive-Game-Team/WordOnlineClient/issues/360
 - Owning repository: WordOnlineClient
-- Status: Implemented; Unity suite blocked by pre-existing `WebGLInput` compile error
+- Status: Complete
 
 ## Goal
 
@@ -46,8 +46,8 @@ Implement the Game #291 wire contract in Unity: exact-version ready handshake, t
 - [x] Wire subscription → ready → session start → confirmed frame flow
 - [x] Serialize next-frame submissions with previous checkpoint hash
 - [x] Fail closed on abort/disconnect/version mismatch
-- [x] Focused validation (new scripts compile; queue tests added)
-- [ ] Compatibility and regression validation (blocked by existing `Assets/Scripts/Global/KeyInputSetting.cs` missing `WebGLInput`)
+- [x] Focused validation (new scripts compile; queue tests pass)
+- [x] Compatibility and regression validation (Unity Edit Mode 10/10 pass with temporary local-only `WebGLInput` comments, then comments reverted)
 - [x] Release order and rollback check
 
 ## Validation
