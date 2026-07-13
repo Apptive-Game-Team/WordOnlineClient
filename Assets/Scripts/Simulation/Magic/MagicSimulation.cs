@@ -137,7 +137,7 @@ namespace GameScene.Simulation.Magic
             {
                 SimVector2 position = definition.Family == MagicBehaviorFamily.Projectile
                     ? caster.Position : AddStableOffset(target, random, definition.SpawnCount > 1);
-                SimulationEntity entity = world.Spawn(command.UserId, position);
+                SimulationEntity entity = world.Spawn(definition.Name, command.UserId, position);
                 if (definition.Family == MagicBehaviorFamily.Projectile)
                     entity.SetVelocity(Direction(caster.Position, target) * definition.Speed);
                 instances.Add(new Instance

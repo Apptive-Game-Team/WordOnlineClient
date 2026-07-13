@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Data;
 using Data.Magic;
-using GameScene.Dto;
 using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
@@ -20,9 +19,6 @@ namespace GameScene.Card
                 this.cards = cards;
             }
         }
-
-        private const string Success = "SUCCESS";
-        private const string FailInvalidMagic = "FAIL_INVALID_MAGIC";
 
         private readonly Dictionary<int, PendingInputRequest> inputRequestDict = new Dictionary<int, PendingInputRequest>();
         private readonly List<string> _currentCardNameList = new List<string>();
@@ -62,7 +58,6 @@ namespace GameScene.Card
             {
                 _currentCardNameList.Remove(cardObj.CardName);
                 _currentCardList.Remove(cardObj);
-                SendCardSelectionInput(new CardUnselectRequestDto(cardObj.CardType));
             }
         }
 
@@ -142,7 +137,6 @@ namespace GameScene.Card
             foreach (var card in _currentCardList)
             {
                 card.SetCardActive(false);
-                SendCardSelectionInput(new CardUnselectRequestDto(card.CardType));
             }
             _currentCardList.Clear();
             _currentCardNameList.Clear();
@@ -169,10 +163,7 @@ namespace GameScene.Card
             }
 
             var input = new CardUseInput(new List<string>(_currentCardNameList), pos);
-            string json = JsonUtility.ToJson(input);
-        
-            string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
-            StompConnector.Instance.SendMessageToServer(destination, json);
+            StompConnector.Instance.QueueMagicInput(input.id, input.cards, input.position);
             inputRequestDict[input.id] = new PendingInputRequest(new List<CardUI>(_currentCardList));
             isWaitingInputResponse = true;
             _currentCardNameList.Clear();
@@ -180,16 +171,16 @@ namespace GameScene.Card
             isFieldSelectMode = false;
         }
 
-        public void HandleInputResponse(MagicValidInfo magicValid)
+        public void HandleConfirmedInput(int requestId, bool accepted, string message = null)
         {
-            if (!inputRequestDict.TryGetValue(magicValid.id, out PendingInputRequest pendingInputRequest))
+            if (!inputRequestDict.TryGetValue(requestId, out PendingInputRequest pendingInputRequest))
             {
-                WDebug.LogWarning($"[Magic Valid] Pending input request not found. id: {magicValid.id}");
+                WDebug.LogWarning($"[Lockstep] Pending input request not found. id: {requestId}");
                 isWaitingInputResponse = false;
                 return;
             }
 
-            if (ShouldConsumeCards(magicValid))
+            if (accepted)
             {
                 foreach (CardUI cardUI in pendingInputRequest.cards)
                 {
@@ -204,11 +195,11 @@ namespace GameScene.Card
             else
             {
                 RestorePendingSelection(pendingInputRequest.cards);
-                SystemMessageUI.Instance.ShowMessage(magicValid.message);
-                WDebug.Log("[Magic Valid]" + magicValid.message);
+                if (!string.IsNullOrEmpty(message)) SystemMessageUI.Instance.ShowMessage(message);
+                WDebug.Log("[Lockstep input rejected] " + message);
             }
 
-            inputRequestDict.Remove(magicValid.id);
+            inputRequestDict.Remove(requestId);
         }
 
         private void RestorePendingSelection(List<CardUI> cards)
@@ -242,31 +233,13 @@ namespace GameScene.Card
             SetExpectedMagicUI();
         }
 
-        private static bool ShouldConsumeCards(MagicValidInfo magicValid)
-        {
-            if (string.IsNullOrEmpty(magicValid.resultCode))
-            {
-                return magicValid.valid;
-            }
-
-            return string.Equals(magicValid.resultCode, Success, System.StringComparison.Ordinal)
-                   || string.Equals(magicValid.resultCode, FailInvalidMagic, System.StringComparison.Ordinal);
-        }
-    
         private void AddCardList(CardUI card)
         {
             WDebug.Log("AddCardList: " + card.CardName);
             _currentCardNameList.Add(card.CardName);
             _currentCardList.Add(card);
-            SendCardSelectionInput(new CardSelectRequestDto(card.CardType));
         }
 
-        private static void SendCardSelectionInput(object input)
-        {
-            string json = JsonUtility.ToJson(input);
-            string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
-            StompConnector.Instance.SendMessageToServer(destination, json);
-        }
 
         private List<CardType> GetCurrentRecipeTypes()
         {

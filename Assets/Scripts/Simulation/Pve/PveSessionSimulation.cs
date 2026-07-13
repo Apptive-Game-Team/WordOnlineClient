@@ -28,7 +28,7 @@ namespace GameScene.Simulation.Pve
                 else players.Add(value);
             if (scenarioEvent == null) throw new InvalidOperationException("START_PVE_SCENARIO required");
             PveScenarioDefinition definition = catalog.GetRequired(scenarioEvent.scenarioId, start.configVersion);
-            SimulationWorld world = new SimulationWorld(start.rngSeed);
+            SimulationWorld world = new SimulationWorld(start.rngSeed, Objects.SimulationPrefabRegistry.CreateProduction());
             world.ApplyBootstrap(new LockstepSessionStartMessage { leftUserId = start.leftUserId, rightUserId = start.rightUserId, bootstrapEvents = players.ToArray() });
             PveSessionSimulation simulation = new PveSessionSimulation(world, definition); simulation.ApplyEvents(); return simulation;
         }

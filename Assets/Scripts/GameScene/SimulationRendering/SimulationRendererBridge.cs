@@ -105,7 +105,11 @@ namespace GameScene.Simulation.Rendering
         {
             if (views.TryGetValue(entity.Id, out ViewState existing)) return existing;
             if (!prefabs.TryGetValue(entity.PrefabId, out GameObject prefab) || prefab == null)
-                throw new InvalidOperationException("Missing renderer prefab binding: " + entity.PrefabId);
+            {
+                prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/" + entity.PrefabId);
+                if (prefab == null) throw new InvalidOperationException("Missing renderer prefab: " + entity.PrefabId);
+                prefabs[entity.PrefabId] = prefab;
+            }
             GameObject instance = Instantiate(prefab, ToUnityPosition(entity.Position), ToUnityRotation(entity.Orientation));
             instance.name = prefab.name + " [Simulation " + entity.Id + "]";
             SimulationViewBinding binding = instance.GetComponent<SimulationViewBinding>() ??

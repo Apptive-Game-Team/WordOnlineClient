@@ -53,6 +53,23 @@ namespace GameScene.Simulation.Tests
             Assert.That(LockstepVersions.Config, Is.EqualTo("lockstep-config-v1"));
         }
 
+        [Test]
+        public void LocalInputsDrainOnceInStableSequenceOrder()
+        {
+            LocalFrameInputBuffer buffer = new LocalFrameInputBuffer();
+            buffer.EnqueueMagic(31, new[] { "FIRE", "AIR" }, new ProtocolVector3 { x = 2, z = 4 });
+            buffer.EnqueueMagic(32, new[] { "WATER" }, new ProtocolVector3 { x = 6, z = 8 });
+
+            FrameInputMessage[] drained = buffer.Drain();
+
+            Assert.That(drained, Has.Length.EqualTo(2));
+            Assert.That(drained[0].id, Is.EqualTo(31));
+            Assert.That(drained[0].sequence, Is.EqualTo(0));
+            Assert.That(drained[1].id, Is.EqualTo(32));
+            Assert.That(drained[1].sequence, Is.EqualTo(1));
+            Assert.That(buffer.Drain(), Is.Empty);
+        }
+
         private static ConfirmedFrameMessage Frame(int number)
         {
             return new ConfirmedFrameMessage

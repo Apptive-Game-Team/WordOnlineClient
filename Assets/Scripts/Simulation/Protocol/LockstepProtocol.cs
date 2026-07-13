@@ -179,4 +179,27 @@ namespace GameScene.Simulation.Protocol
                     ", config=" + (start.configVersion ?? "<null>"));
         }
     }
+
+    public sealed class LocalFrameInputBuffer
+    {
+        private readonly List<FrameInputMessage> pending = new List<FrameInputMessage>();
+        private int nextSequence;
+        public int Count => pending.Count;
+
+        public int EnqueueMagic(int requestId, IReadOnlyList<string> cards, ProtocolVector3 position)
+        {
+            if (cards == null || cards.Count == 0) throw new ArgumentException("Magic cards required", nameof(cards));
+            string[] copy = new string[cards.Count];
+            for (int index = 0; index < cards.Count; index++) copy[index] = cards[index];
+            int sequence = nextSequence++;
+            pending.Add(new FrameInputMessage { sequence = sequence, type = "useMagic", id = requestId,
+                cards = copy, position = position ?? throw new ArgumentNullException(nameof(position)) });
+            return sequence;
+        }
+
+        public FrameInputMessage[] Drain()
+        {
+            FrameInputMessage[] values = pending.ToArray(); pending.Clear(); return values;
+        }
+    }
 }

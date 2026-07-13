@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
-using GameScene.Dto;
-using GameScene.Dto.debug;
-using GameScene.Object;
 using Global;
 using UnityEngine;
 
@@ -36,11 +33,6 @@ namespace GameScene.ServedObjectComponent
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
         private ServedObjectHpBar _servedObjectHpBar;
-#if UNITY_EDITOR
-        private ServedObjectGizmoRenderer _gizmoRenderer;
-#endif
-
-        private PositionUpdater _positionUpdater;
 
         public event Action OnAttack;
         public event Action OnDamaged;
@@ -63,7 +55,6 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))
@@ -97,34 +88,6 @@ namespace GameScene.ServedObjectComponent
             return master;
         }
         
-        public void UpdateObject(UpdatedObjectDto updatedObjectDto)
-        {
-            UpdateMasterIfNeeded(updatedObjectDto.master);
-            _positionUpdater?.UpdatePosition(updatedObjectDto);
-
-            HandleGaugeUpdate(updatedObjectDto.gauges);
-
-            HandleStatus(updatedObjectDto.status);
-            EnsureEffectRenderer();
-            _effectRenderer.SetEffects(updatedObjectDto.effects);
-        }
-
-        public void SetGizmos(List<Gizmo> gizmos)
-        {
-#if UNITY_EDITOR
-            if (_gizmoRenderer == null)
-            {
-                _gizmoRenderer = GetComponent<ServedObjectGizmoRenderer>();
-                if (_gizmoRenderer == null)
-                {
-                    _gizmoRenderer = gameObject.AddComponent<ServedObjectGizmoRenderer>();
-                }
-            }
-
-            _gizmoRenderer.SetGizmos(gizmos);
-#endif
-        }
-
         private void HandleStatus(string status)
         {
             switch (status)
@@ -394,7 +357,7 @@ namespace GameScene.ServedObjectComponent
         private void DestroySelf()
         {
             OnDestroyed?.Invoke();
-            ObjectContainer.Instance.UnregisterObject(id);
+            Destroy(gameObject);
         }
         
         private void DestroySelf(float delay)

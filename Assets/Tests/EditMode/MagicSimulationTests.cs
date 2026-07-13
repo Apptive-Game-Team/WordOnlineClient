@@ -82,7 +82,7 @@ namespace GameScene.Simulation.Tests
 
         private static MagicSimulation Create()
         {
-            SimulationWorld world = new SimulationWorld(123);
+            SimulationWorld world = new SimulationWorld(123, SimulationPrefabRegistry.CreateProduction());
             world.Spawn(SimulationPrefabRegistry.PlayerPrefabId, 10, new SimVector2((Fix64)2, (Fix64)5));
             world.Spawn(SimulationPrefabRegistry.PlayerPrefabId, 20, new SimVector2((Fix64)7, (Fix64)5));
             return new MagicSimulation(987654321, world, ProductionMagicCatalog.Create());

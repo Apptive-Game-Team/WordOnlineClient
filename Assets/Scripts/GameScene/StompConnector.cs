@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Data.Util;
-using GameScene.Handler;
 using GameScene.Lockstep;
 using GameScene.Simulation.Protocol;
 using Global;
@@ -35,8 +34,8 @@ namespace GameScene
         private StompSubscriptionRegistry _registry;
         private StompReconnectController _reconnect;
 
-        private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
         private ConfirmedFrameQueue _confirmedFrames;
+        private readonly LocalFrameInputBuffer _localInputs = new LocalFrameInputBuffer();
         private float _lastFrameTime = -1f;
         private bool _connectedOnce;
 
@@ -69,6 +68,8 @@ namespace GameScene
 
         private void Start()
         {
+            LockstepGameController controller = GetComponent<LockstepGameController>() ?? gameObject.AddComponent<LockstepGameController>();
+            controller.Configure(this);
             ConnectToServer();
             StartCoroutine(GameFlowCoroutine(SceneContext.MatchInfo.sessionId));
         }
@@ -133,6 +134,18 @@ namespace GameScene
             SendMessageToServer(destination, LockstepProtocolJson.SerializeSubmission(submission));
         }
 
+        public void QueueMagicInput(int requestId, System.Collections.Generic.IReadOnlyList<string> cards, Vector3 position)
+        {
+            _localInputs.EnqueueMagic(requestId, cards, new ProtocolVector3 { x = position.x, y = position.y, z = position.z });
+        }
+
+        public FrameSubmissionMessage CreateFrameSubmission(int frameNumber, string previousFrameHash)
+        {
+            if (_confirmedFrames == null) throw new InvalidOperationException("Lockstep session has not started");
+            return new FrameSubmissionMessage { protocolVersion = LockstepVersions.Protocol,
+                frameNum = frameNumber, previousFrameHash = previousFrameHash, inputs = _localInputs.Drain() };
+        }
+
         // ─── 게임 플로우 ─────────────────────────────────────────────────────
 
         private IEnumerator GameFlowCoroutine(string sessionId)
@@ -191,8 +204,7 @@ namespace GameScene
                         HandleLockstepAbort(LockstepProtocolJson.DeserializeAbort(json));
                         return;
                     default:
-                        _frameInfoHandler.Handler(json);
-                        return;
+                        throw new InvalidOperationException("Unsupported lockstep message type");
                 }
             }
             catch (System.Exception exception)
