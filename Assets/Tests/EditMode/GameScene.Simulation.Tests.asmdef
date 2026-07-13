@@ -1,0 +1,27 @@
+{
+    "name": "GameScene.Simulation.Tests",
+    "rootNamespace": "GameScene.Simulation.Tests",
+    "references": [
+        "GameScene.Simulation"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "BEPUphysics.dll",
+        "BEPUutilities.dll",
+        "FixMath.NET.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

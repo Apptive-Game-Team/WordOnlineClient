@@ -1,0 +1,18 @@
+{
+    "name": "GameScene.Simulation",
+    "rootNamespace": "GameScene.Simulation",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "BEPUphysics.dll",
+        "BEPUutilities.dll",
+        "FixMath.NET.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
