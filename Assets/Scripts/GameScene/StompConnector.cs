@@ -204,13 +204,7 @@ namespace GameScene
 
         private void HandleLockstepSessionStart(LockstepSessionStartMessage start)
         {
-            if (start == null
-                || start.protocolVersion != LockstepVersions.Protocol
-                || start.simulationVersion != LockstepVersions.Simulation
-                || start.configVersion != LockstepVersions.Config)
-            {
-                throw new InvalidOperationException("Lockstep session version mismatch");
-            }
+            LockstepVersionValidator.Validate(start);
             _confirmedFrames = new ConfirmedFrameQueue(start.initialFrame);
             LockstepSessionStarted?.Invoke(start);
         }

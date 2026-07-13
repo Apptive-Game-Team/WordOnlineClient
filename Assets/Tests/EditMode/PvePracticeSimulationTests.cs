@@ -38,7 +38,7 @@ namespace GameScene.Simulation.Tests
 
             Assert.That(first.Decide(1, firstWorld), Is.Null);
             ConfirmedInputMessage left = first.Decide(5, firstWorld); ConfirmedInputMessage right = second.Decide(5, secondWorld);
-            Assert.That(left.userId, Is.EqualTo(-3)); Assert.That(left.input.type, Is.EqualTo("USE_CARD"));
+            Assert.That(left.userId, Is.EqualTo(-3)); Assert.That(left.input.type, Is.EqualTo("useMagic"));
             Assert.That(right.input.cards, Is.EqualTo(left.input.cards)); Assert.That(right.input.position.x, Is.EqualTo(left.input.position.x));
         }
 
