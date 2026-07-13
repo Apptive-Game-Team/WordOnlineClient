@@ -71,8 +71,8 @@ namespace GameScene
             lineRenderer.positionCount = 2;
             lineRenderer.startWidth = LineWidth;
             lineRenderer.endWidth = LineWidth;
-            lineRenderer.startColor = SkillIndicatorShapeRenderer.EdgeColor;
-            lineRenderer.endColor = SkillIndicatorShapeRenderer.EdgeColor;
+            lineRenderer.startColor = SkillIndicatorShapeRenderer.AccentLineColor;
+            lineRenderer.endColor = SkillIndicatorShapeRenderer.AccentLineColor;
             lineRenderer.numCapVertices = 4;
             lineRenderer.sortingOrder = SortingOrder;
             lineRenderer.enabled = false;
