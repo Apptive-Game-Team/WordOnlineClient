@@ -1,0 +1,13 @@
+{
+    "name": "GameScene.Simulation.Rendering",
+    "rootNamespace": "GameScene.Simulation.Rendering",
+    "references": [
+        "GameScene.Simulation"
+    ],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "FixMath.NET.dll"
+    ],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

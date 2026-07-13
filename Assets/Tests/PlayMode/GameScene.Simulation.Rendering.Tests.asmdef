@@ -1,0 +1,18 @@
+{
+    "name": "GameScene.Simulation.Rendering.Tests",
+    "rootNamespace": "GameScene.Simulation.Rendering.Tests",
+    "references": [
+        "GameScene.Simulation",
+        "GameScene.Simulation.Rendering"
+    ],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "FixMath.NET.dll"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ]
+}

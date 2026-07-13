@@ -163,6 +163,8 @@ namespace GameScene.Simulation.Core
 
         public uint DrawRandomUInt32() => random.NextUInt32();
 
+        public SimulationSnapshot CreateSnapshot() => new SimulationSnapshot(FrameNumber, entities);
+
         public ulong CalculateStateHash()
         {
             CanonicalStateWriter writer = new CanonicalStateWriter();

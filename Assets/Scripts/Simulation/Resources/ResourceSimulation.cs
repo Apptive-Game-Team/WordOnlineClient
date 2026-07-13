@@ -103,6 +103,14 @@ namespace GameScene.Simulation.Resources
             return writer.Hash;
         }
 
+        public PlayerResourceSnapshot CreatePlayerSnapshot(long userId)
+        {
+            PlayerResourceState state = userId == Left.UserId ? Left
+                : userId == Right.UserId ? Right : null;
+            if (state == null) throw new InvalidOperationException("Unknown player resource snapshot: " + userId);
+            return new PlayerResourceSnapshot(state);
+        }
+
         private void ApplyPassive(int frame, PlayerResourceState player)
         {
             if (frame % rules.ManaChargeIntervalFrames == 0)
