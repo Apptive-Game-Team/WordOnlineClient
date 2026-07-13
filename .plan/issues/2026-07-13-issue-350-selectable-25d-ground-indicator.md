@@ -9,7 +9,7 @@
 - Make pointer hover/click follow the visible `SpriteRenderer` reliably under the 2.5D camera, including rotated, scaled, animated, and y != 0 objects.
 - Make selection collider ownership deterministic instead of accidentally reusing an unrelated child collider.
 - Visualize the selected world position and its ground projection `(x, 0, z)` with a vertical line so the selected x/z coordinate is unambiguous.
-- Preserve the existing `CardInputSender` protocol and distinguish visual world position from the coordinate sent as gameplay input.
+- Preserve the existing `CardInputSender` protocol while sending an object's actual world position and using `(x, 0, z)` only for ground visualization.
 
 ## Non-goals
 
@@ -37,7 +37,7 @@
   - [x] Compare `Selectable`, `SpriteRenderer`, existing `BoxCollider2D`, and motion transforms in representative prefab YAML.
   - [x] Identify the unstable contract: a separate runtime `BoxCollider` used `sprite.bounds` once and did not track renderer-local bounds changes.
   - [x] Inspect `FieldSelector`, `TutorialFieldSelector`, `SkillIndicatorShapeRenderer`, and `LineSkillIndicator` to preserve existing procedural visual conventions.
-  - [x] Confirm `Selectable` currently normalizes selected object y at its `CardInputSender.SendInput` boundary.
+  - [x] Confirm field clicks already produce ground coordinates while object clicks must preserve the selected object's world y.
 - [x] **Step 1: Implementation** (Code changes, file paths)
   - [x] Refactor `Assets/Scripts/GameScene/ServedObjectComponent/Selectable.cs` to own a dedicated `SelectableHitbox` child under the selected renderer.
   - [x] Synchronize collider center/size from `SpriteRenderer.localBounds` only when bounds change.
@@ -45,7 +45,8 @@
   - [x] Add `Assets/Scripts/GameScene/SelectionGroundIndicator.cs` to draw the selected position to `(x, 0, z)`.
   - [x] Connect hover lifecycle and hide the line on exit, click, disable, destroy, or owner replacement.
   - [ ] If the field aim cursor can represent y != 0, update `Assets/Scripts/GameScene/FieldSelector.cs` to keep world cursor and ground projection as separate values. Mirror only contract-equivalent behavior in `Assets/Scripts/TutorialScene/Battle/TutorialFieldSelector.cs`.
-  - [ ] Preserve sent x/z semantics and make ground normalization explicit at the final input boundary rather than silently conflating it with indicator position.
+  - [x] Preserve actual object `(x, y, z)` input and keep ground projection local to the indicator.
+  - [x] Restrict UI blocking to `GraphicRaycaster` hits so the `PhysicsRaycaster` ground hit does not disable field selection.
 - [ ] **Step 2: Tests** (Unit tests, manual verification steps)
   - [ ] Add Edit Mode tests under `Assets/Tests/` for collider target resolution and renderer-local bounds mapping if those rules can be isolated without scene dependencies.
   - [ ] Add tests for projection endpoints: `(x, y, z)` maps to `(x, 0, z)`, y == 0 hides or collapses the vertical line, and cleanup is idempotent.
@@ -93,5 +94,5 @@
 
 - Resolved: show the vertical line while hovering the active target, before input is committed.
 - Resolved: project to world `y = 0`, matching the requested acceptance baseline.
-- Resolved: preserve the current `Selectable` behavior that sends ground-normalized y through `CardInputSender`.
+- Resolved: object selection sends actual world y; only field selection and the visual ground endpoint use ground coordinates.
 - Which prefabs reproduce the miss most consistently? Record them during Editor recon and use them as the PR manual test matrix.

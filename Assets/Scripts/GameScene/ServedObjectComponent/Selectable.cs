@@ -93,8 +93,6 @@ namespace GameScene.ServedObjectComponent
             }
 
             Vector3 pos = GetSelectionPosition();
-            pos.y = 0f; // 공중 유닛도 서버가 기대하는 ground-level 좌표로 전송
-
             CardInputSender.Instance.SendInput(pos);
         }
 
