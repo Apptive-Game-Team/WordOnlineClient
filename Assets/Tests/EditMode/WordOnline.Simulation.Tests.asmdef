@@ -1,0 +1,23 @@
+{
+    "name": "WordOnline.Simulation.Tests",
+    "rootNamespace": "WordOnline.Simulation.Tests",
+    "references": [
+        "WordOnline.Simulation"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}
