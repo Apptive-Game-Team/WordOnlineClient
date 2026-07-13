@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameScene.ServedObjectComponent;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,19 +12,7 @@ namespace GameScene
 
         public static bool IsPointerOverUi()
         {
-            EventSystem eventSystem = EventSystem.current;
-            if (eventSystem == null)
-            {
-                return false;
-            }
-
-            PointerEventData pointerData = new PointerEventData(eventSystem)
-            {
-                position = Input.mousePosition
-            };
-
-            RaycastResults.Clear();
-            eventSystem.RaycastAll(pointerData, RaycastResults);
+            RefreshRaycastResults();
             foreach (RaycastResult result in RaycastResults)
             {
                 if (result.module is GraphicRaycaster)
@@ -33,6 +22,37 @@ namespace GameScene
             }
 
             return false;
+        }
+
+        public static bool IsPointerOverUiOrSelectable()
+        {
+            RefreshRaycastResults();
+            foreach (RaycastResult result in RaycastResults)
+            {
+                if (result.module is GraphicRaycaster ||
+                    result.gameObject != null && result.gameObject.GetComponentInParent<Selectable>() != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void RefreshRaycastResults()
+        {
+            RaycastResults.Clear();
+            EventSystem eventSystem = EventSystem.current;
+            if (eventSystem == null)
+            {
+                return;
+            }
+
+            PointerEventData pointerData = new PointerEventData(eventSystem)
+            {
+                position = Input.mousePosition
+            };
+            eventSystem.RaycastAll(pointerData, RaycastResults);
         }
     }
 }

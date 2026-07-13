@@ -90,7 +90,7 @@ namespace GameScene
             SetAimIndicator(currentAimObj, previewPosition);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
-            if (PointerInputUtility.IsPointerOverUi()) return;
+            if (PointerInputUtility.IsPointerOverUiOrSelectable()) return;
 
             if (Input.GetMouseButtonUp(0))
             {

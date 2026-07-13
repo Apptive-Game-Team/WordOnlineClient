@@ -47,6 +47,7 @@
   - [ ] If the field aim cursor can represent y != 0, update `Assets/Scripts/GameScene/FieldSelector.cs` to keep world cursor and ground projection as separate values. Mirror only contract-equivalent behavior in `Assets/Scripts/TutorialScene/Battle/TutorialFieldSelector.cs`.
   - [x] Preserve actual object `(x, y, z)` input and keep ground projection local to the indicator.
   - [x] Restrict UI blocking to `GraphicRaycaster` hits so the `PhysicsRaycaster` ground hit does not disable field selection.
+  - [x] Give `Selectable.OnPointerClick` priority over `FieldSelector` ground input when the pointer raycast hits a selectable object.
 - [ ] **Step 2: Tests** (Unit tests, manual verification steps)
   - [ ] Add Edit Mode tests under `Assets/Tests/` for collider target resolution and renderer-local bounds mapping if those rules can be isolated without scene dependencies.
   - [ ] Add tests for projection endpoints: `(x, y, z)` maps to `(x, 0, z)`, y == 0 hides or collapses the vertical line, and cleanup is idempotent.
