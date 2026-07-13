@@ -16,6 +16,9 @@ namespace GameScene
         private static readonly Color DefaultEdgeColor = new Color(0.18f, 0.88f, 0.82f, 0.62f);
         private static Material sharedMaterial;
 
+        public static Color EdgeColor => DefaultEdgeColor;
+        public static Material SharedMaterial => GetSharedMaterial();
+
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
         private LineRenderer edgeRenderer;

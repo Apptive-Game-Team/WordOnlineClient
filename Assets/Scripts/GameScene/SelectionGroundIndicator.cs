@@ -9,7 +9,6 @@ namespace GameScene
         private const float LineWidth = 0.05f;
         private const float GroundY = 0f;
 
-        private static readonly Color LineColor = new Color(0.18f, 0.88f, 0.82f, 0.9f);
         private static SelectionGroundIndicator instance;
 
         private LineRenderer lineRenderer;
@@ -67,13 +66,13 @@ namespace GameScene
 
             instance = this;
             lineRenderer = gameObject.AddComponent<LineRenderer>();
-            lineRenderer.sharedMaterial = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.sharedMaterial = SkillIndicatorShapeRenderer.SharedMaterial;
             lineRenderer.useWorldSpace = true;
             lineRenderer.positionCount = 2;
             lineRenderer.startWidth = LineWidth;
             lineRenderer.endWidth = LineWidth;
-            lineRenderer.startColor = LineColor;
-            lineRenderer.endColor = LineColor;
+            lineRenderer.startColor = SkillIndicatorShapeRenderer.EdgeColor;
+            lineRenderer.endColor = SkillIndicatorShapeRenderer.EdgeColor;
             lineRenderer.numCapVertices = 4;
             lineRenderer.sortingOrder = SortingOrder;
             lineRenderer.enabled = false;
@@ -89,11 +88,6 @@ namespace GameScene
 
         private void OnDestroy()
         {
-            if (lineRenderer != null && lineRenderer.sharedMaterial != null)
-            {
-                Destroy(lineRenderer.sharedMaterial);
-            }
-
             if (instance == this)
             {
                 instance = null;
