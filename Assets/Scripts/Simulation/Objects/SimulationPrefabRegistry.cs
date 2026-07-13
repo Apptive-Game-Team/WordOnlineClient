@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameScene.Simulation.Magic;
 
 namespace GameScene.Simulation.Objects
 {
@@ -7,6 +8,10 @@ namespace GameScene.Simulation.Objects
     {
         public const string DefaultPrefabId = "Default";
         public const string PlayerPrefabId = "Player";
+        public const string PveNatureSlimeNestPrefabId = "PveNatureSlimeNest";
+        public const string PveWaterSlimeNestPrefabId = "PveWaterSlimeNest";
+        public const string PveVineColonyPrefabId = "PveVineColony";
+        public const string PveVineWitchPrefabId = "PveVineWitch";
 
         private readonly Dictionary<string, SimulationPrefabDefinition> definitions;
 
@@ -37,6 +42,22 @@ namespace GameScene.Simulation.Objects
                 new SimulationPrefabDefinition(DefaultPrefabId, "Transform", "PhysicsBody"),
                 new SimulationPrefabDefinition(PlayerPrefabId, "Transform", "PhysicsBody", "PlayerState")
             });
+        }
+
+        public static SimulationPrefabRegistry CreateProduction()
+        {
+            List<SimulationPrefabDefinition> values = new List<SimulationPrefabDefinition>
+            {
+                new SimulationPrefabDefinition(DefaultPrefabId, "Transform", "PhysicsBody"),
+                new SimulationPrefabDefinition(PlayerPrefabId, "Transform", "PhysicsBody", "PlayerState"),
+                new SimulationPrefabDefinition(PveNatureSlimeNestPrefabId, "Transform", "PhysicsBody", "MobState"),
+                new SimulationPrefabDefinition(PveWaterSlimeNestPrefabId, "Transform", "PhysicsBody", "MobState"),
+                new SimulationPrefabDefinition(PveVineColonyPrefabId, "Transform", "PhysicsBody", "MobState"),
+                new SimulationPrefabDefinition(PveVineWitchPrefabId, "Transform", "PhysicsBody", "MobState")
+            };
+            foreach (MagicDefinition definition in ProductionMagicCatalog.Create().Definitions)
+                values.Add(new SimulationPrefabDefinition(definition.Name, "Transform", "PhysicsBody", "MagicState"));
+            return new SimulationPrefabRegistry(values);
         }
     }
 }

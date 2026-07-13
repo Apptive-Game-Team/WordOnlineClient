@@ -1,5 +1,4 @@
 using System;
-using GameScene.Dto;
 using UnityEngine;
 using UnityEngine.UI;
 
