@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using Data.Util;
 using GameScene.Handler;
+using GameScene.Lockstep;
+using GameScene.Simulation.Protocol;
 using Global;
 using Global.Stomp;
 using UnityEngine;
@@ -34,7 +36,11 @@ namespace GameScene
         private StompReconnectController _reconnect;
 
         private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
+        private ConfirmedFrameQueue _confirmedFrames;
         private float _lastFrameTime = -1f;
+        private bool _connectedOnce;
+
+        public event Action<LockstepSessionStartMessage> LockstepSessionStarted;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────
 
@@ -111,6 +117,22 @@ namespace GameScene
                 _transport.Unsubscribe(subscriptionId);
         }
 
+        public bool TryDequeueConfirmedFrame(out ConfirmedFrameMessage frame)
+        {
+            if (_confirmedFrames == null)
+            {
+                frame = null;
+                return false;
+            }
+            return _confirmedFrames.TryDequeue(out frame);
+        }
+
+        public void SendFrameSubmission(FrameSubmissionMessage submission)
+        {
+            string destination = $"/app/game/lockstep/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
+            SendMessageToServer(destination, LockstepProtocolJson.SerializeSubmission(submission));
+        }
+
         // ─── 게임 플로우 ─────────────────────────────────────────────────────
 
         private IEnumerator GameFlowCoroutine(string sessionId)
@@ -132,6 +154,11 @@ namespace GameScene
             UnsubscribeFromTopic("match-sub");
             long userId = isSpectator ? 0 : SceneContext.UserID;
             SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", OnFrameInfoReceived, "frame-sub");
+            if (!isSpectator)
+            {
+                string readyDestination = $"/app/game/lockstep/ready/{sessionId}/{SceneContext.UserID}";
+                SendMessageToServer(readyDestination, LockstepProtocolJson.SerializeReady());
+            }
 
             _lastFrameTime = Time.time;
             while (true)
@@ -150,13 +177,62 @@ namespace GameScene
         private void OnFrameInfoReceived(string json)
         {
             _lastFrameTime = Time.time;
-            _frameInfoHandler.Handler(json);
+            try
+            {
+                switch (LockstepProtocolJson.ReadType(json))
+                {
+                    case LockstepMessageType.SessionStart:
+                        HandleLockstepSessionStart(LockstepProtocolJson.DeserializeSessionStart(json));
+                        return;
+                    case LockstepMessageType.ConfirmedFrame:
+                        HandleConfirmedFrame(LockstepProtocolJson.DeserializeConfirmedFrame(json));
+                        return;
+                    case LockstepMessageType.Abort:
+                        HandleLockstepAbort(LockstepProtocolJson.DeserializeAbort(json));
+                        return;
+                    default:
+                        _frameInfoHandler.Handler(json);
+                        return;
+                }
+            }
+            catch (System.Exception exception)
+            {
+                WDebug.LogError("[Lockstep] protocol failure: " + exception);
+                ReturnToLobby(connectionClosed);
+            }
+        }
+
+        private void HandleLockstepSessionStart(LockstepSessionStartMessage start)
+        {
+            if (start == null
+                || start.protocolVersion != LockstepVersions.Protocol
+                || start.simulationVersion != LockstepVersions.Simulation
+                || start.configVersion != LockstepVersions.Config)
+            {
+                throw new InvalidOperationException("Lockstep session version mismatch");
+            }
+            _confirmedFrames = new ConfirmedFrameQueue(start.initialFrame);
+            LockstepSessionStarted?.Invoke(start);
+        }
+
+        private void HandleConfirmedFrame(ConfirmedFrameMessage frame)
+        {
+            if (_confirmedFrames == null)
+                throw new InvalidOperationException("Confirmed frame arrived before session start");
+            _confirmedFrames.Enqueue(frame);
+        }
+
+        private void HandleLockstepAbort(LockstepAbortMessage abort)
+        {
+            WDebug.LogError($"[Lockstep] session aborted: {abort?.reason ?? "unknown"}");
+            ReturnToLobby(connectionClosed);
         }
 
         // ─── 연결 이벤트 핸들러 ──────────────────────────────────────────────
 
         private void HandleConnected()
         {
+            _connectedOnce = true;
             WDebug.Log("[STOMP] 연결됨 – 기존 구독 복구 중");
             _reconnect.ResetRetries();
             _registry.ResubscribeAll(_transport);
@@ -166,18 +242,32 @@ namespace GameScene
         {
             SystemMessageUI.Instance.ShowMessage(connectionClosed);
             WDebug.Log("[STOMP] 연결 종료: " + message);
+            if (_connectedOnce)
+                SceneManager.LoadScene("LobbyScene");
         }
 
         private void HandleError(string error)
         {
             SystemMessageUI.Instance.ShowMessage(connectionDelayed);
             WDebug.LogError("[STOMP] 에러: " + error);
+            if (_connectedOnce)
+            {
+                SceneManager.LoadScene("LobbyScene");
+                return;
+            }
             _reconnect.NotifyConnectionLost();
         }
 
         private void HandleMaxRetriesExceeded()
         {
             WDebug.LogError("[STOMP] 재연결 불가 – 최대 횟수 초과");
+        }
+
+        private static void ReturnToLobby(LocalizedString message)
+        {
+            if (SystemMessageUI.Instance != null)
+                SystemMessageUI.Instance.ShowMessage(message);
+            SceneManager.LoadScene("LobbyScene");
         }
     }
 }
