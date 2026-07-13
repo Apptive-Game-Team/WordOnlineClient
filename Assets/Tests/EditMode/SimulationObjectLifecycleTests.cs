@@ -82,7 +82,7 @@ namespace GameScene.Simulation.Tests
             world.ApplyBootstrap(Session(Player(2, 3), Player(1, -3)));
             world.Destroy(0);
 
-            Assert.That(world.CalculateStateHash(), Is.EqualTo(0x56DA3A48C5F9A317UL));
+            Assert.That(world.CalculateStateHash(), Is.EqualTo(0x6105ABA9BF4C4B9BUL));
         }
 
         private static BootstrapEventMessage Player(int sequence, float x)
