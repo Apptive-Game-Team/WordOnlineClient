@@ -11,4 +11,6 @@ This file is the fail-fast allowlist for deterministic simulation config. A Unit
 | PVE scenario object | — | Rejected | Planned #354 |
 | Visual/UI/effect prefab | Not simulation state | N/A | Renderer bridge planned #352 |
 
+All supported simulation prefabs use versioned `Fix64` radius/mass/trigger physics definitions. Bounds, full BEPU body state, and canonical collision/trigger events participate in checkpoints. Protocol `(x, z)` maps to the simulation `(x, y)` plane; Unity `Transform` never feeds state back.
+
 Component order in each definition is canonical state order. Duplicate prefab/component IDs and unknown prefab IDs are configuration errors. They must abort setup instead of silently substituting a Unity prefab.

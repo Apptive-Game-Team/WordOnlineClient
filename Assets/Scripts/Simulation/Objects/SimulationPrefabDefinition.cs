@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using FixMath.NET;
+using GameScene.Simulation.Physics;
 
 namespace GameScene.Simulation.Objects
 {
@@ -9,11 +11,21 @@ namespace GameScene.Simulation.Objects
 
         public string Id { get; }
         public IReadOnlyList<string> ComponentIds => componentIds;
+        public SimulationPhysicsDefinition Physics { get; }
 
         public SimulationPrefabDefinition(string id, params string[] componentIds)
+            : this(id, new SimulationPhysicsDefinition((Fix64)0.5m, Fix64.One), componentIds)
+        {
+        }
+
+        public SimulationPrefabDefinition(
+            string id,
+            SimulationPhysicsDefinition physics,
+            params string[] componentIds)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("Prefab ID is required", nameof(id));
             if (componentIds == null) throw new ArgumentNullException(nameof(componentIds));
+            Physics = physics ?? throw new ArgumentNullException(nameof(physics));
 
             Id = id;
             this.componentIds = new string[componentIds.Length];

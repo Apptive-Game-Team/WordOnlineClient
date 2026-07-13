@@ -5,6 +5,7 @@ using BEPUutilities;
 using FixMath.NET;
 using GameScene.Simulation.Objects;
 using GameScene.Simulation.Protocol;
+using GameScene.Simulation.Physics;
 
 namespace GameScene.Simulation.Core
 {
@@ -17,19 +18,31 @@ namespace GameScene.Simulation.Core
         private readonly DeterministicRandom random;
         private readonly Space physicsSpace;
         private readonly SimulationPrefabRegistry prefabRegistry;
+        private readonly SimulationBounds bounds;
+        private readonly List<SimulationCollisionEvent> collisionEvents = new List<SimulationCollisionEvent>();
         private int nextEntityId;
 
         public int FrameNumber { get; private set; }
         public IReadOnlyList<SimulationEntity> Entities => entities;
         public ulong RandomDrawCount => random.DrawCount;
+        public IReadOnlyList<SimulationCollisionEvent> CollisionEvents => collisionEvents;
 
-        public SimulationWorld(long seed) : this(seed, SimulationPrefabRegistry.CreateCore())
+        public SimulationWorld(long seed) : this(seed, SimulationPrefabRegistry.CreateCore(), SimulationBounds.Default)
         {
         }
 
         public SimulationWorld(long seed, SimulationPrefabRegistry prefabRegistry)
+            : this(seed, prefabRegistry, SimulationBounds.Default)
+        {
+        }
+
+        public SimulationWorld(
+            long seed,
+            SimulationPrefabRegistry prefabRegistry,
+            SimulationBounds bounds)
         {
             this.prefabRegistry = prefabRegistry ?? throw new ArgumentNullException(nameof(prefabRegistry));
+            this.bounds = bounds;
             random = new DeterministicRandom(seed);
             physicsSpace = new Space(null);
             physicsSpace.TimeStepSettings.TimeStepDuration = FixedDeltaTime;
@@ -65,6 +78,11 @@ namespace GameScene.Simulation.Core
             SimulationEntity entity = new SimulationEntity(entityId, ownerUserId, position, prefab, FrameNumber);
             entities.Add(entity);
             nextEntityId = checked(nextEntityId + 1);
+            entity.Body.CollisionInformation.Tag = entityId;
+            entity.Body.CollisionInformation.Events.InitialCollisionDetected +=
+                (sender, other, pair) => RecordCollision(entityId, other.Tag, SimulationCollisionEventType.Enter);
+            entity.Body.CollisionInformation.Events.CollisionEnded +=
+                (sender, other, pair) => RecordCollision(entityId, other.Tag, SimulationCollisionEventType.Exit);
             physicsSpace.Add(entity.Body);
             return entity;
         }
@@ -106,6 +124,8 @@ namespace GameScene.Simulation.Core
 
         public void Step(IReadOnlyList<SimulationInput> confirmedInputs)
         {
+            if (confirmedInputs == null) throw new ArgumentNullException(nameof(confirmedInputs));
+            collisionEvents.Clear();
             List<SimulationInput> orderedInputs = new List<SimulationInput>(confirmedInputs.Count);
             for (int index = 0; index < confirmedInputs.Count; index++)
             {
@@ -132,6 +152,12 @@ namespace GameScene.Simulation.Core
             // Single-threaded fixed BEPU step. Passing null to Space prevents a parallel looper.
             physicsSpace.Update();
 
+            for (int index = 0; index < entities.Count; index++)
+            {
+                if (!entities[index].IsDestroyed) entities[index].ConstrainTo(bounds.Min, bounds.Max);
+            }
+            NormalizeCollisionEvents();
+
             FrameNumber = checked(FrameNumber + 1);
         }
 
@@ -143,13 +169,46 @@ namespace GameScene.Simulation.Core
             writer.WriteInt32(FrameNumber);
             writer.WriteInt32(nextEntityId);
             random.WriteState(writer);
+            bounds.WriteState(writer);
             writer.WriteInt32(entities.Count);
             for (int index = 0; index < entities.Count; index++)
             {
                 entities[index].WriteState(writer);
             }
+            writer.WriteInt32(collisionEvents.Count);
+            for (int index = 0; index < collisionEvents.Count; index++) collisionEvents[index].WriteState(writer);
 
             return writer.Hash;
+        }
+
+        private void RecordCollision(
+            int entityId,
+            object otherTag,
+            SimulationCollisionEventType type)
+        {
+            if (!(otherTag is int otherEntityId) || entityId == otherEntityId) return;
+            bool isTrigger = entities[entityId].IsTrigger || entities[otherEntityId].IsTrigger;
+            collisionEvents.Add(new SimulationCollisionEvent(
+                FrameNumber, entityId, otherEntityId, type, isTrigger));
+        }
+
+        private void NormalizeCollisionEvents()
+        {
+            collisionEvents.Sort((left, right) =>
+            {
+                int a = left.EntityA.CompareTo(right.EntityA);
+                if (a != 0) return a;
+                int b = left.EntityB.CompareTo(right.EntityB);
+                if (b != 0) return b;
+                return left.Type.CompareTo(right.Type);
+            });
+            for (int index = collisionEvents.Count - 1; index > 0; index--)
+            {
+                SimulationCollisionEvent left = collisionEvents[index - 1];
+                SimulationCollisionEvent right = collisionEvents[index];
+                if (left.EntityA == right.EntityA && left.EntityB == right.EntityB && left.Type == right.Type)
+                    collisionEvents.RemoveAt(index);
+            }
         }
 
         private void Apply(SimulationInput input)
@@ -175,7 +234,7 @@ namespace GameScene.Simulation.Core
             Spawn(
                 SimulationPrefabRegistry.PlayerPrefabId,
                 BootstrapOwnerUserId(bootstrapEvent, sessionStart),
-                new SimVector2((Fix64)(decimal)bootstrapEvent.position.x, (Fix64)(decimal)bootstrapEvent.position.y));
+                new SimVector2((Fix64)(decimal)bootstrapEvent.position.x, (Fix64)(decimal)bootstrapEvent.position.z));
         }
 
         private void ValidateBootstrapEvent(
