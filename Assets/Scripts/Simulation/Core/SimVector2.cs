@@ -1,15 +1,16 @@
 using System;
+using FixMath.NET;
 
 namespace GameScene.Simulation.Core
 {
     public readonly struct SimVector2 : IEquatable<SimVector2>
     {
-        public static readonly SimVector2 Zero = new SimVector2(Fixed64.Zero, Fixed64.Zero);
+        public static readonly SimVector2 Zero = new SimVector2(Fix64.Zero, Fix64.Zero);
 
-        public Fixed64 X { get; }
-        public Fixed64 Y { get; }
+        public Fix64 X { get; }
+        public Fix64 Y { get; }
 
-        public SimVector2(Fixed64 x, Fixed64 y)
+        public SimVector2(Fix64 x, Fix64 y)
         {
             X = x;
             Y = y;
@@ -20,7 +21,7 @@ namespace GameScene.Simulation.Core
             return new SimVector2(left.X + right.X, left.Y + right.Y);
         }
 
-        public static SimVector2 operator *(SimVector2 value, Fixed64 scalar)
+        public static SimVector2 operator *(SimVector2 value, Fix64 scalar)
         {
             return new SimVector2(value.X * scalar, value.Y * scalar);
         }

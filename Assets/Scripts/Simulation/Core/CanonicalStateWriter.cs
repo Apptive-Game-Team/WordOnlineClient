@@ -1,4 +1,5 @@
 using System;
+using FixMath.NET;
 
 namespace GameScene.Simulation.Core
 {
@@ -17,7 +18,7 @@ namespace GameScene.Simulation.Core
         public void WriteBoolean(bool value) => WriteByte(value ? (byte)1 : (byte)0);
         public void WriteInt32(int value) => WriteUInt32(unchecked((uint)value));
         public void WriteInt64(long value) => WriteUInt64(unchecked((ulong)value));
-        public void WriteFixed64(Fixed64 value) => WriteInt64(value.Raw);
+        public void WriteFixed64(Fix64 value) => WriteInt64(value.RawValue);
 
         public void WriteUInt32(uint value)
         {

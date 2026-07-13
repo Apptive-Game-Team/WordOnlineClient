@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using GameScene.Simulation.Core;
+using FixMath.NET;
 
 namespace GameScene.Simulation.Tests
 {
@@ -21,7 +22,8 @@ namespace GameScene.Simulation.Tests
                 Assert.That(right.CalculateStateHash(), Is.EqualTo(left.CalculateStateHash()), "frame " + frame);
             }
 
-            Assert.That(left.CalculateStateHash(), Is.EqualTo(0x63C7C0A7E94932E7UL));
+            Assert.That(left.CalculateStateHash(), Is.EqualTo(0x0E5CF22FA41895DBUL));
+
         }
 
         [Test]
@@ -81,37 +83,50 @@ namespace GameScene.Simulation.Tests
         }
 
         [Test]
-        public void FixedPointOverflowFailsInsteadOfWrapping()
+        public void PhysicsCollisionProducesSameFinalPositionAndVelocity()
         {
-            Fixed64 maximum = Fixed64.FromRaw(long.MaxValue);
-            Assert.Throws<OverflowException>(() => Ignore(maximum + Fixed64.One));
+            SimulationWorld left = CreateWorld(777);
+            SimulationWorld right = CreateWorld(777);
+
+            for (int frame = 0; frame < 100; frame++)
+            {
+                SimulationInput[] inputs = frame == 0
+                    ? new[] { Velocity(10, 0, 0, 2, 0), Velocity(20, 0, 1, -2, 0) }
+                    : Array.Empty<SimulationInput>();
+                left.Step(inputs);
+                right.Step(inputs);
+            }
+
+            Assert.That(right.Entities[0].Position, Is.EqualTo(left.Entities[0].Position));
+            Assert.That(right.Entities[0].Velocity, Is.EqualTo(left.Entities[0].Velocity));
+            Assert.That(right.CalculateStateHash(), Is.EqualTo(left.CalculateStateHash()));
         }
 
         private static SimulationWorld CreateWorld(long seed)
         {
             SimulationWorld world = new SimulationWorld(seed);
-            world.Spawn(10, new SimVector2(Fixed64.FromInt(-4), Fixed64.Zero));
-            world.Spawn(20, new SimVector2(Fixed64.FromInt(4), Fixed64.Zero));
+            world.Spawn(10, new SimVector2((Fix64)(-4), Fix64.Zero));
+            world.Spawn(20, new SimVector2((Fix64)4, Fix64.Zero));
             return world;
         }
 
         private static IReadOnlyList<SimulationInput> FixtureInputs(int frame)
         {
+            if (frame == 40)
+            {
+                return new[]
+                {
+                    new SimulationInput(10, frame, SimulationInputType.Spawn, -1,
+                        new SimVector2((Fix64)(-2), Fix64.One))
+                };
+            }
+
             if (frame % 20 == 0)
             {
                 return new[]
                 {
                     Velocity(20, frame, 1, -1, 0),
                     Velocity(10, frame, 0, 1, 0)
-                };
-            }
-
-            if (frame == 40)
-            {
-                return new[]
-                {
-                    new SimulationInput(10, frame, SimulationInputType.Spawn, -1,
-                        new SimVector2(Fixed64.FromInt(-2), Fixed64.FromInt(1)))
                 };
             }
 
@@ -125,11 +140,7 @@ namespace GameScene.Simulation.Tests
                 sequence,
                 SimulationInputType.SetVelocity,
                 entityId,
-                new SimVector2(Fixed64.FromInt(x), Fixed64.FromInt(y)));
-        }
-
-        private static void Ignore(Fixed64 value)
-        {
+                new SimVector2((Fix64)x, (Fix64)y));
         }
     }
 }

@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
+using BEPUphysics;
+using BEPUutilities;
+using FixMath.NET;
 
 namespace GameScene.Simulation.Core
 {
     /// <summary>Minimal deterministic vertical slice; gameplay systems build on this boundary.</summary>
     public sealed class SimulationWorld
     {
-        public static readonly Fixed64 FixedDeltaTime = Fixed64.FromRatio(1, 20);
+        public static readonly Fix64 FixedDeltaTime = (Fix64)(1m / 20m);
 
         private readonly List<SimulationEntity> entities = new List<SimulationEntity>();
         private readonly DeterministicRandom random;
+        private readonly Space physicsSpace;
         private int nextEntityId;
 
         public int FrameNumber { get; private set; }
@@ -19,12 +23,16 @@ namespace GameScene.Simulation.Core
         public SimulationWorld(long seed)
         {
             random = new DeterministicRandom(seed);
+            physicsSpace = new Space(null);
+            physicsSpace.TimeStepSettings.TimeStepDuration = FixedDeltaTime;
+            physicsSpace.ForceUpdater.Gravity = Vector3.Zero;
         }
 
         public SimulationEntity Spawn(long ownerUserId, SimVector2 position)
         {
             SimulationEntity entity = new SimulationEntity(nextEntityId++, ownerUserId, position);
             entities.Add(entity);
+            physicsSpace.Add(entity.Body);
             return entity;
         }
 
@@ -53,15 +61,8 @@ namespace GameScene.Simulation.Core
                 Apply(orderedInputs[index]);
             }
 
-            // Entity list is append-only inside a frame and IDs are monotonic, so this is ID order.
-            for (int index = 0; index < entities.Count; index++)
-            {
-                SimulationEntity entity = entities[index];
-                if (!entity.IsDestroyed)
-                {
-                    entity.Integrate(FixedDeltaTime);
-                }
-            }
+            // Single-threaded fixed BEPU step. Passing null to Space prevents a parallel looper.
+            physicsSpace.Update();
 
             FrameNumber = checked(FrameNumber + 1);
         }
@@ -94,7 +95,12 @@ namespace GameScene.Simulation.Core
                     Spawn(input.UserId, input.Value);
                     break;
                 case SimulationInputType.Destroy:
-                    FindRequired(input.EntityId).Destroy();
+                    SimulationEntity entity = FindRequired(input.EntityId);
+                    if (!entity.IsDestroyed)
+                    {
+                        physicsSpace.Remove(entity.Body);
+                        entity.Destroy();
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(input), input.Type, "Unknown input type");

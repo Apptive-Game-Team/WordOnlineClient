@@ -11,10 +11,10 @@ It is intentionally smaller than the gameplay port tracked by #348.
 
 ## Numeric and time contract
 
-- Simulation rate is 20 Hz and `FixedDeltaTime` is the deterministic Q47.16 truncation of `1/20`.
-- Simulation values use signed Q47.16 `Fixed64` raw integers.
+- Simulation rate is 20 Hz and BEPU `TimeStepDuration` is fixed to `Fix64(1/20)`.
+- Simulation and physics values use `FixedMath.Net.Fix64` Q31.32 integers.
 - Floating-point conversion is restricted to IO and rendering adapters.
-- Arithmetic overflow throws. Wrapped state is not accepted as deterministic behavior.
+- BEPU is initialized with a null parallel looper; physics always steps single-threaded.
 
 ## Ordering and identity contract
 
@@ -35,12 +35,12 @@ It is intentionally smaller than the gameplay port tracked by #348.
 
 - State fields use explicit little-endian byte order and fixed field order.
 - Current vertical slice uses FNV-1a 64-bit to expose deterministic drift cheaply.
-- The hash includes frame, next entity ID, RNG state/draw count, entity count, and full entity state.
+- The hash includes frame, next entity ID, RNG state/draw count, entity count, and BEPU position, linear/angular velocity, orientation, and lifecycle state.
 - Wire encoding and final hash algorithm must be frozen with Game #291 before protocol cutover.
 
 ## Physics decision gate
 
-`bepuphysics1int` remains a candidate. Do not add it to production until the spike proves:
+`bepuphysics1int` commit `9237daa68c3014fd7c2e93c6a99326ba5248d60b` is vendored as managed Release/AnyCPU assemblies for the spike. Production acceptance still requires:
 
 - Unity 2022.3.34f1 Editor compilation;
 - Development WebGL IL2CPP/AOT build and runtime;
