@@ -14,6 +14,18 @@ namespace GameScene.Player
     
         private void Start()
         {
+            if (servedObject == null)
+            {
+                servedObject = GetComponent<ServedObject>();
+            }
+
+            playerTransform = servedObject != null ? servedObject.GetActualTransform() : transform;
+            if (servedObject == null)
+            {
+                WDebug.LogWarning($"{nameof(PlayerActionController)} requires a {nameof(ServedObject)}.");
+                return;
+            }
+
             servedObject.OnOtherStatus += OnOtherStatus;
             servedObject.OnAttack += OnAttack;
         }
@@ -28,6 +40,17 @@ namespace GameScene.Player
         
         private void OnAttack()
         {
+            if (playerTransform == null && servedObject != null)
+            {
+                playerTransform = servedObject.GetActualTransform();
+            }
+
+            if (playerTransform == null)
+            {
+                WDebug.LogWarning($"{nameof(PlayerActionController)} attack animation skipped because target transform is missing.");
+                return;
+            }
+
             DOTweenAction.SwingMobAttack(playerTransform);
         }
 
@@ -35,7 +58,7 @@ namespace GameScene.Player
         {
             if (status.Equals("Hindered"))
             {
-                magicFailEffecter.Trigger();
+                magicFailEffecter?.Trigger();
             }
         }
     }

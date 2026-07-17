@@ -6,7 +6,6 @@ using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameScene
 {
@@ -91,7 +90,7 @@ namespace GameScene
             SetAimIndicator(currentAimObj, previewPosition);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            if (PointerInputUtility.IsPointerOverUiOrSelectable()) return;
 
             if (Input.GetMouseButtonUp(0))
             {

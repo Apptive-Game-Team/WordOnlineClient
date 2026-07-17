@@ -3,7 +3,6 @@ using Admin.Dto;
 using GameScene;
 using Global;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Admin
 {
@@ -140,7 +139,7 @@ namespace Admin
             if (Input.GetMouseButtonDown(0))
             {
                 // Check if clicking on UI
-                if (EventSystem.current.IsPointerOverGameObject()) return;
+                if (PointerInputUtility.IsPointerOverUi()) return;
 
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPos.z = 0;

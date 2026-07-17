@@ -2,7 +2,6 @@ using Data;
 using Data.Magic;
 using GameScene;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace TutorialScene
 {
@@ -70,7 +69,7 @@ namespace TutorialScene
             UpdateSkillIndicator(wantLine, casterPosition, mouseWorldPos, md.range, md.radius);
 
 
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            if (PointerInputUtility.IsPointerOverUi()) return;
 
             if (Input.GetMouseButtonUp(0))
             {

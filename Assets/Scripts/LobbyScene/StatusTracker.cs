@@ -117,12 +117,29 @@ namespace LobbyScene
             try
             {
                 string json = getSessionReq.downloadHandler.text;
+                
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    WDebug.LogError("[EnterInGameByMine] Response body is empty.");
+                    yield break;
+                }
+
                 matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+
+                if (matchedInfoDto == null)
+                {
+                    WDebug.LogError($"[EnterInGameByMine] Failed to parse JSON.\n{json}");
+                    yield break;
+                }
             }
             catch (Exception e)
             {
                 WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
                 yield break;
+            }
+            finally
+            {
+                WDebug.Log("[EnterInGameByMine] successfully recover session: " + getSessionReq.downloadHandler.text);
             }
 
             SceneContext.MatchInfo = matchedInfoDto;

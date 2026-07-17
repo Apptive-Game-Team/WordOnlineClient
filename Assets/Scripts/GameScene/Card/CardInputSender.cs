@@ -178,10 +178,32 @@ namespace GameScene.Card
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
+
+            StopCoroutine(nameof(WaitInputResponseTimeout));
+            StartCoroutine(nameof(WaitInputResponseTimeout));
+        }
+
+        private System.Collections.IEnumerator WaitInputResponseTimeout()
+        {
+            yield return new WaitForSeconds(3f);
+            if (isWaitingInputResponse)
+            {
+                WDebug.LogWarning("[CardInputSender] Input response timeout. Releasing lock.");
+                isWaitingInputResponse = false;
+                
+                // 타임아웃 시 남아있는 PendingRequest 처리 (카드를 다시 복구하거나 파괴)
+                foreach (var kvp in inputRequestDict)
+                {
+                    RestorePendingSelection(kvp.Value.cards);
+                }
+                inputRequestDict.Clear();
+            }
         }
 
         public void HandleInputResponse(MagicValidInfo magicValid)
         {
+            StopCoroutine(nameof(WaitInputResponseTimeout));
+
             if (!inputRequestDict.TryGetValue(magicValid.id, out PendingInputRequest pendingInputRequest))
             {
                 WDebug.LogWarning($"[Magic Valid] Pending input request not found. id: {magicValid.id}");

@@ -13,7 +13,7 @@ namespace GameScene.Object
     public class ObjectSpawner : LocalSingletonObject<ObjectSpawner>
     {
         
-        public void SpawnObject(CreatedObjectDto createdObjectDto)
+        public void SpawnObject(CreatedObjectDto createdObjectDto, bool playSpawnPresentation = true)
         {
             if (ObjectContainer.Instance.IsExist(createdObjectDto.id))
             {
@@ -26,7 +26,7 @@ namespace GameScene.Object
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
-            PopupBookVisualPresenter.Attach(servedObject);
+            PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
             
@@ -40,6 +40,11 @@ namespace GameScene.Object
             try
             {
                 ObjectContainer.Instance.RegisterObject(servedObject);
+                if (playSpawnPresentation && popupBookPresenter != null)
+                {
+                    popupBookPresenter.PlaySpawnPresentation(
+                        SpawnPresentationTypeCatalog.IsBuilding(createdObjectDto.type));
+                }
             } catch (DuplicatedException e)
             {
                 WDebug.LogError($"Failed to register object: {e.Message}");
