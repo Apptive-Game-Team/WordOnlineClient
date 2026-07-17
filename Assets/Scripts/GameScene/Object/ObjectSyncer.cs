@@ -7,6 +7,7 @@ namespace GameScene.Object
 {
     public class ObjectSyncer : LocalSingletonObject<ObjectSyncer>
     {
+        private bool hasCompletedInitialSync;
 
         public void Sync(SnapshotObjectDto[] snapshotObjects)
         {
@@ -18,12 +19,15 @@ namespace GameScene.Object
             }
             
             // WDebug.Log("ObjectSyncer Sync called with " + string.Join(" | ", snapshotObjects.Select(dto => $"id: {dto.id}, {dto.prefab}")) + " objects.");
+            bool playSpawnPresentation = hasCompletedInitialSync;
             foreach (var snapshotObject in snapshotObjects)
             {
                 if (!ObjectContainer.Instance.IsExist(snapshotObject.id))
                 {
                     // create
-                    ObjectSpawner.Instance.SpawnObject(new CreatedObjectDto(snapshotObject));
+                    ObjectSpawner.Instance.SpawnObject(
+                        new CreatedObjectDto(snapshotObject),
+                        playSpawnPresentation);
                     ObjectUpdater.Instance.UpdateObject(new UpdatedObjectDto(snapshotObject));
                 }
                 else
@@ -34,6 +38,7 @@ namespace GameScene.Object
             }
 
             RemoveObjects(snapshotObjects);
+            hasCompletedInitialSync = true;
         }
 
         private void RemoveObjects(SnapshotObjectDto[] snapshotObjects)
