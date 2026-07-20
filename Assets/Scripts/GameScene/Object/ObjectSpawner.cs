@@ -26,6 +26,8 @@ namespace GameScene.Object
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
+            ServedObjectSfxController sfxController = spawnedObject.GetOrAddComponent<ServedObjectSfxController>();
+            sfxController.Initialize(servedObject, createdObjectDto.type);
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);

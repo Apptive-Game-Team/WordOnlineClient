@@ -1,4 +1,6 @@
 using UnityEngine;
+using Data.Sound;
+using Sound;
 
 namespace GameScene.Card
 {
@@ -13,12 +15,18 @@ namespace GameScene.Card
         {
             Instance = this;
             zoomedCardUI.Hide();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+            audioSource.clip = SoundAssets.TouchCard;
+            audioSource.volume = SoundData.gameVolume / 100f;
         }
     
         public void Show(CardUI cardUI)
         {
             zoomedCardUI.Show(cardUI);
-            audioSource.Play();
+            audioSource.PlayOneShot(SoundAssets.TouchCard);
         }
     
         public void Hide()

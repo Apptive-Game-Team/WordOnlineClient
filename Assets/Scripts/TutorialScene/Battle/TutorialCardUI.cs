@@ -26,7 +26,7 @@ namespace TutorialScene
             {
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
-            cardSound.clip = SoundAssets.DrawCard;
+            cardSound.clip = SoundAssets.TouchCard;
             cardSound.volume = SoundData.gameVolume / 100f;
         }
 
@@ -54,7 +54,7 @@ namespace TutorialScene
         
         public void OnCardClicked()
         {
-            cardSound.Play();
+            cardSound.PlayOneShot(SoundAssets.TouchCard);
             TutorialCardSender cardInputSender = FindObjectOfType<TutorialCardSender>();
             if (isActive)
             {

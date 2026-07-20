@@ -30,7 +30,7 @@ namespace GameScene.Card
             {
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
-            cardSound.clip = SoundAssets.DrawCard;
+            cardSound.clip = SoundAssets.TouchCard;
             cardSound.volume = SoundData.gameVolume / 100f;
         }
 
@@ -65,7 +65,7 @@ namespace GameScene.Card
                 return;
             }
 
-            cardSound.Play();
+            cardSound.PlayOneShot(SoundAssets.TouchCard);
             if (isActive)
             {
                 PlayerFeedbackController.Instance.CancelCardSelectFeedback();

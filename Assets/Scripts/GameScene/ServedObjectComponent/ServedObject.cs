@@ -46,12 +46,14 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
+        public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
 
         private int lastHp = 0;
+        private bool hasReceivedHp;
         
         public void SetMaster(string master)
         {
@@ -63,7 +65,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
+            _positionUpdater = new PositionUpdater(transform, _spriteRenderer, () => OnMoved?.Invoke());
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))
@@ -215,6 +217,13 @@ namespace GameScene.ServedObjectComponent
         private void HandleDamageEffect(Gauge gauge)
         {
             if (!gauge.category.Equals("HP")) return;
+
+            if (!hasReceivedHp)
+            {
+                lastHp = (int) gauge.value;
+                hasReceivedHp = true;
+                return;
+            }
             
             if (gauge.value < lastHp)
             {
