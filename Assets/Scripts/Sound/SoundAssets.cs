@@ -16,8 +16,9 @@ namespace Sound
 
         // UI
         private static AudioClip _clickButton;
+        private static AudioClip _fieldClick;
         public static AudioClip ClickButton => Load(ref _clickButton, "Sound/UI/wood_button_click");
-        public static AudioClip FieldClick => ClickButton;
+        public static AudioClip FieldClick => Load(ref _fieldClick, "Sound/Game/field_click") ?? ClickButton;
     
         // Game Magic
         private static AudioClip _shootSound;

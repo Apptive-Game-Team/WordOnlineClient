@@ -16,12 +16,20 @@ namespace GameScene.ServedObjectComponent
         private AudioClip attackClip;
         private AudioClip deathClip;
         private float lastMoveSoundTime = float.NegativeInfinity;
-        private bool hasDedicatedAttackSound;
+        private bool deathSoundPlayed;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticState()
+        {
+            nextGlobalMoveSoundTime = 0f;
+        }
 
         public void Initialize(ServedObject target, string prefabType)
         {
             Unsubscribe();
             servedObject = target;
+            deathSoundPlayed = false;
+            lastMoveSoundTime = float.NegativeInfinity;
             audioSource = gameObject.GetComponent<AudioSource>();
             if (audioSource == null)
             {
@@ -30,7 +38,7 @@ namespace GameScene.ServedObjectComponent
 
             audioSource.playOnAwake = false;
             audioSource.spatialBlend = 0f;
-            hasDedicatedAttackSound = GetComponentInChildren<OnAttackSoundPlayer>(true) != null;
+            DisableLegacyAttackSounds();
             ResolveConceptClips(prefabType);
             Subscribe();
             Play(SoundAssets.DropSound, 0.45f);
@@ -38,50 +46,42 @@ namespace GameScene.ServedObjectComponent
 
         private void ResolveConceptClips(string prefabType)
         {
-            string type = prefabType ?? string.Empty;
             attackClip = SoundAssets.ShootSound;
             deathClip = SoundAssets.ExplosionSound;
 
-            if (ContainsAny(type, "Fire", "Magma", "Ember", "Meteor", "Crater"))
+            switch (SoundConceptResolver.Resolve(prefabType))
             {
-                deathClip = SoundAssets.FireExplosion;
-            }
-            else if (ContainsAny(type, "Water", "Aqua", "Bubble", "Tide", "Rain"))
-            {
-                deathClip = SoundAssets.WaterExplosion;
-            }
-            else if (ContainsAny(type, "Leaf", "Nature", "Vine", "Tree", "Seed", "Overgrowth"))
-            {
-                attackClip = SoundAssets.ArrowShot;
-                deathClip = SoundAssets.NatureExplosion;
-            }
-            else if (ContainsAny(type, "Electric", "Lightning", "Thunder", "Zap", "Shock"))
-            {
-                deathClip = SoundAssets.LightningExplosion;
-            }
-            else if (ContainsAny(type, "Rock", "Ground", "Stone", "Sand"))
-            {
-                attackClip = SoundAssets.ArrowShot;
-                deathClip = SoundAssets.RockExplosion;
-            }
-            else if (ContainsAny(type, "Wind", "Cloud", "Tornado", "Gale", "Storm"))
-            {
-                attackClip = SoundAssets.WindSound;
-                deathClip = SoundAssets.NatureExplosion;
+                case SoundConcept.Fire:
+                    deathClip = SoundAssets.FireExplosion;
+                    break;
+                case SoundConcept.Water:
+                    deathClip = SoundAssets.WaterExplosion;
+                    break;
+                case SoundConcept.Nature:
+                    attackClip = SoundAssets.ArrowShot;
+                    deathClip = SoundAssets.NatureExplosion;
+                    break;
+                case SoundConcept.Lightning:
+                    deathClip = SoundAssets.LightningExplosion;
+                    break;
+                case SoundConcept.Rock:
+                    attackClip = SoundAssets.ArrowShot;
+                    deathClip = SoundAssets.RockExplosion;
+                    break;
+                case SoundConcept.Wind:
+                    attackClip = SoundAssets.WindSound;
+                    deathClip = SoundAssets.NatureExplosion;
+                    break;
             }
         }
 
-        private static bool ContainsAny(string value, params string[] candidates)
+        private void DisableLegacyAttackSounds()
         {
-            foreach (string candidate in candidates)
+            OnAttackSoundPlayer[] legacyPlayers = GetComponentsInChildren<OnAttackSoundPlayer>(true);
+            foreach (OnAttackSoundPlayer legacyPlayer in legacyPlayers)
             {
-                if (value.IndexOf(candidate, System.StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return true;
-                }
+                legacyPlayer.enabled = false;
             }
-
-            return false;
         }
 
         private void Subscribe()
@@ -106,7 +106,7 @@ namespace GameScene.ServedObjectComponent
 
         private void PlayAttack()
         {
-            if (!hasDedicatedAttackSound) Play(attackClip);
+            Play(attackClip);
         }
 
         private void PlayMove()
@@ -122,7 +122,8 @@ namespace GameScene.ServedObjectComponent
 
         private void PlayDeath()
         {
-            if (deathClip == null) return;
+            if (deathSoundPlayed || deathClip == null) return;
+            deathSoundPlayed = true;
             GameObject detachedAudio = new GameObject("DetachedDeathSfx");
             AudioSource detachedSource = detachedAudio.AddComponent<AudioSource>();
             detachedSource.spatialBlend = 0f;
