@@ -11,17 +11,15 @@ namespace GameScene.ServedObjectComponent
     {
         private readonly Transform transform;
         private readonly SpriteRenderer spriteRenderer;
-        private readonly Action onMoved;
         
         private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
         private Vector3? nextPosition = null;
         private double lastX;
         
-        public PositionUpdater(Transform transform, SpriteRenderer spriteRenderer, Action onMoved = null)
+        public PositionUpdater(Transform transform, SpriteRenderer spriteRenderer)
         {
             this.transform = transform;
             this.spriteRenderer = spriteRenderer;
-            this.onMoved = onMoved;
             lastX = this.transform.position.x;
         }
 
@@ -36,10 +34,6 @@ namespace GameScene.ServedObjectComponent
                 transform.position = nextPosition.Value;
             }
             nextPosition = updatedObjectDto.position;
-            if ((nextPosition.Value - transform.position).sqrMagnitude > 0.0001f)
-            {
-                onMoved?.Invoke();
-            }
             moveTween = transform.DOMove(nextPosition.Value, GameConfig.FRAME_DURATION)
                 .SetEase(Ease.Linear)
                 .SetLink(transform.gameObject);

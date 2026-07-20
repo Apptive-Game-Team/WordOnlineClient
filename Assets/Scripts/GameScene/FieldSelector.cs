@@ -5,8 +5,6 @@ using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
-using Data.Sound;
-using Sound;
 using UnityEngine;
 
 namespace GameScene
@@ -23,7 +21,6 @@ namespace GameScene
         private GameObject currentSkillIndicator;
         private bool currentSkillIndicatorIsLine;
         private string lastLoggedMagicParameterKey;
-        private AudioSource fieldClickAudioSource;
 
         [SerializeField] private GameObject aimObject;
         [SerializeField] private GameObject rangeObject;
@@ -42,12 +39,6 @@ namespace GameScene
             currentSkillIndicator = CreateCircleSkillIndicator();
             currentSkillIndicatorIsLine = false;
             currentSkillIndicator.SetActive(false);
-
-            fieldClickAudioSource = gameObject.GetComponent<AudioSource>();
-            if (fieldClickAudioSource == null)
-            {
-                fieldClickAudioSource = gameObject.AddComponent<AudioSource>();
-            }
         }
 
         void Update()
@@ -103,8 +94,6 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                fieldClickAudioSource.volume = SoundData.gameVolume / 100f;
-                fieldClickAudioSource.PlayOneShot(SoundAssets.FieldClick);
                 CardInputSender.Instance.SendInput(mouseWorldPos);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
