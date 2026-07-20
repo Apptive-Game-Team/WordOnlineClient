@@ -4,6 +4,7 @@ using GameScene.Dto;
 using GameScene.Exception;
 using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent.Sound;
 using Global;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -40,6 +41,10 @@ namespace GameScene.Object
             try
             {
                 ObjectContainer.Instance.RegisterObject(servedObject);
+                ServedObjectSfxController.Attach(
+                    servedObject,
+                    createdObjectDto.type,
+                    playSpawnPresentation);
                 if (playSpawnPresentation && popupBookPresenter != null)
                 {
                     popupBookPresenter.PlaySpawnPresentation(

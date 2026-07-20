@@ -1,10 +1,12 @@
 using Data;
 using Data.GameConfig;
 using Data.Magic;
+using Data.Sound;
 using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
+using Sound;
 using UnityEngine;
 
 namespace GameScene
@@ -28,9 +30,16 @@ namespace GameScene
         [SerializeField] private GameObject circleSkillIndicator;
         [SerializeField] private Collider groundCollider;
         [SerializeField] private string groundObjectName = "PopupBookGround";
+        private AudioSource interactionAudioSource;
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
+            interactionAudioSource = gameObject.GetComponent<AudioSource>();
+            if (interactionAudioSource == null)
+            {
+                interactionAudioSource = gameObject.AddComponent<AudioSource>();
+            }
+            interactionAudioSource.volume = SoundData.uiVolume / 100f;
             currentAimObj = CreateAimIndicator();
             currentRangeObj = CreateRangeIndicator();
             currentAimObj.SetActive(false);
@@ -94,7 +103,12 @@ namespace GameScene
 
             if (Input.GetMouseButtonUp(0))
             {
-                CardInputSender.Instance.SendInput(mouseWorldPos);
+                if (!CardInputSender.Instance.TrySendInput(previewPosition))
+                {
+                    return;
+                }
+
+                interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);

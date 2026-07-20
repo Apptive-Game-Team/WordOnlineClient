@@ -46,6 +46,7 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
+        public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
         
         public event Action OnHpIncreased;
@@ -64,7 +65,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
+            _positionUpdater = new PositionUpdater(transform, _spriteRenderer, () => OnMoved?.Invoke());
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))

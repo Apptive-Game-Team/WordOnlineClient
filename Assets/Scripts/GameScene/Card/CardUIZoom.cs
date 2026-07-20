@@ -6,10 +6,12 @@ namespace GameScene.Card
 {
     public class CardUIZoom : MonoBehaviour
     {
+        private const float HoverSoundCooldown = 0.12f;
         public static CardUIZoom Instance { get; private set; }
     
         [SerializeField] private ZoomedCardUI zoomedCardUI;
         [SerializeField] private AudioSource audioSource;
+        private float lastHoverSoundTime = float.NegativeInfinity;
     
         private void Awake()
         {
@@ -26,7 +28,11 @@ namespace GameScene.Card
         public void Show(CardUI cardUI)
         {
             zoomedCardUI.Show(cardUI);
-            audioSource.PlayOneShot(SoundAssets.TouchCard);
+            if (Time.unscaledTime - lastHoverSoundTime >= HoverSoundCooldown)
+            {
+                audioSource.PlayOneShot(SoundAssets.TouchCard);
+                lastHoverSoundTime = Time.unscaledTime;
+            }
         }
     
         public void Hide()

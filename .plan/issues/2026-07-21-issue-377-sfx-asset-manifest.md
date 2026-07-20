@@ -48,3 +48,23 @@ For every accepted clip, append a row containing candidate ID, source/tool,
 license, prompt or recording note, editor, processing chain, isolated-listening
 result, Unity-context result, approver, and approval date. A hash change
 invalidates the prior approval.
+
+## 2026-07-21 Generated Implementation Set
+
+These clips were generated through ElevenLabs `text_to_sound_effects` as raw
+44.1 kHz PCM, wrapped as mono 16-bit WAV, silence-trimmed, capped to the style
+guide duration, given a 10 ms fade-out, and peak-balanced by event role. They
+are runtime candidates pending in-game auditory approval; provenance is
+ElevenLabs generation under issue #377.
+
+| Runtime asset family | Files | Runtime use |
+|---|---|---|
+| Interaction | `wood_button_click_v3`, `card_touch_v2`, `field_confirm` | all buttons, card touch/hover, valid field submission |
+| Creature body | `creature_spawn`, `creature_move`, `creature_hit`, `creature_death` | mobile creature lifecycle |
+| Building body | `building_spawn`, `building_hit`, `building_death` | static building lifecycle |
+| Shared state | `generic_attack`, `heal` | attack only without legacy owner; confirmed healing |
+| Element accents | `fire_accent`, `water_accent`, `nature_accent`, `lightning_accent`, `rock_accent`, `wind_accent` | layered under spawn/attack/hit/death according to the explicit 93-type map |
+
+The connector could not play audio because PortAudio is unavailable, and Unity
+MCP was unreachable. Therefore these remain candidates even though they are
+fully wired; the Draft PR cannot become Ready before a human listening pass.
