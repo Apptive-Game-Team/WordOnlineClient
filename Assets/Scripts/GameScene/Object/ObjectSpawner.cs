@@ -30,7 +30,8 @@ namespace GameScene.Object
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
-            
+            LegacySfxMuter.Mute(spawnedObject);
+
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
 #if UNITY_EDITOR
