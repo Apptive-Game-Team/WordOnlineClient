@@ -21,16 +21,16 @@ namespace GameScene.Card
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
-            audioSource.clip = SoundAssets.TouchCard;
+            audioSource.clip = SoundAssets.CardHover;
             audioSource.volume = SoundData.gameVolume / 100f;
         }
-    
+
         public void Show(CardUI cardUI)
         {
             zoomedCardUI.Show(cardUI);
             if (Time.unscaledTime - lastHoverSoundTime >= HoverSoundCooldown)
             {
-                audioSource.PlayOneShot(SoundAssets.TouchCard);
+                audioSource.PlayOneShot(SoundAssets.CardHover);
                 lastHoverSoundTime = Time.unscaledTime;
             }
         }

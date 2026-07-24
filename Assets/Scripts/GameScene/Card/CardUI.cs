@@ -30,7 +30,7 @@ namespace GameScene.Card
             {
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
-            cardSound.clip = SoundAssets.TouchCard;
+            cardSound.clip = SoundAssets.CardSelect;
             cardSound.volume = SoundData.gameVolume / 100f;
         }
 
@@ -65,17 +65,18 @@ namespace GameScene.Card
                 return;
             }
 
-            cardSound.PlayOneShot(SoundAssets.TouchCard);
             if (isActive)
             {
+                cardSound.PlayOneShot(SoundAssets.CardDeselect);
                 PlayerFeedbackController.Instance.CancelCardSelectFeedback();
                 cardInputSender.CancelUseCard(this);
                 SetCardActive(false);
             }
             else
             {
+                cardSound.PlayOneShot(SoundAssets.CardSelect);
                 PlayerFeedbackController.Instance.PlayCardSelectFeedback();
-                cardInputSender.TryUseCard(this);   
+                cardInputSender.TryUseCard(this);
                 SetCardActive(true);
             }
             cardInputSender.SetExpectedMagicUI(); 
