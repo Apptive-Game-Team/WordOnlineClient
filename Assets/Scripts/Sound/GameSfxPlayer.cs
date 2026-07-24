@@ -13,6 +13,15 @@ namespace Sound
         HitHeal
     }
 
+    public enum GameSfxPriority
+    {
+        Movement,
+        Spawn,
+        Attack,
+        HitHeal,
+        Death
+    }
+
     public class GameSfxPlayer : MonoBehaviour
     {
         private const int OverallCap = 10;
@@ -20,29 +29,19 @@ namespace Sound
 
         private readonly List<Voice> voices = new();
 
-        public static void Play(AudioClip clip, GameSfxCategory category, float volume = 1f, float pitch = 1f)
+        public static void Play(
+            AudioClip clip,
+            GameSfxCategory category,
+            GameSfxPriority priority,
+            float volume = 1f,
+            float pitch = 1f)
         {
             if (clip == null)
             {
                 return;
             }
 
-            EnsureInstance().PlayInternal(clip, null, category, volume, pitch);
-        }
-
-        public static void PlayLayered(
-            AudioClip body,
-            AudioClip accent,
-            GameSfxCategory category,
-            float volume = 1f,
-            float pitch = 1f)
-        {
-            if (body == null && accent == null)
-            {
-                return;
-            }
-
-            EnsureInstance().PlayInternal(body, accent, category, volume, pitch);
+            EnsureInstance().PlayInternal(clip, category, priority, volume, pitch);
         }
 
         private static GameSfxPlayer EnsureInstance()
@@ -62,27 +61,49 @@ namespace Sound
         }
 
         private void PlayInternal(
-            AudioClip body,
-            AudioClip accent,
+            AudioClip clip,
             GameSfxCategory category,
+            GameSfxPriority priority,
             float volume,
             float pitch)
         {
             RemoveCompletedVoices();
-            if (voices.Count >= OverallCap || Count(category) >= GetCategoryCap(category))
+
+            Voice categoryVictim = null;
+            if (Count(category) >= GetCategoryCap(category))
             {
-                return;
+                categoryVictim = FindOldestLowerPriorityVoice(category, priority, null);
+                if (categoryVictim == null)
+                {
+                    return;
+                }
             }
+
+            Voice overallVictim = null;
+            int countAfterCategoryEviction = voices.Count - (categoryVictim != null ? 1 : 0);
+            if (countAfterCategoryEviction >= OverallCap)
+            {
+                overallVictim = FindOldestLowerPriorityVoice(null, priority, categoryVictim);
+                if (overallVictim == null)
+                {
+                    return;
+                }
+            }
+
+            RemoveVoice(categoryVictim);
+            RemoveVoice(overallVictim);
 
             AudioSource source = gameObject.AddComponent<AudioSource>();
             source.playOnAwake = false;
             source.spatialBlend = 0f;
             source.pitch = pitch;
             source.volume = Mathf.Clamp01(volume) * SoundData.gameVolume / 100f;
-            if (body != null) source.PlayOneShot(body);
-            if (accent != null) source.PlayOneShot(accent);
-            float duration = Mathf.Max(body != null ? body.length : 0f, accent != null ? accent.length : 0f);
-            voices.Add(new Voice(source, category, Time.unscaledTime + duration / Mathf.Abs(pitch)));
+            source.PlayOneShot(clip);
+            voices.Add(new Voice(
+                source,
+                category,
+                priority,
+                Time.unscaledTime + clip.length / Mathf.Max(Mathf.Abs(pitch), 0.01f)));
         }
 
         private void Update()
@@ -121,6 +142,41 @@ namespace Sound
             return count;
         }
 
+        private Voice FindOldestLowerPriorityVoice(
+            GameSfxCategory? category,
+            GameSfxPriority requestedPriority,
+            Voice excluded)
+        {
+            foreach (Voice voice in voices)
+            {
+                if (voice == excluded ||
+                    (category.HasValue && voice.Category != category.Value) ||
+                    (int)voice.Priority >= (int)requestedPriority)
+                {
+                    continue;
+                }
+
+                return voice;
+            }
+
+            return null;
+        }
+
+        private void RemoveVoice(Voice voice)
+        {
+            if (voice == null)
+            {
+                return;
+            }
+
+            voices.Remove(voice);
+            if (voice.Source != null)
+            {
+                voice.Source.Stop();
+                Destroy(voice.Source);
+            }
+        }
+
         private static int GetCategoryCap(GameSfxCategory category)
         {
             return category switch
@@ -133,16 +189,22 @@ namespace Sound
             };
         }
 
-        private readonly struct Voice
+        private sealed class Voice
         {
             public readonly AudioSource Source;
             public readonly GameSfxCategory Category;
+            public readonly GameSfxPriority Priority;
             public readonly float EndTime;
 
-            public Voice(AudioSource source, GameSfxCategory category, float endTime)
+            public Voice(
+                AudioSource source,
+                GameSfxCategory category,
+                GameSfxPriority priority,
+                float endTime)
             {
                 Source = source;
                 Category = category;
+                Priority = priority;
                 EndTime = endTime;
             }
         }

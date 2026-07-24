@@ -1,85 +1,169 @@
+using System.Collections.Generic;
 using GameScene.ServedObjectComponent.OnAttack;
+using Sound;
+using Sound.Config;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent.Sound
 {
     public class ServedObjectSfxController : MonoBehaviour
     {
-        private const float MovementCooldown = 0.45f;
+        private static readonly HashSet<string> WarnedRuntimeTypes = new();
+        private static ObjectSfxCatalog catalog;
+        private static bool catalogLoadAttempted;
 
         private ServedObject servedObject;
-        private RuntimeSfxArchetype archetype;
-        private RuntimeSfxElement element;
+        private ObjectSfxProfile profile;
         private float nextMovementTime;
         private bool deathPlayed;
         private bool ownsAttack;
+        private bool ownsMovement;
+        private bool ownsHit;
+        private bool ownsHeal;
+        private bool ownsDeath;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetRuntimeState()
+        {
+            catalog = null;
+            catalogLoadAttempted = false;
+            WarnedRuntimeTypes.Clear();
+        }
 
         public static void Attach(ServedObject target, string runtimeType, bool playSpawn)
         {
-            RuntimeSfxArchetype resolved = ObjectSfxRuntimeTypeCatalog.Resolve(runtimeType);
-            if (resolved == RuntimeSfxArchetype.Silent || resolved == RuntimeSfxArchetype.Transient)
+            if (!TryResolveProfile(runtimeType, out ObjectSfxProfile resolvedProfile))
             {
                 return;
             }
 
-            ServedObjectSfxController controller = target.gameObject.AddComponent<ServedObjectSfxController>();
-            controller.Initialize(target, resolved, ObjectSfxRuntimeTypeCatalog.ResolveElement(runtimeType), playSpawn);
+            ServedObjectSfxController controller =
+                target.gameObject.AddComponent<ServedObjectSfxController>();
+            controller.Initialize(target, resolvedProfile, playSpawn);
+        }
+
+        private static bool TryResolveProfile(
+            string runtimeType,
+            out ObjectSfxProfile resolvedProfile)
+        {
+            resolvedProfile = null;
+            if (!catalogLoadAttempted)
+            {
+                catalog = Resources.Load<ObjectSfxCatalog>(ObjectSfxCatalog.ResourcesPath);
+                catalogLoadAttempted = true;
+            }
+
+            if (catalog == null)
+            {
+                WarnOnce(
+                    "__MissingCatalog__",
+                    $"Object SFX catalog is missing at Resources/{ObjectSfxCatalog.ResourcesPath}. " +
+                    "Profile lifecycle SFX will remain silent.");
+                return false;
+            }
+
+            if (!catalog.TryResolve(runtimeType, out resolvedProfile))
+            {
+                WarnOnce(
+                    runtimeType,
+                    $"Object SFX catalog has no row for runtime type '{runtimeType}'. " +
+                    "Profile lifecycle SFX will remain silent.");
+                return false;
+            }
+
+            return resolvedProfile != null;
+        }
+
+        private static void WarnOnce(string key, string message)
+        {
+            string normalizedKey = string.IsNullOrEmpty(key) ? "__EmptyRuntimeType__" : key;
+            if (WarnedRuntimeTypes.Add(normalizedKey))
+            {
+                Debug.LogWarning(message);
+            }
         }
 
         private void Initialize(
             ServedObject target,
-            RuntimeSfxArchetype resolved,
-            RuntimeSfxElement resolvedElement,
+            ObjectSfxProfile resolvedProfile,
             bool playSpawn)
         {
             servedObject = target;
-            archetype = resolved;
-            element = resolvedElement;
+            profile = resolvedProfile;
             deathPlayed = false;
             nextMovementTime = 0f;
-            ownsAttack = GetComponentInChildren<OnAttackSoundPlayer>(true) == null;
-            servedObject.OnMoved += PlayMovement;
-            servedObject.OnHpDecreased += PlayHit;
-            servedObject.OnHpIncreased += PlayHeal;
-            servedObject.OnDestroyed += PlayDeath;
+
+            ownsMovement = profile.Movement.Enabled;
+            if (ownsMovement)
+            {
+                servedObject.OnMoved += PlayMovement;
+            }
+
+            ownsHit = profile.Hit.Enabled;
+            if (ownsHit)
+            {
+                servedObject.OnHpDecreased += PlayHit;
+            }
+
+            ownsHeal = profile.Heal.Enabled;
+            if (ownsHeal)
+            {
+                servedObject.OnHpIncreased += PlayHeal;
+            }
+
+            ownsDeath = profile.Death.Enabled;
+            if (ownsDeath)
+            {
+                servedObject.OnDestroyed += PlayDeath;
+            }
+
+            ownsAttack = profile.Attack.Enabled && profile.Attack.Clip != null;
             if (ownsAttack)
             {
+                DisableLegacyAttackOwners();
                 servedObject.OnAttack += PlayAttack;
             }
 
             if (playSpawn)
             {
-                PlayWithElement(archetype == RuntimeSfxArchetype.Building
-                    ? global::Sound.SoundAssets.BuildingSpawn
-                    : global::Sound.SoundAssets.CreatureSpawn,
-                    global::Sound.GameSfxCategory.SpawnDeath);
+                PlaySlot(
+                    profile.Spawn,
+                    GameSfxCategory.SpawnDeath,
+                    GameSfxPriority.Spawn);
+            }
+        }
+
+        private void DisableLegacyAttackOwners()
+        {
+            foreach (OnAttackSoundPlayer legacyOwner in
+                     GetComponentsInChildren<OnAttackSoundPlayer>(true))
+            {
+                legacyOwner.enabled = false;
             }
         }
 
         private void PlayMovement()
         {
-            if (archetype == RuntimeSfxArchetype.Building || Time.unscaledTime < nextMovementTime)
+            if (Time.unscaledTime < nextMovementTime)
             {
                 return;
             }
 
-            nextMovementTime = Time.unscaledTime + MovementCooldown;
-            Play(global::Sound.SoundAssets.CreatureMove, global::Sound.GameSfxCategory.Movement);
+            nextMovementTime = Time.unscaledTime + profile.MovementCooldown;
+            PlaySlot(
+                profile.Movement,
+                GameSfxCategory.Movement,
+                GameSfxPriority.Movement);
         }
 
-        private void PlayAttack()
-        {
-            PlayWithElement(global::Sound.SoundAssets.GenericAttack, global::Sound.GameSfxCategory.Attack);
-        }
-        private void PlayHeal() => Play(global::Sound.SoundAssets.Heal, global::Sound.GameSfxCategory.HitHeal);
+        private void PlayAttack() =>
+            PlaySlot(profile.Attack, GameSfxCategory.Attack, GameSfxPriority.Attack);
 
-        private void PlayHit()
-        {
-            PlayWithElement(archetype == RuntimeSfxArchetype.Building
-                ? global::Sound.SoundAssets.BuildingHit
-                : global::Sound.SoundAssets.CreatureHit,
-                global::Sound.GameSfxCategory.HitHeal);
-        }
+        private void PlayHeal() =>
+            PlaySlot(profile.Heal, GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
+
+        private void PlayHit() =>
+            PlaySlot(profile.Hit, GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
 
         private void PlayDeath()
         {
@@ -89,43 +173,52 @@ namespace GameScene.ServedObjectComponent.Sound
             }
 
             deathPlayed = true;
-            PlayWithElement(archetype == RuntimeSfxArchetype.Building
-                ? global::Sound.SoundAssets.BuildingDeath
-                : global::Sound.SoundAssets.CreatureDeath,
-                global::Sound.GameSfxCategory.SpawnDeath);
+            PlaySlot(
+                profile.Death,
+                GameSfxCategory.SpawnDeath,
+                GameSfxPriority.Death);
         }
 
-        private void PlayWithElement(AudioClip body, global::Sound.GameSfxCategory category)
+        private static void PlaySlot(
+            ObjectSfxEventSlot slot,
+            GameSfxCategory category,
+            GameSfxPriority priority)
         {
-            AudioClip clip = element switch
-            {
-                RuntimeSfxElement.Fire => global::Sound.SoundAssets.FireAccent,
-                RuntimeSfxElement.Water => global::Sound.SoundAssets.WaterAccent,
-                RuntimeSfxElement.Nature => global::Sound.SoundAssets.NatureAccent,
-                RuntimeSfxElement.Lightning => global::Sound.SoundAssets.LightningAccent,
-                RuntimeSfxElement.Rock => global::Sound.SoundAssets.RockAccent,
-                RuntimeSfxElement.Wind => global::Sound.SoundAssets.WindAccent,
-                _ => null
-            };
-            global::Sound.GameSfxPlayer.PlayLayered(body, clip, category);
-        }
-
-        private static void Play(AudioClip clip, global::Sound.GameSfxCategory category)
-        {
-            global::Sound.GameSfxPlayer.Play(clip, category);
-        }
-
-        private void OnDestroy()
-        {
-            if (servedObject == null)
+            if (!slot.Enabled || slot.Clip == null)
             {
                 return;
             }
 
-            servedObject.OnMoved -= PlayMovement;
-            servedObject.OnHpDecreased -= PlayHit;
-            servedObject.OnHpIncreased -= PlayHeal;
-            servedObject.OnDestroyed -= PlayDeath;
+            GameSfxPlayer.Play(slot.Clip, category, priority, slot.Volume, slot.Pitch);
+        }
+
+        private void OnDestroy()
+        {
+            if (servedObject == null || profile == null)
+            {
+                return;
+            }
+
+            if (ownsMovement)
+            {
+                servedObject.OnMoved -= PlayMovement;
+            }
+
+            if (ownsHit)
+            {
+                servedObject.OnHpDecreased -= PlayHit;
+            }
+
+            if (ownsHeal)
+            {
+                servedObject.OnHpIncreased -= PlayHeal;
+            }
+
+            if (ownsDeath)
+            {
+                servedObject.OnDestroyed -= PlayDeath;
+            }
+
             if (ownsAttack)
             {
                 servedObject.OnAttack -= PlayAttack;
