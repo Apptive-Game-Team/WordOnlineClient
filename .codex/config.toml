@@ -1,2 +1,15 @@
 [mcp_servers.unityMCP]
 url = "http://127.0.0.1:8080/mcp"
+
+[mcp_servers.elevenlabs]
+command = "/home/yunseong/.local/bin/uvx"
+args = ["elevenlabs-mcp"]
+env_vars = ["ELEVENLABS_API_KEY"]
+startup_timeout_sec = 60
+tool_timeout_sec = 300
+
+[mcp_servers.elevenlabs.env]
+UV_CACHE_DIR = "/tmp/elevenlabs-uv-cache"
+UV_TOOL_DIR = "/tmp/elevenlabs-uv-tools"
+ELEVENLABS_MCP_BASE_PATH = "/home/yunseong/dev/arcane-casters/dev/client/Assets/Resources/Sound/Generated"
+ELEVENLABS_MCP_OUTPUT_MODE = "files"
