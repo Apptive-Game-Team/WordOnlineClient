@@ -1,8 +1,8 @@
-# 2026-07-21 — 효과음 사운드 스타일 가이드
+# 2026-07-23 — 효과음 사운드 스타일 가이드
 
-- Date: 2026-07-21
+- Date: 2026-07-23
 - GitHub Issue: #377
-- Status: Approved for Implementation — Plan Review Passed
+- Status: Revised after listening feedback — review pending
 
 ## Goal
 
@@ -10,26 +10,27 @@ Define one audible language for every SFX added by issue #377. UI, cards,
 field interaction, creatures, buildings, and magic must sound like parts of the
 same game even when they use different elemental materials.
 
-The target identity is **handcrafted arcane tabletop**:
+The target identity is **grounded close-up fantasy Foley**:
 
-- tactile like touching wood, paper, stone, glass, cloth, and small crafted toys
-- magical through restrained elemental accents, not synthetic spectacle
+- physically believable wood, paper, stone, soil, water, cloth, air, ember, and
+  electrical sources
+- magical through restrained natural energy, not tonal sparkles or synthetic spectacle
 - short and readable during crowded combat
-- warm, playful, and slightly stylized rather than realistic or cinematic
-- dry and close, as if the action happens on the game board in front of the player
+- calm and serious without becoming dark fantasy or cinematic
+- dry and close, as if a real small object acts on the game board in front of the player
 
-Tone decision for v1: **slightly cute and soft, supported by restrained
-mysticism**. Serious or threatening moments gain weight through event scale,
-not by switching to a separate cinematic language. Player and enemy ownership
-remains visual-only in v1; do not brighten player sounds solely to mark ownership.
+Tone decision for v1: **realistic, restrained, and material-first**. The visuals
+may be stylized, but the audio must not sound cute, toy-like, comic, bouncy, or
+playfully exaggerated. Serious moments gain weight through real material mass,
+not trailer bass or metallic fantasy accents. Player and enemy ownership remains
+visual-only in v1.
 
 ## Non-goals
 
 - cinematic trailer sound design
-- realistic battlefield simulation
+- large-scale battlefield simulation
 - unique sound files for every prefab
-- long ambient loops in this issue
-- music, voice, creature dialogue, or UI narration
+- voice, creature dialogue, or UI narration
 - procedural synthesis or a runtime DSP framework
 - automatic acceptance based only on waveform metrics
 
@@ -39,7 +40,9 @@ remains visual-only in v1; do not brighten player sounds solely to mark ownershi
 - Sound-family profiles will be shared by archetype and concept.
 - Final approval requires listening in Unity, not only file inspection.
 - ElevenLabs may generate candidates, but generated output is never accepted automatically.
-- Final runtime clips use WAV PCM 16-bit, 44.1 kHz, mono.
+- Final runtime one-shots use WAV PCM 16-bit, 44.1 kHz, mono. The approved
+  in-game ambience is an explicit PCM 16-bit, 48 kHz, mono loop exception whose
+  reviewed hash is preserved.
 - UI and game volumes remain independently controlled by `SoundData`.
 - This guide supplements the implementation plan; it does not replace event ownership rules.
 
@@ -47,18 +50,60 @@ remains visual-only in v1; do not brighten player sounds solely to mark ownershi
 
 Use this sentence to judge every candidate:
 
-> A small handcrafted magical object was touched, moved, struck, or released on
-> a wooden arcane game board.
+> A real small object made of wood, paper, stone, plant fiber, liquid, ember, or
+> air was touched, moved, struck, or released at close range.
 
 A candidate fails when it sounds imported from another genre even if it is
 technically polished.
+
+### Miniature scale rule (2026-07-23)
+
+The game presents itself as a handcrafted pop-up-book diorama:
+`PopupBookVisualPresenter` unfolds units like book pages, sprites are flat
+cartoon cutouts, and the UI is wood and paper. The audio matches that identity
+by keeping every source **real but miniature**. One judgment sentence decides
+scale:
+
+> Could the object making this sound rest in an open hand?
+
+Consequences:
+
+- Explosions are not restrained; they are unnecessary. A rock golem's death is
+  a handful of pebbles spilling onto a table, not a detonation.
+- Cinematic low end disappears naturally because hand-scale props have no
+  sub-bass.
+- Death and despawn read as a prop collapsing, tipping, or scattering into its
+  component material.
+- Spawn may combine one paper pop-up/unfold layer with one material arrival
+  layer, staying inside the three-layer grammar below. The pop-up layer ties
+  audio directly to the spawn presentation.
+- The lobby's musical identity is a quiet wooden-mallet (marimba/xylophone
+  with felt mallets) three-to-four-note round with long rests — wooden timbre,
+  no metallic chime, barely above the ambience.
+
+### Elemental material palette (miniature sources)
+
+| Family | Real hand-scale source |
+|---|---|
+| UI button | dense wood prop pressed, felt-damped short knock |
+| Card | coated paper fiber plus felt/wood surface contact |
+| Field confirm | fingertip tap on soil or dry grass, very small |
+| Spawn (shared) | paper unfold layer + family material arrival |
+| Fire | match ignition, dry twig catching, small ember pops |
+| Water | fingertip drips, slosh inside a small cup |
+| Nature | dry leaf rub, seed pod, bent twig |
+| Rock | pebbles knocking, gravel grind, stone set down |
+| Lightning | real static discharge crackle on cloth (not a digital tick) |
+| Wind | short air movement from cloth or a hand fan |
+| Building | wooden peg placement or stone set-down; collapse of parts on death; never movement |
 
 ### Required character
 
 - **Tactile:** recognizable physical contact at the start.
 - **Compact:** one clear gesture, little unused tail.
 - **Material-led:** wood, paper, stone, water, leaf, cloth, glass, or electricity.
-- **Magic-supported:** elemental accent reinforces the material gesture.
+- **Magic-supported:** an elemental component is allowed only when it sounds
+  like the real source and reinforces the gesture.
 - **Readable:** event remains identifiable when several sounds overlap.
 - **Restrained:** no sound should imply a scale larger than the object on screen.
 
@@ -72,6 +117,11 @@ technically polished.
 - realistic gore, bone breaks, wet flesh, screams, or animal pain
 - harsh white-noise wind, piercing electricity, or brittle glass fatigue
 - identical explosion treatment for spawn, attack, hit, and death
+- bells, coins, swords, metallic chimes, glass chimes, or tonal pings unless the
+  visible source explicitly contains that material
+- cartoon pops, boings, toy mechanisms, comedy impacts, or exaggerated squash
+- radio crackle, speaker breakup, codec chatter, digital ticks, or electrical
+  interference that is not part of the depicted event
 
 ## Sound Construction Grammar
 
@@ -79,20 +129,22 @@ Each clip uses at most three layers. More layers require a documented exception.
 
 1. **Transient:** identifies the interaction in the first 10–40 ms.
 2. **Material body:** communicates object or elemental material.
-3. **Magic tail:** short accent showing arcane energy; optional.
+3. **Natural energy tail:** short flame, air, liquid, grit, leaf, or electrical
+   decay; optional and non-tonal.
 
 Default balance:
 
 - transient: 40–55% of perceived identity
 - material body: 35–50%
-- magic tail: 10–25%
+- natural energy tail: 0–20%
 
 The elemental layer must not hide the event. A fire hit must first read as a
 hit, then as fire. A water button must still read as a button if such a themed
 button is ever introduced.
 
-Only one tonal accent is allowed per clip. Avoid chords and melodies. Tails end
-cleanly rather than fading through unrelated actions.
+Tonal accents are disabled by default. Avoid bells, chimes, chords, melody, and
+metallic resonances. Tails end cleanly rather than fading through unrelated
+actions.
 
 ## Interaction Style
 
@@ -131,7 +183,7 @@ Identity: fingertip or token confirming a location on an earthy magical board.
 
 - transient: light dry tap
 - body: tiny soil, felt, or wood-board contact
-- magic tail: optional muted arcane pulse under 80 ms
+- energy tail: optional muted soil or air response under 80 ms
 - duration: 80–180 ms
 - pitch: above button body so field and button remain distinguishable
 - avoid: wooden button clack, camera shutter, rock drop, footstep, UI beep
@@ -144,11 +196,12 @@ This sound communicates successful input submission, not damage or spell cast.
 
 Core materials: ember, resin crackle, charcoal, small flame pressure.
 
-- transient: crisp ember snap
-- body: warm dry crackle
-- tail: very short flame breath
+- transient: soft ignition or close ember catch, never a metallic snap
+- body: a compact natural flame flare, the audible “화르륵” gesture
+- tail: very short air-fed flame decay
 - frequency character: warm midrange with controlled bright detail
-- avoid: gasoline blast, fireplace loop, huge explosion, dragon roar
+- avoid: gasoline blast, pressure explosion, fireplace loop, huge explosion,
+  dragon roar, sword-like “챙”, bell, coin, metal, or glass
 
 ### Water
 
@@ -348,6 +401,31 @@ Frequency constraints:
 - control repeated harshness between 2.5–6 kHz
 - avoid stacking bright tails across water, lightning, and arcane sounds
 
+## Background Audio
+
+Background audio supports space and pacing; it never competes with interaction
+or combat feedback.
+
+### In-game forest ambience
+
+- approved anchor: intermittent natural forest air with candidate v4 as the
+  current golden source
+- mostly quiet woodland air with audible wind arriving and receding irregularly
+- no obvious musical pitch, rhythm, percussion, radio crackle, speaker breakup,
+  hard edit, or repeating gust at the loop boundary
+- wind is more present than the earlier v3 candidate, but silence and low-air
+  intervals remain part of the loop
+- game SFX must remain readable above the ambience at normal game volume
+
+### Lobby music
+
+- very quiet, calm, repetitive round-like motif
+- light and neutral rather than dark fantasy, heroic, ominous, or sentimental
+- sparse arrangement, no trailer percussion, large choir, heavy bass, or bright
+  lead instrument
+- the loop may be noticed when listening for it, but should recede during UI use
+- remains provisional until a dedicated four-candidate listening pass is approved
+
 ## Variation Policy
 
 - v1 uses exactly one approved anchor per profile event plus cooldown and voice limits.
@@ -372,7 +450,7 @@ Examples:
 - `ui/button/ui_button_wood_click_01.wav`
 - `card/select/card_select_paper_01.wav`
 - `fire_creature/hit/fire_creature_hit_01.wav`
-- `rock_building/death/rock_building_death_01.wav`
+- `stone_building/death/stone_building_death_01.wav`
 
 Candidate assets stay outside Unity `Assets` in a gitignored workspace folder:
 
@@ -384,7 +462,7 @@ Only the approved, normalized WAV is copied into runtime `Assets/Resources`.
 
 Candidate naming:
 
-`<family>_<event>_candidate_<a|b|c>_<yyyymmdd>.<ext>`
+`<family>_<event>_candidate_<a|b|c|d>_<yyyymmdd>.<ext>`
 
 ## ElevenLabs Prompt Standard
 
@@ -399,11 +477,18 @@ Prompt order:
 
 Template:
 
-> A short [event] sound for a small [archetype] in a handcrafted arcane
-> tabletop game. Start with [transient], followed by [material body], ending in
-> [optional magic tail]. [duration] seconds, dry close-up mono game SFX, compact
-> and warm. No music, no voice, no long reverb, no cinematic boom, no sci-fi
-> laser, no harsh white noise, no clipping.
+> [Material/source] performing [action/event] in [environment/space], heard from
+> [distance/perspective]. [Standard audio tags]. Sequence: [temporal onset],
+> then [material body], then [natural decay]. [duration] seconds, realistic,
+> dry, close-up mono game SFX. No music, no voice, no long reverb, no cinematic
+> boom, no cartoon character, no metal or tonal chime unless physically shown,
+> no radio crackle, no speaker breakup, no clipping.
+
+For ElevenLabs Sound Effects, use explicit duration, `looping=false` for
+one-shots, and target `prompt_influence≈0.7` whenever the connector exposes it.
+Ambience uses an explicit duration and `looping=true`. The currently connected
+MCP does not expose prompt influence, so that limitation must be recorded for
+every generated batch rather than silently treated as satisfied.
 
 Every prompt must name the actual material. Prompts such as “epic fire sound”
 or “cool magic effect” are rejected before generation.
@@ -433,9 +518,9 @@ become negative constraints for the next generation batch.
   - [ ] Record current duplicate owners and bad mappings from PR #378.
 - [ ] **Step 1: Style anchors**
   - [ ] Evaluate existing assets for the current event first.
-  - [ ] If none passes, produce A/B/C candidates for that one event only.
+  - [ ] If none passes, produce A/B/C/D candidates for that one event only.
   - [ ] Evaluate and approve or reject that event before moving to the next event.
-  - [ ] Complete button, then `FireCreature`, then `RockBuilding` events
+  - [ ] Complete button, then `FireCreature`, then `StoneBuilding` events
         sequentially; never batch the full vertical slice candidate set.
   - [ ] Evaluate candidates with the mandatory gates in Unity.
   - [ ] Record user approval and hashes in the asset manifest.
@@ -470,9 +555,10 @@ become negative constraints for the next generation batch.
 
 1. **Interaction:** for 30 seconds, card hover transitions at 4 per second,
    button clicks at 2 per second, and valid field confirmations every 2 seconds.
-2. **Fire creature:** `FireSlime` spawn, two movement voices, legacy attack,
-   hit, and death exercised within a 1-second window.
-3. **Rock building:** `GroundTower` spawn, attack/projectile, hit, and death
+2. **Fire creature:** `FireSlime` spawn, two movement voices, approved profile
+   attack, hit, and death exercised within a 1-second window; verify the
+   inherited legacy attack owner stays disabled and silent.
+3. **Stone building:** `GroundTower` spawn, attack/projectile, hit, and death
    exercised within a 1-second window; movement stays silent.
 4. **Voice pressure:** fill each category cap and the overall cap, then submit
    lower, equal, and higher-priority requests to verify deterministic admission.

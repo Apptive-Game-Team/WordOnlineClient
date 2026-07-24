@@ -37,14 +37,16 @@
 
 ## Vertical Slice Contract
 
-The first implementation slice contains exactly one moving creature and one
-static building. Candidate clips are not activated outside these rows until the
-slice passes isolated listening, combat overlap, reconnect, and WebGL smoke tests.
+The first implementation slice uses one moving creature and one static building
+as representative fixtures. Approved slots activate for every runtime row that
+shares the corresponding profile; effective ownership is inventoried for the
+entire profile before activation. Other profiles remain disabled until the slice
+passes isolated listening, combat overlap, reconnect, and WebGL smoke tests.
 
 | Runtime type | Concept | Spawn | Move | Attack | Hit | Heal | Death | Expected owner notes |
 |---|---|---|---|---|---|---|---|---|
-| `FireSlime` | soft fire slime creature | FireSlime profile | FireSlime profile, cooldown | existing attack owner if present; otherwise profile | FireSlime profile | silent unless game state supports it | FireSlime profile | rounded body first, restrained ember accent; never universal wind/explosion |
-| `GroundTower` | static rock/earth structure | GroundTower profile | intentional silence | existing tower/projectile owner | GroundTower profile | silent unless game state supports it | GroundTower profile | placement/collapse language; no creature motion or generic projectile duplication |
+| `FireSlime` | small fire creature | `FireCreature` | `FireCreature`, cooldown | approved `FireCreature` attack; disable verified inherited `HitSoundPlayer` owner before subscription | `FireCreature` | silent unless game state supports it | `FireCreature` | natural flame/body Foley; never universal wind, chime, or explosion |
+| `GroundTower` | static rock/earth structure | `StoneBuilding` | intentional silence | verified inherited `HitSoundPlayer` owner until Stone attack approval | `StoneBuilding` | silent unless game state supports it | `StoneBuilding` | placement/collapse language; no creature motion or generic projectile duplication |
 
 Exact runtime names must be verified against the top-level Resources prefab
 snapshot before catalog assets are created. If either proposed name does not
@@ -60,6 +62,10 @@ The Editor validator must fail on:
 - duplicate runtime type
 - enabled event without a clip
 - movement enabled for a static profile
-- lifecycle attack enabled while a legacy/projectile attack owner exists
+- two effective attack subscribers on the same runtime prefab; when an approved
+  profile attack slot is active, the lifecycle controller disables the legacy
+  owner before `Start` and becomes the sole subscriber; when the slot is
+  disabled, the lifecycle controller suppresses itself and preserves legacy
+  ownership
 - lifecycle movement enabled for a projectile/transient profile
 - two components claiming the same event
