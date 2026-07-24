@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ebf9e98d8a44dfb2aa538c9a9b41a7, type: 3}
+  m_Name: StoneBuilding
+  m_EditorClassIdentifier: 
+  profileId: StoneBuilding
+  element: 5
+  archetype: 3
+  spawn:
+    enabled: 1
+    clip: {fileID: 8300000, guid: 9b2e74e73683486aa639ffc1e1cf8b87, type: 3}
+    volume: 1
+    pitch: 1
+  movement:
+    enabled: 0
+    clip: {fileID: 0}
+    volume: 1
+    pitch: 1
+  attack:
+    enabled: 0
+    clip: {fileID: 0}
+    volume: 1
+    pitch: 1
+  hit:
+    enabled: 1
+    clip: {fileID: 8300000, guid: a5380fffb8b84492a9a7f8e359a1e546, type: 3}
+    volume: 1
+    pitch: 1
+  heal:
+    enabled: 0
+    clip: {fileID: 0}
+    volume: 1
+    pitch: 1
+  death:
+    enabled: 1
+    clip: {fileID: 8300000, guid: 07b272fdd946437ea2fef64c744b9cd3, type: 3}
+    volume: 1
+    pitch: 1
+  movementCooldown: 0.45
