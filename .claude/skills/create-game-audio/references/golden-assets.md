@@ -143,3 +143,21 @@ and the standard exclusions (no coin, glass, metal, bell, sparkle, reverb).
 
 Prompt: fingertip tapping once on short dry grass over firm soil on a
 miniature game board; exclusions include footstep, digging, wood knock.
+
+## Fire / Stone Lifecycle Sets (vertical slice)
+
+| Event | Production asset | Duration / peak | SHA-256 (short) |
+|---|---|---|---|
+| Fire spawn | `Sound/Game/Fire/fire_spawn_v1.wav` | 0.80 s / -4 dBFS | `27a628e7…a9b2` |
+| Fire hit | `Sound/Game/Fire/fire_hit_v1.wav` | 0.35 s / -4 dBFS | `b7c20072…865b` |
+| Fire death | `Sound/Game/Fire/fire_death_v1.wav` | 1.10 s / -4 dBFS | `2e77064b…2a41` |
+| Stone spawn | `Sound/Game/Stone/stone_spawn_v1.wav` | 0.75 s / -4 dBFS | `a162cb94…5c1d` |
+| Stone hit | `Sound/Game/Stone/stone_hit_v1.wav` | 0.35 s / -4 dBFS | `4c19eba5…08ac` |
+| Stone death | `Sound/Game/Stone/stone_death_v1.wav` | 1.20 s / -4 dBFS | `069d08fd…56ec` |
+
+Families `creature-fire` / `building-stone`. Selection measurement-based
+(user-delegated), 2026-07-23. Full hashes and batch stats in the asset
+manifest. Prompt grammar: spawn = paper pop-up unfold + material arrival;
+death = prop collapse into component material (ember extinguish / pebble
+spill). Assign to FireCreature / StoneBuilding profile slots in Unity;
+fire attack anchor is `Sound/Game/Fire/fire_attack_v1.wav`.

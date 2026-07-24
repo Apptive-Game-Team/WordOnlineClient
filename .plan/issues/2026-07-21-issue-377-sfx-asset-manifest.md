@@ -237,6 +237,26 @@ the catalog builder runs. FFmpeg was unavailable; the recorded chain uses
 libsndfile 1.2.2 via the soundfile package instead, without gain/EQ beyond
 the documented peak normalization and tail fade.
 
+## 2026-07-23 Vertical Slice Lifecycle Batches (Fire / Stone, delegated selection)
+
+Same pipeline (direct API, influence 0.75, postprocess `--peak -4`).
+Miniature diorama prompts: spawn = paper pop-up unfold + material arrival;
+death = prop collapse into material. Staged for profile assignment in the
+Unity session — no runtime references yet.
+
+| Event | Batch | Selected | Production asset | SHA-256 |
+|---|---|---|---|---|
+| Fire spawn | 4/4 passed | `c` (smooth decay, rerise -42 dB) | `Sound/Game/Fire/fire_spawn_v1.wav` (0.80 s) | `27a628e7049065a237252e9a16636ba1e3f3614bbeea15c8595ea1fc6974a9b2` |
+| Fire hit | 4/4 passed | `b` (fastest clean decay) | `Sound/Game/Fire/fire_hit_v1.wav` (0.35 s) | `b7c20072e825a1d0f4a52e3a789a77041264984fcd956a2590bccebd4d7d865b` |
+| Fire death | 2/4 passed (a, d quiet-rejected) | `c` (gradual extinguish, no late blip) | `Sound/Game/Fire/fire_death_v1.wav` (1.10 s) | `2e77064b5fbe061ca5960fab70fa6ffbdb1552d9a7e78747d83f0681f1542a41` |
+| Stone spawn | 4/4 passed | `d` (natural unfold→set-down→settle shape) | `Sound/Game/Stone/stone_spawn_v1.wav` (0.75 s) | `a162cb94722f28925a9c362df1599f41d71f7ba89bb489ce1cac016b4de65c1d` |
+| Stone hit | 3/4 passed (d quiet-rejected) | `b` (lowest tail residue) | `Sound/Game/Stone/stone_hit_v1.wav` (0.35 s) | `4c19eba5de87400eb7fd38402a91295eb14b02304d4795df2b1d2604519808ac` |
+| Stone death | 4/4 passed | `d` (pebble spill settling by 0.95 s, clean end) | `Sound/Game/Stone/stone_death_v1.wav` (1.20 s) | `069d08fd9c0d5fb24a12edf67709c53c10a3da06182e3912ca7dd8f7587556ec` |
+
+All peaks -4 dBFS (below UI select/button -3). Multi-transient spawn/death
+envelopes re-rise by design; the rerise gate applies to one-shots only.
+Unity-context listening and the user's ear veto pending for all six.
+
 ## 2026-07-23 Runtime Resources Cleanup (second pass)
 
 - `SoundAssets.ClickButton` re-anchored from unapproved `wood_button_click_v3`

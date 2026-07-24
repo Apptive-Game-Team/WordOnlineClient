@@ -113,6 +113,23 @@ request → 4 candidates → `postprocess_candidate.py` → `audio_probe.py`
 auto-reject → user listening → golden hash + manifest record → WAV →
 Unity verification. No candidate is wired before listening approval.
 
+## Richness expansion (2026-07-23, user request "좀 더 풍성하게")
+
+Density comes from per-family material identity, not louder sounds. Additions
+on top of Steps 4–9, all inside the miniature diorama style:
+
+| New event | Direction | Owner | Priority |
+|---|---|---|---|
+| Spawn pop-up layer | every profile spawn = paper unfold + material arrival (already the spawn grammar; make it audible per family) | profile spawn slot | with each profile gate |
+| Match result — win | warm ascending wooden knock triple, dry, no melody instrument other than wood | ResultScene enter | after Step 6 |
+| Match result — lose | single low soft prop tip-over onto felt, short | ResultScene enter | after Step 6 |
+| Card draw | paper slide + deck separation (Step 2 leftover; needs stable card identity) | hand reconciliation | when identity lands |
+| Mana full cue | one very quiet wooden tick (optional; cut if it fights ambience) | mana UI | last, optional |
+| Scene transition | tiny cloth air movement, near-silent (optional) | scene loader | last, optional |
+
+Explicitly NOT added: blocked/invalid-action sounds (stay silent per
+ownership matrix), hover variants per card, per-prefab unique clips.
+
 ## Validation
 
 - **Commands to run:** `Tools > Sound > Create or Update Baseline Object SFX
