@@ -30,6 +30,7 @@ namespace GameScene.Object
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
+            AquaArcherAttackPresenter.Attach(servedObject, createdObjectDto.type);
             AerialLightningDeathPresenter.Attach(servedObject, createdObjectDto.type);
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
@@ -86,6 +87,148 @@ namespace GameScene.Object
             
             WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {createdObjectDto.position}");
             return spawnedObject;
+        }
+    }
+
+    internal sealed class AquaArcherAttackPresenter : MonoBehaviour
+    {
+        private const string SupportedType = "AquaArcher";
+        private const float FrameDuration = 0.08f;
+
+        private static readonly Vector3 AnticipationScale = new Vector3(0.9f, 1.08f, 1f);
+        private static readonly Vector3 ReleaseScale = new Vector3(1.1f, 0.92f, 1f);
+
+        private ServedObject servedObject;
+        private Transform animatedTransform;
+        private Sequence sequence;
+        private Vector3 idleScale;
+        private bool configured;
+        private bool subscribed;
+
+        public static void Attach(ServedObject servedObject, string objectType)
+        {
+            if (servedObject == null || !string.Equals(objectType, SupportedType, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            AquaArcherAttackPresenter presenter = servedObject.GetComponent<AquaArcherAttackPresenter>();
+            if (presenter == null)
+            {
+                presenter = servedObject.gameObject.AddComponent<AquaArcherAttackPresenter>();
+            }
+
+            presenter.Configure(servedObject);
+        }
+
+        private void Configure(ServedObject target)
+        {
+            if (configured)
+            {
+                return;
+            }
+
+            configured = true;
+            servedObject = target;
+            animatedTransform = servedObject.GetActualTransform();
+            idleScale = animatedTransform.localScale;
+            Subscribe();
+        }
+
+        private void OnEnable()
+        {
+            Subscribe();
+        }
+
+        private void OnDisable()
+        {
+            Unsubscribe();
+            StopAndRestore();
+        }
+
+        private void Subscribe()
+        {
+            if (!configured || subscribed || servedObject == null)
+            {
+                return;
+            }
+
+            servedObject.OnAttack += Play;
+            subscribed = true;
+        }
+
+        private void Unsubscribe()
+        {
+            if (!subscribed || servedObject == null)
+            {
+                return;
+            }
+
+            servedObject.OnAttack -= Play;
+            subscribed = false;
+        }
+
+        private void Play()
+        {
+            if (animatedTransform == null)
+            {
+                return;
+            }
+
+            StopAndRestore();
+            idleScale = animatedTransform.localScale;
+            animatedTransform.localScale = Vector3.Scale(idleScale, AnticipationScale);
+
+            Sequence attackSequence = DOTween.Sequence();
+            sequence = attackSequence;
+            attackSequence.SetLink(gameObject);
+            attackSequence
+                .AppendInterval(FrameDuration)
+                .AppendCallback(() =>
+                {
+                    if (animatedTransform != null)
+                    {
+                        animatedTransform.localScale = Vector3.Scale(idleScale, ReleaseScale);
+                    }
+                })
+                .AppendInterval(FrameDuration)
+                .AppendCallback(RestoreIdle)
+                .OnComplete(() =>
+                {
+                    if (sequence == attackSequence)
+                    {
+                        sequence = null;
+                    }
+                })
+                .OnKill(() =>
+                {
+                    if (sequence == attackSequence)
+                    {
+                        sequence = null;
+                    }
+
+                    RestoreIdle();
+                });
+        }
+
+        private void StopAndRestore()
+        {
+            Sequence activeSequence = sequence;
+            sequence = null;
+            if (activeSequence != null && activeSequence.IsActive())
+            {
+                activeSequence.Kill(false);
+            }
+
+            RestoreIdle();
+        }
+
+        private void RestoreIdle()
+        {
+            if (animatedTransform != null)
+            {
+                animatedTransform.localScale = idleScale;
+            }
         }
     }
 
