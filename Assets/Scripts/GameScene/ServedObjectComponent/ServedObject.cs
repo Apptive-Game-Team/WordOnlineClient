@@ -157,6 +157,14 @@ namespace GameScene.ServedObjectComponent
                 return _actualTransform;
             }
 
+            Transform namedActualTransform = transform.Find("actualObject");
+            if (namedActualTransform != null)
+            {
+                _actualTransform = namedActualTransform;
+                return _actualTransform;
+            }
+
+            EnsureSpriteRenderer();
             if (_spriteRenderer != null)
             {
                 _actualTransform = _spriteRenderer.transform;

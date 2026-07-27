@@ -46,7 +46,7 @@ namespace TutorialScene
 
 
             var md = LocalMagicData.GetMagicData(cardInputSender.GetMagicName());
-            Vector3 casterPosition = new Vector3(1, 5, 0);
+            Vector3 casterPosition = new Vector3(1f, 0f, 5f);
             SetCircleWorldRadius(currentRangeObj, casterPosition, md.range);
 
 
@@ -63,22 +63,61 @@ namespace TutorialScene
 
             if (!currentSkillIndicator.activeSelf) currentSkillIndicator.SetActive(true);
 
-            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            currentAimObj.transform.position = mouseWorldPos;
+            if (!TryGetGroundPosition(Input.mousePosition, out Vector3 mouseWorldPos))
+            {
+                return;
+            }
 
-            UpdateSkillIndicator(wantLine, casterPosition, mouseWorldPos, md.range, md.radius);
+            Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, md.range);
+            currentAimObj.transform.position = previewPosition;
+
+            UpdateSkillIndicator(wantLine, casterPosition, previewPosition, md.range, md.radius);
 
 
             if (PointerInputUtility.IsPointerOverUi()) return;
 
             if (Input.GetMouseButtonUp(0))
             {
-                cardInputSender.SendInput(mouseWorldPos);
+                cardInputSender.SendInput(previewPosition);
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
                 currentSkillIndicator.SetActive(false);
                 cardInputSender.SetExpectedMagicUI();
             }
+        }
+
+        private static Vector3 ClampToRange(Vector3 targetPosition, Vector3 origin, float range)
+        {
+            float safeRange = Mathf.Max(range, 0f);
+            Vector3 offset = targetPosition - origin;
+            offset.y = 0f;
+            if (offset.sqrMagnitude <= safeRange * safeRange)
+            {
+                return targetPosition;
+            }
+
+            return origin + offset.normalized * safeRange;
+        }
+
+        private static bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
+        {
+            groundPosition = Vector3.zero;
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return false;
+            }
+
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+            Ray ray = camera.ScreenPointToRay(screenPosition);
+            if (!groundPlane.Raycast(ray, out float distance))
+            {
+                return false;
+            }
+
+            groundPosition = ray.GetPoint(distance);
+            groundPosition.y = 0f;
+            return true;
         }
 
         private static void ConfigureAimIndicator(GameObject indicator)
