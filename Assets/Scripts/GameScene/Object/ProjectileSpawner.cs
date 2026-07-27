@@ -27,7 +27,8 @@ namespace GameScene.Object
         
         private GameObject GetPrefab(string type)
         {
-            GameObject prefab = Resources.Load<GameObject>($"Projectiles/{type}");
+            string resourceType = type == "ElectricAbsorb" ? "ElectricShot" : type;
+            GameObject prefab = Resources.Load<GameObject>($"Projectiles/{resourceType}");
             if (prefab == null)
             {
                 Debug.LogError($"Projectile prefab not found: {type}");
