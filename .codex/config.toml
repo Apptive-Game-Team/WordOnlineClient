@@ -1,2 +1,21 @@
+# Machine-specific values belong in the environment, not in this file.
+#
+#   UNITY_MCP_URL        where the Unity MCP bridge listens; override when the
+#                        editor runs on another host (for example a WSL guest
+#                        reaching a Windows host). Defaults to localhost below.
+#   ELEVENLABS_API_KEY   read from the environment, never stored here.
+
 [mcp_servers.unityMCP]
 url = "http://127.0.0.1:8080/mcp"
+
+[mcp_servers.elevenlabs]
+command = "uvx"
+args = ["elevenlabs-mcp"]
+env_vars = ["ELEVENLABS_API_KEY"]
+startup_timeout_sec = 60
+tool_timeout_sec = 300
+
+[mcp_servers.elevenlabs.env]
+UV_CACHE_DIR = "/tmp/elevenlabs-uv-cache"
+UV_TOOL_DIR = "/tmp/elevenlabs-uv-tools"
+ELEVENLABS_MCP_OUTPUT_MODE = "files"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Game Audio"
+  short_description: "Generate, review, and integrate cohesive Unity game audio"
+  default_prompt: "Use $create-game-audio to design and produce reviewable game audio candidates for this Unity project."

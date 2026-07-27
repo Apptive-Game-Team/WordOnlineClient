@@ -7,7 +7,9 @@ using GameScene.Dto;
 using GameScene.Exception;
 using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent.Sound;
 using Global;
+using Global.Sound;
 using Unity.VisualScripting;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
@@ -35,7 +37,8 @@ namespace GameScene.Object
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
-            
+            LegacySfxMuter.Mute(spawnedObject);
+
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
 #if UNITY_EDITOR
@@ -46,6 +49,10 @@ namespace GameScene.Object
             try
             {
                 ObjectContainer.Instance.RegisterObject(servedObject);
+                ServedObjectSfxController.Attach(
+                    servedObject,
+                    createdObjectDto.type,
+                    playSpawnPresentation);
                 if (playSpawnPresentation && popupBookPresenter != null)
                 {
                     popupBookPresenter.PlaySpawnPresentation(
@@ -63,7 +70,7 @@ namespace GameScene.Object
             AudioSource[] audioSources = obj.GetComponentsInChildren<AudioSource>();
             foreach (var source in audioSources)
             {
-                source.volume = source.volume * SoundData.gameVolume / 100f;
+                SoundVolumeSetter.Attach(source, SoundVolumeSetter.SoundType.Game, source.volume);
             }
             WDebug.Log($"Spawned object: {obj}, audio sources set: {audioSources.Length}");
         }
