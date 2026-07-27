@@ -1,11 +1,11 @@
 using Data;
-using Data.Sound;
 using GameScene.Dto;
 using GameScene.Exception;
 using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using GameScene.ServedObjectComponent.Sound;
 using Global;
+using Global.Sound;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -63,7 +63,7 @@ namespace GameScene.Object
             AudioSource[] audioSources = obj.GetComponentsInChildren<AudioSource>();
             foreach (var source in audioSources)
             {
-                source.volume = source.volume * SoundData.gameVolume / 100f;
+                SoundVolumeSetter.Attach(source, SoundVolumeSetter.SoundType.Game, source.volume);
             }
             WDebug.Log($"Spawned object: {obj}, audio sources set: {audioSources.Length}");
         }

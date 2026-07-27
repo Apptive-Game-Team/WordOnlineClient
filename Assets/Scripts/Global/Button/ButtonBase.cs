@@ -1,5 +1,5 @@
 using System;
-using Data.Sound;
+using Global.Sound;
 using Sound;
 using UnityEngine;
 
@@ -9,33 +9,13 @@ namespace Global.Button
     {
         public event Action OnClick;
 
-        private AudioSource _audioSource;
-        private AudioSource AudioSource
-        {
-            get {
-                _audioSource = SceneContext.Instance.gameObject.GetComponent<AudioSource>();
-                if (_audioSource == null)
-                {
-                    _audioSource = SceneContext.Instance.gameObject.AddComponent<AudioSource>();
-                }
-                return _audioSource;
-            }
-        }
-
         protected abstract void OnClickButton();
 
         public virtual void ButtonEvent()
         {
-            PlayUISound();
+            UiSfxPlayer.Play(SoundAssets.ClickButton);
             OnClick?.Invoke();
             OnClickButton();
-        }
-
-        private void PlayUISound()
-        {
-            AudioSource.clip = SoundAssets.ClickButton;
-            AudioSource.volume = SoundData.uiVolume / 100f;
-            AudioSource.Play();
         }
     }
 }

@@ -1,5 +1,5 @@
-using Data.Sound;
 using Global;
+using Global.Sound;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent.OnAttack
@@ -18,9 +18,12 @@ namespace GameScene.ServedObjectComponent.OnAttack
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
             
-            audioSource.volume = audioSource.volume * SoundData.gameVolume / 100f;
+            // Attach instead of scaling the volume in place: the old code baked the
+            // ratio into audioSource.volume, so it compounded and never followed
+            // the slider afterwards.
+            SoundVolumeSetter.Attach(audioSource, SoundVolumeSetter.SoundType.Game, audioSource.volume);
 
-            
+
             if (servedObject == null)
             {
                 servedObject = transform.parent.GetComponentInChildren<ServedObject>();

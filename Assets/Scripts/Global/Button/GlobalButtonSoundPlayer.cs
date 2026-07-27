@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Data.Sound;
+using Global.Sound;
 using Sound;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,8 +9,6 @@ namespace Global.Button
 {
     public class GlobalButtonSoundPlayer : MonoBehaviour
     {
-        private AudioSource audioSource;
-
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Create()
         {
@@ -19,12 +17,6 @@ namespace Global.Button
             GameObject soundPlayer = new GameObject(nameof(GlobalButtonSoundPlayer));
             DontDestroyOnLoad(soundPlayer);
             soundPlayer.AddComponent<GlobalButtonSoundPlayer>();
-        }
-
-        private void Awake()
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false;
         }
 
         private void Update()
@@ -44,8 +36,7 @@ namespace Global.Button
                 if (button == null || !button.IsInteractable()) continue;
                 if (button.GetComponentInParent<ButtonBase>() != null) return;
 
-                audioSource.volume = SoundData.uiVolume / 100f;
-                audioSource.PlayOneShot(SoundAssets.ClickButton);
+                UiSfxPlayer.Play(SoundAssets.ClickButton);
                 return;
             }
         }

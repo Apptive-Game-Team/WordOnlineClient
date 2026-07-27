@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Data.Sound;
-using Global;
+using LobbyScene.SettingPage;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Sound
 {
@@ -28,6 +29,13 @@ namespace Sound
         private static GameSfxPlayer instance;
 
         private readonly List<Voice> voices = new();
+        private readonly Stack<AudioSource> idleSources = new();
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetRuntimeState()
+        {
+            instance = null;
+        }
 
         public static void Play(
             AudioClip clip,
@@ -51,13 +59,31 @@ namespace Sound
                 return instance;
             }
 
-            instance = SceneContext.Instance.gameObject.GetComponent<GameSfxPlayer>();
-            if (instance == null)
-            {
-                instance = SceneContext.Instance.gameObject.AddComponent<GameSfxPlayer>();
-            }
-
+            // Own host object: sharing one with other systems let unrelated code
+            // pick up a voice AudioSource through GetComponent<AudioSource>().
+            GameObject host = new GameObject(nameof(GameSfxPlayer));
+            DontDestroyOnLoad(host);
+            instance = host.AddComponent<GameSfxPlayer>();
             return instance;
+        }
+
+        private void Awake()
+        {
+            SoundDataSetter.OnSoundDataChanged += ApplyVolumeToActiveVoices;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SoundDataSetter.OnSoundDataChanged -= ApplyVolumeToActiveVoices;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            // Voices outlive their scene otherwise: a death sound could keep
+            // playing into ResultScene.
+            StopAllVoices();
         }
 
         private void PlayInternal(
@@ -93,22 +119,72 @@ namespace Sound
             RemoveVoice(categoryVictim);
             RemoveVoice(overallVictim);
 
-            AudioSource source = gameObject.AddComponent<AudioSource>();
-            source.playOnAwake = false;
-            source.spatialBlend = 0f;
+            AudioSource source = RentSource();
             source.pitch = pitch;
-            source.volume = Mathf.Clamp01(volume) * SoundData.gameVolume / 100f;
+            float baseVolume = Mathf.Clamp01(volume);
+            source.volume = baseVolume * SoundData.GameScale;
             source.PlayOneShot(clip);
             voices.Add(new Voice(
                 source,
                 category,
                 priority,
+                baseVolume,
                 Time.unscaledTime + clip.length / Mathf.Max(Mathf.Abs(pitch), 0.01f)));
         }
 
         private void Update()
         {
             RemoveCompletedVoices();
+        }
+
+        private AudioSource RentSource()
+        {
+            while (idleSources.Count > 0)
+            {
+                AudioSource pooled = idleSources.Pop();
+                if (pooled != null)
+                {
+                    return pooled;
+                }
+            }
+
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.spatialBlend = 0f;
+            return source;
+        }
+
+        private void ReturnSource(AudioSource source)
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            source.Stop();
+            source.clip = null;
+            idleSources.Push(source);
+        }
+
+        private void ApplyVolumeToActiveVoices()
+        {
+            float scale = SoundData.GameScale;
+            foreach (Voice voice in voices)
+            {
+                if (voice.Source != null)
+                {
+                    voice.Source.volume = voice.BaseVolume * scale;
+                }
+            }
+        }
+
+        private void StopAllVoices()
+        {
+            for (int index = voices.Count - 1; index >= 0; index--)
+            {
+                ReturnSource(voices[index].Source);
+            }
+            voices.Clear();
         }
 
         private void RemoveCompletedVoices()
@@ -121,10 +197,7 @@ namespace Sound
                     continue;
                 }
 
-                if (voice.Source != null)
-                {
-                    Destroy(voice.Source);
-                }
+                ReturnSource(voice.Source);
                 voices.RemoveAt(index);
             }
         }
@@ -170,11 +243,7 @@ namespace Sound
             }
 
             voices.Remove(voice);
-            if (voice.Source != null)
-            {
-                voice.Source.Stop();
-                Destroy(voice.Source);
-            }
+            ReturnSource(voice.Source);
         }
 
         private static int GetCategoryCap(GameSfxCategory category)
@@ -194,17 +263,20 @@ namespace Sound
             public readonly AudioSource Source;
             public readonly GameSfxCategory Category;
             public readonly GameSfxPriority Priority;
+            public readonly float BaseVolume;
             public readonly float EndTime;
 
             public Voice(
                 AudioSource source,
                 GameSfxCategory category,
                 GameSfxPriority priority,
+                float baseVolume,
                 float endTime)
             {
                 Source = source;
                 Category = category;
                 Priority = priority;
+                BaseVolume = baseVolume;
                 EndTime = endTime;
             }
         }

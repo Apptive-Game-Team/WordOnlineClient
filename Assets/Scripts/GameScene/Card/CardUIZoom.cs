@@ -1,5 +1,5 @@
 using UnityEngine;
-using Data.Sound;
+using Global.Sound;
 using Sound;
 
 namespace GameScene.Card
@@ -22,7 +22,7 @@ namespace GameScene.Card
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
             audioSource.clip = SoundAssets.CardHover;
-            audioSource.volume = SoundData.gameVolume / 100f;
+            SoundVolumeSetter.Attach(audioSource, SoundVolumeSetter.SoundType.UI);
         }
 
         public void Show(CardUI cardUI)

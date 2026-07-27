@@ -1,11 +1,11 @@
 using Data;
 using Data.GameConfig;
 using Data.Magic;
-using Data.Sound;
 using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
+using Global.Sound;
 using Sound;
 using UnityEngine;
 
@@ -39,7 +39,7 @@ namespace GameScene
             {
                 interactionAudioSource = gameObject.AddComponent<AudioSource>();
             }
-            interactionAudioSource.volume = SoundData.uiVolume / 100f;
+            SoundVolumeSetter.Attach(interactionAudioSource, SoundVolumeSetter.SoundType.UI);
             currentAimObj = CreateAimIndicator();
             currentRangeObj = CreateRangeIndicator();
             currentAimObj.SetActive(false);
