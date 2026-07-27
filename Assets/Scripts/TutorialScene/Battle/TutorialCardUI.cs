@@ -2,7 +2,7 @@ using System;
 using Data;
 using Data.Localization;
 using Data.Magic;
-using Data.Sound;
+using Global.Sound;
 using Sound;
 using TMPro;
 using UnityEngine;
@@ -27,7 +27,7 @@ namespace TutorialScene
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
             cardSound.clip = SoundAssets.CardSelect;
-            cardSound.volume = SoundData.gameVolume / 100f;
+            SoundVolumeSetter.Attach(cardSound, SoundVolumeSetter.SoundType.UI);
         }
 
         private bool isActive = false;
