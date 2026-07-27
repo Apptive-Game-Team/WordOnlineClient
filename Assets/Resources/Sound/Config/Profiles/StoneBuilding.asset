@@ -16,8 +16,8 @@ MonoBehaviour:
   element: 5
   archetype: 3
   spawn:
-    enabled: 1
-    clip: {fileID: 8300000, guid: 9b2e74e73683486aa639ffc1e1cf8b87, type: 3}
+    enabled: 0
+    clip: {fileID: 0}
     volume: 1
     pitch: 1
   movement:
@@ -31,8 +31,8 @@ MonoBehaviour:
     volume: 1
     pitch: 1
   hit:
-    enabled: 1
-    clip: {fileID: 8300000, guid: a5380fffb8b84492a9a7f8e359a1e546, type: 3}
+    enabled: 0
+    clip: {fileID: 0}
     volume: 1
     pitch: 1
   heal:
@@ -41,8 +41,8 @@ MonoBehaviour:
     volume: 1
     pitch: 1
   death:
-    enabled: 1
-    clip: {fileID: 8300000, guid: 07b272fdd946437ea2fef64c744b9cd3, type: 3}
+    enabled: 0
+    clip: {fileID: 0}
     volume: 1
     pitch: 1
   movementCooldown: 0.45
