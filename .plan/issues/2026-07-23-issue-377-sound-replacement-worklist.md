@@ -63,7 +63,9 @@ documented-exception rule instead of per-prefab overrides.
 | `Game/Card/card_touch_v2.wav` | hover AND select AND tutorial | one clip owns three gestures | replace + split hover/select/deselect/draw |
 | `Game/field_confirm.wav` | `FieldSelector` valid target | unapproved generated clip | replace with fingertip soil/grass tap |
 | `Game/Card/draw_card.wav` | unwired | draw event has no owner yet | new draw asset + wiring per parent plan rules |
-| `BGM/lobby-bgm.wav`, `lobby-bgm2.wav` | lobby | loud RPG track, opposite of target mood | keep playing until marimba round approved (last gate) |
+| `BGM/12 Pixel Tracks/Pixel 8.wav` | Lobby, Login, Register, ManageDeck, Result, Admin (`bgmClip`) | pixel-pack track, opposite of target mood | **replaced 2026-07-27** by `Diorama/lobby_marimba_round_v1.wav` |
+| `BGM/12 Pixel Tracks/magic-book-bgm.wav` | MagicBook, Adventures, Adventure (`bgmClip`) | same pack, not in the diorama palette | **replaced 2026-07-27** by `Diorama/magicbook_wood_box_v1.wav` |
+| `BGM/25 Rpg Game Tracks/lobby-bgm.wav`, `lobby-bgm2.wav` | stale BgmPlayer `AudioSource` clips in 6 scenes (never the `bgmClip`) | 22.6 MB each shipped to WebGL for nothing | references repointed 2026-07-27; files now unreferenced, deletion pending user decision |
 | `BGM/in-game-bgm.wav` | GameScene | — (approved forest v4) | keep; still needs Unity/WebGL loop verification |
 
 ## Non-goals
@@ -102,8 +104,24 @@ documented-exception rule instead of per-prefab overrides.
       profiles keep movement off.
 - [ ] **Step 8: 건물/토템/룬 + transient 교체** — per parent plan Gates F/G;
       exact ownership snapshot before touching projectile audio.
-- [ ] **Step 9: 로비 마림바 돌림노래** — 20–30 s loop, 4 candidates, loop
-      seam check, quieter than SFX; replace `lobby-bgm*.wav` mapping.
+- [x] **Step 9: 로비 마림바 돌림노래** — done 2026-07-27, ahead of Steps 4–8
+      because the user asked for the BGM work first. 30 s loop, 4 candidates
+      per family, loop-seam check, user listening approval. Also covered the
+      MagicBook family, which the original plan omitted.
+      - Lobby: candidate 03 approved → `Art/Sounds/BGM/Diorama/lobby_marimba_round_v1.wav`
+      - MagicBook: candidate 04 approved → `Art/Sounds/BGM/Diorama/magicbook_wood_box_v1.wav`
+      - Generation path: elevenlabs MCP was disconnected, so direct REST
+        `POST /v1/music` (`music_v2`). The Music API has no `prompt_influence`
+        and no `looping` field — design targets only, not applied.
+      - `postprocess_candidate.py` was **not** used: its strip-silence and
+        tail-fade steps destroy a loop. A loop-safe chain (mono → peak
+        normalize → PCM_16 WAV, no trim, no fade) was used instead.
+      - In-game level is **not** baked into the files (both sit at peak
+        -6 dBFS). BGM must end up quieter than SFX — set that on the
+        BgmPlayer `AudioSource`, not by re-normalizing an approved asset.
+      - Remaining: Unity import/Play Mode/WebGL loop verification, and the
+        1.04 s rest across the lobby loop point (0.52 s head + 0.52 s tail)
+        if it proves audible in context.
 - [ ] **Step 10: 최종 검증** — Unity compile, catalog validator, Play Mode,
       WebGL smoke, volume 0/50/100, reconnect/overlap; only then PR #378
       Ready.

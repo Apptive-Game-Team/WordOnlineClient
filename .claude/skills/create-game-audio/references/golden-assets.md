@@ -35,6 +35,84 @@ no clicks, no pops, no speaker crackle.
 
 Do not regenerate this asset to reproduce it. Preserve and reuse the approved production file.
 
+## Lobby BGM — Marimba Round
+
+| Field | Value |
+|---|---|
+| Family | `bgm-lobby-marimba` |
+| Event | Lobby/Login/Register/ManageDeck/Result/Admin background music |
+| Production asset | `Assets/Art/Sounds/BGM/Diorama/lobby_marimba_round_v1.wav` |
+| Approved source | `lobby_marimba_round_candidate_03_20260727_proc.wav` (candidate 03 of 4) |
+| Duration | 30.04 seconds |
+| Format | Mono PCM WAV, 44.1 kHz, 16-bit |
+| Looping | On |
+| Peak | -6.0 dBFS (audition normalization; in-game level set on the AudioSource, not baked) |
+| RMS | -22.3 dBFS |
+| SHA-256 | `1f0044d367a894ceaff65e964e039300e5ab029fa6197234da7d69b06a257391` |
+| Approved by | User listening pass ("괜찮음 ㄱㄱ") |
+| Approval date | 2026-07-27 |
+| Model/version | ElevenLabs Eleven Music `music_v2`, `force_instrumental: true`, 30000 ms |
+| MCP constraint | elevenlabs MCP disconnected; generated via direct REST `POST /v1/music`. The Music API exposes no `prompt_influence` and no `looping` field — both recorded as design targets only, neither applied |
+| Processing chain | mp3_44100_128 → mono → peak normalize -6 dBFS → PCM_16 44.1 kHz WAV. **No leading-silence strip, no tail fade** (the one-shot chain in `postprocess_candidate.py` would destroy the loop) |
+| Rejected candidates | 01 (긴장감·어색), 02 (궁금한 느낌·어색), 04 (5 dB 엔딩 페이드) |
+| Isolated result | Approved. Known trait: 0.52 s head + 0.52 s tail silence = 1.04 s rest across the loop point |
+| Unity/WebGL result | Pending — no Unity MCP available |
+| Provider/provenance | ElevenLabs Eleven Music under project account |
+| Distribution license | Project-owner eligibility verification pending |
+
+Prompt:
+
+```text
+Very quiet miniature wooden marimba round for a handcrafted pop-up-book diorama menu.
+A single small marimba played with soft felt mallets, close-miked, dry small room, no
+reverb wash. A three-note motif enters, and a second voice answers the same motif a bar
+later in canon. Long rests between phrases; more silence than notes. Very slow, about
+60 BPM, low dynamic level, no crescendo, no build, no drums, no bass line. Seamless loop:
+the last bar leads back into the first with no ending gesture. No vocals, no synth pad,
+no strings, no chime, no bell, no glass, no sparkle, no cinematic swell, no orchestra.
+```
+
+## MagicBook BGM — Wooden Music Box
+
+| Field | Value |
+|---|---|
+| Family | `bgm-magicbook` |
+| Event | MagicBook/Adventures/Adventure background music |
+| Production asset | `Assets/Art/Sounds/BGM/Diorama/magicbook_wood_box_v1.wav` |
+| Approved source | `magicbook_wood_box_candidate_04_20260727_proc.wav` (candidate 04 of 4) |
+| Duration | 30.04 seconds |
+| Format | Mono PCM WAV, 44.1 kHz, 16-bit |
+| Looping | On |
+| Peak | -6.0 dBFS (audition normalization; in-game level set on the AudioSource, not baked) |
+| RMS | -25.3 dBFS |
+| SHA-256 | `16a1c4b487442ea658a2d415263f2234d4e69c2445b21298ddd4a60fc75dded3` |
+| Approved by | User listening pass ("이걸로 ㄱㄱ") |
+| Approval date | 2026-07-27 |
+| Model/version | ElevenLabs Eleven Music `music_v2`, `force_instrumental: true`, 30000 ms |
+| MCP constraint | Same as the lobby entry above |
+| Processing chain | Same loop-safe chain as the lobby entry above |
+| Rejected candidates | 01 (어색, 6.3 dB 엔딩 페이드), 02 (무음에 가까운 시작), 03 (괜찮았으나 04 선택) |
+| Isolated result | Approved. Known trait: last 2 s sits 3.2 dB below the opening |
+| Unity/WebGL result | Pending — no Unity MCP available |
+| Provider/provenance | ElevenLabs Eleven Music under project account |
+| Distribution license | Project-owner eligibility verification pending |
+
+Prompt:
+
+```text
+Extremely sparse wooden music box texture for a quiet paper library inside a handcrafted
+pop-up-book diorama. A small kalimba and a low wooden marimba trade two-note figures,
+soft felt mallets, close-miked, dry small room. Slightly lower register and even sparser
+than a menu theme; long silences between figures. About 52 BPM, very low dynamic level,
+no build, no drums, no bass line. Seamless loop with no ending gesture. No vocals, no
+synth pad, no strings, no chime, no bell, no glass, no sparkle, no cinematic swell,
+no orchestra.
+```
+
+Both files are bit-identical to the approved audition WAVs (hash unchanged by the copy
+into `Assets/`), so no renewed approval was required. Do not re-normalize or resample
+them; set playback level on the AudioSource.
+
 ## Fire Attack Release
 
 | Field | Value |
