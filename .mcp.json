@@ -2,7 +2,7 @@
   "mcpServers": {
     "unityMCP": {
       "type": "http",
-      "url": "http://172.31.112.1:7776/mcp"
+      "url": "${UNITY_MCP_URL:-http://127.0.0.1:8080/mcp}"
     },
     "elevenlabs": {
       "type": "stdio",
@@ -12,7 +12,6 @@
         "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}",
         "UV_CACHE_DIR": "/tmp/elevenlabs-uv-cache",
         "UV_TOOL_DIR": "/tmp/elevenlabs-uv-tools",
-        "ELEVENLABS_MCP_BASE_PATH": "/home/yunseong/dev/arcane-casters/dev/client/.sfx-work",
         "ELEVENLABS_MCP_OUTPUT_MODE": "files"
       }
     }
