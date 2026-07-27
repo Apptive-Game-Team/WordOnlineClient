@@ -10,6 +10,7 @@ using GameScene.ServedObjectComponent;
 using Global;
 using Unity.VisualScripting;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 namespace GameScene.Object
 {
