@@ -26,7 +26,7 @@
 
 `Assets/Resources/Game/sprites` 61장을 콘택트 시트로 비교한 결과:
 
-- **페인터리 이탈군** — `FireChildSpirit`, `MagmaSpirit`, `MagmaSpirit2`,
+- **페인터리 이탈군** — `FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`,
   `MagmaExplosion`, `Crater`. 잔디테일과 불티 산란이 과다해 다른 생성 계보로 보인다.
 - **실루엣 부재** — `ChainLightning`, `LightningDrop`. 선만 얇아 축소 시 사라진다.
 - **채도 이탈** — `RockRolling`.
@@ -104,7 +104,7 @@
 - [ ] **Step 7: 불 세트 재작업**
   - 컨셉 위반: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`,
     `FireTadpole`, `FireShot`, `RallyingTorch` → 악마 형태언어로 재디자인
-  - 기법 위반: `FireChildSpirit`, `MagmaSpirit`, `MagmaSpirit2`,
+  - 기법 위반: `FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`,
     `MagmaExplosion`, `Crater` → 플랫 카툰으로 재렌더, 컨셉 유지
 - [ ] **Step 8: 잔여 이탈군 정리**
   - `ChainLightning`, `LightningDrop` 실루엣 질량 확보
