@@ -13,6 +13,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `RockGolem2.png` | 이끼바위 골렘 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `TreeGolem.png` | 고목 수호자 · 기본 자세 | `TreeGolem.prefab` 기본 SpriteRenderer |
 | `TreeGolem2.png` | 고목 수호자 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
+| `AquaArcher.png` | 물결 궁수 · 활시위를 당긴 기본 자세 | `AquaArcherAttackPresenter` 기본 Sprite |
+| `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 
 실제 파일명과 `.meta` GUID는 런타임 참조 때문에 유지한다. 문서와 홈페이지에서는
 숫자 접미사 대신 의미 이름을 표시한다.
@@ -22,6 +24,10 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 `OnAttackSpriteSwapper`는 공격 이벤트에서 공격 프레임으로 바꾸고 기본값 기준
 0.2초 뒤 원래 프레임으로 복귀한다. Transform 보정 없이 Sprite만 바꾸므로 두
 이미지가 아래 조건을 만족해야 한다.
+
+`AquaArcherAttackPresenter`는 평상시에 당긴 프레임을 유지하다 공격 이벤트에서
+놓은 프레임으로 즉시 바꾸고 0.08초 뒤 복귀한다. 위치 튐을 막기 위해 별도
+Transform 스케일 변형은 적용하지 않는다.
 
 - 동일 PPU
 - 동일 `Bottom Center` 피벗

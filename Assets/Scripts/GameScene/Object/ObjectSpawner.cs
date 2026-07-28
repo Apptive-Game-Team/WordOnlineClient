@@ -100,15 +100,16 @@ namespace GameScene.Object
     internal sealed class AquaArcherAttackPresenter : MonoBehaviour
     {
         private const string SupportedType = "AquaArcher";
+        private const string IdleSpriteResourcePath = "Game/sprites/AquaArcher";
+        private const string AttackSpriteResourcePath = "Game/sprites/AquaArcherAttack";
         private const float FrameDuration = 0.08f;
-
-        private static readonly Vector3 AnticipationScale = new Vector3(0.9f, 1.08f, 1f);
-        private static readonly Vector3 ReleaseScale = new Vector3(1.1f, 0.92f, 1f);
 
         private ServedObject servedObject;
         private Transform animatedTransform;
+        private SpriteRenderer spriteRenderer;
+        private Sprite idleSprite;
+        private Sprite attackSprite;
         private Sequence sequence;
-        private Vector3 idleScale;
         private bool configured;
         private bool subscribed;
 
@@ -138,8 +139,29 @@ namespace GameScene.Object
             configured = true;
             servedObject = target;
             animatedTransform = servedObject.GetActualTransform();
-            idleScale = animatedTransform.localScale;
+            idleSprite = Resources.Load<Sprite>(IdleSpriteResourcePath);
+            attackSprite = Resources.Load<Sprite>(AttackSpriteResourcePath);
+            spriteRenderer = FindSpriteRenderer(animatedTransform, idleSprite);
             Subscribe();
+        }
+
+        private static SpriteRenderer FindSpriteRenderer(Transform root, Sprite expectedSprite)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                if (renderer.sprite == expectedSprite)
+                {
+                    return renderer;
+                }
+            }
+
+            return root.GetComponent<SpriteRenderer>();
         }
 
         private void OnEnable()
@@ -177,27 +199,18 @@ namespace GameScene.Object
 
         private void Play()
         {
-            if (animatedTransform == null)
+            if (spriteRenderer == null || attackSprite == null)
             {
                 return;
             }
 
             StopAndRestore();
-            idleScale = animatedTransform.localScale;
-            animatedTransform.localScale = Vector3.Scale(idleScale, AnticipationScale);
+            spriteRenderer.sprite = attackSprite;
 
             Sequence attackSequence = DOTween.Sequence();
             sequence = attackSequence;
             attackSequence.SetLink(gameObject);
             attackSequence
-                .AppendInterval(FrameDuration)
-                .AppendCallback(() =>
-                {
-                    if (animatedTransform != null)
-                    {
-                        animatedTransform.localScale = Vector3.Scale(idleScale, ReleaseScale);
-                    }
-                })
                 .AppendInterval(FrameDuration)
                 .AppendCallback(RestoreIdle)
                 .OnComplete(() =>
@@ -232,9 +245,9 @@ namespace GameScene.Object
 
         private void RestoreIdle()
         {
-            if (animatedTransform != null)
+            if (spriteRenderer != null && idleSprite != null)
             {
-                animatedTransform.localScale = idleScale;
+                spriteRenderer.sprite = idleSprite;
             }
         }
     }
