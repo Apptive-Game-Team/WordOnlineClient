@@ -18,6 +18,7 @@
 - 우향, 지면 기준 45도 상단 시점, 진영 형태 언어를 지킨다.
 - small 128, middle 192, big 256 최대 크기와 비율·알파·트림을 검증한다.
 - 상태 프레임은 PPU, Bottom Center 피벗, 몸 크기와 발 위치를 맞춘다.
+- 숫자 접미사 프레임과 별도 오라를 `.art/ANIMATION-ASSETS.md` 의미 이름으로 관리한다.
 - 승인된 컨셉과 게임 에셋만 저장하고 탈락안·중간 크로마 이미지는 제거한다.
 - `theevilent` 상세 페이지에 컨셉·인게임 이미지와 실제 동작을 함께 표시한다.
 
@@ -53,7 +54,9 @@
 - [ ] Release order and rollback check
 - [x] `EmberSpiritSwarm` — 반복 소환되는 단일 지상 근접 악마로 교체,
   이동 경로 불 장판 역할을 홈페이지에 기록
-- [ ] 다음 지옥불 대상: `FireTadpole`, `MagmaSpirit`, `MagmaSpirit2`
+- [x] `FireTadpole` / `LightningTadpole` — 동일 종 몸 구조와 128x60 기준으로 교체
+- [ ] `MagmaSpirit` 기본 자세·공격 자세를 같은 PPU와 기준점으로 재작업
+- [ ] 불·바람 오라를 본체와 분리된 공용 효과로 재생성
 - [ ] 인간/골렘 재질 분리와 나머지 스타일 이탈군
 
 ## Validation

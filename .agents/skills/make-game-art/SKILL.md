@@ -18,6 +18,7 @@ Read these before generating or editing art:
    and current master-style decision.
 3. `.art/ANCHORS.md` — frozen production anchors and exclusions.
 4. `.art/CONCEPT-BRIEF.md` — active explorations and comparison Site.
+5. `.art/ANIMATION-ASSETS.md` — semantic frame names, pivot invariants, and aura behavior.
 
 Precedence:
 
@@ -102,6 +103,12 @@ unless it is explicitly the selected master-style key.
 - Silhouette must survive at `64px`.
 - Keep the server-derived filename unchanged when `resourceName` depends on it.
 - Preserve or create Unity `.meta` through normal import.
+- Before treating `<Name>2.png` as another creature, inspect its prefab. It may
+  be an attack frame wired to `OnAttackSpriteSwapper`.
+- Paired frames must share PPU, Bottom Center pivot, body scale, ground contact,
+  camera, and facing. Name them by meaning in docs: base pose / attack pose.
+- Generate idle/attack aura as separate transparent assets. Do not bake aura
+  into the creature sprite.
 
 Typical finalization:
 

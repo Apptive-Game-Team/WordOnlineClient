@@ -57,6 +57,11 @@ files were removed so they cannot be mixed into generation prompts.
 - Max size by tier, aspect preserved, then trimmed tight:
   small `128x128`, middle `192x192`, big `256x256`.
 
+Animation frames and aura assets follow `.art/ANIMATION-ASSETS.md`. Numeric
+suffixes such as `MagmaSpirit2` may be attack states, not separate units. Keep
+body scale, PPU, Bottom Center pivot, and ground contact invariant across frames.
+Generate aura as a separate transparent effect asset, never baked into the body.
+
 ```bash
 magick input.png -resize 256x256 -trim +repage output.png
 ```
