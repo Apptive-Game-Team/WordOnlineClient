@@ -16,6 +16,7 @@ namespace MagicBookScene
         private const float BoundsPadding = 1.3f;
         private const float ModalCanvasRatio = 0.82f;
         private static readonly Vector3 PreviewOrigin = new Vector3(10000f, 10000f, 0f);
+        private static Sprite roundedUiSprite;
 
         private Image fallbackImage;
         private CombinedMagicData currentData;
@@ -162,7 +163,9 @@ namespace MagicBookScene
                 modalRoot.transform,
                 uiLayer,
                 typeof(Image),
-                typeof(Button));
+                typeof(Button),
+                typeof(Shadow),
+                typeof(Outline));
             modalPanel = panelObject.GetComponent<RectTransform>();
             modalPanel.anchorMin = new Vector2(0.5f, 0.5f);
             modalPanel.anchorMax = new Vector2(0.5f, 0.5f);
@@ -170,27 +173,49 @@ namespace MagicBookScene
             modalPanel.anchoredPosition = Vector2.zero;
 
             Image panelImage = panelObject.GetComponent<Image>();
-            panelImage.color = new Color(0.06f, 0.07f, 0.1f, 0.96f);
+            ApplyRoundedSprite(panelImage);
+            panelImage.color = new Color(0.075f, 0.085f, 0.12f, 0.98f);
             Button panelBlocker = panelObject.GetComponent<Button>();
             panelBlocker.targetGraphic = panelImage;
             panelBlocker.transition = UnityEngine.UI.Selectable.Transition.None;
 
-            GameObject previewObject = CreateUiObject(
-                "PrefabPreview",
+            Shadow panelShadow = panelObject.GetComponent<Shadow>();
+            panelShadow.effectColor = new Color(0f, 0f, 0f, 0.55f);
+            panelShadow.effectDistance = new Vector2(0f, -10f);
+            panelShadow.useGraphicAlpha = true;
+
+            Outline panelOutline = panelObject.GetComponent<Outline>();
+            panelOutline.effectColor = new Color(0.42f, 0.48f, 0.62f, 0.7f);
+            panelOutline.effectDistance = new Vector2(2f, -2f);
+            panelOutline.useGraphicAlpha = true;
+
+            GameObject previewFrame = CreateUiObject(
+                "PreviewFrame",
                 panelObject.transform,
                 uiLayer,
-                typeof(RawImage),
-                typeof(Button),
-                typeof(AspectRatioFitter));
-            RectTransform previewRect = previewObject.GetComponent<RectTransform>();
-            previewRect.anchorMin = new Vector2(0.04f, 0.04f);
-            previewRect.anchorMax = new Vector2(0.96f, 0.96f);
-            previewRect.offsetMin = Vector2.zero;
-            previewRect.offsetMax = Vector2.zero;
+                typeof(Image),
+                typeof(Mask));
+            RectTransform frameRect = previewFrame.GetComponent<RectTransform>();
+            frameRect.anchorMin = new Vector2(0.055f, 0.055f);
+            frameRect.anchorMax = new Vector2(0.945f, 0.945f);
+            frameRect.offsetMin = Vector2.zero;
+            frameRect.offsetMax = Vector2.zero;
 
-            AspectRatioFitter aspectRatioFitter = previewObject.GetComponent<AspectRatioFitter>();
-            aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
-            aspectRatioFitter.aspectRatio = 1f;
+            Image frameImage = previewFrame.GetComponent<Image>();
+            ApplyRoundedSprite(frameImage);
+            frameImage.color = new Color(0.025f, 0.03f, 0.045f, 1f);
+            previewFrame.GetComponent<Mask>().showMaskGraphic = true;
+
+            GameObject previewObject = CreateUiObject(
+                "PrefabPreview",
+                previewFrame.transform,
+                uiLayer,
+                typeof(RawImage),
+                typeof(Button));
+            RectTransform previewRect = previewObject.GetComponent<RectTransform>();
+            Stretch(previewRect);
+            previewRect.offsetMin = new Vector2(10f, 10f);
+            previewRect.offsetMax = new Vector2(-10f, -10f);
 
             previewImage = previewObject.GetComponent<RawImage>();
             previewImage.color = Color.white;
@@ -220,7 +245,8 @@ namespace MagicBookScene
             closeRect.sizeDelta = new Vector2(48f, 48f);
 
             Image closeImage = closeObject.GetComponent<Image>();
-            closeImage.color = new Color(0.18f, 0.2f, 0.26f, 1f);
+            ApplyRoundedSprite(closeImage);
+            closeImage.color = new Color(0.2f, 0.23f, 0.32f, 1f);
             Button closeButton = closeObject.GetComponent<Button>();
             closeButton.targetGraphic = closeImage;
             closeButton.onClick.AddListener(CloseModal);
@@ -351,6 +377,22 @@ namespace MagicBookScene
             rectTransform.anchorMax = Vector2.one;
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
+        }
+
+        private static void ApplyRoundedSprite(Image image)
+        {
+            if (roundedUiSprite == null)
+            {
+                roundedUiSprite = Resources.GetBuiltinResource<Sprite>("UI/Skin/UISprite.psd");
+            }
+
+            if (roundedUiSprite == null)
+            {
+                return;
+            }
+
+            image.sprite = roundedUiSprite;
+            image.type = Image.Type.Sliced;
         }
 
         private void Update()
