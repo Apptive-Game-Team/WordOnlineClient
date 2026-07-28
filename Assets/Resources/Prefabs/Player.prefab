@@ -299,9 +299,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1271433976255676604}
   _actualTransform: {fileID: 720095057222124764}
+  _teamIndicatorVerticalOffset: 0.1
+  _teamIndicatorScale: 0.3
+  _effectScaleReferenceHeight: 1.2
+  _effectScaleMultiplier: 1
+  _effectScaleMin: 0.8
+  _effectScaleMax: 1.8
   id: 0
-  hp: 0
-  maxHp: 0
+  gauges: []
 --- !u!114 &6820982494534357445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.6}
+  m_AnchoredPosition: {x: 0, y: 2.33}
   m_SizeDelta: {x: 2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3140864634239436938
@@ -541,7 +546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2314719353421891777, guid: af690d0bec7474d508446bd445886e82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.79
+      value: 1.53
       objectReference: {fileID: 0}
     - target: {fileID: 2314719353421891777, guid: af690d0bec7474d508446bd445886e82, type: 3}
       propertyPath: m_LocalPosition.z
