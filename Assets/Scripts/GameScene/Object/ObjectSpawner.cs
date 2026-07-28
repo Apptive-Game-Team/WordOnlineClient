@@ -33,6 +33,7 @@ namespace GameScene.Object
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             AquaArcherAttackPresenter.Attach(servedObject, createdObjectDto.type);
+            WaterSlimeSpitPresenter.Attach(servedObject, createdObjectDto.type);
             AerialLightningDeathPresenter.Attach(servedObject, createdObjectDto.type);
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
