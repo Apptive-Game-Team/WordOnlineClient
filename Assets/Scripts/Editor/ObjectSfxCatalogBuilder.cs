@@ -55,8 +55,8 @@ public static class ObjectSfxCatalogBuilder
             "LeafExplode", "LeafField", "LeafShot", "Leafair", "LightningDrop",
             "MagmaExplosion", "MagmaFist", "MeteorDrop", "MeteorShower", "MiniRock",
             "NatureDrop", "Overgrowth", "RainCloud", "RazorGale", "RockDrop",
-            "RockExplode", "RockRolling", "SandStorm", "ShockOverload", "TideCall",
-            "TornadoStrike", "WaterExplode", "WaterExplosion", "WaterField",
+            "RockExplode", "RockRemnant", "RockRolling", "SandStorm", "ShockOverload",
+            "TideCall", "TornadoStrike", "WaterExplode", "WaterExplosion", "WaterField",
             "WaterShot", "WindBlade", "WindDrop", "WindExplode")
     };
 
