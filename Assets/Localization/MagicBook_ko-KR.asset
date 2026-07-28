@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1000041
-    m_Localized: "\uACF5\uC911\uC5D0\uC11C \uB2ED \uD2B9\uACF5\uB300\uB97C \uD22C\uC785\uD569\uB2C8\uB2E4."
+    m_Localized: "공중에서 비전 강하대원을 투입합니다."
     m_Metadata:
       m_Items: []
   - m_Id: 1000042
