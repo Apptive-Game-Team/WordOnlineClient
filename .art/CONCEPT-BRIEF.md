@@ -28,24 +28,18 @@ Concept art is for a human to look at while writing a prompt.
 Current comparison Site:
 <https://wordonline-hellfire-art.dev-yunseong.chatgpt.site>
 
-## Master style candidates
+## Master style selection
 
-Before regenerating faction boards, select one shared rendering technique:
+Selected shared rendering technique:
 
 - A — `.art/concept/master-style-key-v2.png`: 2.5D cut-paper
-- B — `.art/concept/master-style-soft-vector-v2.png`: soft vector cartoon
-- C — `.art/concept/master-style-clay-v2.png`: handcrafted clay diorama
-- D — `.art/concept/master-style-gouache-v2.png`: storybook gouache
-
-All four use the same six subject types.
 
 Selected: **A — 2.5D cut-paper**, approved 2026-07-28.
 
 Canonical anchor set: `.art/anchors/master-v2/`.
 
-B, C, and D are retained as rejected exploration history. Do not use them in
-production prompts. Do not mix legacy faction anchors back into the rendering
-reference set.
+B, C, and D were rejected and removed. Do not restore rejected exploration
+files or mix them into the rendering reference set.
 
 ---
 
@@ -54,11 +48,9 @@ reference set.
 The only faction with no valid anchor, and the whole fire set is a redesign
 target. Three directions; generate all three, pick one.
 
-Generated on 2026-07-28:
-
-- `.art/concept/hellfire-molten-primitive.png`
-- `.art/concept/hellfire-horned-demon.png`
-- `.art/concept/hellfire-ash-wraith.png`
+The three initial exploration images were rejected after the shared master style
+was selected and were removed. The retained direction is
+`.art/concept/hellfire-lineup-cut-paper-v2.png`.
 
 Shared prefix for all three:
 

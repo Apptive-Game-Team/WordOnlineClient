@@ -27,15 +27,12 @@ camera, value structure, and detail density while preserving faction identity
 through silhouette and palette. It also fits the existing 2.5D direction better
 than vector, clay, or gouache alternatives.
 
-Candidates:
+Selected concept:
 
 - A — `.art/concept/master-style-key-v2.png`: 2.5D cut-paper
-- B — `.art/concept/master-style-soft-vector-v2.png`: soft vector cartoon
-- C — `.art/concept/master-style-clay-v2.png`: handcrafted clay diorama
-- D — `.art/concept/master-style-gouache-v2.png`: storybook gouache
 
-Use A for all new canonical production art. B, C, and D remain rejected
-exploration references and must not be mixed into generation prompts.
+Use A for all new canonical production art. Rejected B, C, and D exploration
+files were removed so they cannot be mixed into generation prompts.
 
 ## Shared rendering technique (never varies)
 

@@ -78,6 +78,7 @@
 - [x] **Step 3: 지옥불 컨셉아트 생성 및 master style 선정**
   - [x] `.art/CONCEPT-BRIEF.md` Priority 1의 3안(Molten primitive / Horned demon /
     Ash wraith) 생성
+  - [x] 초기 3안은 탈락 처리 후 삭제하고 A 기준 `hellfire-lineup-cut-paper-v2`만 유지
   - `.art/concept/hellfire-<variant>.png`로 저장
   - `./.art/make-sheets.sh` 실행 후 `.art/sheets/concept.png`로 비교
   - 선정 결과와 근거를 `.art/STYLE.md`에 기록
