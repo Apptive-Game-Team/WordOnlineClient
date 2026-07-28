@@ -55,7 +55,8 @@
 - [x] `EmberSpiritSwarm` — 반복 소환되는 단일 지상 근접 악마로 교체,
   이동 경로 불 장판 역할을 홈페이지에 기록
 - [x] `FireTadpole` / `LightningTadpole` — 동일 종 몸 구조와 128x60 기준으로 교체
-- [ ] `MagmaSpirit` 기본 자세·공격 자세를 같은 PPU와 기준점으로 재작업
+- [x] `MagmaSpirit` 기본 자세·공격 자세를 256x157 공통 캔버스,
+  PPU 80, Bottom Center 기준으로 재작업
 - [x] 불·바람 오라를 본체와 분리된 공용 효과로 재생성
 - [x] 운룡의 `cloud.png`를 바람 오라와 분리된 전용 구형 물 아우라로 재생성
 - [x] `AquaArcher`를 당긴 기본 자세와 놓은 공격 자세 2프레임으로 교체하고
