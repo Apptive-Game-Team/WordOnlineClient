@@ -4,6 +4,7 @@ using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using GameScene.ServedObjectComponent.Sound;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace MagicBookScene
@@ -50,7 +51,9 @@ namespace MagicBookScene
 
             string prefabName = data.resourceName;
             GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
-            if (prefab == null || prefab.GetComponentInChildren<SpriteRenderer>(true) == null)
+            if (prefab == null ||
+                prefab.GetComponent<ServedObject>() == null ||
+                prefab.GetComponentInChildren<SpriteRenderer>(true) == null)
             {
                 return false;
             }
@@ -62,20 +65,15 @@ namespace MagicBookScene
             DisableWorldSpaceUi(previewObject);
 
             servedObject = previewObject.GetComponent<ServedObject>();
-            if (servedObject == null)
-            {
-                servedObject = previewObject.AddComponent<ServedObject>();
-            }
-
             AquaArcherAttackPresenter.Attach(servedObject, prefabName);
             MagmaSpiritSpawnPresenter.Attach(servedObject, prefabName, true);
             ServedObjectSfxController.Attach(servedObject, prefabName, true);
 
+            FitCamera();
             PopupBookVisualPresenter popupPresenter = PopupBookVisualPresenter.Attach(servedObject);
             popupPresenter?.PlaySpawnPresentation(
                 SpawnPresentationTypeCatalog.IsBuilding(prefabName));
 
-            FitCamera();
             fallbackImage.enabled = false;
             previewImage.enabled = true;
             return true;
@@ -99,7 +97,7 @@ namespace MagicBookScene
                 typeof(RectTransform),
                 typeof(CanvasRenderer),
                 typeof(RawImage),
-                typeof(Button));
+                typeof(MagicPrefabPreviewInput));
             RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
             rectTransform.SetParent(targetImage.rectTransform.parent, false);
             rectTransform.anchorMin = targetImage.rectTransform.anchorMin;
@@ -114,10 +112,8 @@ namespace MagicBookScene
             previewImage.raycastTarget = true;
             previewImage.enabled = false;
 
-            Button button = imageObject.GetComponent<Button>();
-            button.targetGraphic = previewImage;
-            button.transition = UnityEngine.UI.Selectable.Transition.None;
-            button.onClick.AddListener(PlayAttack);
+            MagicPrefabPreviewInput input = imageObject.GetComponent<MagicPrefabPreviewInput>();
+            input.Initialize(this, imageObject.GetComponentInParent<ScrollRect>());
         }
 
         private void EnsureRenderSurface()
@@ -222,6 +218,58 @@ namespace MagicBookScene
                 renderTexture.Release();
                 Destroy(renderTexture);
             }
+        }
+    }
+
+    public sealed class MagicPrefabPreviewInput :
+        MonoBehaviour,
+        IPointerClickHandler,
+        IInitializePotentialDragHandler,
+        IBeginDragHandler,
+        IDragHandler,
+        IEndDragHandler,
+        IScrollHandler
+    {
+        private MagicPrefabPreview preview;
+        private ScrollRect scrollRect;
+
+        public void Initialize(MagicPrefabPreview targetPreview, ScrollRect targetScrollRect)
+        {
+            preview = targetPreview;
+            scrollRect = targetScrollRect;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (!eventData.dragging)
+            {
+                preview?.PlayAttack();
+            }
+        }
+
+        public void OnInitializePotentialDrag(PointerEventData eventData)
+        {
+            scrollRect?.OnInitializePotentialDrag(eventData);
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            scrollRect?.OnBeginDrag(eventData);
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            scrollRect?.OnDrag(eventData);
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            scrollRect?.OnEndDrag(eventData);
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            scrollRect?.OnScroll(eventData);
         }
     }
 }
