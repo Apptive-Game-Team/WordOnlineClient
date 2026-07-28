@@ -1,0 +1,2734 @@
+[
+  {
+    "bean": "cannon",
+    "korean": "대포",
+    "concept_name": "마도 대포",
+    "family": "build",
+    "class_name": "CannonMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "GroundCannon",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "Cannon",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "GROUND_CANNON"
+    ],
+    "behavior": [
+      "고정 위치에서 탄환을 발사한다."
+    ],
+    "faction": "인간 마법 문명",
+    "art_rule": "차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.",
+    "concept": "인간 마법 문명의 전장에 남아 지속적으로 영향력을 만드는 마도 대포.",
+    "concept_description": "마도 대포은 인간 마법 문명의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/CannonMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/GroundCannonPrefabInitializer.java"
+  },
+  {
+    "bean": "fire_slime_nest",
+    "korean": "화염 슬라임 둥지",
+    "concept_name": "지옥불 산란장",
+    "family": "build",
+    "class_name": "FireSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "FireSummon",
+    "components": [
+      "CircleCollider",
+      "Spawner"
+    ],
+    "secondary_prefabs": [
+      "FireSlime"
+    ],
+    "parameter_keys": [
+      "RADIUS",
+      "HP"
+    ],
+    "object_keys": [
+      "FIRE_SUMMON"
+    ],
+    "behavior": [
+      "정해진 종류의 개체를 반복 생성한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 전장에 남아 지속적으로 영향력을 만드는 지옥불 산란장.",
+    "concept_description": "지옥불 산란장은 지옥불 군단의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/FireSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/fire/FireSummonPrefabInitializer.java"
+  },
+  {
+    "bean": "healing_totem",
+    "korean": "회복 토템",
+    "concept_name": "세계수 치유토템",
+    "family": "build",
+    "class_name": "HealingTotemMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "HealingTotem",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "Totem",
+      "Item",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "RANGE",
+      "DURATION"
+    ],
+    "object_keys": [
+      "HEALING_TOTEM"
+    ],
+    "behavior": [
+      "고정 범위 안 대상에게 지속 지원 효과를 준다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "concept": "세계수 풀 정령의 전장에 남아 지속적으로 영향력을 만드는 세계수 치유토템.",
+    "concept_description": "세계수 치유토템은 세계수 풀 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 지원 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "지원",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/HealingTotemMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/HealingTotemPrefabInitializer.java"
+  },
+  {
+    "bean": "lightning_slime_nest",
+    "korean": "번개 슬라임 둥지",
+    "concept_name": "뇌광 정령제단",
+    "family": "build",
+    "class_name": "LightningSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "ElectricSummon",
+    "components": [
+      "CircleCollider",
+      "Spawner"
+    ],
+    "secondary_prefabs": [
+      "ElectricSlime"
+    ],
+    "parameter_keys": [
+      "RADIUS",
+      "HP"
+    ],
+    "object_keys": [
+      "ELECTRIC_SUMMON"
+    ],
+    "behavior": [
+      "정해진 종류의 개체를 반복 생성한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 전장에 남아 지속적으로 영향력을 만드는 뇌광 정령제단.",
+    "concept_description": "뇌광 정령제단은 세계수 전기 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/LightningSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/lightning/ElectricSummonPrefabInitializer.java"
+  },
+  {
+    "bean": "mana_well",
+    "korean": "마나 샘",
+    "concept_name": "비전 마나샘",
+    "family": "build",
+    "class_name": "ManaWellMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "ManaWell",
+    "components": [
+      "CircleCollider",
+      "ManaWellMob",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "HP",
+      "ATTACK_INTERVAL",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "MANA_WELL"
+    ],
+    "behavior": [
+      "마나 샘 고유 지원 행동을 수행한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "concept": "세계수 풀 정령의 전장에 남아 지속적으로 영향력을 만드는 비전 마나샘.",
+    "concept_description": "비전 마나샘은 세계수 풀 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 지원 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "지원",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/ManaWellMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/ManaWellPrefabInitializer.java"
+  },
+  {
+    "bean": "nature_slime_nest",
+    "korean": "자연 슬라임 둥지",
+    "concept_name": "세계수 씨앗터",
+    "family": "build",
+    "class_name": "NatureSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "PveNatureSlimeNest",
+    "components": [
+      "SpawnConfig"
+    ],
+    "secondary_prefabs": [
+      "LeafSlime"
+    ],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "목표 지점에 지속 개체를 설치한다. 세부 행동은 프리팹 상속 구조와 런타임 파라미터에 의존한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 전장에 남아 지속적으로 영향력을 만드는 세계수 씨앗터.",
+    "concept_description": "세계수 씨앗터은 세계수 풀 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 설치물 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "설치물",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/NatureSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/pve/PveNatureSlimeNestPrefabInitializer.java"
+  },
+  {
+    "bean": "pve_water_slime_nest",
+    "korean": "PVE 물 슬라임 둥지",
+    "concept_name": "물방울 보금자리",
+    "family": "build",
+    "class_name": "PveWaterSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "PveWaterSlimeNest",
+    "components": [
+      "SpawnConfig"
+    ],
+    "secondary_prefabs": [
+      "WaterSlime"
+    ],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "목표 지점에 지속 개체를 설치한다. 세부 행동은 프리팹 상속 구조와 런타임 파라미터에 의존한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 전장에 남아 지속적으로 영향력을 만드는 물방울 보금자리.",
+    "concept_description": "물방울 보금자리은 물 슬라임의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 설치물 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "설치물",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/PveWaterSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/pve/PveWaterSlimeNestPrefabInitializer.java"
+  },
+  {
+    "bean": "rock_slime_nest",
+    "korean": "바위 슬라임 둥지",
+    "concept_name": "꼬마돌 집결지",
+    "family": "build",
+    "class_name": "RockSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "RockSummon",
+    "components": [
+      "CircleCollider",
+      "Spawner"
+    ],
+    "secondary_prefabs": [
+      "RockSlime"
+    ],
+    "parameter_keys": [
+      "RADIUS",
+      "HP"
+    ],
+    "object_keys": [
+      "ROCK_SUMMON"
+    ],
+    "behavior": [
+      "정해진 종류의 개체를 반복 생성한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 전장에 남아 지속적으로 영향력을 만드는 꼬마돌 집결지.",
+    "concept_description": "꼬마돌 집결지은 돌 골렘 부족의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/RockSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/rock/RockSummonPrefabInitializer.java"
+  },
+  {
+    "bean": "tower",
+    "korean": "타워",
+    "concept_name": "대공 마도탑",
+    "family": "build",
+    "class_name": "TowerMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "GroundTower",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "DummyMob",
+      "Tower",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "DURATION"
+    ],
+    "object_keys": [
+      "GROUND_TOWER"
+    ],
+    "behavior": [
+      "움직이지 않고 탐지 범위 안 적을 공격한다."
+    ],
+    "faction": "인간 마법 문명",
+    "art_rule": "차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.",
+    "concept": "인간 마법 문명의 전장에 남아 지속적으로 영향력을 만드는 대공 마도탑.",
+    "concept_description": "대공 마도탑은 인간 마법 문명의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 공중 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "공중",
+    "attack_shape": "범위",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/TowerMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/GroundTowerPrefabInitializer.java"
+  },
+  {
+    "bean": "towerback",
+    "korean": "포탑등이",
+    "concept_name": "포탑등이",
+    "family": "build",
+    "class_name": "TowerbackMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "Towerback",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "AttackMob",
+      "Tower",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SUB_SPEED",
+      "SUB_DAMAGE",
+      "ATTACK_INTERVAL",
+      "SUB_ATTACK_RANGE",
+      "DAMAGE",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "TOWERBACK"
+    ],
+    "behavior": [
+      "공격 상태를 수행한다.",
+      "움직이지 않고 탐지 범위 안 적을 공격한다."
+    ],
+    "faction": "인간 마법 문명",
+    "art_rule": "따뜻한 꼬마돌 몸체와 차가운 인간제 지대공 타워를 명확히 분리한다. 가죽끈·금속 고정구로 강제 결속된 흔적을 보여준다.",
+    "concept": "인간 마법 문명의 전장에 남아 지속적으로 영향력을 만드는 포탑등이.",
+    "concept_description": "포탑등이는 인간 마법 문명이 납치한 꼬마돌의 등에 지대공 타워를 강제로 결속한 고정형 병기다. 생물 본체는 돌 골렘 부족이지만 전장에서는 인간 진영의 원거리 방어 구조물로 운용되며 지상·공중 대상을 공격한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상·공중",
+    "attack_shape": "범위",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/TowerbackMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/TowerbackPrefabInitializer.java"
+  },
+  {
+    "bean": "vine_colony",
+    "korean": "덩굴 군집",
+    "concept_name": "덩굴 군락",
+    "family": "build",
+    "class_name": "VineColonyMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "VineColony",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "SummonMob",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [
+      "Vine"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "DURATION"
+    ],
+    "object_keys": [
+      "VINE_COLONY"
+    ],
+    "behavior": [
+      "주기적으로 지정된 하위 개체를 소환한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 전장에 남아 지속적으로 영향력을 만드는 덩굴 군락.",
+    "concept_description": "덩굴 군락은 세계수 풀 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/VineColonyMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/VineColonyPrefabInitializer.java"
+  },
+  {
+    "bean": "wind_slime_nest",
+    "korean": "바람 슬라임 둥지",
+    "concept_name": "바람 정령제단",
+    "family": "build",
+    "class_name": "WindSlimeNestMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "WindSummon",
+    "components": [
+      "CircleCollider",
+      "Spawner"
+    ],
+    "secondary_prefabs": [
+      "WindSlime"
+    ],
+    "parameter_keys": [
+      "RADIUS",
+      "HP"
+    ],
+    "object_keys": [
+      "WIND_SUMMON"
+    ],
+    "behavior": [
+      "정해진 종류의 개체를 반복 생성한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 전장에 남아 지속적으로 영향력을 만드는 바람 정령제단.",
+    "concept_description": "바람 정령제단은 세계수 바람 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/WindSlimeNestMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/wind/WindSummonPrefabInitializer.java"
+  },
+  {
+    "bean": "bubble_generator",
+    "korean": "거품 생성기",
+    "concept_name": "물방울 배양기",
+    "family": "build",
+    "class_name": "BubbleGeneratorMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "BubbleGenerator",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "BubbleGeneratorMob",
+      "TimedSelfDestroyer",
+      "BuildingEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "PROJECTILE_SPEED",
+      "DURATION"
+    ],
+    "object_keys": [
+      "BUBBLE_GENERATOR"
+    ],
+    "behavior": [
+      "주기적으로 거품 관련 개체를 생성한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 전장에 남아 지속적으로 영향력을 만드는 물방울 배양기.",
+    "concept_description": "물방울 배양기은 물 슬라임의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/BubbleGeneratorMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/BubbleGeneratorPrefabInitializer.java"
+  },
+  {
+    "bean": "crater",
+    "korean": "분화구",
+    "concept_name": "잿불 분화구",
+    "family": "build",
+    "class_name": "CraterMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "Crater",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "DummyMob",
+      "CraterSpawner",
+      "TimedSelfDestroyer",
+      "BuildingEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "ATTACK_INTERVAL",
+      "DURATION"
+    ],
+    "object_keys": [
+      "CRATER"
+    ],
+    "behavior": [
+      "분화구가 불씨 개체를 반복 생성한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 전장에 남아 지속적으로 영향력을 만드는 잿불 분화구.",
+    "concept_description": "잿불 분화구은 지옥불 군단의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 소환 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "소환",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/CraterMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/CraterPrefabInitializer.java"
+  },
+  {
+    "bean": "electric_tower",
+    "korean": "전기 타워",
+    "concept_name": "뇌전 마도탑",
+    "family": "build",
+    "class_name": "ElectricTowerMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "ElectricTower",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "LightningTowerMob",
+      "TimedSelfDestroyer",
+      "BuildingEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "CHAIN_DAMAGE",
+      "CHAIN_COUNT",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "CHAIN_RADIUS",
+      "DURATION"
+    ],
+    "object_keys": [
+      "ELECTRIC_TOWER"
+    ],
+    "behavior": [
+      "복수 대상을 탐지해 전기 공격을 수행한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 전장에 남아 지속적으로 영향력을 만드는 뇌전 마도탑.",
+    "concept_description": "뇌전 마도탑은 세계수 전기 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 다중 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "다중 표적",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/ElectricTowerMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/ElectricTowerPrefabInitializer.java"
+  },
+  {
+    "bean": "life_tree",
+    "korean": "생명의 나무",
+    "concept_name": "생명의 묘목",
+    "family": "build",
+    "class_name": "LifeTreeMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "LifeTree",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "Totem",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "RANGE",
+      "DURATION"
+    ],
+    "object_keys": [
+      "LIFE_TREE"
+    ],
+    "behavior": [
+      "고정 범위 안 대상에게 지속 지원 효과를 준다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "concept": "세계수 풀 정령의 전장에 남아 지속적으로 영향력을 만드는 생명의 묘목.",
+    "concept_description": "생명의 묘목은 세계수 풀 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 지원 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수의 생명력과 마나가 뿌리·잎·빛의 겹친 종이층으로 순환하게 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "지원",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/LifeTreeMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/LifeTreePrefabInitializer.java"
+  },
+  {
+    "bean": "rock_turret",
+    "korean": "돌 포탑",
+    "concept_name": "암석 포탑",
+    "family": "build",
+    "class_name": "RockTurretMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "RockTurret",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "Turret",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "HP",
+      "MASS",
+      "RADIUS",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "ROCK_TURRET"
+    ],
+    "behavior": [
+      "고정 위치에서 표적을 추적해 공격한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 전장에 남아 지속적으로 영향력을 만드는 암석 포탑.",
+    "concept_description": "암석 포탑은 돌 골렘 부족의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/RockTurretMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/RockTurretPrefabInitializer.java"
+  },
+  {
+    "bean": "wind_totem",
+    "korean": "바람 토템",
+    "concept_name": "순풍 토템",
+    "family": "build",
+    "class_name": "WindTotemMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "WindTotem",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "DummyMob",
+      "WindPushComponent",
+      "Vector3",
+      "TimedSelfDestroyer",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "PUSH_FORCE",
+      "PUSH_RANGE_X",
+      "PUSH_RANGE_Y",
+      "ATTACK_INTERVAL",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "WIND_TOTEM"
+    ],
+    "behavior": [
+      "목표 지점에 지속 개체를 설치한다. 세부 행동은 프리팹 상속 구조와 런타임 파라미터에 의존한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 전장에 남아 지속적으로 영향력을 만드는 순풍 토템.",
+    "concept_description": "순풍 토템은 세계수 바람 정령의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 설치물 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "설치물",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/WindTotemMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/WindTotemPrefabInitializer.java"
+  },
+  {
+    "bean": "chicken_commando",
+    "korean": "치킨 특공대",
+    "concept_name": "비전 강하대",
+    "family": "drop",
+    "class_name": "ChickenCommandoMagic",
+    "parent": "Magic",
+    "primary": "ChickenCommando",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "ChickenCommandoMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "SPAWN_HEIGHT",
+      "MASS",
+      "FALL_GRAVITY",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL"
+    ],
+    "object_keys": [
+      "CHICKEN_COMMANDO"
+    ],
+    "behavior": [
+      "지정 지점 상공에서 낙하산을 펼친 인간 공수대원으로 생성된다.",
+      "높이 0.5 초과에서는 낙하산 프레임, 지상에서는 전투 프레임을 표시한다.",
+      "착지 후 지상 대상을 추적해 근접 공격한다."
+    ],
+    "faction": "인간 마법 문명",
+    "art_rule": "같은 인간 공수대원을 낙하산 전개 상태와 지상 전투 상태로 나눈다. 두 프레임의 얼굴·복장·장비·오른쪽 방향과 45도 카메라를 동일하게 유지한다.",
+    "concept": "인간 마법 문명의 상공에서 목표 지점에 개입하는 비전 강하대.",
+    "concept_description": "비전 강하대는 인간 마법 문명의 공수 전투원이다. 지정 지점 상공에서 낙하산을 펼친 상태로 투입되며, 높이 0.5 이하로 내려오면 낙하산 없는 지상 전투 프레임으로 전환한다. 착지 후에는 지상 대상을 추적해 근접 공격한다.",
+    "mobility": "상공 낙하 후 지상 이동",
+    "mobility_evidence": "지정 높이에서 중력 낙하한 뒤 지상 이동 AI로 전환한다.",
+    "combat_role": "공수 투입·근접 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "높이에 따른 낙하산·지상 2프레임 전환",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/ChickenCommandoMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/ChickenCommandoPrefabInitializer.java"
+  },
+  {
+    "bean": "fire_drop",
+    "korean": "화염 투하",
+    "concept_name": "지옥불 강하",
+    "family": "drop",
+    "class_name": "FireDropMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "FireDrop",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "상공에서 목표 지점으로 개체를 투하한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 상공에서 목표 지점에 개입하는 지옥불 강하.",
+    "concept_description": "지옥불 강하은 지옥불 군단의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/FireDropMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "frenzy_totem",
+    "korean": "광란의 토템",
+    "concept_name": "군단 광란토템",
+    "family": "drop",
+    "class_name": "FrenzyMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "FrenzyTotem",
+    "components": [
+      "CircleCollider",
+      "FrenzyTotem"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "SPEED",
+      "ATTACK_RANGE",
+      "BUFF_DURATION"
+    ],
+    "object_keys": [
+      "FRENZY_TOTEM"
+    ],
+    "behavior": [
+      "범위 안 아군에게 광란 상태 효과를 제공한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 상공에서 목표 지점에 개입하는 군단 광란토템.",
+    "concept_description": "군단 광란토템은 지옥불 군단의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 지원 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "지원",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/FrenzyMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/drop/FrenzyTotemPrefabInitializer.java"
+  },
+  {
+    "bean": "leafair",
+    "korean": "술이파리",
+    "concept_name": "잎바람 요정",
+    "family": "drop",
+    "class_name": "LeafairMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "Leafair",
+    "components": [
+      "CircleCollider",
+      "Leafair"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "LEAF_DROP"
+    ],
+    "behavior": [
+      "낙하 후 술이파리 고유 동작을 수행한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 상공에서 목표 지점에 개입하는 잎바람 요정.",
+    "concept_description": "잎바람 요정은 세계수 풀 정령의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/LeafairMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/drop/LeafairPrefabInitializer.java"
+  },
+  {
+    "bean": "lightning_drop",
+    "korean": "번개 투하",
+    "concept_name": "낙뢰 강하",
+    "family": "drop",
+    "class_name": "LightningDropMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "LightningDrop",
+    "components": [
+      "CircleCollider",
+      "LightningStrike",
+      "TimedSelfDestroyer"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "LIGHTNING_DROP"
+    ],
+    "behavior": [
+      "번개 타격을 적용한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 상공에서 목표 지점에 개입하는 낙뢰 강하.",
+    "concept_description": "낙뢰 강하은 세계수 전기 정령의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/LightningDropMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/drop/LightningDropPrefabInitializer.java"
+  },
+  {
+    "bean": "meteor_shower",
+    "korean": "유성우",
+    "concept_name": "지옥불 유성우",
+    "family": "drop",
+    "class_name": "MeteorShowerMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "MeteorShower",
+    "components": [
+      "RandomAreaSpawner"
+    ],
+    "secondary_prefabs": [
+      "MeteorDrop"
+    ],
+    "parameter_keys": [
+      "DURATION",
+      "ATTACK_INTERVAL",
+      "RADIUS"
+    ],
+    "object_keys": [
+      "METEOR_SHOWER"
+    ],
+    "behavior": [
+      "상공에서 목표 지점으로 개체를 투하한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 상공에서 목표 지점에 개입하는 지옥불 유성우.",
+    "concept_description": "지옥불 유성우은 지옥불 군단의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/MeteorShowerMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/MeteorShowerPrefabInitializer.java"
+  },
+  {
+    "bean": "nature_drop",
+    "korean": "자연 투하",
+    "concept_name": "뿌리 강하",
+    "family": "drop",
+    "class_name": "NatureDropMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "NatureDrop",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "상공에서 목표 지점으로 개체를 투하한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 상공에서 목표 지점에 개입하는 뿌리 강하.",
+    "concept_description": "뿌리 강하은 세계수 풀 정령의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/NatureDropMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "rallying_torch",
+    "korean": "집결의 횃불",
+    "concept_name": "집결 신호화",
+    "family": "drop",
+    "class_name": "RallyingTorchMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "RallyingTorch",
+    "components": [
+      "CircleCollider",
+      "RallyingTorch"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DURATION",
+      "BUFF_DURATION"
+    ],
+    "object_keys": [
+      "RALLYING_TORCH"
+    ],
+    "behavior": [
+      "아군을 집결시키는 이동 지시를 제공한다."
+    ],
+    "faction": "인간 마법 문명",
+    "art_rule": "인간 부대가 사용하는 신호 장치. 청동 프레임과 절제된 마법 불빛으로 표현한다.",
+    "concept": "인간 마법 문명의 상공에서 목표 지점에 개입하는 집결 신호화.",
+    "concept_description": "집결 신호화은 인간 마법 문명의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 지원 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 아군 이동 집결을 수행한다. 시각적으로는 인간 부대가 사용하는 신호 장치. 청동 프레임과 절제된 마법 불빛으로 표현한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "지원",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "아군 이동 집결",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/RallyingTorchMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/drop/RallyingTorchPrefabInitializer.java"
+  },
+  {
+    "bean": "rock_drop",
+    "korean": "바위 투하",
+    "concept_name": "거석 낙하",
+    "family": "drop",
+    "class_name": "RockDropMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "RockDrop",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "상공에서 목표 지점으로 개체를 투하한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 상공에서 목표 지점에 개입하는 거석 낙하.",
+    "concept_description": "거석 낙하은 돌 골렘 부족의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/RockDropMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "wind_drop",
+    "korean": "바람 투하",
+    "concept_name": "하강 돌풍",
+    "family": "drop",
+    "class_name": "WindDropMagic",
+    "parent": "AbstractDropMagic",
+    "primary": "WindDrop",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "상공에서 목표 지점으로 개체를 투하한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 상공에서 목표 지점에 개입하는 하강 돌풍.",
+    "concept_description": "하강 돌풍은 세계수 바람 정령의 투하 마법이다. 목표 상공에서 생성되어 낙하한다. 전투에서는 투하 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "상공 투하형",
+    "mobility_evidence": "목표 상공에서 생성되어 낙하한다.",
+    "combat_role": "투하 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/WindDropMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "lightning_explosion",
+    "korean": "번개 폭발",
+    "concept_name": "뇌광 폭발",
+    "family": "explode",
+    "class_name": "LightningExplosionMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "ElectricExplode",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "목표 지점 중심의 범위 효과를 생성한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 한순간에 범위를 장악하는 뇌광 폭발.",
+    "concept_description": "뇌광 폭발은 세계수 전기 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/LightningExplosionMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "magma_explosion",
+    "korean": "마그마 폭발",
+    "concept_name": "용암 균열",
+    "family": "explode",
+    "class_name": "MagmaExplosionMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "MagmaExplosion",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "Explode"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "MAGMA_EXPLOSION"
+    ],
+    "behavior": [
+      "범위 안 대상에게 폭발 효과를 적용하고 종료한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 한순간에 범위를 장악하는 용암 균열.",
+    "concept_description": "용암 균열은 지옥불 군단의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/MagmaExplosionMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/MagmaExplosionPrefabInitializer.java"
+  },
+  {
+    "bean": "overgrowth",
+    "korean": "과생장",
+    "concept_name": "세계수의 과생장",
+    "family": "explode",
+    "class_name": "OvergrowthMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "Overgrowth",
+    "components": [
+      "CircleCollider",
+      "OvergrowthExplosion"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "QUANTITY"
+    ],
+    "object_keys": [
+      "OVERGROWTH"
+    ],
+    "behavior": [
+      "씨앗 정령을 나무 골렘으로 성장시키고 추가 씨앗을 만든다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 한순간에 범위를 장악하는 세계수의 과생장.",
+    "concept_description": "세계수의 과생장은 세계수 풀 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/OvergrowthMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/OvergrowthPrefabInitializer.java"
+  },
+  {
+    "bean": "razor_gale",
+    "korean": "칼바람 회오리",
+    "concept_name": "면도날 회오리",
+    "family": "explode",
+    "class_name": "RazorGaleMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "RazorGale",
+    "components": [
+      "CircleCollider",
+      "RazorGale",
+      "TimedSelfDestroyer"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "DURATION"
+    ],
+    "object_keys": [
+      "RAZOR_GALE"
+    ],
+    "behavior": [
+      "회전하는 칼바람 범위 공격을 수행한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 한순간에 범위를 장악하는 면도날 회오리.",
+    "concept_description": "면도날 회오리은 세계수 바람 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/RazorGaleMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/RazorGalePrefabInitializer.java"
+  },
+  {
+    "bean": "sand_storm",
+    "korean": "모래 폭풍",
+    "concept_name": "황진 폭풍",
+    "family": "explode",
+    "class_name": "SandStormMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "SandStorm",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "TimedSelfDestroyer"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DURATION"
+    ],
+    "object_keys": [
+      "SAND_STORM"
+    ],
+    "behavior": [
+      "목표 지점 중심의 범위 효과를 생성한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 한순간에 범위를 장악하는 황진 폭풍.",
+    "concept_description": "황진 폭풍은 세계수 바람 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/SandStormMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/SandStormPrefabInitializer.java"
+  },
+  {
+    "bean": "shock_overload",
+    "korean": "전격 과부하",
+    "concept_name": "뇌광 과부하",
+    "family": "explode",
+    "class_name": "ShockOverloadMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "ShockOverload",
+    "components": [
+      "CircleCollider",
+      "ShockOverloadExplosion"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "SHOCK_OVERLOAD"
+    ],
+    "behavior": [
+      "전격 과부하 범위 효과를 적용한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 한순간에 범위를 장악하는 뇌광 과부하.",
+    "concept_description": "뇌광 과부하은 세계수 전기 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/ShockOverloadMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/ShockOverloadPrefabInitializer.java"
+  },
+  {
+    "bean": "water_explosion",
+    "korean": "간헐천 폭발",
+    "concept_name": "솟구치는 간헐천",
+    "family": "explode",
+    "class_name": "WaterExplosionMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "WaterExplosion",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "WaterExplode"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "Z_FORCE"
+    ],
+    "object_keys": [
+      "WATER_EXPLOSION"
+    ],
+    "behavior": [
+      "물 폭발 고유 범위 효과를 적용한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 한순간에 범위를 장악하는 솟구치는 간헐천.",
+    "concept_description": "솟구치는 간헐천은 물 슬라임의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/WaterExplosionMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/WaterExplosionPrefabInitializer.java"
+  },
+  {
+    "bean": "wind_explosion",
+    "korean": "돌풍",
+    "concept_name": "터지는 돌풍",
+    "family": "explode",
+    "class_name": "WindExplosionMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "WindExplode",
+    "components": [
+      "CircleCollider",
+      "KnockbackEffectProvider",
+      "Explode"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "WIND_EXPLODE"
+    ],
+    "behavior": [
+      "범위 안 대상에게 폭발 효과를 적용하고 종료한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 한순간에 범위를 장악하는 터지는 돌풍.",
+    "concept_description": "터지는 돌풍은 세계수 바람 정령의 범위 폭발 마법이다. 목표 지점을 중심으로 범위 효과를 생성한다. 전투에서는 범위 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "목표 지점 고정형",
+    "mobility_evidence": "목표 지점을 중심으로 범위 효과를 생성한다.",
+    "combat_role": "범위 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/explode/WindExplosionMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/WindExplodePrefabInitializer.java"
+  },
+  {
+    "bean": "chain_lightning",
+    "korean": "연쇄 번개",
+    "concept_name": "뇌광 사슬",
+    "family": "shoot",
+    "class_name": "ChainLightningMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "ChainLightning",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "ChainShot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED",
+      "ATTACK_RANGE",
+      "MIN_DAMAGE"
+    ],
+    "object_keys": [
+      "CHAIN_LIGHTNING"
+    ],
+    "behavior": [
+      "시전자 위치에서 목표 방향으로 투사체 또는 연속 개체를 보낸다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 방향성과 궤적이 핵심인 뇌광 사슬.",
+    "concept_description": "뇌광 사슬은 세계수 전기 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 다중 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "다중 표적",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/ChainLightningMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/ChainLightningPrefabInitializer.java"
+  },
+  {
+    "bean": "fire_shot",
+    "korean": "화염탄",
+    "concept_name": "악마의 화염탄",
+    "family": "shoot",
+    "class_name": "FireShotMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "FireShot",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "Shot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED"
+    ],
+    "object_keys": [
+      "FIRE_SHOT"
+    ],
+    "behavior": [
+      "시전자에서 목표 지점 방향으로 비행한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 방향성과 궤적이 핵심인 악마의 화염탄.",
+    "concept_description": "악마의 화염탄은 지옥불 군단의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/FireShotMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/fire/FireShotPrefabInitializer.java"
+  },
+  {
+    "bean": "lightning_shot",
+    "korean": "전격탄",
+    "concept_name": "번개 파편",
+    "family": "shoot",
+    "class_name": "LightningShotMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "ElectricShot",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "Shot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED"
+    ],
+    "object_keys": [
+      "ELECTRIC_SHOT"
+    ],
+    "behavior": [
+      "시전자에서 목표 지점 방향으로 비행한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 방향성과 궤적이 핵심인 번개 파편.",
+    "concept_description": "번개 파편은 세계수 전기 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/LightningShotMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/lightning/ElectricShotPrefabInitializer.java"
+  },
+  {
+    "bean": "rock_rolling",
+    "korean": "돌 굴리기",
+    "concept_name": "구르는 거석",
+    "family": "shoot",
+    "class_name": "RockRollingMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "RockRolling",
+    "components": [
+      "CircleCollider",
+      "RollingRock"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED"
+    ],
+    "object_keys": [
+      "ROCK_ROLLING"
+    ],
+    "behavior": [
+      "지면을 굴러가며 충돌 대상을 공격한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 방향성과 궤적이 핵심인 구르는 거석.",
+    "concept_description": "구르는 거석은 돌 골렘 부족의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/RockRollingMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/rock/RockRollingPrefabInitializer.java"
+  },
+  {
+    "bean": "tide_call",
+    "korean": "파도 소환",
+    "concept_name": "밀려드는 해일",
+    "family": "shoot",
+    "class_name": "TideCallMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "TideCall",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "PushShot",
+      "PathSpawner",
+      "TimedSelfDestroyer"
+    ],
+    "secondary_prefabs": [
+      "WaterField"
+    ],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED",
+      "DURATION"
+    ],
+    "object_keys": [
+      "TIDE_CALL"
+    ],
+    "behavior": [
+      "명중 대상을 밀어내는 투사체다.",
+      "이동 경로를 따라 원소 지대를 남긴다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 방향성과 궤적이 핵심인 밀려드는 해일.",
+    "concept_description": "밀려드는 해일은 물 슬라임의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 특수 행동으로 이동 경로에 원소 장판 생성을 수행한다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "이동 경로에 원소 장판 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/TideCallMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/TideCallPrefabInitializer.java"
+  },
+  {
+    "bean": "vine_fan",
+    "korean": "덩굴 부채",
+    "concept_name": "세 갈래 덩굴",
+    "family": "shoot",
+    "class_name": "VineFanMagic",
+    "parent": "Magic",
+    "primary": null,
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "시전자에서 목표 방향을 구한다.",
+      "중앙 방향 기준 60도 부채꼴에 3개의 `VineToss`를 발사한다.",
+      "각 덩굴 줄기는 전방에 6개 덩굴을 0.12초 간격, 1칸 간격으로 연속 생성한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 방향성과 궤적이 핵심인 세 갈래 덩굴.",
+    "concept_description": "세 갈래 덩굴은 세계수 풀 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/VineFanMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "vine_toss",
+    "korean": "덩굴 투척",
+    "concept_name": "솟구치는 덩굴",
+    "family": "shoot",
+    "class_name": "VineTossMagic",
+    "parent": "Magic",
+    "primary": "Vine",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "TimedSelfDestroyer",
+      "OnStartAttacker",
+      "VineHitTracker",
+      "SequentialLineSpawner"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DURATION",
+      "DAMAGE"
+    ],
+    "object_keys": [
+      "VINE"
+    ],
+    "behavior": [
+      "시전자에서 목표 방향을 구한다.",
+      "첫 덩굴을 전방 1칸에 생성한다.",
+      "같은 방향으로 총 6개 덩굴을 0.12초 간격으로 연속 생성한다.",
+      "한 연쇄 안에서 같은 대상을 중복 타격하지 않도록 명중 대상을 공유 추적한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 방향성과 궤적이 핵심인 솟구치는 덩굴.",
+    "concept_description": "솟구치는 덩굴은 세계수 풀 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직선 연속 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직선 연속",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/VineTossMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/subprefab/VinePrefabInitializer.java"
+  },
+  {
+    "bean": "water_shot",
+    "korean": "물 탄환",
+    "concept_name": "응축 물방울",
+    "family": "shoot",
+    "class_name": "WaterShotMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "WaterShot",
+    "components": [
+      "CircleCollider",
+      "EffectProvider",
+      "Shot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED"
+    ],
+    "object_keys": [
+      "WATER_SHOT"
+    ],
+    "behavior": [
+      "시전자에서 목표 지점 방향으로 비행한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 방향성과 궤적이 핵심인 응축 물방울.",
+    "concept_description": "응축 물방울은 물 슬라임의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/WaterShotMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/water/WaterShotPrefabInitializer.java"
+  },
+  {
+    "bean": "will_o_wisp",
+    "korean": "도깨비불",
+    "concept_name": "길잡이 도깨비불",
+    "family": "shoot",
+    "class_name": "WillOWispMagic",
+    "parent": "Magic",
+    "primary": "WillOWisp",
+    "components": [
+      "CircleCollider",
+      "MindControlShot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "SPEED"
+    ],
+    "object_keys": [
+      "WILL_O_WISP"
+    ],
+    "behavior": [
+      "시전자 위치에서 목표 방향으로 투사체 또는 연속 개체를 보낸다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 방향성과 궤적이 핵심인 길잡이 도깨비불.",
+    "concept_description": "길잡이 도깨비불은 세계수 풀 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/WillOWispMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/WillOWispPrefabInitializer.java"
+  },
+  {
+    "bean": "wind_blade",
+    "korean": "바람 칼날",
+    "concept_name": "초승달 바람칼",
+    "family": "shoot",
+    "class_name": "WindBladeMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "WindBlade",
+    "components": [
+      "CircleCollider",
+      "WindBladeShot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED"
+    ],
+    "object_keys": [
+      "WIND_BLADE"
+    ],
+    "behavior": [
+      "바람 칼날 투사체의 관통·타격 동작을 수행한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 방향성과 궤적이 핵심인 초승달 바람칼.",
+    "concept_description": "초승달 바람칼은 세계수 바람 정령의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/WindBladeMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/wind/WindBladePrefabInitializer.java"
+  },
+  {
+    "bean": "aqua_archer",
+    "korean": "물의 궁수",
+    "concept_name": "물결 궁수",
+    "family": "spawn",
+    "class_name": "AquaArcherMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "AquaArcher",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "ProjectileRangeAttackMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "AQUA_ARCHER"
+    ],
+    "behavior": [
+      "사거리 안 대상을 향해 투사체를 발사한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 독립 개체로 전장에 합류하는 물결 궁수.",
+    "concept_description": "물결 궁수은 물 슬라임의 소환 마법이다. 이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다. 전투에서는 원거리 공격 역할을 맡으며, 지상·공중 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상·공중",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/AquaArcherMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/AquaArcherPrefabInitializer.java"
+  },
+  {
+    "bean": "bubble_spirit",
+    "korean": "거품 정령",
+    "concept_name": "거품 슬라임",
+    "family": "spawn",
+    "class_name": "BubbleSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "BubbleSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "BubbleSpiritMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "PROJECTILE_SPEED"
+    ],
+    "object_keys": [
+      "BUBBLE_SPIRIT"
+    ],
+    "behavior": [
+      "거품 정령 전용 공격 행동을 수행한다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 독립 개체로 전장에 합류하는 거품 슬라임.",
+    "concept_description": "거품 슬라임은 물 슬라임의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 원거리 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "범위",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/BubbleSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/BubbleSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "cloud_dragon",
+    "korean": "운룡",
+    "concept_name": "구름비늘 운룡",
+    "family": "spawn",
+    "class_name": "CloudDragonMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "CloudDragon",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "ProjectileRangeAttackMob",
+      "CommonEffectReceiver",
+      "AreaEffectProvider"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "CLOUD_DRAGON"
+    ],
+    "behavior": [
+      "사거리 안 대상을 향해 투사체를 발사한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 독립 개체로 전장에 합류하는 구름비늘 운룡.",
+    "concept_description": "구름비늘 운룡은 세계수 바람 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 원거리 공격 역할을 맡으며, 지상·공중 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상·공중",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/CloudDragonMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/third/CloudDragonPrefabInitializer.java"
+  },
+  {
+    "bean": "dimension_toad",
+    "korean": "차원 두꺼비",
+    "concept_name": "균열두꺼비",
+    "family": "spawn",
+    "class_name": "DimensionToadMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "DimensionToad",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "NonAttackingCowardMob",
+      "LimitedSequenceSpawner",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [
+      "FireTadpole",
+      "LightningTadpole"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "ATTACK_INTERVAL",
+      "DETECTION_RANGE",
+      "PANIC_DURATION"
+    ],
+    "object_keys": [
+      "DIMENSION_TOAD"
+    ],
+    "behavior": [
+      "직접 공격하지 않고 지상 위협에서 거리를 벌린다.",
+      "`FireTadpole`과 `LightningTadpole`을 10초마다 번갈아가며 제한 없이 소환한다."
+    ],
+    "faction": "차원 유랑종",
+    "art_rule": "차원 틈새의 이질적인 생물 조직과 흡수한 원소 마력이 함께 보이도록 표현한다. 특정 원소 진영의 재질을 그대로 사용하지 않는다.",
+    "concept": "차원 유랑종의 독립 개체로 전장에 합류하는 균열두꺼비.",
+    "concept_description": "균열두꺼비는 차원 틈새를 떠도는 야생 생물이다. 다른 차원의 마력을 먹고 알에 저장하며, `FireTadpole`과 `LightningTadpole`을 10초마다 번갈아가며 제한 없이 소환한다. 잿불 올챙이와 뇌광 올챙이는 악마나 정령이 아니라 흡수한 마력에 적응한 균열두꺼비의 새끼다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "원소 올챙이 소환",
+    "targeting": "지상 위협 감지",
+    "attack_shape": "10초 간격 교대 소환",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "위협에서 도주·두 종류 하위 개체 무제한 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/DimensionToadMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/DimensionToadPrefabInitializer.java"
+  },
+  {
+    "bean": "ember_spirit_swarm",
+    "korean": "불씨 정령 무리",
+    "concept_name": "잿불 악마 무리",
+    "family": "spawn",
+    "class_name": "EmberSpiritSwarmMagic",
+    "parent": "AbstractSwarmSpawnMagic",
+    "primary": "EmberSpirit",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [
+      "EMBER_SPIRIT"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 독립 개체로 전장에 합류하는 잿불 악마 무리.",
+    "concept_description": "잿불 악마 무리은 지옥불 군단의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/EmberSpiritSwarmMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "fire_lord_spirit",
+    "korean": "불 대왕 정령",
+    "concept_name": "지옥불 군단장",
+    "family": "spawn",
+    "class_name": "FireLordSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "FireLordSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "KeepDistanceMob",
+      "LimitedSequenceSpawner",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [
+      "FireChildSpirit"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED"
+    ],
+    "object_keys": [
+      "FIRE_LORD_SPIRIT"
+    ],
+    "behavior": [
+      "`FireChildSpirit`를 5초마다 1마리씩, 최대 5마리 소환한다.",
+      "소환된 비행 악마는 지상·공중 대상을 향해 `FireShot`으로 원거리 공격한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 독립 개체로 전장에 합류하는 지옥불 군단장.",
+    "concept_description": "지옥불 군단장은 전장 상공에 머무는 거대한 악마 생체 모함이다. 직접 공격하지 않고 안전거리를 유지하며 `FireChildSpirit`를 5초마다 1마리씩, 최대 5마리 방출한다. 소환된 비행 악마는 지상·공중 대상을 향해 `FireShot`으로 원거리 공격한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "하위 비행 악마 소환",
+    "targeting": "소환 지점",
+    "attack_shape": "5초 간격 순차 소환",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "안전거리 유지·동일 하위 개체 최대 5마리 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/FireLordSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/FireLordSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "fire_spirit",
+    "korean": "불의 정령",
+    "concept_name": "지옥불 하급 악마",
+    "family": "spawn",
+    "class_name": "FireSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "FireSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "SprayingAttacker",
+      "CommonEffectReceiver",
+      "AreaEffectProvider"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "DAMAGE",
+      "SUB_ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "FIRE_SPIRIT"
+    ],
+    "behavior": [
+      "부채꼴 또는 연속 분사 공격을 수행한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 독립 개체로 전장에 합류하는 지옥불 하급 악마.",
+    "concept_description": "지옥불 하급 악마은 지옥불 군단의 소환 마법이다. 이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상",
+    "attack_shape": "범위",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/FireSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/FireSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "magma_spirit",
+    "korean": "용암 정령",
+    "concept_name": "용암 갑각 악마",
+    "family": "spawn",
+    "class_name": "MagmaSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "MagmaSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "SummonerMob",
+      "CommonEffectReceiver",
+      "AreaEffectProvider"
+    ],
+    "secondary_prefabs": [
+      "MagmaFist"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "SUB_ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "MAGMA_SPIRIT"
+    ],
+    "behavior": [
+      "전투 상태 머신 안에서 하위 개체를 소환한다."
+    ],
+    "faction": "지옥불 군단",
+    "art_rule": "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "concept": "지옥불 군단의 독립 개체로 전장에 합류하는 용암 갑각 악마.",
+    "concept_description": "용암 갑각 악마은 지옥불 군단의 소환 마법이다. 이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다. 전투에서는 소환 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 하위 개체 생성을 수행한다. 시각적으로는 검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "소환",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "하위 개체 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/MagmaSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/MagmaSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "mini_rock_swarm",
+    "korean": "꼬마 돌 무리",
+    "concept_name": "꼬마돌 돌격대",
+    "family": "spawn",
+    "class_name": "MiniRockSwarmMagic",
+    "parent": "AbstractSwarmSpawnMagic",
+    "primary": "MiniRock",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [
+      "MINI_ROCK"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 독립 개체로 전장에 합류하는 꼬마돌 돌격대.",
+    "concept_description": "꼬마돌 돌격대은 돌 골렘 부족의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/MiniRockSwarmMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "rock_golem",
+    "korean": "바위 골렘",
+    "concept_name": "이끼바위 골렘",
+    "family": "spawn",
+    "class_name": "RockGolemMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "RockGolem",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "MeleeAttackMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL"
+    ],
+    "object_keys": [
+      "ROCK_GOLEM"
+    ],
+    "behavior": [
+      "근접 거리까지 접근해 공격한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 독립 개체로 전장에 합류하는 이끼바위 골렘.",
+    "concept_description": "이끼바위 골렘은 돌 골렘 부족의 소환 마법이다. 이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다. 전투에서는 근접 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "근접 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/RockGolemMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/RockGolemPrefabInitializer.java"
+  },
+  {
+    "bean": "rock_mage",
+    "korean": "돌 마법사",
+    "concept_name": "룬바위 주술사",
+    "family": "spawn",
+    "class_name": "RockMageMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "RockMage",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "DoubleTargetMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "ROCK_MAGE"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "돌 골렘 부족",
+    "art_rule": "따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "concept": "돌 골렘 부족의 독립 개체로 전장에 합류하는 룬바위 주술사.",
+    "concept_description": "룬바위 주술사은 돌 골렘 부족의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상·공중 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "지상·공중",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/RockMageMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/RockMagePrefabInitializer.java"
+  },
+  {
+    "bean": "seed_spirit_swarm",
+    "korean": "씨앗 정령 무리",
+    "concept_name": "씨앗 정령 군락",
+    "family": "spawn",
+    "class_name": "SeedSpiritSwarmMagic",
+    "parent": "AbstractSwarmSpawnMagic",
+    "primary": "SeedSpirit",
+    "components": [],
+    "secondary_prefabs": [],
+    "parameter_keys": [],
+    "object_keys": [
+      "SEED_SPIRIT"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 독립 개체로 전장에 합류하는 씨앗 정령 군락.",
+    "concept_description": "씨앗 정령 군락은 세계수 풀 정령의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/SeedSpiritSwarmMagic.java",
+    "initializer_source": null
+  },
+  {
+    "bean": "storm_rider",
+    "korean": "폭풍 기수",
+    "concept_name": "폭풍갈기 기수",
+    "family": "spawn",
+    "class_name": "StormRiderMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "StormRider",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "PlayerPrioMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL"
+    ],
+    "object_keys": [
+      "STORM_RIDER"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 독립 개체로 전장에 합류하는 폭풍갈기 기수.",
+    "concept_description": "폭풍갈기 기수은 세계수 바람 정령의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/StormRiderMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/StormRiderPrefabInitializer.java"
+  },
+  {
+    "bean": "thunder_spirit",
+    "korean": "번개 정령",
+    "concept_name": "뇌광 정령",
+    "family": "spawn",
+    "class_name": "ThunderSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "ThunderSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "ProjectileRangeAttackMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "THUNDER_SPIRIT"
+    ],
+    "behavior": [
+      "사거리 안 대상을 향해 투사체를 발사한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 독립 개체로 전장에 합류하는 뇌광 정령.",
+    "concept_description": "뇌광 정령은 세계수 전기 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/ThunderSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/ThunderSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "tornado_strike",
+    "korean": "토네이도",
+    "concept_name": "회오리 정령",
+    "family": "spawn",
+    "class_name": "TornadoStrikeMagic",
+    "parent": "AbstractExplosionMagic",
+    "primary": "TornadoStrike",
+    "components": [
+      "CircleCollider",
+      "Tornado",
+      "TimedSelfDestroyer"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "DURATION"
+    ],
+    "object_keys": [
+      "TORNADO_STRIKE"
+    ],
+    "behavior": [
+      "회오리 이동과 충돌 효과를 수행한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 독립 개체로 전장에 합류하는 회오리 정령.",
+    "concept_description": "회오리 정령은 세계수 바람 정령의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/TornadoStrikeMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/TornadoStrikePrefabInitializer.java"
+  },
+  {
+    "bean": "tree_golem",
+    "korean": "나무 골렘",
+    "concept_name": "고목 수호자",
+    "family": "spawn",
+    "class_name": "TreeGolemMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "TreeGolem",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "MeleeAttackMob",
+      "SelfHealer",
+      "PathSpawner",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [
+      "LeafField"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "HEAL_AMOUNT",
+      "HEAL_INTERVAL"
+    ],
+    "object_keys": [
+      "TREE_GOLEM"
+    ],
+    "behavior": [
+      "근접 거리까지 접근해 공격한다.",
+      "주기적으로 자신 또는 아군을 회복한다.",
+      "이동 경로를 따라 원소 지대를 남긴다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 독립 개체로 전장에 합류하는 고목 수호자.",
+    "concept_description": "고목 수호자은 세계수 풀 정령의 소환 마법이다. 이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다. 전투에서는 지원·근접 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 특수 행동으로 이동 경로에 원소 장판 생성·자가 회복을 수행한다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "지상 이동형",
+    "mobility_evidence": "이동 AI가 지면 경로와 `RigidBody` 속도를 사용한다.",
+    "combat_role": "지원·근접 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "이동 경로에 원소 장판 생성·자가 회복",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/TreeGolemMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/third/TreeGolemPrefabInitializer.java"
+  },
+  {
+    "bean": "vine_spirit",
+    "korean": "덩굴 정령",
+    "concept_name": "덩굴 추적자",
+    "family": "spawn",
+    "class_name": "VineSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "VineSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "EffectProvideProjectileRangeAttackMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "VINE_SPIRIT"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "세계수 풀 정령",
+    "art_rule": "잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "concept": "세계수 풀 정령의 독립 개체로 전장에 합류하는 덩굴 추적자.",
+    "concept_description": "덩굴 추적자은 세계수 풀 정령의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상·공중 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 잎·씨앗·덩굴의 겹친 컷페이퍼 형태로 생장 방향을 보여준다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "지상·공중",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/VineSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/third/VineSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "water_slime_swarm",
+    "korean": "물 슬라임 무리",
+    "concept_name": "물방울 생존자 무리",
+    "family": "spawn",
+    "class_name": "WaterSlimeSwarmMagic",
+    "parent": "AbstractSwarmSpawnMagic",
+    "primary": "WaterSlime",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "Slime",
+      "PathSpawner",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [
+      "WaterField"
+    ],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL"
+    ],
+    "object_keys": [
+      "WATER_SLIME"
+    ],
+    "behavior": [
+      "이동 경로를 따라 원소 지대를 남긴다."
+    ],
+    "faction": "물 슬라임",
+    "art_rule": "물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "concept": "물 슬라임의 독립 개체로 전장에 합류하는 물방울 생존자 무리.",
+    "concept_description": "물방울 생존자 무리은 물 슬라임의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 특수 행동으로 이동 경로에 원소 장판 생성을 수행한다. 시각적으로는 물질적인 반투명 종이층과 둥근 체적. 세계수 정령과 구분한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "이동 경로에 원소 장판 생성",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/WaterSlimeSwarmMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/water/WaterSlimePrefabInitializer.java"
+  },
+  {
+    "bean": "wind_spirit",
+    "korean": "바람 정령",
+    "concept_name": "질풍 정령",
+    "family": "spawn",
+    "class_name": "WindSpiritMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "WindSpirit",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "SelfDestructMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "WIND_SPIRIT"
+    ],
+    "behavior": [
+      "대상에게 접근한 뒤 자폭한다."
+    ],
+    "faction": "세계수 바람 정령",
+    "art_rule": "넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "concept": "세계수 바람 정령의 독립 개체로 전장에 합류하는 질풍 정령.",
+    "concept_description": "질풍 정령은 세계수 바람 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 자폭 공격 역할을 맡으며, 공중 대상을 접근 후 자폭 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "자폭 공격",
+    "targeting": "공중",
+    "attack_shape": "접근 후 자폭",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/WindSpiritMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/wind/WindSpiritPrefabInitializer.java"
+  },
+  {
+    "bean": "zap_mouse",
+    "korean": "찌릿쥐",
+    "concept_name": "찌릿꼬리쥐",
+    "family": "spawn",
+    "class_name": "ZapMouseMagic",
+    "parent": "AbstractSingleSpawnMagic",
+    "primary": "ZapMouse",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "CowardMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "DETECTION_RANGE",
+      "PANIC_DURATION"
+    ],
+    "object_keys": [
+      "ZAP_MOUSE"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 독립 개체로 전장에 합류하는 찌릿꼬리쥐.",
+    "concept_description": "찌릿꼬리쥐은 세계수 전기 정령의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "이동 없음",
+    "mobility_evidence": "소스에서 지속 이동 AI를 확인하지 못했다.",
+    "combat_role": "전투 개체",
+    "targeting": "지상",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/ZapMouseMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/lightning/ZapMousePrefabInitializer.java"
+  },
+  {
+    "bean": "thunder_bird_swarm",
+    "korean": "천둥 새 무리",
+    "concept_name": "천둥새 편대",
+    "family": "spawn",
+    "class_name": "thunderBirdSwarmMagic",
+    "parent": "AbstractSwarmSpawnMagic",
+    "primary": "ThunderBird",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "ThunderBirdMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "DAMAGE",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "THUNDER_BIRD"
+    ],
+    "behavior": [
+      "천둥 새 전용 돌진·공격 행동을 수행한다."
+    ],
+    "faction": "세계수 전기 정령",
+    "art_rule": "세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "concept": "세계수 전기 정령의 독립 개체로 전장에 합류하는 천둥새 편대.",
+    "concept_description": "천둥새 편대은 세계수 전기 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 세계수에서 갈라진 전기 생명과 각진 전격 파편을 사용한다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "원거리 공격",
+    "targeting": "지상",
+    "attack_shape": "단일 표적",
+    "lifecycle": "HP 소진 시 파괴",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/thunderBirdSwarmMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/third/ThunderBirdPrefabInitializer.java"
+  }
+]
