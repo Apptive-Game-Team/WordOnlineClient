@@ -30,11 +30,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7043489956950792422, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.52
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7043489956950792422, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.57
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7043489956950792422, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_LocalPosition.z
@@ -70,11 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7632411676289019041, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.01
+      value: 1.35
       objectReference: {fileID: 0}
     - target: {fileID: 7632411676289019041, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.92
+      value: 2.56
       objectReference: {fileID: 0}
     - target: {fileID: 8084839117581087706, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_AnchorMax.x
@@ -88,9 +88,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: GiantVine
       objectReference: {fileID: 0}
+    - target: {fileID: 8470645239521004246, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.71
+      objectReference: {fileID: 0}
     - target: {fileID: 8690925198442129744, guid: 6412a5c23ab1bc14c8478110cea2b4af, type: 3}
       propertyPath: m_Sprite
-      value:
+      value: 
       objectReference: {fileID: 21300000, guid: 2d7e23c042e24354488fb822d68e78de, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -121,8 +125,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd90c7abb3534869ae221a3a28779995, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   targetTransform: {fileID: 1667181112348000304}
   startScaleMultiplier: 0.15
   duration: 0.28
