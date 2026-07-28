@@ -36,6 +36,7 @@ namespace GameScene.Object
             WaterSlimeSpitPresenter.Attach(servedObject, createdObjectDto.type);
             MagmaSpiritSpawnPresenter.Attach(servedObject, createdObjectDto.type, playSpawnPresentation);
             AerialLightningDeathPresenter.Attach(servedObject, createdObjectDto.type);
+            UnitDeathFadePresenter.Attach(servedObject, createdObjectDto.type);
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
             SetAudioSourceVolume(spawnedObject);
