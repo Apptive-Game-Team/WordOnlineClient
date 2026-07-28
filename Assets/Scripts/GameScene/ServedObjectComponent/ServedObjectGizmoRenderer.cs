@@ -11,8 +11,10 @@ namespace GameScene.ServedObjectComponent
     {
         private const int GizmoCircleSegments = 40;
         private const float GizmoLineWidth = 0.035f;
-        private const float GizmoZOffsetStep = 0.01f;
+        private const float GizmoSurfaceOffsetStep = 0.01f;
 
+        private static readonly Quaternion GizmoPlaneRotation = Quaternion.Euler(45f, 0f, 0f);
+        private static readonly Vector3 GizmoSurfaceNormal = GizmoPlaneRotation * Vector3.back;
         private static Material _gizmoLineMaterial;
 
         [SerializeField] private ServedObject servedObject;
@@ -112,7 +114,7 @@ namespace GameScene.ServedObjectComponent
             lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lineRenderer.receiveShadows = false;
             lineRenderer.textureMode = LineTextureMode.Stretch;
-            lineRenderer.alignment = LineAlignment.TransformZ;
+            lineRenderer.alignment = LineAlignment.View;
             lineRenderer.sharedMaterial = GetGizmoLineMaterial();
             ApplyGizmoSorting(lineRenderer, index);
             lineRenderer.startColor = GetGizmoColor(gizmo.category);
@@ -193,7 +195,7 @@ namespace GameScene.ServedObjectComponent
 
         private static Vector3[] BuildGizmoPoints(Gizmo gizmo, int index)
         {
-            Vector3 center = gizmo.relativePosition + Vector3.forward * (index * GizmoZOffsetStep);
+            Vector3 center = gizmo.relativePosition + GizmoSurfaceNormal * (index * GizmoSurfaceOffsetStep);
             if (string.Equals(gizmo.type, "Box", StringComparison.OrdinalIgnoreCase))
             {
                 return BuildBoxPoints(center, gizmo.boxSize);
@@ -211,8 +213,8 @@ namespace GameScene.ServedObjectComponent
             {
                 float angle = Mathf.PI * 2f * i / GizmoCircleSegments;
                 float x = Mathf.Cos(angle) * safeRadius;
-                float y = Mathf.Sin(angle) * safeRadius;
-                points[i] = center + new Vector3(x, y, 0f);
+                float depth = Mathf.Sin(angle) * safeRadius;
+                points[i] = center + ProjectToGizmoPlane(x, depth);
             }
 
             return points;
@@ -221,20 +223,20 @@ namespace GameScene.ServedObjectComponent
         private static Vector3[] BuildBoxPoints(Vector3 center, Vector3 boxSize)
         {
             WDebug.Log($"[Gizmo] Building box points for gizmo at {center} with size {boxSize}");
-            Vector3 safeSize = new Vector3(
-                Mathf.Max(boxSize.x, 0.1f),
-                Mathf.Max(boxSize.y, 0.1f),
-                Mathf.Max(boxSize.z, 0f)
-            );
-
-            Vector3 half = safeSize * 0.5f;
+            float halfWidth = Mathf.Max(boxSize.x, 0.1f) * 0.5f;
+            float halfDepth = Mathf.Max(boxSize.z, 0.1f) * 0.5f;
             return new[]
             {
-                center + new Vector3(-half.x, -half.y, 0f),
-                center + new Vector3(-half.x, half.y, 0f),
-                center + new Vector3(half.x, half.y, 0f),
-                center + new Vector3(half.x, -half.y, 0f),
+                center + ProjectToGizmoPlane(-halfWidth, -halfDepth),
+                center + ProjectToGizmoPlane(-halfWidth, halfDepth),
+                center + ProjectToGizmoPlane(halfWidth, halfDepth),
+                center + ProjectToGizmoPlane(halfWidth, -halfDepth),
             };
+        }
+
+        private static Vector3 ProjectToGizmoPlane(float x, float depth)
+        {
+            return GizmoPlaneRotation * new Vector3(x, depth, 0f);
         }
 
         private void OnDestroy()

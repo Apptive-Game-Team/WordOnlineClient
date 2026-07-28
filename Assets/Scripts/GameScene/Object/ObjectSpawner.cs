@@ -34,12 +34,11 @@ namespace GameScene.Object
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             AquaArcherAttackPresenter.Attach(servedObject, createdObjectDto.type);
             AerialLightningDeathPresenter.Attach(servedObject, createdObjectDto.type);
-            PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
-            
             SetAudioSourceVolume(spawnedObject);
             LegacySfxMuter.Mute(spawnedObject);
 
             servedObject.SetMaster(createdObjectDto.master);
+            PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             servedObject.id = createdObjectDto.id;
 #if UNITY_EDITOR
             servedObject.SetGizmos(createdObjectDto.gizmos);

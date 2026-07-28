@@ -35,7 +35,7 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
-        private ServedObjectHpBar _servedObjectHpBar;
+        private ServedObjectWorldUI _servedObjectWorldUI;
 #if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
 #endif
@@ -48,6 +48,7 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDestroyed;
         public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
+        public event Action OnMasterChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
@@ -62,6 +63,7 @@ namespace GameScene.ServedObjectComponent
             EnsureSpriteRenderer();
             if (_spriteRenderer == null)
             {
+                OnMasterChanged?.Invoke();
                 return;
             }
 
@@ -73,10 +75,15 @@ namespace GameScene.ServedObjectComponent
                 if (transform.rotation.eulerAngles.y == 0)
                 {
                     _spriteRenderer.flipX = true;
-                    return;
                 }
-                gameObject.transform.Rotate(0, 180, 0);
+                else
+                {
+                    gameObject.transform.Rotate(0, 180, 0);
+                }
             }
+
+            OnMasterChanged?.Invoke();
+            _servedObjectWorldUI?.Initialize();
         }
 
         private void OnEnable()
@@ -253,6 +260,7 @@ namespace GameScene.ServedObjectComponent
 
             master = updatedMaster;
             UpdateTeamIndicator();
+            OnMasterChanged?.Invoke();
         }
 
         private void EnsureSpriteRenderer()
@@ -302,17 +310,17 @@ namespace GameScene.ServedObjectComponent
 
         private bool TryUpdateHpBarTeamIndicator()
         {
-            if (_servedObjectHpBar == null)
+            if (_servedObjectWorldUI == null)
             {
-                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+                _servedObjectWorldUI = GetComponentInChildren<ServedObjectWorldUI>();
             }
 
-            if (_servedObjectHpBar == null)
+            if (_servedObjectWorldUI == null)
             {
                 return false;
             }
 
-            _servedObjectHpBar.SetObjectIndicatorMaster(master);
+            _servedObjectWorldUI.SetObjectIndicatorMaster(master);
             return true;
         }
 

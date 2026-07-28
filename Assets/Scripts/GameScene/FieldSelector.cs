@@ -132,10 +132,16 @@ namespace GameScene
 
         private static ServedObject FindPlayerObject(string master)
         {
-            PlayerNameSetter[] playerNameSetters = FindObjectsByType<PlayerNameSetter>(FindObjectsSortMode.None);
-            foreach (PlayerNameSetter playerNameSetter in playerNameSetters)
+            ServedObjectWorldUI[] worldUis =
+                FindObjectsByType<ServedObjectWorldUI>(FindObjectsSortMode.None);
+            foreach (ServedObjectWorldUI worldUi in worldUis)
             {
-                ServedObject servedObject = playerNameSetter.GetComponent<ServedObject>();
+                ServedObject servedObject = worldUi.Owner;
+                if (!worldUi.ShowsPlayerName)
+                {
+                    continue;
+                }
+
                 if (servedObject != null && servedObject.GetMaster() == master)
                 {
                     return servedObject;

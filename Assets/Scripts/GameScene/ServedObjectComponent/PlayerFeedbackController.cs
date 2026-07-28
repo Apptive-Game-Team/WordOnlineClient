@@ -1,5 +1,4 @@
 using System.Linq;
-using GameScene.Player;
 using Global;
 using UnityEngine;
 
@@ -24,9 +23,10 @@ namespace GameScene.ServedObjectComponent
     
         private GameObject GetPlayerObject()
         {
-            return FindObjectsByType<PlayerNameSetter>(FindObjectsSortMode.None)
-                .Where(o => o.GetComponent<ServedObject>() != null)
-                .Select(o => o.GetComponent<ServedObject>())
+            return FindObjectsByType<ServedObjectWorldUI>(FindObjectsSortMode.None)
+                .Where(worldUi => worldUi.ShowsPlayerName)
+                .Select(worldUi => worldUi.Owner)
+                .Where(servedObject => servedObject != null)
                 .Where(s => s.GetMaster().Equals(SceneContext.Me))
                 .Select(s => s.gameObject)
                 .FirstOrDefault();

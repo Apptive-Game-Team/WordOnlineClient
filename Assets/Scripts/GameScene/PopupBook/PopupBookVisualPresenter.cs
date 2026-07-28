@@ -14,8 +14,9 @@ namespace GameScene.PopupBook
         private Transform visualRoot;
         private Transform spawnPresentationPivot;
         private Camera worldCamera;
-        private Transform[] worldSpaceUiRoots;
-        private bool[] worldSpaceCanvasEnabledStates;
+        private ServedObjectWorldUI worldUi;
+        private bool worldUiEnabledState;
+        private bool hasWorldUiEnabledState;
         private Sequence spawnSequence;
 
         public static PopupBookVisualPresenter Attach(ServedObject servedObject)
@@ -61,8 +62,9 @@ namespace GameScene.PopupBook
             presenter.visualRoot = presenterTransform;
             presenter.spawnPresentationPivot = pivotTransform;
             presenter.worldCamera = Camera.main;
-            presenter.worldSpaceUiRoots = GetWorldSpaceUiRoots(servedObject);
+            presenter.worldUi = servedObject.GetComponentInChildren<ServedObjectWorldUI>(true);
             presenter.AlignWithCamera();
+            presenter.worldUi?.Initialize();
             return presenter;
         }
 
@@ -95,16 +97,6 @@ namespace GameScene.PopupBook
             currentSequence.OnKill(() => FinishSpawnPresentation(currentSequence));
         }
 
-        private void LateUpdate()
-        {
-            if (worldCamera == null)
-            {
-                worldCamera = Camera.main;
-            }
-
-            AlignWithCamera();
-        }
-
         private void OnDestroy()
         {
             StopSpawnPresentation();
@@ -118,19 +110,6 @@ namespace GameScene.PopupBook
             }
 
             visualRoot.rotation = worldCamera.transform.rotation;
-
-            if (worldSpaceUiRoots == null)
-            {
-                return;
-            }
-
-            foreach (Transform uiRoot in worldSpaceUiRoots)
-            {
-                if (uiRoot != null)
-                {
-                    uiRoot.rotation = worldCamera.transform.rotation;
-                }
-            }
         }
 
         private void SpawnBuildingDust()
@@ -179,52 +158,25 @@ namespace GameScene.PopupBook
 
         private void CaptureAndSetWorldSpaceUiEnabled(bool enabled)
         {
-            if (worldSpaceUiRoots == null)
+            if (worldUi == null)
             {
                 return;
             }
 
-            worldSpaceCanvasEnabledStates = new bool[worldSpaceUiRoots.Length];
-            for (int i = 0; i < worldSpaceUiRoots.Length; i++)
-            {
-                Transform uiRoot = worldSpaceUiRoots[i];
-                if (uiRoot == null)
-                {
-                    continue;
-                }
-
-                Canvas canvas = uiRoot.GetComponent<Canvas>();
-                if (canvas == null)
-                {
-                    continue;
-                }
-
-                worldSpaceCanvasEnabledStates[i] = canvas.enabled;
-                canvas.enabled = enabled;
-            }
+            worldUiEnabledState = worldUi.CanvasEnabled;
+            hasWorldUiEnabledState = true;
+            worldUi.SetCanvasEnabled(enabled);
         }
 
         private void RestoreWorldSpaceUiEnabled()
         {
-            if (worldSpaceUiRoots == null || worldSpaceCanvasEnabledStates == null)
+            if (worldUi == null || !hasWorldUiEnabledState)
             {
                 return;
             }
 
-            int count = Mathf.Min(worldSpaceUiRoots.Length, worldSpaceCanvasEnabledStates.Length);
-            for (int i = 0; i < count; i++)
-            {
-                if (worldSpaceUiRoots[i] != null)
-                {
-                    Canvas canvas = worldSpaceUiRoots[i].GetComponent<Canvas>();
-                    if (canvas != null)
-                    {
-                        canvas.enabled = worldSpaceCanvasEnabledStates[i];
-                    }
-                }
-            }
-
-            worldSpaceCanvasEnabledStates = null;
+            worldUi.SetCanvasEnabled(worldUiEnabledState);
+            hasWorldUiEnabledState = false;
         }
 
         private static float GetBottomOffset(Transform actualTransform, Vector3 originalLocalScale)
@@ -238,29 +190,5 @@ namespace GameScene.PopupBook
             return spriteRenderer.sprite.bounds.min.y * Mathf.Abs(originalLocalScale.y);
         }
 
-        private static Transform[] GetWorldSpaceUiRoots(ServedObject servedObject)
-        {
-            Canvas[] canvases = servedObject.GetComponentsInChildren<Canvas>(true);
-            int worldSpaceCanvasCount = 0;
-            foreach (Canvas canvas in canvases)
-            {
-                if (canvas.renderMode == RenderMode.WorldSpace)
-                {
-                    worldSpaceCanvasCount++;
-                }
-            }
-
-            Transform[] roots = new Transform[worldSpaceCanvasCount];
-            int index = 0;
-            foreach (Canvas canvas in canvases)
-            {
-                if (canvas.renderMode == RenderMode.WorldSpace)
-                {
-                    roots[index++] = canvas.transform;
-                }
-            }
-
-            return roots;
-        }
     }
 }
