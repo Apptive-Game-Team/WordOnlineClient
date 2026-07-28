@@ -66,16 +66,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2248884640906561088, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.64
+      value: 1.28
       objectReference: {fileID: 0}
     - target: {fileID: 2248884640906561088, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.47
+      value: 0.94
       objectReference: {fileID: 0}
     - target: {fileID: 3475341198290787986, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: df87da42603854463a161c38712fc3bd, type: 3}
+    - target: {fileID: 3875386937707293702, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.71
+      objectReference: {fileID: 0}
     - target: {fileID: 4133848519264727152, guid: 2a990eee1399a1c47b01ded454c8e12e, type: 3}
       propertyPath: m_Name
       value: ThunderBird
