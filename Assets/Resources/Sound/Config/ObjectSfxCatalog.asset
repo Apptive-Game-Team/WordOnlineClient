@@ -329,6 +329,10 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
+  - runtimeType: RockRemnant
+    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    intentionalSilent: 0
+    serverAlias: 0
   - runtimeType: RockRolling
     profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
     intentionalSilent: 0

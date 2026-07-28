@@ -136,8 +136,7 @@ namespace GameScene.ServedObjectComponent
                     break;
 
                 case "Attack":
-                    OnAttack?.Invoke();
-                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    PlayAttackPresentation();
                     break;
 
                 case "Damaged":
@@ -148,6 +147,12 @@ namespace GameScene.ServedObjectComponent
                     OnOtherStatus?.Invoke(status);
                     break;
             }
+        }
+
+        public void PlayAttackPresentation()
+        {
+            OnAttack?.Invoke();
+            DOTweenAction.SwingMobAttack(GetActualTransform());
         }
         
         public Transform GetActualTransform()

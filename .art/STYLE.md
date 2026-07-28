@@ -57,6 +57,13 @@ files were removed so they cannot be mixed into generation prompts.
 - Max size by tier, aspect preserved, then trimmed tight:
   small `128x128`, middle `192x192`, big `256x256`.
 
+Animation frames and aura assets follow `.art/ANIMATION-ASSETS.md`. Numeric
+state names such as `MagmaSpiritAttacking` identify attack frames, not separate units. Keep
+body scale, PPU, Bottom Center pivot, and ground contact invariant across frames.
+Generate aura as a separate transparent effect asset, never baked into the body.
+`CloudDragon` uses a dedicated spherical **water** aura (`cloud.png`), not the
+shared wind aura; keep its center quiet enough for the body silhouette to read.
+
 ```bash
 magick input.png -resize 256x256 -trim +repage output.png
 ```
@@ -146,7 +153,7 @@ on-concept (dark crimson, angular, tribal) and whose technique is clean — use 
 as the provisional shape/palette reference until a real creature anchor is made.
 
 Redesign list: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`, `FireTadpole`,
-`FireChildSpirit`, `MagmaSpirit`, `MagmaSpirit2`, `MagmaExplosion`, `Crater`,
+`FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`, `MagmaExplosion`, `Crater`,
 `FireShot`, `RallyingTorch`.
 
 `MagmaSpirit` and `Crater` already have the right concept; only their technique
