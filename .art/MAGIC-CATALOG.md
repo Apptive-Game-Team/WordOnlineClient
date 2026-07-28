@@ -69,7 +69,7 @@ MiniRock에서 장로까지 이어지는 돌 생명체 부족. 인간의 석조 
 |---|---|---|
 | 불의 정령 | `FireSpirit` | 하급 뿔 악마 |
 | 불씨 정령 무리 | `EmberSpiritSwarm` | 작은 악마병 무리 |
-| 용암 정령 | `MagmaSpirit`, `MagmaSpirit2` | 갑각이 갈라진 중갑 악마 |
+| 용암 갑각 악마 | `MagmaSpirit`, `MagmaSpiritAttacking` | 갑각이 갈라진 중갑 악마 |
 | 불 대왕 정령 | `FireLordSpirit` | 군단 지휘관 |
 | 로컬 이름 없음 | `FireChildSpirit` | 어린 정령이 아닌 하급 악마 |
 | 로컬 이름 없음 | `FireTadpole` | 악마 유충·사냥개 계열 |
