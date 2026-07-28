@@ -11,7 +11,7 @@ Magic Book에서 소환형 마법을 선택하면 실제 게임 프리팹의 소
 
 ## Acceptance Criteria
 
-- `Resources/Prefabs/<serverName>`이 존재하면 기존 프리팹을 프리뷰에 사용한다.
+- `Resources/Prefabs/<resourceName>`이 존재하면 기존 프리팹을 프리뷰에 사용한다.
 - `MagmaSpirit` 소환 프레임과 공격 프레임이 기존 유지 시간으로 재생된다.
 - `AquaArcher` 공격 프레임과 프리팹 효과음이 기존 컴포넌트를 통해 재생된다.
 - 프리뷰 클릭 시 기존 공격 이벤트 경로가 다시 실행된다.
@@ -37,7 +37,7 @@ Magic Book에서 소환형 마법을 선택하면 실제 게임 프리팹의 소
 
 - Client만 변경한다.
 - 서버 API, DTO, 리소스 이름 계약은 변경하지 않는다.
-- `CombinedMagicData.serverName`과 동일한 프리팹이 존재할 때만 프리뷰를 활성화한다.
+- `CombinedMagicData.resourceName`과 동일한 프리팹이 존재할 때만 프리뷰를 활성화한다.
 
 ## Approach
 
@@ -47,7 +47,7 @@ Magic Book에서 소환형 마법을 선택하면 실제 게임 프리팹의 소
 - [x] Compatibility and regression validation
 - [x] Release order and rollback check
 
-`MagicInfo`에 프리팹 프리뷰 수명주기를 위임하는 컴포넌트를 붙인다. 컴포넌트는 선택한 `serverName` 프리팹을 격리된 레이어에 생성하고 전용 직교 카메라로 기존 이미지 영역에 렌더한다. 전투 동작 스크립트는 비활성화하되 `ServedObject`, 기존 공격 프레임/효과음 구독자, 공용 소환 프레젠터만 유지한다. 공격 재생은 `ServedObject`에 추가하는 작은 공개 메서드가 기존 `OnAttack`과 스윙 코드를 호출하게 하며, 실제 전투 상태 처리도 같은 메서드를 사용한다.
+`MagicInfo`에 프리팹 프리뷰 수명주기를 위임하는 컴포넌트를 붙인다. 컴포넌트는 선택한 `resourceName` 프리팹을 격리된 레이어에 생성하고 전용 직교 카메라로 기존 이미지 영역에 렌더한다. 전투 동작 스크립트는 비활성화하되 `ServedObject`, 기존 공격 프레임/효과음 구독자, 공용 소환 프레젠터만 유지한다. 공격 재생은 `ServedObject`에 추가하는 작은 공개 메서드가 기존 `OnAttack`과 스윙 코드를 호출하게 하며, 실제 전투 상태 처리도 같은 메서드를 사용한다.
 
 ## Validation
 
@@ -67,7 +67,7 @@ Unity 2022.3.34f1 배치 컴파일이 성공했다. 실제 Magic Book의 클릭�
 
 ## Risks & Rollback
 
-- 프리팹의 전투 전용 `MonoBehaviour.Start`가 게임 씬 싱글턴을 참조할 수 있다. 생성 직후 허용 목록 외 컴포넌트를 비활성화해 격리한다.
+- 프리팹의 전투 전용 `MonoBehaviour.Start`가 게임 씬 싱글턴을 참조할 수 있다. 프리뷰 전용 레이어와 비활성화 가능한 월드 UI로 격리한다.
 - 프리팹 크기 편차가 크다. 활성 `SpriteRenderer` bounds로 직교 카메라를 자동 맞춘다.
 - 롤백은 이 이슈의 단일 Client 커밋을 revert한다.
 
@@ -79,4 +79,4 @@ Unity 2022.3.34f1 배치 컴파일이 성공했다. 실제 Magic Book의 클릭�
 
 ## Open Questions
 
-- 없음. 최초 범위는 프리팹 이름이 마법 `serverName`과 일치하는 소환형 마법으로 제한한다.
+- 없음. 최초 범위는 프리팹 이름이 마법 `resourceName`과 일치하는 소환형 마법으로 제한한다.

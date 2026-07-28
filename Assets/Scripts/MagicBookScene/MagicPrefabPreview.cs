@@ -43,12 +43,13 @@ namespace MagicBookScene
         {
             ClearPreview();
 
-            if (data == null || string.IsNullOrWhiteSpace(data.serverName))
+            if (data == null || string.IsNullOrWhiteSpace(data.resourceName))
             {
                 return false;
             }
 
-            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{data.serverName}");
+            string prefabName = data.resourceName;
+            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
             if (prefab == null || prefab.GetComponentInChildren<SpriteRenderer>(true) == null)
             {
                 return false;
@@ -66,13 +67,13 @@ namespace MagicBookScene
                 servedObject = previewObject.AddComponent<ServedObject>();
             }
 
-            AquaArcherAttackPresenter.Attach(servedObject, data.serverName);
-            MagmaSpiritSpawnPresenter.Attach(servedObject, data.serverName, true);
-            ServedObjectSfxController.Attach(servedObject, data.serverName, true);
+            AquaArcherAttackPresenter.Attach(servedObject, prefabName);
+            MagmaSpiritSpawnPresenter.Attach(servedObject, prefabName, true);
+            ServedObjectSfxController.Attach(servedObject, prefabName, true);
 
             PopupBookVisualPresenter popupPresenter = PopupBookVisualPresenter.Attach(servedObject);
             popupPresenter?.PlaySpawnPresentation(
-                SpawnPresentationTypeCatalog.IsBuilding(data.serverName));
+                SpawnPresentationTypeCatalog.IsBuilding(prefabName));
 
             FitCamera();
             fallbackImage.enabled = false;
