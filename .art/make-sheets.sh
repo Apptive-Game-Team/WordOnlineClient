@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Regenerate art contact sheets.
-#   .art/sheets/anchors.png  - frozen style anchors (feed these to image generation)
+#   .art/sheets/master-v2-anchors.png - canonical style anchors
 #   .art/sheets/sprites.png  - every live magic sprite (drift review)
 #   .art/sheets/concept.png  - concept art variants, if any exist (style selection)
 set -euo pipefail
@@ -11,9 +11,9 @@ FONT=/System/Library/Fonts/Helvetica.ttc
 mkdir -p .art/sheets
 
 magick montage -font "$FONT" -pointsize 12 -fill white \
-  .art/anchors/*.png \
-  -background '#303030' -tile 6x -geometry 160x160+8+8 -label '%t' \
-  .art/sheets/anchors.png
+  .art/anchors/master-v2/*.png \
+  -background '#303030' -tile 5x -geometry 280x280+8+8 -label '%t' \
+  .art/sheets/master-v2-anchors.png
 
 magick montage -font "$FONT" -pointsize 10 -fill white \
   Assets/Resources/Game/sprites/*.png \

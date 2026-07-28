@@ -34,11 +34,11 @@ GitHub Issue: [#394](https://github.com/Apptive-Game-Team/WordOnlineClient/issue
 | 경로 | 내용 |
 |---|---|
 | `.art/STYLE.md` | 공통 렌더링 기법 + 진영 5종 형태언어 + 팔레트 |
-| `.art/ANCHORS.md` | 앵커 18장 선정 근거, 제외 목록, 미결 항목 |
+| `.art/ANCHORS.md` | 정본 master-v2 앵커 선정 근거와 변경 규칙 |
 | `.art/CONCEPT-BRIEF.md` | 컨셉아트 생성 프롬프트 (지옥불 3안 포함) |
-| `.art/anchors/` | 동결 스냅샷 18장 |
+| `.art/anchors/master-v2/` | 동결된 유일한 정본 앵커 세트 |
 | `.art/make-sheets.sh` | 콘택트 시트 생성 스크립트 |
-| `.art/sheets/` | `anchors.png`, `sprites.png` |
+| `.art/sheets/` | `master-v2-anchors.png`, `sprites.png` |
 
 작업 시작 전 `.art/STYLE.md`와 `.art/ANCHORS.md`를 먼저 읽을 것. 이 핸드오프는
 요약일 뿐이고 규칙의 정본은 그 두 파일이다.
@@ -59,7 +59,7 @@ GitHub Issue: [#394](https://github.com/Apptive-Game-Team/WordOnlineClient/issue
 `make-game-art`가 전체 아트 스타일, 생성, 승인, 앵커 승격, Sites 비교를 소유한다.
 `make-magic`은 로컬라이제이션과 서버 파생 이름만 소유하고 이미지 작업을 위임한다.
 
-1. **참조 대상을 `.art/anchors/`로 고정.**
+1. **참조 대상을 `.art/anchors/master-v2/`로 고정.**
    `Assets/Resources/Game/sprites/*.png`를 참조하라는 현재 지시를 바꾼다. 라이브
    스프라이트는 재작업 대상이 섞여 있어 참조원으로 부적합하다.
 
@@ -98,8 +98,8 @@ output.png`), 투명배경, 우향, `Assets/Resources/Game/sprites/<PascalCase>.
 ## 이미지 생성 진행 상태
 
 **스타일 A — 2.5D 컷페이퍼를 2026-07-28 정본으로 확정했다.**
-정본은 `.art/anchors/master-v2/`이며, 기존 `.art/anchors/`는 피사체 정체성·변경
-이력 확인용 레거시다. 렌더링 기법은 반드시 master-v2가 우선한다.
+정본은 `.art/anchors/master-v2/` 하나뿐이다. 구 앵커는 생성기가 잘못 참조하지
+않도록 제거했다. 과거 피사체 정체성은 Git 이력이나 라이브 에셋에서 확인한다.
 
 완료된 master-v2 앵커:
 
@@ -125,8 +125,8 @@ output.png`), 투명배경, 우향, `Assets/Resources/Game/sprites/<PascalCase>.
 
 ## 하지 말 것
 
-- `.art/anchors/`와 `.art/anchors/master-v2/` 안의 파일을 수정·재생성·교체하지
-  말 것. 동결이 이 구조의 전제다.
+- `.art/anchors/master-v2/` 안의 파일을 수정·재생성·교체하지 말 것. 동결이 이
+  구조의 전제다.
 - `.art/`를 `Assets/` 아래로 옮기지 말 것. Unity가 임포트해 빌드 용량이 는다.
 - `Assets/Scripts/Data/Magic/LocalCombinedMagicData.cs`를 건드리지 말 것.
   마법 데이터는 서버 파생이다.
@@ -142,7 +142,8 @@ output.png`), 투명배경, 우향, `Assets/Resources/Game/sprites/<PascalCase>.
 ```
 
 - `.art/sheets/` 3종(또는 컨셉 없을 시 2종)이 정상 생성된다.
-- `.claude/skills/make-magic/SKILL.md`가 `.art/STYLE.md`와 `.art/anchors/`를
+- `.claude/skills/make-magic/SKILL.md`가 `.art/STYLE.md`와
+  `.art/anchors/master-v2/`를
   명시적으로 참조하고, 라이브 스프라이트를 참조원으로 지시하지 않는다.
 - 스킬 문서 안에 `.art/STYLE.md`와 모순되는 스타일 규칙이 중복 서술로 남아 있지
   않다.

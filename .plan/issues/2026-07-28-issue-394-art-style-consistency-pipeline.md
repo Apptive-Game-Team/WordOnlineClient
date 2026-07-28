@@ -17,7 +17,7 @@
 
 - 게임플레이 / 서버 데이터 / 프리팹 로직 변경 없음. 순수 아트 자산과 문서 작업.
 - 전체 아트 리마스터 아님. 진영 정체성을 깨는 스프라이트만 재작업한다.
-- 이미지 생성 결과는 `.art/concept/`와 `.art/anchors/`에 저장하고, 비교 결과는
+- 이미지 생성 결과는 `.art/concept/`와 `.art/anchors/master-v2/`에 저장하고, 비교 결과는
   WordOnline art-direction Site에 누적 게시한다.
 
 ## Context / Constraints
@@ -64,7 +64,7 @@
 | `.art/STYLE.md` | 공통 렌더링 기법 + 진영별 형태언어 + 팔레트 |
 | `.art/ANCHORS.md` | 앵커 선정 근거, 제외 목록, 미결 항목 |
 | `.art/CONCEPT-BRIEF.md` | 컨셉아트 생성 프롬프트 세트 |
-| `.art/anchors/` | 동결 스냅샷 18장 |
+| `.art/anchors/master-v2/` | 동결된 유일한 정본 앵커 세트 |
 | `.art/make-sheets.sh` | 콘택트 시트 생성 |
 | `.art/sheets/` | 생성된 시트 |
 
@@ -74,7 +74,7 @@
       진영별 팔레트 추출
 - [x] **Step 1: 문서화** — `.art/STYLE.md`, `.art/ANCHORS.md`,
       `.art/CONCEPT-BRIEF.md` 작성
-- [x] **Step 2: 앵커 동결** — `.art/anchors/` 18장, `make-sheets.sh`
+- [x] **Step 2: 구 앵커 제거** — 레거시 18장 제거, master-v2만 유지
 - [x] **Step 3: 지옥불 컨셉아트 생성 및 master style 선정**
   - [x] `.art/CONCEPT-BRIEF.md` Priority 1의 3안(Molten primitive / Horned demon /
     Ash wraith) 생성
@@ -133,7 +133,8 @@
 ## Risks & Rollback
 
 - **Risks:**
-  - 앵커를 나중에 수정하면 스타일 기준선 전체가 이동한다. `.art/anchors/`는 동결
+  - 앵커를 나중에 수정하면 스타일 기준선 전체가 이동한다.
+    `.art/anchors/master-v2/`는 동결
     유지가 전제다.
   - 불 세트 재작업은 플레이어가 익숙한 유닛의 외형을 바꾼다. 가독성 회귀 가능.
   - 컨셉아트를 이미지 참조로 그대로 투입하면 배경·프레임·멀티뷰 구도까지 복제된다.

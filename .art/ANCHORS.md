@@ -13,9 +13,10 @@ references the *most recent* art, style error compounds — generation N inherit
 every drift from N-1. Anchors break that chain: every generation references this
 fixed set, never the latest output.
 
-**Do not regenerate, retouch, or replace files in `.art/anchors/`.** Changing an
-anchor re-bases the whole style. If an anchor is genuinely wrong, that is a
-deliberate style change — decide it explicitly, then re-derive the affected art.
+**Do not regenerate, retouch, or replace files in
+`.art/anchors/master-v2/`.** Changing an anchor re-bases the whole style. If an
+anchor is genuinely wrong, that is a deliberate style change — decide it
+explicitly, then re-derive the affected art.
 
 The copies here are frozen snapshots. The live sprites of the same name under
 `Assets/Resources/Game/sprites/` may be edited independently; the anchor copy is
@@ -23,9 +24,9 @@ the one that defines style.
 
 ## Master v2 — canonical
 
-Selected on 2026-07-28. This set overrides legacy anchors for rendering
-technique. Legacy anchors below remain useful only for subject identity,
-silhouette history, and faction context.
+Selected on 2026-07-28. This is the only production anchor set. Removed legacy
+sprites must not be restored or used as generation references; inspect live
+assets only when historical subject identity is required.
 
 | Role | Anchor |
 |---|---|
@@ -46,57 +47,6 @@ Rules:
 - Never edit these files in place. Propose a new versioned master set instead.
 - The transparent single-subject anchors have no baked contact shadow.
 
-## The set
-
-18 legacy sprites. They now define subject history and faction language, not
-canonical rendering technique.
-
-| Faction | Anchors |
-|---|---|
-| Spirits — lightning | `ThunderSpirit`, `ZapMouse` |
-| Spirits — nature | `SeedSpiritSwarm`, `VineSpirit`, `LifeTree`, `HealingTotem`, `ManaWell` |
-| Spirits — wind | `WindSpirit`, `CloudDragon`, `WindTotem` |
-| Water slimes | `AquaArcher`, `BubbleSpirit`, `WaterSlimeSwarm`, `TideCall` |
-| Rock golems | `RockGolem`, `RockMage` |
-| Humans | `Cannon`, `ElectricTower` |
-| Hellfire legion | **none — see below** |
-
-Archetype coverage: humanoid (`AquaArcher`, `RockMage`), spirit blob
-(`SeedSpiritSwarm`, `BubbleSpirit`), beast (`ZapMouse`, `CloudDragon`), heavy
-unit (`RockGolem`), building (`HealingTotem`, `WindTotem`), machine (`Cannon`,
-`ElectricTower`), field (`ManaWell`), pure effect (`TideCall`).
-
-## Hellfire legion has no anchor
-
-Lore: the hellfire dimension sends demons, explicitly **not spirits**. Every
-shipped fire sprite contradicts this — `FireSpirit`, `EmberSpiritSwarm`,
-`FireLordSpirit` and `FireTadpole` are round blobs with large happy eyes,
-structurally identical to the water and nature spirits.
-
-So the entire fire set is a redesign target, and nothing in it can serve as an
-anchor. `FrenzyTotem` is the provisional shape/palette reference — dark crimson,
-angular, tribal, and cleanly rendered — but it is a totem, not a creature.
-
-`FireSpirit` and `EmberSpiritSwarm` were briefly in this set and were removed
-once the faction split was established.
-
-Generate a hellfire creature anchor first (`CONCEPT-BRIEF.md`, Priority 1), then
-promote it here.
-
-## Deliberately excluded
-
-| Sprite | Reason |
-|---|---|
-| All fire sprites | Wrong faction concept — see above |
-| `FireChildSpirit`, `MagmaSpirit`, `MagmaSpirit2`, `MagmaExplosion`, `Crater` | Also painterly with heavy fine detail and ember scatter. Concept is closer to correct than the cute fire set; only technique is wrong |
-| `ChickenCommando` | Line weight and proportions unlike anything else |
-| `ChainLightning`, `LightningDrop` | Thin strokes, no silhouette mass — illegible when downscaled |
-| `RockRolling` | Desaturated and low contrast |
-| `Tower`, `Towerback`, `RockTurret` | Human faction, but heavier rendering than `Cannon` / `ElectricTower`. `Towerback` is a stone block with golem eyes and needs a faction assignment |
-| `RazorGale` | Darker and more painterly than `WindSpirit` / `TornadoStrike` |
-
-These are the rework backlog, not a permanent verdict.
-
 ## Unresolved
 
 - **Ground shadow.** `RockGolem` carries contact debris; most others float clean.
@@ -111,6 +61,7 @@ These are the rework backlog, not a permanent verdict.
 ./.art/make-sheets.sh
 ```
 
-Writes `.art/sheets/anchors.png`, `.art/sheets/sprites.png`, and — once
-`.art/concept/` has files — `.art/sheets/concept.png`. Run the sprite sheet after
-adding art and eyeball it: a new sprite that jumps out of the grid is a reject.
+Writes `.art/sheets/master-v2-anchors.png`, `.art/sheets/sprites.png`, and —
+once `.art/concept/` has files — `.art/sheets/concept.png`. Run the sprite sheet
+after adding art and eyeball it: a new sprite that jumps out of the grid is a
+reject.

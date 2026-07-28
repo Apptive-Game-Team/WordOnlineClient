@@ -57,7 +57,7 @@ system, camera, facial grammar, or material treatment.
 6. After approval:
    - record the winning file and reason in `.art/STYLE.md`;
    - update shared rendering rules to describe the visible result;
-   - promote a frozen copy to `.art/anchors/`;
+   - promote a frozen copy to `.art/anchors/master-v2/`;
    - update `.art/ANCHORS.md` and `.art/CONCEPT-BRIEF.md`;
    - identify which existing assets now violate the new standard;
    - regenerate downstream faction boards using only the new master reference.
@@ -118,12 +118,13 @@ magick identify output.png
   highlight shape, shadow shape, or detail density.
 - Run `./.art/make-sheets.sh`.
 - Verify dimensions, alpha, trim, filename, and Unity path.
-- Keep rejected generations out of `.art/anchors/` and `Assets/`.
+- Keep rejected generations out of `.art/anchors/master-v2/` and `Assets/`.
 - Record any approved style change before generating dependent assets.
 
 ## Boundaries
 
-- Do not edit `.art/anchors/` in place. Promote a new frozen file deliberately.
+- Do not edit `.art/anchors/master-v2/` in place. Propose a new versioned
+  master set deliberately.
 - Do not move `.art/` under `Assets/`.
 - Do not overwrite shipped art before user approval.
 - Do not infer lore absent from `.art/WORLD.md`; mark it exploratory.

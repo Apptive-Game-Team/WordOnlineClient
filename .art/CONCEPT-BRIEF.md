@@ -7,7 +7,7 @@ Current comparison boards are published through the project art-direction Site.
 
 | Artifact | Role | Fed to the generator as an image reference? |
 |---|---|---|
-| `.art/anchors/*.png` | Defines *how* to draw | **Yes** — same format as the output: transparent, single subject |
+| `.art/anchors/master-v2/*.png` | Defines *how* to draw | **Yes** — same format as the output: transparent, single subject |
 | `.art/concept/*.png` | Defines *what* to draw | **No** |
 | Palettes in `STYLE.md` | Color lock | No — passed as hex text |
 
@@ -22,7 +22,7 @@ Concept art is for a human to look at while writing a prompt.
 3. Run `./.art/make-sheets.sh` — it builds a comparison sheet of the variants.
 4. Pick a direction; record the decision in `STYLE.md`.
 5. Once a direction is chosen, produce one *clean sprite* in that style
-   (transparent, single subject) and promote it to `.art/anchors/`. The concept
+   (transparent, single subject) and promote it to `.art/anchors/master-v2/`. The concept
    image itself never becomes an anchor.
 
 Current comparison Site:
