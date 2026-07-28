@@ -45,6 +45,7 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `nature_aura.png` | 자연 · 대기 오라 / 공격 파동 | `NatureIdleAura`, `NatureAttackAura` |
 | `rock_aura.png` | 바위 · 대기 오라 / 공격 파동 | `RockIdleAura`, `RockAttackAura` |
 | `water_aura.png` | 물 · 대기 오라 / 공격 파동 | `WaterIdleAura`, `WaterAttackAura` |
+| `cloud.png` | 운룡 · 구형 물 아우라 | `CloudDragon.prefab` 전용 자식 SpriteRenderer |
 
 오라는 본체에 합성하지 않는다. 공용 투명 Sprite로 별도 생성한다.
 
@@ -53,6 +54,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 - 중심 정렬, 방사형 또는 타원형 실루엣
 - 캐릭터 얼굴·팔다리·무기와 경쟁하는 고밀도 디테일 금지
 - 불·운룡처럼 오라가 정체성에 필요한 개체도 본체와 오라를 독립 검증
+- 운룡의 `cloud.png`는 바람 오라가 아니라 몸 전체를 감싸는 구형 물 아우라다.
+  중앙은 본체가 읽히도록 저밀도로 유지하고, 공용 `wind_aura.png`와 혼용하지 않는다.
 
 ## 홈페이지 표시
 

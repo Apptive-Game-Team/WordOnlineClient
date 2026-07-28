@@ -33,7 +33,7 @@
 
 - `feature/396`은 `feature/394` 위에 쌓인 브랜치다.
 - 선행 Client PR은 #395다.
-- 홈페이지 변경은 `theevilent`의 `feature/7`, PR #9에 계속 추가한다.
+- 홈페이지 변경은 `theevilent`의 `feature/7`, PR #11에 계속 추가한다.
 - `.claude/worktrees/`는 작업 범위 밖이다.
 
 ## Affected Repositories and Contracts
@@ -56,7 +56,8 @@
   이동 경로 불 장판 역할을 홈페이지에 기록
 - [x] `FireTadpole` / `LightningTadpole` — 동일 종 몸 구조와 128x60 기준으로 교체
 - [ ] `MagmaSpirit` 기본 자세·공격 자세를 같은 PPU와 기준점으로 재작업
-- [ ] 불·바람 오라를 본체와 분리된 공용 효과로 재생성
+- [x] 불·바람 오라를 본체와 분리된 공용 효과로 재생성
+- [x] 운룡의 `cloud.png`를 바람 오라와 분리된 전용 구형 물 아우라로 재생성
 - [ ] 인간/골렘 재질 분리와 나머지 스타일 이탈군
 
 ## Validation
@@ -87,7 +88,7 @@
 
 1. 선행 Client PR #395 병합
 2. Client `feature/396` 스택 PR 병합
-3. `theevilent` PR #9 병합·Vercel 배포
+3. `theevilent` PR #11 병합·Vercel 배포
 
 ## Open Questions
 

@@ -109,6 +109,8 @@ unless it is explicitly the selected master-style key.
   camera, and facing. Name them by meaning in docs: base pose / attack pose.
 - Generate idle/attack aura as separate transparent assets. Do not bake aura
   into the creature sprite.
+- Treat `CloudDragon`'s spherical `cloud.png` as a dedicated water aura. Do not
+  derive it from or replace it with the shared wind aura.
 
 Typical finalization:
 

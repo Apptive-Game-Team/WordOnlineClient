@@ -61,6 +61,8 @@ Animation frames and aura assets follow `.art/ANIMATION-ASSETS.md`. Numeric
 suffixes such as `MagmaSpirit2` may be attack states, not separate units. Keep
 body scale, PPU, Bottom Center pivot, and ground contact invariant across frames.
 Generate aura as a separate transparent effect asset, never baked into the body.
+`CloudDragon` uses a dedicated spherical **water** aura (`cloud.png`), not the
+shared wind aura; keep its center quiet enough for the body silhouette to read.
 
 ```bash
 magick input.png -resize 256x256 -trim +repage output.png
