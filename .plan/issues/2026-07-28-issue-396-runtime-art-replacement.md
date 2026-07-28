@@ -51,8 +51,9 @@
 - [x] Focused validation — 크기·알파·PPU·Bottom Center·웹 테스트 확인
 - [ ] Compatibility and regression validation — Unity에서 실제 소환 크기와 공격 방향 확인
 - [ ] Release order and rollback check
-- [ ] 다음 지옥불 대상: `EmberSpiritSwarm`, `FireTadpole`,
-  `MagmaSpirit`, `MagmaSpirit2`
+- [x] `EmberSpiritSwarm` — 반복 소환되는 단일 지상 근접 악마로 교체,
+  이동 경로 불 장판 역할을 홈페이지에 기록
+- [ ] 다음 지옥불 대상: `FireTadpole`, `MagmaSpirit`, `MagmaSpirit2`
 - [ ] 인간/골렘 재질 분리와 나머지 스타일 이탈군
 
 ## Validation
