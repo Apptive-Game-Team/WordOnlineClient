@@ -9,14 +9,19 @@ using UnityEngine.UI;
 
 namespace MagicBookScene
 {
-    public sealed class MagicPrefabPreview : MonoBehaviour
+    public sealed class MagicPrefabPreview : MonoBehaviour, IPointerClickHandler
     {
         private const int PreviewLayer = 31;
         private const int TextureSize = 512;
-        private const float BoundsPadding = 1.25f;
+        private const float BoundsPadding = 1.3f;
+        private const float ModalCanvasRatio = 0.82f;
         private static readonly Vector3 PreviewOrigin = new Vector3(10000f, 10000f, 0f);
 
         private Image fallbackImage;
+        private CombinedMagicData currentData;
+        private GameObject currentPrefab;
+        private GameObject modalRoot;
+        private RectTransform modalPanel;
         private RawImage previewImage;
         private Camera previewCamera;
         private RenderTexture renderTexture;
@@ -42,25 +47,70 @@ namespace MagicBookScene
 
         public bool Show(CombinedMagicData data)
         {
-            ClearPreview();
+            CloseModal();
+            currentData = data;
+            currentPrefab = ResolvePreviewPrefab(data);
+            return currentPrefab != null;
+        }
 
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (currentPrefab != null)
+            {
+                OpenModal();
+            }
+        }
+
+        public void PlayAttack()
+        {
+            servedObject?.PlayAttackPresentation();
+        }
+
+        private void Initialize(Image targetImage)
+        {
+            fallbackImage = targetImage;
+            fallbackImage.raycastTarget = true;
+        }
+
+        private static GameObject ResolvePreviewPrefab(CombinedMagicData data)
+        {
             if (data == null || string.IsNullOrWhiteSpace(data.resourceName))
             {
-                return false;
+                return null;
             }
 
-            string prefabName = data.resourceName;
-            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
+            GameObject prefab = Resources.Load<GameObject>($"Prefabs/{data.resourceName}");
             if (prefab == null ||
                 prefab.GetComponent<ServedObject>() == null ||
                 prefab.GetComponentInChildren<SpriteRenderer>(true) == null)
             {
-                return false;
+                return null;
             }
 
-            EnsureRenderSurface();
-            previewObject = Instantiate(prefab);
-            previewObject.name = $"{prefab.name} (Magic Book Preview)";
+            return prefab;
+        }
+
+        private void OpenModal()
+        {
+            if (currentData == null || currentPrefab == null)
+            {
+                return;
+            }
+
+            EnsureModalSurface();
+            if (modalRoot == null)
+            {
+                return;
+            }
+
+            ClearPreviewObject();
+            ResizeModalPanel();
+            modalRoot.SetActive(true);
+            modalRoot.transform.SetAsLastSibling();
+
+            string prefabName = currentData.resourceName;
+            previewObject = Instantiate(currentPrefab);
+            previewObject.name = $"{currentPrefab.name} (Magic Book Preview)";
             SetLayerRecursively(previewObject.transform, PreviewLayer);
             DisableWorldSpaceUi(previewObject);
 
@@ -73,70 +123,138 @@ namespace MagicBookScene
             PopupBookVisualPresenter popupPresenter = PopupBookVisualPresenter.Attach(servedObject);
             popupPresenter?.PlaySpawnPresentation(
                 SpawnPresentationTypeCatalog.IsBuilding(prefabName));
-
-            fallbackImage.enabled = false;
-            previewImage.enabled = true;
-            return true;
         }
 
-        public void PlayAttack()
+        private void EnsureModalSurface()
         {
-            servedObject?.PlayAttackPresentation();
-        }
-
-        private void Initialize(Image targetImage)
-        {
-            fallbackImage = targetImage;
-            if (previewImage != null)
+            if (modalRoot != null)
             {
                 return;
             }
 
-            GameObject imageObject = new GameObject(
+            Canvas rootCanvas = fallbackImage.canvas != null
+                ? fallbackImage.canvas.rootCanvas
+                : FindObjectOfType<Canvas>();
+            if (rootCanvas == null)
+            {
+                return;
+            }
+
+            int uiLayer = fallbackImage.gameObject.layer;
+            modalRoot = CreateUiObject(
+                "MagicPrefabPreviewModal",
+                rootCanvas.transform,
+                uiLayer,
+                typeof(Image),
+                typeof(Button));
+            RectTransform rootRect = modalRoot.GetComponent<RectTransform>();
+            Stretch(rootRect);
+
+            Image backdrop = modalRoot.GetComponent<Image>();
+            backdrop.color = new Color(0f, 0f, 0f, 0.72f);
+            Button backdropButton = modalRoot.GetComponent<Button>();
+            backdropButton.targetGraphic = backdrop;
+            backdropButton.transition = Selectable.Transition.None;
+            backdropButton.onClick.AddListener(CloseModal);
+
+            GameObject panelObject = CreateUiObject(
+                "PreviewPanel",
+                modalRoot.transform,
+                uiLayer,
+                typeof(Image),
+                typeof(Button));
+            modalPanel = panelObject.GetComponent<RectTransform>();
+            modalPanel.anchorMin = new Vector2(0.5f, 0.5f);
+            modalPanel.anchorMax = new Vector2(0.5f, 0.5f);
+            modalPanel.pivot = new Vector2(0.5f, 0.5f);
+            modalPanel.anchoredPosition = Vector2.zero;
+
+            Image panelImage = panelObject.GetComponent<Image>();
+            panelImage.color = new Color(0.06f, 0.07f, 0.1f, 0.96f);
+            Button panelBlocker = panelObject.GetComponent<Button>();
+            panelBlocker.targetGraphic = panelImage;
+            panelBlocker.transition = Selectable.Transition.None;
+
+            GameObject previewObject = CreateUiObject(
                 "PrefabPreview",
-                typeof(RectTransform),
-                typeof(CanvasRenderer),
+                panelObject.transform,
+                uiLayer,
                 typeof(RawImage),
-                typeof(MagicPrefabPreviewInput));
-            RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
-            rectTransform.SetParent(targetImage.rectTransform.parent, false);
-            rectTransform.anchorMin = targetImage.rectTransform.anchorMin;
-            rectTransform.anchorMax = targetImage.rectTransform.anchorMax;
-            rectTransform.anchoredPosition = targetImage.rectTransform.anchoredPosition;
-            rectTransform.sizeDelta = targetImage.rectTransform.sizeDelta;
-            rectTransform.pivot = targetImage.rectTransform.pivot;
-            rectTransform.SetSiblingIndex(targetImage.rectTransform.GetSiblingIndex() + 1);
+                typeof(Button),
+                typeof(AspectRatioFitter));
+            RectTransform previewRect = previewObject.GetComponent<RectTransform>();
+            previewRect.anchorMin = new Vector2(0.04f, 0.04f);
+            previewRect.anchorMax = new Vector2(0.96f, 0.96f);
+            previewRect.offsetMin = Vector2.zero;
+            previewRect.offsetMax = Vector2.zero;
 
-            previewImage = imageObject.GetComponent<RawImage>();
+            AspectRatioFitter aspectRatioFitter = previewObject.GetComponent<AspectRatioFitter>();
+            aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            aspectRatioFitter.aspectRatio = 1f;
+
+            previewImage = previewObject.GetComponent<RawImage>();
             previewImage.color = Color.white;
-            previewImage.raycastTarget = true;
-            previewImage.enabled = false;
+            Button previewButton = previewObject.GetComponent<Button>();
+            previewButton.targetGraphic = previewImage;
+            previewButton.transition = Selectable.Transition.None;
+            previewButton.onClick.AddListener(PlayAttack);
 
-            MagicPrefabPreviewInput input = imageObject.GetComponent<MagicPrefabPreviewInput>();
-            input.Initialize(this, imageObject.GetComponentInParent<ScrollRect>());
+            CreateCloseButton(panelObject.transform, uiLayer);
+            EnsureRenderSurface();
+            modalRoot.SetActive(false);
+        }
+
+        private void CreateCloseButton(Transform parent, int uiLayer)
+        {
+            GameObject closeObject = CreateUiObject(
+                "Close",
+                parent,
+                uiLayer,
+                typeof(Image),
+                typeof(Button));
+            RectTransform closeRect = closeObject.GetComponent<RectTransform>();
+            closeRect.anchorMin = Vector2.one;
+            closeRect.anchorMax = Vector2.one;
+            closeRect.pivot = new Vector2(0.5f, 0.5f);
+            closeRect.anchoredPosition = new Vector2(-34f, -34f);
+            closeRect.sizeDelta = new Vector2(48f, 48f);
+
+            Image closeImage = closeObject.GetComponent<Image>();
+            closeImage.color = new Color(0.18f, 0.2f, 0.26f, 1f);
+            Button closeButton = closeObject.GetComponent<Button>();
+            closeButton.targetGraphic = closeImage;
+            closeButton.onClick.AddListener(CloseModal);
+
+            GameObject labelObject = CreateUiObject(
+                "Label",
+                closeObject.transform,
+                uiLayer,
+                typeof(Text));
+            RectTransform labelRect = labelObject.GetComponent<RectTransform>();
+            Stretch(labelRect);
+
+            Text label = labelObject.GetComponent<Text>();
+            label.text = "\u00d7";
+            label.alignment = TextAnchor.MiddleCenter;
+            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label.fontSize = 34;
+            label.color = Color.white;
+            label.raycastTarget = false;
         }
 
         private void EnsureRenderSurface()
         {
-            if (renderTexture == null)
+            renderTexture = new RenderTexture(TextureSize, TextureSize, 16, RenderTextureFormat.ARGB32)
             {
-                renderTexture = new RenderTexture(TextureSize, TextureSize, 16, RenderTextureFormat.ARGB32)
-                {
-                    name = "MagicBookPrefabPreview",
-                    antiAliasing = 2,
-                    filterMode = FilterMode.Bilinear,
-                };
-                renderTexture.Create();
-                previewImage.texture = renderTexture;
-            }
-
-            if (previewCamera != null)
-            {
-                return;
-            }
+                name = "MagicBookPrefabPreview",
+                antiAliasing = 2,
+                filterMode = FilterMode.Bilinear,
+            };
+            renderTexture.Create();
+            previewImage.texture = renderTexture;
 
             GameObject cameraObject = new GameObject("MagicBookPrefabPreviewCamera");
-            cameraObject.transform.SetParent(transform, false);
+            cameraObject.transform.SetParent(modalRoot.transform, false);
             previewCamera = cameraObject.AddComponent<Camera>();
             previewCamera.clearFlags = CameraClearFlags.SolidColor;
             previewCamera.backgroundColor = Color.clear;
@@ -147,14 +265,18 @@ namespace MagicBookScene
             previewCamera.targetTexture = renderTexture;
         }
 
+        private void ResizeModalPanel()
+        {
+            RectTransform canvasRect = modalRoot.transform.parent as RectTransform;
+            float width = canvasRect != null ? canvasRect.rect.width : 800f;
+            float height = canvasRect != null ? canvasRect.rect.height : 800f;
+            float side = Mathf.Max(320f, Mathf.Min(width, height) * ModalCanvasRatio);
+            modalPanel.sizeDelta = new Vector2(side, side);
+        }
+
         private void FitCamera()
         {
             SpriteRenderer[] renderers = previewObject.GetComponentsInChildren<SpriteRenderer>(true);
-            if (renderers.Length == 0)
-            {
-                return;
-            }
-
             Bounds bounds = renderers[0].bounds;
             for (int index = 1; index < renderers.Length; index++)
             {
@@ -162,30 +284,31 @@ namespace MagicBookScene
             }
 
             previewObject.transform.position += PreviewOrigin - bounds.center;
-            float halfHeight = Mathf.Max(bounds.extents.y, bounds.extents.x);
-            previewCamera.orthographicSize = Mathf.Max(0.5f, halfHeight * BoundsPadding);
+            float halfSize = Mathf.Max(bounds.extents.y, bounds.extents.x);
+            previewCamera.orthographicSize = Mathf.Max(0.5f, halfSize * BoundsPadding);
             previewCamera.transform.position = PreviewOrigin + Vector3.back * 10f;
         }
 
-        private void ClearPreview()
+        private void CloseModal()
+        {
+            ClearPreviewObject();
+            if (modalRoot != null)
+            {
+                modalRoot.SetActive(false);
+            }
+        }
+
+        private void ClearPreviewObject()
         {
             servedObject = null;
-            if (previewObject != null)
+            if (previewObject == null)
             {
-                previewObject.SetActive(false);
-                Destroy(previewObject);
-                previewObject = null;
+                return;
             }
 
-            if (fallbackImage != null)
-            {
-                fallbackImage.enabled = true;
-            }
-
-            if (previewImage != null)
-            {
-                previewImage.enabled = false;
-            }
+            previewObject.SetActive(false);
+            Destroy(previewObject);
+            previewObject = null;
         }
 
         private static void DisableWorldSpaceUi(GameObject root)
@@ -205,71 +328,52 @@ namespace MagicBookScene
             }
         }
 
-        private void OnDestroy()
+        private static GameObject CreateUiObject(
+            string objectName,
+            Transform parent,
+            int layer,
+            params System.Type[] components)
         {
-            ClearPreview();
-            if (previewCamera != null)
+            GameObject uiObject = new GameObject(objectName, typeof(RectTransform), typeof(CanvasRenderer));
+            uiObject.layer = layer;
+            uiObject.transform.SetParent(parent, false);
+            foreach (System.Type component in components)
             {
-                Destroy(previewCamera.gameObject);
+                uiObject.AddComponent(component);
             }
 
+            return uiObject;
+        }
+
+        private static void Stretch(RectTransform rectTransform)
+        {
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+        }
+
+        private void Update()
+        {
+            if (modalRoot != null && modalRoot.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseModal();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            CloseModal();
             if (renderTexture != null)
             {
                 renderTexture.Release();
                 Destroy(renderTexture);
             }
-        }
-    }
 
-    public sealed class MagicPrefabPreviewInput :
-        MonoBehaviour,
-        IPointerClickHandler,
-        IInitializePotentialDragHandler,
-        IBeginDragHandler,
-        IDragHandler,
-        IEndDragHandler,
-        IScrollHandler
-    {
-        private MagicPrefabPreview preview;
-        private ScrollRect scrollRect;
-
-        public void Initialize(MagicPrefabPreview targetPreview, ScrollRect targetScrollRect)
-        {
-            preview = targetPreview;
-            scrollRect = targetScrollRect;
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (!eventData.dragging)
+            if (modalRoot != null)
             {
-                preview?.PlayAttack();
+                Destroy(modalRoot);
             }
-        }
-
-        public void OnInitializePotentialDrag(PointerEventData eventData)
-        {
-            scrollRect?.OnInitializePotentialDrag(eventData);
-        }
-
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-            scrollRect?.OnBeginDrag(eventData);
-        }
-
-        public void OnDrag(PointerEventData eventData)
-        {
-            scrollRect?.OnDrag(eventData);
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
-        {
-            scrollRect?.OnEndDrag(eventData);
-        }
-
-        public void OnScroll(PointerEventData eventData)
-        {
-            scrollRect?.OnScroll(eventData);
         }
     }
 }
