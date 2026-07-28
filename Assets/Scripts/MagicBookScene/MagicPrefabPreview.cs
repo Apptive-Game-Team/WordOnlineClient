@@ -154,7 +154,7 @@ namespace MagicBookScene
             backdrop.color = new Color(0f, 0f, 0f, 0.72f);
             Button backdropButton = modalRoot.GetComponent<Button>();
             backdropButton.targetGraphic = backdrop;
-            backdropButton.transition = Selectable.Transition.None;
+            backdropButton.transition = UnityEngine.UI.Selectable.Transition.None;
             backdropButton.onClick.AddListener(CloseModal);
 
             GameObject panelObject = CreateUiObject(
@@ -173,7 +173,7 @@ namespace MagicBookScene
             panelImage.color = new Color(0.06f, 0.07f, 0.1f, 0.96f);
             Button panelBlocker = panelObject.GetComponent<Button>();
             panelBlocker.targetGraphic = panelImage;
-            panelBlocker.transition = Selectable.Transition.None;
+            panelBlocker.transition = UnityEngine.UI.Selectable.Transition.None;
 
             GameObject previewObject = CreateUiObject(
                 "PrefabPreview",
@@ -196,7 +196,7 @@ namespace MagicBookScene
             previewImage.color = Color.white;
             Button previewButton = previewObject.GetComponent<Button>();
             previewButton.targetGraphic = previewImage;
-            previewButton.transition = Selectable.Transition.None;
+            previewButton.transition = UnityEngine.UI.Selectable.Transition.None;
             previewButton.onClick.AddListener(PlayAttack);
 
             CreateCloseButton(panelObject.transform, uiLayer);
