@@ -7,8 +7,9 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 
 | 실제 파일 | 의미 이름 | 런타임 연결 |
 |---|---|---|
-| `MagmaSpirit.png` | 용암 갑각 악마 · 기본 자세 | `MagmaSpirit.prefab` 기본 SpriteRenderer |
-| `MagmaSpirit2.png` | 용암 갑각 악마 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
+| `MagmaSpirit.png` | 용암 갑각 악마 · 선 기본 자세 | `MagmaSpirit.prefab` 기본 SpriteRenderer |
+| `MagmaSpirit2.png` | 용암 갑각 악마 · 내려찍기 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
+| `MagmaSpiritSpawn.png` | 용암 갑각 악마 · 지면 돌파 소환 자세 | 생성 시 0.28초 표시 |
 | `RockGolem.png` | 이끼바위 골렘 · 기본 자세 | `RockGolem.prefab` 기본 SpriteRenderer |
 | `RockGolem2.png` | 이끼바위 골렘 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `TreeGolem.png` | 고목 수호자 · 기본 자세 | `TreeGolem.prefab` 기본 SpriteRenderer |
@@ -29,6 +30,10 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 놓은 프레임으로 즉시 바꾸고 0.08초 뒤 복귀한다. 위치 튐을 막기 위해 별도
 Transform 스케일 변형은 적용하지 않는다.
 
+`MagmaSpiritSpawnPresenter`는 일반 소환 연출을 재생하는 생성에서만 지면 돌파
+프레임을 0.28초 표시한 뒤 선 기본 자세로 복귀한다. 동기화 복구처럼
+`playSpawnPresentation`이 꺼진 생성에서는 소환 프레임을 건너뛴다.
+
 - 동일 PPU
 - 동일 `Bottom Center` 피벗
 - 동일 캐릭터 몸 배율
@@ -37,9 +42,9 @@ Transform 스케일 변형은 적용하지 않는다.
 - 공격 동작에 필요한 팔·머리·효과만 변화
 - 캔버스가 달라도 기준점에서 몸통 핵심점까지의 거리는 동일
 
-검증할 때 두 PNG를 같은 PPU로 겹쳐 발점, 골반, 머리 중심을 대조한다. 현재
-`RockGolem`과 `RockGolem2`, `TreeGolem`과 `TreeGolem2`는 PPU가 서로 달라 재작업
-전에 교정이 필요하다.
+검증할 때 두 PNG를 같은 PPU로 겹쳐 발점, 골반, 머리 중심을 대조한다.
+`RockGolem`과 `RockGolem2`는 256x244, PPU 100, Bottom Center로 교정했다. 현재
+`TreeGolem`과 `TreeGolem2`는 PPU가 서로 달라 재작업 전에 교정이 필요하다.
 
 ## 오라 의미
 

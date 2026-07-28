@@ -33,6 +33,7 @@ namespace GameScene.Object
             
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             AquaArcherAttackPresenter.Attach(servedObject, createdObjectDto.type);
+            MagmaSpiritSpawnPresenter.Attach(servedObject, createdObjectDto.type, playSpawnPresentation);
             AerialLightningDeathPresenter.Attach(servedObject, createdObjectDto.type);
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
             
@@ -94,6 +95,111 @@ namespace GameScene.Object
             
             WDebug.Log($"Spawned object: {spawnedObject}, gameObject created at position {createdObjectDto.position}");
             return spawnedObject;
+        }
+    }
+
+    internal sealed class MagmaSpiritSpawnPresenter : MonoBehaviour
+    {
+        private const string SupportedType = "MagmaSpirit";
+        private const string IdleSpriteResourcePath = "Game/sprites/MagmaSpirit";
+        private const string SpawnSpriteResourcePath = "Game/sprites/MagmaSpiritSpawn";
+        private const float SpawnFrameDuration = 0.28f;
+
+        private SpriteRenderer spriteRenderer;
+        private Sprite idleSprite;
+        private Sequence sequence;
+
+        public static void Attach(ServedObject servedObject, string objectType, bool playSpawnPresentation)
+        {
+            if (!playSpawnPresentation ||
+                servedObject == null ||
+                !string.Equals(objectType, SupportedType, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            MagmaSpiritSpawnPresenter presenter = servedObject.GetComponent<MagmaSpiritSpawnPresenter>();
+            if (presenter == null)
+            {
+                presenter = servedObject.gameObject.AddComponent<MagmaSpiritSpawnPresenter>();
+            }
+
+            presenter.Play(servedObject);
+        }
+
+        private void Play(ServedObject servedObject)
+        {
+            idleSprite = Resources.Load<Sprite>(IdleSpriteResourcePath);
+            Sprite spawnSprite = Resources.Load<Sprite>(SpawnSpriteResourcePath);
+            spriteRenderer = FindSpriteRenderer(servedObject.GetActualTransform(), idleSprite);
+            if (spriteRenderer == null || idleSprite == null || spawnSprite == null)
+            {
+                return;
+            }
+
+            spriteRenderer.sprite = spawnSprite;
+
+            Sequence spawnSequence = DOTween.Sequence();
+            sequence = spawnSequence;
+            spawnSequence
+                .SetLink(gameObject)
+                .AppendInterval(SpawnFrameDuration)
+                .AppendCallback(RestoreIdle)
+                .OnComplete(() =>
+                {
+                    if (sequence == spawnSequence)
+                    {
+                        sequence = null;
+                    }
+                })
+                .OnKill(() =>
+                {
+                    if (sequence == spawnSequence)
+                    {
+                        sequence = null;
+                    }
+
+                    RestoreIdle();
+                });
+        }
+
+        private static SpriteRenderer FindSpriteRenderer(Transform root, Sprite expectedSprite)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                if (renderer.sprite == expectedSprite)
+                {
+                    return renderer;
+                }
+            }
+
+            return root.GetComponent<SpriteRenderer>();
+        }
+
+        private void OnDisable()
+        {
+            Sequence activeSequence = sequence;
+            sequence = null;
+            if (activeSequence != null && activeSequence.IsActive())
+            {
+                activeSequence.Kill(false);
+            }
+
+            RestoreIdle();
+        }
+
+        private void RestoreIdle()
+        {
+            if (spriteRenderer != null && idleSprite != null)
+            {
+                spriteRenderer.sprite = idleSprite;
+            }
         }
     }
 
