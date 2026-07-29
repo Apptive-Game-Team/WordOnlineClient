@@ -77,8 +77,9 @@ namespace TutorialScene
             }
 
             PopupBookVisualPresenter.Attach(servedObject);
+            servedObject.BindListeners();
         }
-    
+
         public void UpdateUserHps(int leftUserHp, int rightUserHp)
         {
             if (leftUserHpSlider.value > leftUserHp)

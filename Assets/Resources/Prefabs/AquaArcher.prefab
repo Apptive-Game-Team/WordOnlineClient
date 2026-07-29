@@ -120,6 +120,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5502000000000000012, guid: 550ed1f13bef81345a06de40fca34e72, type: 3}
+      propertyPath: swapSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3af8930e3eda4695a657237a146f88d3, type: 3}
+    - target: {fileID: 5502000000000000012, guid: 550ed1f13bef81345a06de40fca34e72, type: 3}
+      propertyPath: duration
+      value: 0.08
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1018091211532011722, guid: 550ed1f13bef81345a06de40fca34e72, type: 3}
     m_RemovedGameObjects: []

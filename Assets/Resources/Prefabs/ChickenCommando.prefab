@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 7643070402292094288}
   - component: {fileID: 5127668626658264087}
   - component: {fileID: 6078493527699891375}
+  - component: {fileID: 5505000000000000011}
   m_Layer: 0
   m_Name: ChickenCommando
   m_TagString: Untagged
@@ -535,3 +536,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 889761168174398601, guid: cf514c4d9917a42b8bc94c77c89a558b, type: 3}
   m_PrefabInstance: {fileID: 8770435111419547764}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5505000000000000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7556005377799559492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e4fb32969b44fc8853785068b26aa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7643070402292094288}
+  style: 1
+  sourceRenderer: {fileID: 6137335418506685782}
+  fadeDuration: 0.35
+  scatterFragments: 1

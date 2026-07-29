@@ -147,6 +147,7 @@ namespace TutorialScene
             }
 
             PopupBookVisualPresenter.Attach(servedObject);
+            servedObject.BindListeners();
         }
 
         public void TryUseCard(CardUI cardObj)
