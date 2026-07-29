@@ -15,6 +15,7 @@ namespace MagicBookScene
         private const int TextureSize = 512;
         private const float BoundsPadding = 1.3f;
         private const float ModalCanvasRatio = 0.82f;
+        private const int RoundedCornerRadius = 12;
         private static readonly Vector3 PreviewOrigin = new Vector3(10000f, 10000f, 0f);
         private static Sprite roundedUiSprite;
 
@@ -383,16 +384,79 @@ namespace MagicBookScene
         {
             if (roundedUiSprite == null)
             {
-                roundedUiSprite = Resources.GetBuiltinResource<Sprite>("UI/Skin/UISprite.psd");
-            }
-
-            if (roundedUiSprite == null)
-            {
-                return;
+                roundedUiSprite = CreateRoundedSprite();
             }
 
             image.sprite = roundedUiSprite;
             image.type = Image.Type.Sliced;
+        }
+
+        /// <summary>
+        /// Draws the 9-sliced rounded rectangle the modal panels use.
+        /// <para>
+        /// This used to ask for Unity's own <c>UI/Skin/UISprite.psd</c>, but that sprite lives in
+        /// <c>unity_builtin_extra</c>, which <see cref="Resources.GetBuiltinResource{T}"/> does not
+        /// search — only the editor-only <c>AssetDatabase.GetBuiltinExtraResource</c> reaches it.
+        /// The call therefore always failed and the panels rendered as hard rectangles. Drawing the
+        /// corners here keeps the modal self-contained and works in a WebGL build.
+        /// </para>
+        /// </summary>
+        private static Sprite CreateRoundedSprite()
+        {
+            const int size = RoundedCornerRadius * 2 + 2;
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "MagicPreviewRoundedPanel",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+
+            Color[] pixels = new Color[size * size];
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    pixels[y * size + x] = new Color(1f, 1f, 1f, CornerCoverage(x, y, size));
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply();
+
+            Sprite sprite = Sprite.Create(
+                texture,
+                new Rect(0f, 0f, size, size),
+                new Vector2(0.5f, 0.5f),
+                100f,
+                0,
+                SpriteMeshType.FullRect,
+                new Vector4(RoundedCornerRadius, RoundedCornerRadius, RoundedCornerRadius, RoundedCornerRadius));
+            sprite.name = "MagicPreviewRoundedPanel";
+            sprite.hideFlags = HideFlags.HideAndDontSave;
+            return sprite;
+        }
+
+        /// <summary>
+        /// Alpha for one pixel: fully opaque inside the rounded body, feathered across one pixel at
+        /// the corner arc so the edge does not stair-step.
+        /// </summary>
+        private static float CornerCoverage(int x, int y, int size)
+        {
+            float pixelX = x + 0.5f;
+            float pixelY = y + 0.5f;
+            float centerX = pixelX < size * 0.5f ? RoundedCornerRadius : size - RoundedCornerRadius;
+            float centerY = pixelY < size * 0.5f ? RoundedCornerRadius : size - RoundedCornerRadius;
+
+            bool insideHorizontalBand = pixelX >= RoundedCornerRadius && pixelX <= size - RoundedCornerRadius;
+            bool insideVerticalBand = pixelY >= RoundedCornerRadius && pixelY <= size - RoundedCornerRadius;
+            if (insideHorizontalBand || insideVerticalBand)
+            {
+                return 1f;
+            }
+
+            float distance = Vector2.Distance(new Vector2(pixelX, pixelY), new Vector2(centerX, centerY));
+            return Mathf.Clamp01(RoundedCornerRadius - distance + 0.5f);
         }
 
         private void Update()
