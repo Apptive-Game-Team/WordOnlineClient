@@ -1,0 +1,42 @@
+name: check itch.io access
+
+# Read-only. Reports which itch.io account BUTLER_CREDENTIALS belongs to and
+# which projects that account can push to. It does not build and does not
+# publish, so it is safe to run while the deploy itself is broken.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      # A push denial is almost always the key's account not owning or
+      # administering the target rather than the key itself being bad, which is
+      # why rotating the key on 2026-07-10 changed nothing. Names and project
+      # URLs are public, so they print; the secrets stay masked.
+      - name: Report the key's account and its projects
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          curl -sS "https://itch.io/api/1/$BUTLER_API_KEY/me" \
+            | grep -o '"username":"[^"]*"' \
+            || echo "could not read the account for this key"
+          curl -sS "https://itch.io/api/1/$BUTLER_API_KEY/my-games" \
+            | grep -o '"url":"[^"]*"' \
+            || echo "could not list projects for this key"
+
+      - name: Check the configured push target
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+          ITCH_USER: ${{ secrets.ITCH_USER }}
+          ITCH_GAME: ${{ secrets.ITCH_GAME }}
+        run: ./butler status "$ITCH_USER/$ITCH_GAME:webgl"
