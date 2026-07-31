@@ -33,14 +33,20 @@ namespace LobbyScene
             return GetUserStatus(HandleUserStatus);
         }
     
-        public static IEnumerator GetUserStatus(Func<string, IEnumerator> handler)
+        /// <param name="waitSeconds">
+        /// When above zero the server holds the request open until the status changes or the wait
+        /// elapses. Costs one request per wait window instead of one per poll interval.
+        /// </param>
+        public static IEnumerator GetUserStatus(Func<string, IEnumerator> handler, int waitSeconds = 0)
         {
             var url = ServerList.MatchingServer.url + "/api/users/mine/status";
+            if (waitSeconds > 0) url += $"?wait={waitSeconds}";
 
             using var www = UnityWebRequest.Get(url);
+            if (waitSeconds > 0) www.timeout = waitSeconds + 10;
             Server.SetAcceptLanguage(www);
             Server.SetAuthorization(www);
-        
+
             yield return www.SendWebRequest();
 
             if (www.result != UnityWebRequest.Result.Success)

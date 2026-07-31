@@ -14,7 +14,11 @@ namespace LobbyScene
         private bool _waiting;
         private float _timer;
         private bool _prevOnline;
-        private const float Interval = 2f;
+
+        // The server holds each request until the status changes, so the gap between requests is
+        // only there to space out reconnects, not to control how fast a match is noticed.
+        private const float Interval = 0.5f;
+        private const int LongPollSeconds = 20;
 
         public void StopPolling()
         {
@@ -34,7 +38,7 @@ namespace LobbyScene
             WDebug.Log("[Match Status Poller] Checking user status...");
             _timer = 0f;
             _waiting = true;
-            StartCoroutine(StatusTracker.GetUserStatus(HandleStatus));
+            StartCoroutine(StatusTracker.GetUserStatus(HandleStatus, LongPollSeconds));
         }
 
         private IEnumerator HandleStatus(string state)
