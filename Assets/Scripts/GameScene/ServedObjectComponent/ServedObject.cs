@@ -46,12 +46,20 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
+        public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
 
+        /// <summary>
+        /// Raised once, right after spawning, only when the spawn presentation should play. Objects
+        /// that appear through a full-state sync rather than a real spawn never raise it.
+        /// </summary>
+        public event Action OnSpawned;
+
         private int lastHp = 0;
+        private bool hasReceivedHp;
         
         public void SetMaster(string master)
         {
@@ -63,7 +71,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            _positionUpdater = new PositionUpdater(transform, _spriteRenderer);
+            _positionUpdater = new PositionUpdater(transform, _spriteRenderer, () => OnMoved?.Invoke());
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))
@@ -75,6 +83,26 @@ namespace GameScene.ServedObjectComponent
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
+        }
+
+        /// <summary>
+        /// Hands this ServedObject to every <see cref="IServedObjectListener"/> in the hierarchy.
+        /// Call once, after the object is fully configured, so prefab components can subscribe
+        /// without depending on Awake/Start ordering.
+        /// </summary>
+        public void BindListeners()
+        {
+            IServedObjectListener[] listeners = GetComponentsInChildren<IServedObjectListener>(true);
+            foreach (IServedObjectListener listener in listeners)
+            {
+                listener.Bind(this);
+            }
+        }
+
+        /// <summary>Raises <see cref="OnSpawned"/>. Only the spawner should call this.</summary>
+        public void NotifySpawned()
+        {
+            OnSpawned?.Invoke();
         }
 
         private void OnEnable()
@@ -134,8 +162,7 @@ namespace GameScene.ServedObjectComponent
                     break;
 
                 case "Attack":
-                    OnAttack?.Invoke();
-                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    PlayAttackPresentation();
                     break;
 
                 case "Damaged":
@@ -147,6 +174,12 @@ namespace GameScene.ServedObjectComponent
                     break;
             }
         }
+
+        public void PlayAttackPresentation()
+        {
+            OnAttack?.Invoke();
+            DOTweenAction.SwingMobAttack(GetActualTransform());
+        }
         
         public Transform GetActualTransform()
         {
@@ -155,6 +188,14 @@ namespace GameScene.ServedObjectComponent
                 return _actualTransform;
             }
 
+            Transform namedActualTransform = transform.Find("actualObject");
+            if (namedActualTransform != null)
+            {
+                _actualTransform = namedActualTransform;
+                return _actualTransform;
+            }
+
+            EnsureSpriteRenderer();
             if (_spriteRenderer != null)
             {
                 _actualTransform = _spriteRenderer.transform;
@@ -215,6 +256,13 @@ namespace GameScene.ServedObjectComponent
         private void HandleDamageEffect(Gauge gauge)
         {
             if (!gauge.category.Equals("HP")) return;
+
+            if (!hasReceivedHp)
+            {
+                lastHp = (int) gauge.value;
+                hasReceivedHp = true;
+                return;
+            }
             
             if (gauge.value < lastHp)
             {

@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+# Serialize pushes to WordOnline_Play: two concurrent runs clone the same base
+# commit and the later push is rejected as non-fast-forward.
+concurrency:
+  group: word-online-play-push
+  cancel-in-progress: true
+
 jobs:
   buildWebGL:
     runs-on: ubuntu-latest

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Data;
 using Data.Magic;
 using GameScene.Card;
+using GameScene.PopupBook;
+using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
 using Unity.Mathematics;
@@ -12,6 +14,8 @@ namespace TutorialScene
 {
     public class TutorialCardSender : MonoBehaviour, ICardSender
     {
+        private static readonly Vector3 CasterPosition = new Vector3(1f, 0f, 5f);
+
         public event Action<IReadOnlyList<CardType>> MagicUsed;
         public event Action SingleCardUsed;
 
@@ -119,13 +123,31 @@ namespace TutorialScene
 
             MagicUsed?.Invoke(types);
 
-            if (_currentCardNameList.Contains("Spawn")) Instantiate(mobPrefab, pos,quaternion.identity);
-            else if (_currentCardNameList.Contains("Shoot")) Instantiate(shotPrefab, new Vector3(1,5,0),quaternion.identity);
+            if (_currentCardNameList.Contains("Spawn"))
+            {
+                AttachPopupBookPresenter(Instantiate(mobPrefab, pos, quaternion.identity));
+            }
+            else if (_currentCardNameList.Contains("Shoot"))
+            {
+                AttachPopupBookPresenter(Instantiate(shotPrefab, CasterPosition, quaternion.identity));
+            }
             
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
             
+        }
+
+        private static void AttachPopupBookPresenter(GameObject target)
+        {
+            ServedObject servedObject = target.GetComponent<ServedObject>();
+            if (servedObject == null)
+            {
+                servedObject = target.AddComponent<ServedObject>();
+            }
+
+            PopupBookVisualPresenter.Attach(servedObject);
+            servedObject.BindListeners();
         }
 
         public void TryUseCard(CardUI cardObj)

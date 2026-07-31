@@ -127,11 +127,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1306658856960
-    m_Localized: "\uBB3C\uC758 \uAD81\uC218"
+    m_Localized: "\uBB3C\uACB0 \uAD81\uC218"
     m_Metadata:
       m_Items: []
   - m_Id: 1359733579776
-    m_Localized: "\uBC14\uC704 \uACE8\uB818"
+    m_Localized: "\uC774\uB07C\uBC14\uC704 \uACE8\uB818"
     m_Metadata:
       m_Items: []
   - m_Id: 1401391407104
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032797717790720
-    m_Localized: "\uC6A9\uC554 \uC815\uB839"
+    m_Localized: "\uC6A9\uC554 \uAC11\uAC01 \uC545\uB9C8"
     m_Metadata:
       m_Items: []
   - m_Id: 5032821763735552
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 54766744953151488
-    m_Localized: "\uBD88\uC528 \uC815\uB839 \uBB34\uB9AC"
+    m_Localized: "\uC7BF\uBD88 \uC545\uB9C8 \uBB34\uB9AC"
     m_Metadata:
       m_Items: []
   - m_Id: 54766898301100032
@@ -315,7 +315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69232208460201984
-    m_Localized: "\uCE58\uD0A8 \uD2B9\uACF5\uB300"
+    m_Localized: "비전 강하대"
     m_Metadata:
       m_Items: []
   - m_Id: 69232350000000000
@@ -347,11 +347,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 73104010000000000
-    m_Localized: "\uBD88 \uB300\uC655 \uC815\uB839"
+    m_Localized: "\uC9C0\uC625\uBD88 \uAD70\uB2E8\uC7A5"
     m_Metadata:
       m_Items: []
   - m_Id: 73104110000000000
-    m_Localized: "\uCC28\uC6D0 \uB450\uAEBC\uBE44"
+    m_Localized: "\uADE0\uC5F4\uB450\uAEBC\uBE44"
     m_Metadata:
       m_Items: []
   - m_Id: 78335189718503424
@@ -364,6 +364,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78335231510548480
     m_Localized: "\uD3EC\uD0D1\uB4F1\uC774"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335300000000000
+    m_Localized: "\uB369\uAD74 \uC138\uACC4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335400000000000
+    m_Localized: "\uD480\uC528 \uB465\uC9C0"
     m_Metadata:
       m_Items: []
   references:

@@ -20,10 +20,13 @@ namespace MagicBookScene
         [SerializeField] private TMP_Text statsText;
         
         [SerializeField] private CardImageMapper mapper;
+        private MagicPrefabPreview prefabPreview;
 
         public async void Init(CombinedMagicData data)
         {
             magicImage.sprite = data.GetSprite();
+            prefabPreview ??= MagicPrefabPreview.Attach(magicImage);
+            prefabPreview?.Show(data);
             foreach (Transform child in cardsParent)
             {
                 Destroy(child.gameObject);

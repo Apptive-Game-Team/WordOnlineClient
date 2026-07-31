@@ -4,6 +4,7 @@ using Data.Magic;
 using GameScene;
 using GameScene.Card;
 using GameScene.Player;
+using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using TMPro;
 using UnityEngine;
@@ -48,6 +49,9 @@ namespace TutorialScene
 
         private void Start()
         {
+            AttachPopupBookPresenter(GameObject.Find("LeftPlayer"));
+            AttachPopupBookPresenter(GameObject.Find("RightPlayer"));
+
             if (leftUserIDText == null || rightUserIDText == null) return;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -58,7 +62,24 @@ namespace TutorialScene
         }
 #endif
         }
-    
+
+        private static void AttachPopupBookPresenter(GameObject target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            ServedObject servedObject = target.GetComponent<ServedObject>();
+            if (servedObject == null)
+            {
+                servedObject = target.AddComponent<ServedObject>();
+            }
+
+            PopupBookVisualPresenter.Attach(servedObject);
+            servedObject.BindListeners();
+        }
+
         public void UpdateUserHps(int leftUserHp, int rightUserHp)
         {
             if (leftUserHpSlider.value > leftUserHp)

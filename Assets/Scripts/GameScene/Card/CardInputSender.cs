@@ -183,6 +183,17 @@ namespace GameScene.Card
             StartCoroutine(nameof(WaitInputResponseTimeout));
         }
 
+        public bool TrySendInput(Vector3 pos)
+        {
+            if (!isFieldSelectMode || isWaitingInputResponse)
+            {
+                return false;
+            }
+
+            SendInput(pos);
+            return isWaitingInputResponse;
+        }
+
         private System.Collections.IEnumerator WaitInputResponseTimeout()
         {
             yield return new WaitForSeconds(3f);

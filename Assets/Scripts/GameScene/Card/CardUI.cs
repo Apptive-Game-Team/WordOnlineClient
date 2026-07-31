@@ -2,8 +2,8 @@ using System;
 using Data;
 using Data.Localization;
 using Data.Magic;
-using Data.Sound;
 using GameScene.ServedObjectComponent;
+using Global.Sound;
 using Sound;
 using TMPro;
 using UnityEngine;
@@ -30,8 +30,8 @@ namespace GameScene.Card
             {
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
-            cardSound.clip = SoundAssets.DrawCard;
-            cardSound.volume = SoundData.gameVolume / 100f;
+            cardSound.clip = SoundAssets.CardSelect;
+            SoundVolumeSetter.Attach(cardSound, SoundVolumeSetter.SoundType.UI);
         }
 
         private bool isActive = false;
@@ -65,17 +65,18 @@ namespace GameScene.Card
                 return;
             }
 
-            cardSound.Play();
             if (isActive)
             {
+                cardSound.PlayOneShot(SoundAssets.CardDeselect);
                 PlayerFeedbackController.Instance.CancelCardSelectFeedback();
                 cardInputSender.CancelUseCard(this);
                 SetCardActive(false);
             }
             else
             {
+                cardSound.PlayOneShot(SoundAssets.CardSelect);
                 PlayerFeedbackController.Instance.PlayCardSelectFeedback();
-                cardInputSender.TryUseCard(this);   
+                cardInputSender.TryUseCard(this);
                 SetCardActive(true);
             }
             cardInputSender.SetExpectedMagicUI(); 

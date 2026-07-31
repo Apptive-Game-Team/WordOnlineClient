@@ -315,7 +315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69232208460201984
-    m_Localized: Chicken Commando
+    m_Localized: Arcane Drop Corps
     m_Metadata:
       m_Items: []
   - m_Id: 69232350000000000
@@ -364,6 +364,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78335231510548480
     m_Localized: Towerback
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335300000000000
+    m_Localized: Vine World
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335400000000000
+    m_Localized: Seed Nest
     m_Metadata:
       m_Items: []
   references:
