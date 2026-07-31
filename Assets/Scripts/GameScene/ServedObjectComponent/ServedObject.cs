@@ -52,6 +52,12 @@ namespace GameScene.ServedObjectComponent
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
 
+        /// <summary>
+        /// Raised once, right after spawning, only when the spawn presentation should play. Objects
+        /// that appear through a full-state sync rather than a real spawn never raise it.
+        /// </summary>
+        public event Action OnSpawned;
+
         private int lastHp = 0;
         private bool hasReceivedHp;
         
@@ -77,6 +83,26 @@ namespace GameScene.ServedObjectComponent
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
+        }
+
+        /// <summary>
+        /// Hands this ServedObject to every <see cref="IServedObjectListener"/> in the hierarchy.
+        /// Call once, after the object is fully configured, so prefab components can subscribe
+        /// without depending on Awake/Start ordering.
+        /// </summary>
+        public void BindListeners()
+        {
+            IServedObjectListener[] listeners = GetComponentsInChildren<IServedObjectListener>(true);
+            foreach (IServedObjectListener listener in listeners)
+            {
+                listener.Bind(this);
+            }
+        }
+
+        /// <summary>Raises <see cref="OnSpawned"/>. Only the spawner should call this.</summary>
+        public void NotifySpawned()
+        {
+            OnSpawned?.Invoke();
         }
 
         private void OnEnable()

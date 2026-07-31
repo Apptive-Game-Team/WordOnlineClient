@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5283255560866415773}
   - component: {fileID: 1293051082466908419}
   - component: {fileID: -70824718022433088}
+  - component: {fileID: 5504000000000000011}
   m_Layer: 0
   m_Name: AbstractShot
   m_TagString: Untagged
@@ -420,3 +421,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
   m_PrefabInstance: {fileID: 8938800850428708722}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5504000000000000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468314681180972983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e4fb32969b44fc8853785068b26aa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 1293051082466908419}
+  style: 0
+  sourceRenderer: {fileID: 7077577480859934061}
+  fadeDuration: 0.35
+  scatterFragments: 1

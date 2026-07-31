@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5501000000000000012, guid: 6028185801a9445fa9435ec49e794354, type: 3}
+      propertyPath: swapSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e2d8f656d3a44bb19ff1fda64809f5f6, type: 3}
+    - target: {fileID: 5501000000000000012, guid: 6028185801a9445fa9435ec49e794354, type: 3}
+      propertyPath: duration
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6542150130469813617, guid: 6028185801a9445fa9435ec49e794354, type: 3}
     m_RemovedGameObjects: []

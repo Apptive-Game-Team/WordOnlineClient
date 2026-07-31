@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4217503714343169093}
   - component: {fileID: 7140850829614563192}
   - component: {fileID: 4829594306251277883}
+  - component: {fileID: 5502000000000000011}
+  - component: {fileID: 5502000000000000012}
   m_Layer: 0
   m_Name: AbstractRangeMob
   m_TagString: Untagged
@@ -886,3 +888,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6722792543790439188, guid: b7f1118b542ce47b38d2b04e275f1c18, type: 3}
   m_PrefabInstance: {fileID: 5970262975781027869}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5502000000000000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578785568479126700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e4fb32969b44fc8853785068b26aa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7140850829614563192}
+  style: 1
+  sourceRenderer: {fileID: 3630220617462090093}
+  fadeDuration: 0.35
+  scatterFragments: 1
+--- !u!114 &5502000000000000012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578785568479126700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16be94cbed504f2fbb2acaf552cd2c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 7140850829614563192}
+  targetRenderer: {fileID: 3630220617462090093}
+  swapSprite: {fileID: 0}
+  duration: 0.1

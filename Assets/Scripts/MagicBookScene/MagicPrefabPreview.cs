@@ -116,12 +116,12 @@ namespace MagicBookScene
             DisableWorldSpaceUi(previewObject);
 
             servedObject = previewObject.GetComponent<ServedObject>();
-            AquaArcherAttackPresenter.Attach(servedObject, prefabName);
-            MagmaSpiritSpawnPresenter.Attach(servedObject, prefabName, true);
             ServedObjectSfxController.Attach(servedObject, prefabName, true);
+            servedObject.BindListeners();
 
             FitCamera();
             PopupBookVisualPresenter popupPresenter = PopupBookVisualPresenter.Attach(servedObject);
+            servedObject.NotifySpawned();
             popupPresenter?.PlaySpawnPresentation(
                 SpawnPresentationTypeCatalog.IsBuilding(prefabName));
         }
