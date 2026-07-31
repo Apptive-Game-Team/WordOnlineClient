@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - deploy
+  workflow_dispatch:
 
 jobs:
   buildWebGL:
@@ -11,6 +12,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      # Verify the push target before the Unity build so credential and target
+      # errors surface in a minute instead of after a full WebGL build.
+      - name: Verify Itch.io credentials
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: ./butler status ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
 
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -55,13 +70,6 @@ jobs:
           unityVersion: 2022.3.22f1
           targetPlatform: WebGL
           customParameters: ${{ steps.build_defines.outputs.CUSTOM_PARAMS }}
-      - name: Install Butler
-        run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
-      
       - name: Push to Itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
