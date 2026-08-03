@@ -16,6 +16,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `TreeGolem2.png` | 고목 수호자 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `AquaArcher.png` | 물결 궁수 · 활시위를 당긴 기본 자세 | `AquaArcherAttackPresenter` 기본 Sprite |
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
+| `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
+| `RockTurretAttacking.png` | 인간제 투석 포탑 · 발사 직후 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
 
 실제 파일명과 `.meta` GUID는 런타임 참조 때문에 유지한다. 문서와 홈페이지에서는
 숫자 접미사 대신 의미 이름을 표시한다.
@@ -33,6 +35,10 @@ Transform 스케일 변형은 적용하지 않는다.
 `MagmaSpiritSpawnPresenter`는 일반 소환 연출을 재생하는 생성에서만 지면 돌파
 프레임을 0.28초 표시한 뒤 선 기본 자세로 복귀한다. 동기화 복구처럼
 `playSpawnPresentation`이 꺼진 생성에서는 소환 프레임을 건너뛴다.
+
+`RockTurret`은 공용 `AbstractBuild`의 `AttackSpriteSwapController`를 사용한다.
+다른 건물 프리팹은 `swapSprite`가 비어 있어 공격 이벤트를 구독하지 않으며,
+`RockTurret`만 발사 직후 프레임을 0.1초 표시한다.
 
 - 동일 PPU
 - 동일 `Bottom Center` 피벗
