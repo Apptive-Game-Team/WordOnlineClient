@@ -230,7 +230,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ChainLightning
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: CraterEmber
@@ -246,7 +246,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ElectricShot
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: FireDrop
@@ -262,7 +262,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: FireShot
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: LeafExplode
@@ -274,7 +274,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: LeafShot
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: Leafair
@@ -290,7 +290,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: MagmaFist
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: MeteorDrop
@@ -346,7 +346,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: TideCall
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: TornadoStrike
@@ -366,11 +366,11 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WaterShot
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WindBlade
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WindDrop

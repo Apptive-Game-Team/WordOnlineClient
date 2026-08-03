@@ -324,3 +324,27 @@ All three shared slots from the 2026-07-27 concept doc are now settled:
 melee `candidate_07`, explosion `r2_twolayer_b`, card hover `candidate_02`.
 Ranged attack was already approved earlier (`transient_release_02`). Next:
 install into Resources, assign to profile slots, Unity verification.
+
+### Runtime application (2026-08-03)
+
+| Slot | Production asset | Profile | Runtime types |
+|---|---|---|---|
+| Explosion | `Sound/Game/Shared/explosion_v1.wav` | `TransientExplode` (spawn) | 9 explode types |
+| Ranged attack | `Sound/Game/Shared/ranged_attack_v1.wav` | `TransientShot` (spawn) | 8 shot types |
+| Card hover | `Sound/Game/Card/card_hover_v2.wav` | `SoundAssets.CardHover` | UI |
+
+**Filter exception, recorded on purpose.** `ranged_attack_v1.wav` is the
+earlier-approved `transient_release_02` and it fails the metallic gate added
+this session (3547 Hz / 12.2 dB / 0.216 s), and runs 0.80 s against the
+concept doc's 0.30 s target. Both facts were reported; the user chose to ship
+it as-is. This is the only case so far where a human overrode an auto-reject —
+check this clip first if attack audio feels wrong in Play Mode.
+
+Melee (`candidate_07`) stays approved but unwired: the melee/ranged split is
+decided by the server's `attack_range`, and only six units are known in this
+repo. The file is not installed into Resources, so nothing unused ships to
+WebGL.
+
+`.meta` files for the three installed clips and two new profiles were
+hand-authored with fresh GUIDs, using `wood_button_click_v4.wav.meta` as the
+import-settings template. Unity Editor import verification is pending.
