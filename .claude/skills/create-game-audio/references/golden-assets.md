@@ -239,3 +239,26 @@ manifest. Prompt grammar: spawn = paper pop-up unfold + material arrival;
 death = prop collapse into component material (ember extinguish / pebble
 spill). Assign to FireCreature / StoneBuilding profile slots in Unity;
 fire attack anchor is `Sound/Game/Fire/fire_attack_v1.wav`.
+
+## Shared Attack / Impact Slots (2026-08-03)
+
+The 2026-07-27 concept doc replaced seven per-element attack sounds with
+three shared buckets. Elements survive only in spawn sounds; attacks and
+impacts are shared because they fire several times per second and any
+character in them becomes noise.
+
+| Slot | Approved source | Duration / peak | SHA-256 (short) |
+|---|---|---|---|
+| Melee attack (all creatures) | `object-melee/attack/candidate_07_20260803_proc.wav` | 0.25 s / -10 dBFS | `ccc24e16…3552` |
+| Ranged attack (creatures + buildings) | `transient_release_02` (approved earlier) | — | see earlier entry |
+| Explosion (all projectiles/spells) | `object-explosion/impact/r2_twolayer_b_20260803_proc.wav` | 0.45 s / -6 dBFS | `5af69fa2…a84a` |
+| Card hover (rework) | `ui-card/hover/candidate_02_20260803_proc.wav` | 0.12 s / -16 dBFS | `c1a005fa…beba` |
+
+Levels are baked to the concept doc's hierarchy (explosion -6 > ranged -9 >
+melee -10 > hover -16), not the usual `--peak -3`, so relative loudness is
+already correct before profile volumes are touched.
+
+Prompt grammar that worked: wood and paper on felt, stated as a time
+sequence, with an explicit ban on ringing. What failed: dry soil and pebbles
+(rings bright on felt no matter the wording), and generating a whole batch
+from a single prompt — vary the material concept, not the take.

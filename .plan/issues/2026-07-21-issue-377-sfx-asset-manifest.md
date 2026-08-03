@@ -273,3 +273,54 @@ Unity-context listening and the user's ear veto pending for all six.
   verifying zero code references and zero serialized GUID references. Files
   remain recoverable from git history; the golden-asset rule (nothing
   unapproved ships from Resources) now holds for the whole Sound folder.
+
+## 2026-08-03 Shared-Slot Batch (melee / explosion / card hover)
+
+First batch generated under the 2026-07-27 concept doc (attack split into
+melee / ranged / explosion; elements survive only in spawn). Direct REST
+`POST /v1/sound-generation`, `duration_seconds` 0.5 (API floor), postprocess
+trimmed each to its concept-doc target length and baked the concept-doc level
+hierarchy instead of the usual `--peak -3`.
+
+`audio_probe.py` gained a metallic-ring gate this session
+(`ring_prominence_db` ≥ 12 **and** `hf_decay_to_-40dB_s` ≥ 0.15 → auto-reject),
+added because the recurring user verdict was "챙 소리가 너무 난다" and the
+existing probe measured nothing that would catch it. The peak search band was
+raised 1.5 kHz → 2.5 kHz after wooden body resonance scored as a clang;
+`wood_button_click_v4` and `card_hover_v1` were re-probed and still pass.
+
+13 generations, 5 died before listening: 2 near-silent (-35.6 / -40.6 dBFS),
+3 metallic (melee 06 @ 16.0 kHz/24.1 dB/0.198 s, explosion 01, explosion 05).
+
+| Event | Batch | Approved (user listening, 2026-08-03) | Source | SHA-256 |
+|---|---|---|---|---|
+| Melee attack (all creatures) | 4 presented | `candidate_07` | `.sfx-work/issue-377/object-melee/attack/candidate_07_20260803_proc.wav` (0.25 s, -10 dBFS) | `ccc24e16cbc500b512694c08792eaf9917a282175912108aa601a39f77703552` |
+| Card hover (rework, 0.28 s → 0.12 s) | 4 presented | `candidate_02` | `.sfx-work/issue-377/ui-card/hover/candidate_02_20260803_proc.wav` (0.12 s, -16 dBFS) | `c1a005fad43c617fe9c26900b283224cf7104c32424d2b55dfe1f8bf5132beba` |
+| Explosion (all projectiles/spells) | round 1: 5 presented, all rejected | see round 2 below | — | — |
+
+Both approved files are already mono PCM_16 44.1 kHz, so they move to Unity
+without a conversion step and keep the approved hash. Rejected candidates stay
+in `.sfx-work` (gitignored) and are not committed.
+
+### Explosion round 2 (2026-08-03)
+
+Round 1 failed because one prompt produced all five candidates — the user
+heard five versions of the same sound, not five options. Round 2 split the
+**material concept** into four, two candidates each, so the choice was about
+what the event is made of rather than which take was cleanest.
+
+| Concept | Result |
+|---|---|
+| 무너짐 — wooden blocks toppling into a heap | 2 survived |
+| 종이 터짐 — paper ball bursting open | 2 survived |
+| 두 겹 — one damped thud, then debris scattering | 1 survived (`c` metallic, `a` near-silent) |
+| 흙 흩어짐 — dry soil and pebbles thrown across felt | **0 survived** — pebbles skittering on felt ring bright (9.8 kHz / 0.22 s); the concept itself fails the metallic gate |
+
+| Event | Approved (user listening, 2026-08-03) | Source | SHA-256 |
+|---|---|---|---|
+| Explosion | `r2_twolayer_b` — 두 겹 concept | `.sfx-work/issue-377/object-explosion/impact/r2_twolayer_b_20260803_proc.wav` (0.45 s, -6 dBFS, end -90.3 dBFS, rerise -35.8 dB) | `5af69fa26f8ef02aaabfdf6bdddd9a32f11f0281e7b344a0fc6d2eeb8929a84a` |
+
+All three shared slots from the 2026-07-27 concept doc are now settled:
+melee `candidate_07`, explosion `r2_twolayer_b`, card hover `candidate_02`.
+Ranged attack was already approved earlier (`transient_release_02`). Next:
+install into Resources, assign to profile slots, Unity verification.
