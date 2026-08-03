@@ -7,6 +7,20 @@ namespace GameScene.ServedObjectComponent
 {
     public static class DOTweenAction
     {
+        // DOTween defaults to 200 tweeners / 50 sequences. A field full of mobs already holds a
+        // few hundred idle tweens, and every death spends ~28 more, so the pool used to run out
+        // mid-frame and DOTween corrupted its active-tween list while growing it.
+        // Recycling stays off on purpose: several effects hold tween references past Kill and
+        // would end up killing a recycled instance belonging to someone else.
+        private const int TweenerCapacity = 2000;
+        private const int SequenceCapacity = 500;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void SetTweenCapacity()
+        {
+            DOTween.Init().SetCapacity(TweenerCapacity, SequenceCapacity);
+        }
+
         public struct WaddleParameters
         {
             public float tiltAngle;
