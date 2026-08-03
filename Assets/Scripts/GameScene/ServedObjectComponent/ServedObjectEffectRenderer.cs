@@ -9,8 +9,6 @@ namespace GameScene.ServedObjectComponent
     public class ServedObjectEffectRenderer
     {
         private const string NoEffect = "None";
-        private const string OverchargeEffect = "Overcharge";
-        private const string ShockEffect = "Shock";
         private const float StackedEffectAlpha = 0.65f;
 
         private readonly Func<Transform> actualTransformProvider;
@@ -58,7 +56,7 @@ namespace GameScene.ServedObjectComponent
             HashSet<string> spawnedResourceNames = new HashSet<string>(StringComparer.Ordinal);
             foreach (string effect in activeEffects)
             {
-                string resourceName = ResolveResourceName(effect);
+                string resourceName = effect;
                 if (spawnedResourceNames.Add(resourceName))
                 {
                     SpawnEffect(effect, resourceName, actualTransform);
@@ -81,13 +79,6 @@ namespace GameScene.ServedObjectComponent
             ApplyEffectScale(effectInstance.transform);
             ApplyEffectAlpha(effectInstance);
             effectInstances.Add(effectInstance);
-        }
-
-        private static string ResolveResourceName(string effect)
-        {
-            return string.Equals(effect, OverchargeEffect, StringComparison.Ordinal)
-                ? ShockEffect
-                : effect;
         }
 
         private void ClearEffects()
