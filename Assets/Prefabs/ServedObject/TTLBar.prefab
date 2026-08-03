@@ -282,11 +282,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2183591580391587873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27faaa5c6d53d4f75be5f0815b552551, type: 3}
+  m_Script: {fileID: 11500000, guid: 12187cc5e87e3478b9baaa8db3c83da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   servedObject: {fileID: 0}
-  targetCategory: TTL
+  verticalOffset: 0.38
+  widthMultiplier: 0.85
+  worldWidthRange: {x: 0.65, y: 1.15}
+  gaugeCategory: TTL
+  useTeamColors: 0
 --- !u!1 &7557242057995222083
 GameObject:
   m_ObjectHideFlags: 0

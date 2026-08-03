@@ -35,7 +35,7 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
-        private ServedObjectHpBar _servedObjectHpBar;
+        private ServedObjectGaugeBar _teamColorGaugeBar;
 #if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
 #endif
@@ -320,7 +320,7 @@ namespace GameScene.ServedObjectComponent
 
         private void UpdateTeamIndicator()
         {
-            if (TryUpdateHpBarTeamIndicator())
+            if (TryUpdateGaugeBarTeamIndicator())
             {
                 DisableRuntimeTeamIndicator();
                 return;
@@ -344,19 +344,28 @@ namespace GameScene.ServedObjectComponent
             UpdateTeamIndicatorPosition();
         }
 
-        private bool TryUpdateHpBarTeamIndicator()
+        private bool TryUpdateGaugeBarTeamIndicator()
         {
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
-                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+                // Buildings carry a TTL bar built from the same component, so pick by role
+                // rather than by hierarchy order — only the HP bar owns the team indicator.
+                foreach (ServedObjectGaugeBar bar in GetComponentsInChildren<ServedObjectGaugeBar>(true))
+                {
+                    if (bar.UsesTeamColors)
+                    {
+                        _teamColorGaugeBar = bar;
+                        break;
+                    }
+                }
             }
 
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
                 return false;
             }
 
-            _servedObjectHpBar.SetObjectIndicatorMaster(master);
+            _teamColorGaugeBar.SetObjectIndicatorMaster(master);
             return true;
         }
 

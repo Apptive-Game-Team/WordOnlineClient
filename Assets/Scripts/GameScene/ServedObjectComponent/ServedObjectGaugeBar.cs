@@ -3,7 +3,16 @@ using UnityEngine.UI;
 
 namespace GameScene.ServedObjectComponent
 {
-    public class ServedObjectHpBar : MonoBehaviour
+    /// <summary>
+    /// A world-space bar that mirrors one server gauge of its <see cref="ServedObject"/>.
+    /// <para>
+    /// Which gauge it shows is prefab data, not a subclass: <see cref="gaugeCategory"/> picks the
+    /// category the server sends, so the HP bar and a building's TTL bar are the same component
+    /// with different settings. Everything else here — the 2.5D anchor, camera billboarding and
+    /// the size fit to the sprite — is gauge-agnostic and shared by both.
+    /// </para>
+    /// </summary>
+    public class ServedObjectGaugeBar : MonoBehaviour
     {
         private const string LeftPlayer = "LeftPlayer";
         private const string RightPlayer = "RightPlayer";
@@ -19,6 +28,15 @@ namespace GameScene.ServedObjectComponent
         [SerializeField] private float verticalOffset = 0.15f;
         [SerializeField] private float widthMultiplier = 0.85f;
         [SerializeField] private Vector2 worldWidthRange = new Vector2(0.65f, 1.15f);
+
+        /// <summary>Which server gauge this bar tracks — "HP" for health, "TTL" for remaining lifetime.</summary>
+        [SerializeField] private string gaugeCategory = HpCategory;
+
+        /// <summary>
+        /// Off for anything but the HP bar. A TTL bar keeps the colours authored on its prefab and
+        /// leaves the team indicator to the HP bar, so the two never fight over it.
+        /// </summary>
+        [SerializeField] private bool useTeamColors = true;
         private Slider slider;
         private RectTransform canvasRectTransform;
         private Image fillImage;
@@ -65,13 +83,13 @@ namespace GameScene.ServedObjectComponent
         {
             ResolveServedObject();
             SubscribeToGaugeChanges();
-            ApplyExistingHpGauge();
+            ApplyExistingGauge();
             NormalizeTransform();
         }
     
         private void Update()
         {
-            if (slider == null || !ResolveServedObject())
+            if (!useTeamColors || slider == null || !ResolveServedObject())
             {
                 return;
             }
@@ -128,7 +146,7 @@ namespace GameScene.ServedObjectComponent
 
         private void OnGaugeUpdated(Gauge gauge)
         {
-            if (slider == null || !gauge.category.Equals(HpCategory))
+            if (slider == null || !gauge.category.Equals(gaugeCategory))
             {
                 return;
             }
@@ -137,17 +155,17 @@ namespace GameScene.ServedObjectComponent
             slider.value = gauge.value;
         }
 
-        private void ApplyExistingHpGauge()
+        private void ApplyExistingGauge()
         {
             if (servedObject == null)
             {
                 return;
             }
 
-            Gauge hpGauge = servedObject.gauges.Find(gauge => gauge.category.Equals(HpCategory));
-            if (hpGauge != null)
+            Gauge existingGauge = servedObject.gauges.Find(gauge => gauge.category.Equals(gaugeCategory));
+            if (existingGauge != null)
             {
-                OnGaugeUpdated(hpGauge);
+                OnGaugeUpdated(existingGauge);
             }
         }
 
@@ -273,8 +291,16 @@ namespace GameScene.ServedObjectComponent
             }
         }
 
+        /// <summary>True only for the bar that owns the team indicator, i.e. the HP bar.</summary>
+        public bool UsesTeamColors => useTeamColors;
+
         public void SetObjectIndicatorMaster(string master)
         {
+            if (!useTeamColors)
+            {
+                return;
+            }
+
             if (objectIndicatorImage == null)
             {
                 objectIndicatorImage = FindImageByName("ObjectIndicator");
