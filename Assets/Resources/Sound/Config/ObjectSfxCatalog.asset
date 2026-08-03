@@ -238,7 +238,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ElectricExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ElectricField
@@ -254,7 +254,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: FireExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: FireField
@@ -266,7 +266,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: LeafExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: LeafField
@@ -286,7 +286,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: MagmaExplosion
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: MagmaFist
@@ -326,7 +326,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: RockExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: RockRemnant
@@ -342,7 +342,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ShockOverload
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: TideCall
@@ -354,11 +354,11 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WaterExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WaterExplosion
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WaterField
@@ -378,7 +378,7 @@ MonoBehaviour:
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: WindExplode
-    profile: {fileID: 11400000, guid: 3df609b4fdb630e49ba7e27f7d96d03c, type: 2}
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: ServedObjectHpBar
