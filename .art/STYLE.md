@@ -136,6 +136,24 @@ MiniRock carries a human anti-air tower. Keep the warm living stone and moss of
 the captive body visibly separate from the cool masonry, steel-blue metal, and
 bronze restraints of the mounted tower.
 
+### Dimensional wanderers — moving world fragments
+
+Independent species carrying fragments of collapsed worlds. They are not
+toads, tadpoles, spirits, or demons.
+
+- Dark violet faceted shell frames a visible miniature world or elemental core.
+- Pale stone bands and angular plates make one shared faction language.
+- `DimensionToad` / 경계 운반자: broad six-legged carrier, stable portal chamber.
+- `FireTadpole` / 화산편: low volcanic fragment with orange magma seams.
+- `LightningTadpole` / 폭풍편: tall storm fragment with cyan lightning core.
+- Keep silhouettes distinct; shared shell architecture establishes kinship,
+  not matching anatomy.
+- Approved direction: B — moving world fragments.
+- Concept board: `.art/concept/dimensional-wanderers/direction-b-world-fragments.png`
+
+Palette: shell `#25223B` `#484061` `#736982`, stone `#D2BFA7`,
+portal cyan `#64D4E8`, magma `#E65E08`, lightning `#77E9F2`.
+
 ### Hellfire legion — the demons
 
 **Not spirits.** Every current fire sprite violates this and is a redesign target.
@@ -152,7 +170,7 @@ Palette: `#E65E08` `#9B3014` `#5A291E` `#2A1512`, ash `#6D4A39`
 on-concept (dark crimson, angular, tribal) and whose technique is clean — use it
 as the provisional shape/palette reference until a real creature anchor is made.
 
-Redesign list: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`, `FireTadpole`,
+Redesign list: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`,
 `FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`, `MagmaExplosion`, `Crater`,
 `FireShot`, `RallyingTorch`.
 

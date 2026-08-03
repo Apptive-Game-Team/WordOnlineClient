@@ -140,6 +140,25 @@ Additional character and lore exploration:
   the character's established `WordVenture` appearance was not available as a
   reference
 
+## Dimensional wanderers
+
+Approved 2026-07-31: **B — moving world fragments**.
+
+- Board: `.art/concept/dimensional-wanderers/direction-b-world-fragments.png`
+- 경계 운반자: `.art/concept/dimensional-wanderers/boundary-carrier.png`
+- 화산편: `.art/concept/dimensional-wanderers/cinder-shard.png`
+- 폭풍편: `.art/concept/dimensional-wanderers/storm-shard.png`
+
+The three are independent species. Shared dark-violet shell, pale stone bands,
+and a visible carried world identify the faction. Do not use frog/tadpole
+anatomy or parent/child staging.
+
+Production mapping:
+
+- `DimensionToad.png` — 경계 운반자, big `256x256` tier
+- `FireTadpole.png` — 화산편, small `128x128` tier
+- `LightningTadpole.png` — 폭풍편, small `128x128` tier
+
 ### World Tree key art
 
 The lore center — Word died and the tree grew from where he fell, spirits arising
