@@ -348,7 +348,16 @@ namespace GameScene.ServedObjectComponent
         {
             if (_servedObjectHpBar == null)
             {
-                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+                // Buildings carry a TTL bar built from the same component, so pick by role
+                // rather than by hierarchy order — only the HP bar owns the team indicator.
+                foreach (ServedObjectHpBar bar in GetComponentsInChildren<ServedObjectHpBar>(true))
+                {
+                    if (bar.UsesTeamColors)
+                    {
+                        _servedObjectHpBar = bar;
+                        break;
+                    }
+                }
             }
 
             if (_servedObjectHpBar == null)
