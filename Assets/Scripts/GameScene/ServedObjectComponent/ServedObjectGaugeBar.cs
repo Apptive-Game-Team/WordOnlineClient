@@ -3,7 +3,16 @@ using UnityEngine.UI;
 
 namespace GameScene.ServedObjectComponent
 {
-    public class ServedObjectHpBar : MonoBehaviour
+    /// <summary>
+    /// A world-space bar that mirrors one server gauge of its <see cref="ServedObject"/>.
+    /// <para>
+    /// Which gauge it shows is prefab data, not a subclass: <see cref="gaugeCategory"/> picks the
+    /// category the server sends, so the HP bar and a building's TTL bar are the same component
+    /// with different settings. Everything else here — the 2.5D anchor, camera billboarding and
+    /// the size fit to the sprite — is gauge-agnostic and shared by both.
+    /// </para>
+    /// </summary>
+    public class ServedObjectGaugeBar : MonoBehaviour
     {
         private const string LeftPlayer = "LeftPlayer";
         private const string RightPlayer = "RightPlayer";
