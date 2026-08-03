@@ -153,8 +153,11 @@ namespace GameScene.ServedObjectComponent
 
         private void NormalizeTransform()
         {
+            // Face the camera, not world forward: PopupBookVisualPresenter billboards world-space
+            // canvases every LateUpdate, so forcing identity here fought it in undefined order.
+            Quaternion facing = GetFacingRotation();
             transform.position = servedObject.GetSpeechBubbleAnchorWorldPosition(verticalOffset);
-            transform.rotation = Quaternion.identity;
+            transform.rotation = facing;
 
             if (canvasRectTransform == null)
             {
@@ -162,7 +165,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             canvasRectTransform.position = transform.position;
-            canvasRectTransform.rotation = Quaternion.identity;
+            canvasRectTransform.rotation = facing;
             canvasRectTransform.localPosition = Vector3.zero;
 
             Vector2 canvasSize = canvasRectTransform.rect.size;
@@ -202,6 +205,12 @@ namespace GameScene.ServedObjectComponent
 
             Bounds fallbackBounds = fallbackRenderer.bounds;
             return Mathf.Max(fallbackBounds.size.x, fallbackBounds.size.y);
+        }
+
+        private static Quaternion GetFacingRotation()
+        {
+            Camera camera = Camera.main;
+            return camera != null ? camera.transform.rotation : Quaternion.identity;
         }
 
         private static float SafeDivide(float numerator, float denominator)

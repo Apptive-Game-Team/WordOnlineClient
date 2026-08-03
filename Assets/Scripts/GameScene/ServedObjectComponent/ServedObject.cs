@@ -209,14 +209,27 @@ namespace GameScene.ServedObjectComponent
         public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
         {
             EnsureSpriteRenderer();
+            Vector3 anchorUp = GetAnchorUpDirection();
 
-            if (_spriteRenderer != null)
+            if (_spriteRenderer != null && _spriteRenderer.sprite != null)
             {
-                Bounds bounds = _spriteRenderer.bounds;
-                return new Vector3(bounds.center.x, bounds.max.y + verticalOffset, GetActualTransform().position.z);
+                // Sprites are billboarded to the tilted camera in 2.5D, so read the top in the
+                // renderer's own space. A world AABB loses the depth the tilt adds and drops the
+                // anchor onto the sprite itself.
+                Bounds localBounds = _spriteRenderer.sprite.bounds;
+                Vector3 topWorldPosition = _spriteRenderer.transform.TransformPoint(
+                    new Vector3(localBounds.center.x, localBounds.max.y, 0f));
+                return topWorldPosition + anchorUp * verticalOffset;
             }
 
-            return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
+            return GetActualTransform().position + anchorUp * (1f + verticalOffset);
+        }
+
+        /// <summary>Screen-up in world space, so anchors sit above the sprite from the player's view.</summary>
+        private static Vector3 GetAnchorUpDirection()
+        {
+            Camera camera = Camera.main;
+            return camera != null ? camera.transform.up : Vector3.up;
         }
 
         private void EnsureEffectRenderer()
