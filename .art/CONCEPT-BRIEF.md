@@ -112,6 +112,44 @@ side, to confirm the split reads.
 
 Reject if the two read as the same material at thumbnail size.
 
+Approved on 2026-08-03 for Unity production:
+
+- `.art/concept/human-golem-separation/Cannon-v2.png` — cool cut stone,
+  steel-blue braces, bronze fasteners, and timber carriage.
+- `.art/concept/human-golem-separation/RockMage-v2.png` — warm block stone,
+  moss growth, stone hood, and a small crystal staff.
+- `.art/concept/human-golem-separation/ElectricTower-v2.png` — human device
+  with cool masonry, steel-blue panels, bronze conductors, and chunky cyan
+  lightning.
+- `.art/concept/human-golem-separation/MiniRockSwarm-v3-limbs.png` — rock-golem
+  creature with warm stacked boulders, restrained moss, short boulder arms,
+  and wide walking legs. This supersedes the legless v2 candidate.
+- `.art/concept/human-golem-separation/Towerback-v3-compact.png` — compact warm
+  living rock carrier with visible arms and legs, restrained moss, and a
+  mechanically separate cool-grey, steel-blue, and bronze anti-air cannon
+  harness. This supersedes the oversized v2 exploration.
+- `.art/concept/human-golem-separation/Tower-v2.png` — shared human ground-tower
+  sprite with cool fitted masonry, steel-blue braces, bronze fasteners, and a
+  short heavy cannon. `GroundTower` uses it directly and `RockTurret` also
+  retains a serialized reference to it.
+- `.art/concept/human-golem-separation/RockTurret-v3-single-shot.png` — human
+  stone-launching turret with fitted cool masonry, steel-blue fork arms, bronze
+  axle hardware, one central sling pouch, and exactly one projectile.
+- `.art/concept/human-golem-separation/RockTurretAttacking-v1.png` — paired
+  post-release frame with the projectile removed and the single empty sling
+  snapped forward. Its `127x192` production export matches the idle frame size
+  and bottom-center baseline.
+
+Production mapping: `Cannon.png`, `ElectricTower.png`, `Tower.png`, and
+`Towerback.png` at middle tier; `RockTurret.png` at middle tier;
+`RockMage.png` and `MiniRockSwarm.png` at small tier. Tier-size review exports
+retain their silhouettes at 64px. `RockTurretAttacking.png` is the paired
+middle-tier attack frame wired through `AttackSpriteSwapController`.
+
+Generated on 2026-08-03, pending user approval for Unity production:
+
+- None in the current batch.
+
 ---
 
 ## Priority 3 — Faction lineup boards

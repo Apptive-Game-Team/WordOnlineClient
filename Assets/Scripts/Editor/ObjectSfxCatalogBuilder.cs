@@ -48,7 +48,7 @@ public static class ObjectSfxCatalogBuilder
         new("ArcaneDevice",
             "BubbleGenerator", "ElectricTower", "FireRune", "FrenzyTotem",
             "HealingTotem", "LightningRune", "ManaWell", "NatureRune",
-            "RallyingTorch", "RockRune", "WaterRune", "WindRune", "WindTotem"),
+            "RallyingTotem", "RockRune", "WaterRune", "WindRune", "WindTotem"),
         new("TransientLegacy",
             "ChainLightning", "CraterEmber", "ElectricExplode", "ElectricField",
             "ElectricShot", "FireDrop", "FireExplode", "FireField", "FireShot",

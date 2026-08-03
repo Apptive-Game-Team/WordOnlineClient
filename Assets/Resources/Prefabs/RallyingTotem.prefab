@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4705269614485497549, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_Name
-      value: RallyingTorch
+      value: RallyingTotem
       objectReference: {fileID: 0}
     - target: {fileID: 8896401521967180672, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_Sprite

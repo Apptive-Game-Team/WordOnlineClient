@@ -209,7 +209,7 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 576fb59254718684193a46c59d8db75a, type: 2}
     intentionalSilent: 0
     serverAlias: 0
-  - runtimeType: RallyingTorch
+  - runtimeType: RallyingTotem
     profile: {fileID: 11400000, guid: 576fb59254718684193a46c59d8db75a, type: 2}
     intentionalSilent: 0
     serverAlias: 0

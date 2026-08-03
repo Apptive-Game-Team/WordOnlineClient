@@ -172,7 +172,7 @@ as the provisional shape/palette reference until a real creature anchor is made.
 
 Redesign list: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`,
 `FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`, `MagmaExplosion`, `Crater`,
-`FireShot`, `RallyingTorch`.
+`FireShot`, `RallyingTotem`.
 
 `MagmaSpirit` and `Crater` already have the right concept; only their technique
 is wrong. `FireSpirit` and friends have the right technique and the wrong
