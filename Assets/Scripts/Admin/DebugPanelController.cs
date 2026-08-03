@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Admin.Dto;
 using GameScene;
 using Global;
+using TMPro;
 using UnityEngine;
 
 namespace Admin
@@ -23,14 +25,20 @@ namespace Admin
         private int selectedMagicId;
         private string selectedPrefabId;
         private string selectedMaster = "None";
-        private GameObject selectionIndicator;
+        private SkillIndicatorShapeRenderer selectionIndicator;
+        private FieldSelector fieldSelector;
+
+        private readonly List<(string name, GameObject item)> magicItems = new List<(string, GameObject)>();
+        private readonly List<(string name, GameObject item)> prefabItems = new List<(string, GameObject)>();
+        private TMP_InputField magicSearch;
+        private TMP_InputField prefabSearch;
 
         private void Start()
         {
             if (adminViewModel == null) adminViewModel = FindObjectOfType<AdminViewModel>();
             selectionIndicator = CreateSelectionIndicator();
-            selectionIndicator.SetActive(false);
-            
+            selectionIndicator.gameObject.SetActive(false);
+
             InitializeMasterSelection();
             RefreshLists();
         }
@@ -40,7 +48,7 @@ namespace Admin
             if (masterDropdown != null)
             {
                 masterDropdown.onValueChanged.RemoveAllListeners();
-                masterDropdown.onValueChanged.AddListener(index => 
+                masterDropdown.onValueChanged.AddListener(index =>
                 {
                     selectedMaster = masterDropdown.options[index].text;
                     WDebug.Log($"Master changed to: {selectedMaster}");
@@ -76,6 +84,11 @@ namespace Admin
             // Clear existing items
             foreach (Transform child in magicParent.transform) Destroy(child.gameObject);
             foreach (Transform child in prefabParent.transform) Destroy(child.gameObject);
+            magicItems.Clear();
+            prefabItems.Clear();
+
+            magicSearch = CreateSearchField(magicParent.transform, "Search magic...", magicItems);
+            prefabSearch = CreateSearchField(prefabParent.transform, "Search prefab...", prefabItems);
 
             // Fetch Magics
             adminViewModel.FetchMagics(magics =>
@@ -85,7 +98,9 @@ namespace Admin
                 {
                     var item = Instantiate(itemPrefab, magicParent.transform);
                     item.SetItem(magic.name, () => SelectMagic(magic.id));
+                    magicItems.Add((magic.name, item.gameObject));
                 }
+                ApplyFilter(magicItems, magicSearch.text);
             });
 
             // Fetch Prefabs
@@ -96,15 +111,47 @@ namespace Admin
                 {
                     var item = Instantiate(itemPrefab, prefabParent.transform);
                     item.SetItem(prefab.name, () => SelectPrefab(prefab.id));
+                    prefabItems.Add((prefab.name, item.gameObject));
                 }
+                ApplyFilter(prefabItems, prefabSearch.text);
             });
+        }
+
+        private static TMP_InputField CreateSearchField(
+            Transform parent,
+            string placeholder,
+            List<(string name, GameObject item)> items)
+        {
+            GameObject root = TMP_DefaultControls.CreateInputField(new TMP_DefaultControls.Resources());
+            root.name = "SearchField";
+            root.transform.SetParent(parent, false);
+            root.transform.SetAsFirstSibling();
+            foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+            {
+                child.gameObject.layer = parent.gameObject.layer;
+            }
+
+            TMP_InputField input = root.GetComponent<TMP_InputField>();
+            if (input.placeholder is TMP_Text placeholderText) placeholderText.text = placeholder;
+            input.onValueChanged.AddListener(query => ApplyFilter(items, query));
+            return input;
+        }
+
+        private static void ApplyFilter(List<(string name, GameObject item)> items, string query)
+        {
+            foreach ((string name, GameObject item) in items)
+            {
+                if (item == null) continue;
+                item.SetActive(string.IsNullOrEmpty(query) ||
+                               name.Contains(query, StringComparison.OrdinalIgnoreCase));
+            }
         }
 
         private void SelectMagic(int id)
         {
             selectedMagicId = id;
             currentSelectionType = SelectionType.Magic;
-            if (selectionIndicator != null) selectionIndicator.SetActive(true);
+            if (selectionIndicator != null) selectionIndicator.gameObject.SetActive(true);
             WDebug.Log($"Magic {id} selected. Master: {selectedMaster}. Click on field to summon.");
         }
 
@@ -112,21 +159,13 @@ namespace Admin
         {
             selectedPrefabId = id;
             currentSelectionType = SelectionType.Prefab;
-            if (selectionIndicator != null) selectionIndicator.SetActive(true);
+            if (selectionIndicator != null) selectionIndicator.gameObject.SetActive(true);
             WDebug.Log($"Prefab {id} selected. Master: {selectedMaster}. Click on field to spawn.");
         }
 
         private void Update()
         {
             if (currentSelectionType == SelectionType.None) return;
-
-            // Update indicator position to mouse
-            if (selectionIndicator != null)
-            {
-                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePos.z = 0;
-                selectionIndicator.transform.position = mousePos;
-            }
 
             // Cancel selection on Right Click
             if (Input.GetMouseButtonDown(1))
@@ -135,16 +174,32 @@ namespace Admin
                 return;
             }
 
+            // Same ground raycast the real cast path uses, so the sent position matches where you clicked.
+            if (!TryGetGroundPosition(out Vector3 worldPos)) return;
+
+            if (selectionIndicator != null)
+            {
+                selectionIndicator.SetCircle(worldPos, SelectionIndicatorRadius, true, SelectionIndicatorSortingOrder, 0f);
+            }
+
             // Confirm selection on Left Click
             if (Input.GetMouseButtonDown(0))
             {
                 // Check if clicking on UI
                 if (PointerInputUtility.IsPointerOverUi()) return;
 
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                worldPos.z = 0;
                 ExecuteSelection(worldPos);
             }
+        }
+
+        private bool TryGetGroundPosition(out Vector3 groundPosition)
+        {
+            if (fieldSelector == null) fieldSelector = FindObjectOfType<FieldSelector>();
+            if (fieldSelector != null) return fieldSelector.TryGetGroundPosition(Input.mousePosition, out groundPosition);
+
+            groundPosition = Vector3.zero;
+            WDebug.LogWarning("[DebugPanel] No FieldSelector in scene, cannot resolve ground position.");
+            return false;
         }
 
         private void ExecuteSelection(Vector3 position)
@@ -161,7 +216,7 @@ namespace Admin
                     magicId = selectedMagicId,
                     position = position
                 };
-                adminViewModel.SummonMagic(dto, response => 
+                adminViewModel.SummonMagic(dto, response =>
                 {
                     if (!response.success) WDebug.LogError("Summon Magic Failed: " + response.message);
                 });
@@ -175,13 +230,13 @@ namespace Admin
                     prefabId = selectedPrefabId,
                     position = position
                 };
-                adminViewModel.SpawnPrefab(dto, response => 
+                adminViewModel.SpawnPrefab(dto, response =>
                 {
                     if (!response.success) WDebug.LogError("Spawn Prefab Failed: " + response.message);
                 });
             }
 
-            // Keep selection active for multiple spawns? 
+            // Keep selection active for multiple spawns?
             // The user didn't specify, but usually for debug it's nice.
             // Let's reset it for now to avoid accidental spawns.
             CancelSelection();
@@ -190,15 +245,15 @@ namespace Admin
         private void CancelSelection()
         {
             currentSelectionType = SelectionType.None;
-            if (selectionIndicator != null) selectionIndicator.SetActive(false);
+            if (selectionIndicator != null) selectionIndicator.gameObject.SetActive(false);
         }
 
-        private static GameObject CreateSelectionIndicator()
+        private static SkillIndicatorShapeRenderer CreateSelectionIndicator()
         {
             GameObject indicator = new GameObject("DebugSelectionIndicator");
             SkillIndicatorShapeRenderer shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
             shapeRenderer.SetLocalCircle(SelectionIndicatorRadius, SelectionIndicatorSortingOrder);
-            return indicator;
+            return shapeRenderer;
         }
     }
 }
