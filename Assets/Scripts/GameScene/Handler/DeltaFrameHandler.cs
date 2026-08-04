@@ -1,5 +1,7 @@
 using GameScene.Dto;
 using GameScene.Object;
+using GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent.Effect;
 using GameScene.UI;
 
 namespace GameScene.Handler
@@ -27,6 +29,21 @@ namespace GameScene.Handler
                 ProjectileSpawner.Instance.Spawn(projectile);
             }
         
+            // 이벤트 처리 - HP 변화로 이펙트가 재생되기 전에 방향을 먼저 넘겨준다
+            if (data.events != null)
+            {
+                foreach (var gameEvent in data.events)
+                {
+                    if (gameEvent.type != GameEventDto.Hit) continue;
+
+                    ServedObject attacker = ObjectContainer.Instance.FindById(gameEvent.actorId);
+                    ServedObject target = ObjectContainer.Instance.FindById(gameEvent.targetId);
+                    if (attacker == null || target == null) continue;
+
+                    HitEffectController.NotifyHit(attacker, target);
+                }
+            }
+
             // // 기존 오브젝트 업데이트
             foreach (var updated in data.objects.update)
                 ObjectUpdater.Instance.UpdateObject(updated);

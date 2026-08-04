@@ -5,7 +5,7 @@ namespace GameScene.ServedObjectComponent
 {
     public static class DamagedObjectEffect
     {
-        public static void SetSelfDestroyEffect(string effect, Transform tr)
+        public static void SetSelfDestroyEffect(string effect, Transform tr, Vector3 offset = default)
         {
             GameObject effectPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{effect}");
             
@@ -15,7 +15,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
             
-            UnityEngine.Object.Instantiate(effectPrefab, tr.position, Quaternion.identity);
+            UnityEngine.Object.Instantiate(effectPrefab, tr.position + offset, Quaternion.identity);
         }
     }
 }
