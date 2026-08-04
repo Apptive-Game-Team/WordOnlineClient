@@ -28,10 +28,7 @@ namespace Global
 
         private void Start()
         {
-            if (messageQueue.Count > 0 && messageRoutine == null)
-            {
-                messageRoutine = StartCoroutine(ProcessMessageQueue());
-            }
+            TryStartMessageRoutine();
         }
 
         public void ShowMessage(LocalizedString localizedString, Action callback = null)
@@ -40,7 +37,7 @@ namespace Global
             {
                 if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
                 {
-                    ShowMessage(handle.Result);
+                    EnqueueMessage(handle.Result);
                 }
                 callback?.Invoke();
             };
@@ -48,12 +45,19 @@ namespace Global
     
         public void ShowMessage(string msg)
         {
-            messageQueue.Enqueue(msg);
+            EnqueueMessage(msg);
+        }
 
-            if (messageRoutine == null)
-            {
+        private static void EnqueueMessage(string msg)
+        {
+            messageQueue.Enqueue(msg);
+            if (Instance != null) Instance.TryStartMessageRoutine();
+        }
+
+        private void TryStartMessageRoutine()
+        {
+            if (messageQueue.Count > 0 && messageRoutine == null)
                 messageRoutine = StartCoroutine(ProcessMessageQueue());
-            }
         }
 
         private IEnumerator ProcessMessageQueue()

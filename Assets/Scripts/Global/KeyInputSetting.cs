@@ -1,3 +1,4 @@
+#if UNITY_WEBGL && !UNITY_EDITOR
 using UnityEngine;
 
 namespace Global
@@ -12,3 +13,4 @@ namespace Global
         }
     }
 }
+#endif

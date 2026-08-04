@@ -75,9 +75,10 @@ mergeInto(LibraryManager.library, {
   // 연결 종료
   DisconnectStomp: function () {
     if (client) {
-      client.disconnect(function () {
-        SendMessage('StompConnector', 'OnDisconnected', 'Disconnected');
-      });
+      // Called by StompConnector.OnDestroy during an intentional scene change.
+      // The GameObject no longer exists when this asynchronous callback runs,
+      // so an OnDisconnected SendMessage would be both stale and misleading.
+      client.disconnect(function () {});
       client = null;
     }
   }
