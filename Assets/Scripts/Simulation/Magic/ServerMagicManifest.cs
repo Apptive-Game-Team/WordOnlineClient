@@ -92,7 +92,7 @@ namespace GameScene.Simulation.Magic
             new ServerMagicDescriptor(31, "nature_slime_nest", MagicBehaviorFamily.Build, "PveNatureSlimeNest"),
             new ServerMagicDescriptor(32, "overgrowth", MagicBehaviorFamily.Area, "Overgrowth"),
             new ServerMagicDescriptor(33, "pve_water_slime_nest", MagicBehaviorFamily.Build, "PveWaterSlimeNest"),
-            new ServerMagicDescriptor(34, "rallying_torch", MagicBehaviorFamily.Drop, "RallyingTorch"),
+            new ServerMagicDescriptor(34, "rallying_torch", MagicBehaviorFamily.Drop, "RallyingTotem"),
             new ServerMagicDescriptor(35, "razor_gale", MagicBehaviorFamily.Area, "RazorGale"),
             new ServerMagicDescriptor(36, "rock_drop", MagicBehaviorFamily.Drop, "RockDrop"),
             new ServerMagicDescriptor(37, "rock_golem", MagicBehaviorFamily.Spawn, "RockGolem"),

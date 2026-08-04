@@ -37,9 +37,6 @@ namespace GameScene.ServedObjectComponent
         private readonly List<string> _simulationEffects = new List<string>();
         private readonly List<string> _localEffects = new List<string>();
         private ServedObjectGaugeBar _teamColorGaugeBar;
-#if UNITY_EDITOR
-        private ServedObjectGizmoRenderer _gizmoRenderer;
-#endif
 
         public event Action OnAttack;
         public event Action OnDamaged;

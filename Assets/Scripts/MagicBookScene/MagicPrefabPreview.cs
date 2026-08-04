@@ -1,5 +1,4 @@
 using Data.Magic;
-using GameScene.Object;
 using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using GameScene.ServedObjectComponent.Sound;

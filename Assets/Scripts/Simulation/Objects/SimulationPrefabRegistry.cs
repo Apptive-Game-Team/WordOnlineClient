@@ -251,7 +251,7 @@ namespace GameScene.Simulation.Objects
                     return SimulationElement.Fire | SimulationElement.Rock;
                 case "DimensionToad": return SimulationElement.Fire | SimulationElement.Lightning;
                 case "HealingTotem": return SimulationElement.Nature | SimulationElement.Water;
-                case "RallyingTorch": case "FireLordSpirit": case "FireSpirit":
+                case "RallyingTotem": case "FireLordSpirit": case "FireSpirit":
                     return SimulationElement.Fire | SimulationElement.Wind;
                 case "SandStorm": return SimulationElement.Rock | SimulationElement.Wind;
                 case "ManaWell": return SimulationElement.Lightning | SimulationElement.Nature;
@@ -301,7 +301,7 @@ namespace GameScene.Simulation.Objects
                 case "ShockOverload": case "RazorGale": case "Overgrowth":
                 case "FireField": case "WaterField": case "ElectricField": case "LeafField":
                 case "FireDrop": case "NatureDrop": case "RockDrop": case "LightningDrop":
-                case "WindDrop": case "FrenzyTotem": case "Leafair": case "RallyingTorch":
+                case "WindDrop": case "FrenzyTotem": case "Leafair": case "RallyingTotem":
                 case "SandStorm": case "TornadoStrike": case "MeteorShower":
                 case "FireRune": case "WaterRune": case "NatureRune": case "RockRune":
                 case "LightningRune": case "WindRune": case "Vine": case "MagmaFist":
