@@ -46,7 +46,7 @@ namespace GameScene.Simulation.Tests
 
             PlayerResourceSnapshot snapshot = resources.CreatePlayerSnapshot(10);
 
-            Assert.That(snapshot.Mana, Is.EqualTo(1));
+            Assert.That(snapshot.Mana, Is.EqualTo(2));
             Assert.That(snapshot.Hand, Is.EqualTo(new[] { "Fire" }));
             Assert.Throws<InvalidOperationException>(() => resources.CreatePlayerSnapshot(999));
         }

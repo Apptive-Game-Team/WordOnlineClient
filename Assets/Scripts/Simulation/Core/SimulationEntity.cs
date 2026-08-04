@@ -13,7 +13,7 @@ namespace GameScene.Simulation.Core
         private readonly SimulationComponent[] components;
 
         public int Id { get; }
-        public long OwnerUserId { get; }
+        public long OwnerUserId { get; private set; }
         public string PrefabId { get; }
         public int SpawnFrame { get; }
         public int DestroyFrame { get; private set; } = -1;
@@ -28,8 +28,18 @@ namespace GameScene.Simulation.Core
         public Fix64 Radius { get; }
         public Fix64 Mass { get; }
         public bool IsTrigger { get; }
+        public bool CollisionEnabled { get; }
+        public bool IsStatic { get; }
+        public SimulationElement Elements { get; }
         public bool IsDestroyed { get; private set; }
         internal Sphere Body => body;
+
+        public bool HasComponent(string componentId)
+        {
+            for (int index = 0; index < components.Length; index++)
+                if (components[index].Id == componentId) return true;
+            return false;
+        }
 
         internal SimulationEntity(
             int id,
@@ -44,15 +54,20 @@ namespace GameScene.Simulation.Core
             Radius = prefab.Physics.Radius;
             Mass = prefab.Physics.Mass;
             IsTrigger = prefab.Physics.IsTrigger;
+            CollisionEnabled = prefab.Physics.CollisionEnabled;
+            IsStatic = prefab.Physics.IsStatic;
+            Elements = prefab.Elements;
             SpawnFrame = spawnFrame;
             components = new SimulationComponent[prefab.ComponentIds.Count];
             for (int index = 0; index < components.Length; index++)
                 components[index] = new SimulationComponent(prefab.ComponentIds[index], spawnFrame);
-            body = new Sphere(
-                new Vector3(position.X, position.Y, Fix64.Zero),
-                prefab.Physics.Radius,
-                prefab.Physics.Mass);
-            if (prefab.Physics.IsTrigger)
+            body = prefab.Physics.IsStatic
+                ? new Sphere(new Vector3(position.X, position.Y, Fix64.Zero), prefab.Physics.Radius)
+                : new Sphere(new Vector3(position.X, position.Y, Fix64.Zero), prefab.Physics.Radius,
+                    prefab.Physics.Mass);
+            if (!prefab.Physics.CollisionEnabled)
+                body.CollisionInformation.CollisionRules.Personal = CollisionRule.NoBroadPhase;
+            else if (prefab.Physics.IsTrigger)
                 body.CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
             body.LinearDamping = Fix64.Zero;
             body.AngularDamping = Fix64.Zero;
@@ -60,7 +75,36 @@ namespace GameScene.Simulation.Core
 
         internal void SetVelocity(SimVector2 velocity)
         {
-            body.LinearVelocity = new Vector3(velocity.X, velocity.Y, Fix64.Zero);
+            if (IsStatic) return;
+            body.LinearVelocity = new Vector3(velocity.X, velocity.Y, body.LinearVelocity.Z);
+        }
+
+        internal void SetPosition3D(SimVector3 position)
+        {
+            body.Position = new Vector3(position.X, position.Y, position.Z);
+        }
+
+        internal void SetPosition(SimVector2 position)
+        {
+            body.Position = new Vector3(position.X, position.Y, body.Position.Z);
+        }
+
+        internal void AddVerticalImpulse(Fix64 force)
+        {
+            if (IsStatic) return;
+            body.LinearVelocity = new Vector3(body.LinearVelocity.X, body.LinearVelocity.Y,
+                body.LinearVelocity.Z + force);
+        }
+
+        internal void SetVerticalVelocity(Fix64 velocity)
+        {
+            if (IsStatic) return;
+            body.LinearVelocity = new Vector3(body.LinearVelocity.X, body.LinearVelocity.Y, velocity);
+        }
+
+        internal void SetOwner(long ownerUserId)
+        {
+            OwnerUserId = ownerUserId;
         }
 
         internal void ConstrainTo(SimVector2 min, SimVector2 max)
@@ -97,6 +141,9 @@ namespace GameScene.Simulation.Core
             writer.WriteFixed64(Radius);
             writer.WriteFixed64(Mass);
             writer.WriteBoolean(IsTrigger);
+            writer.WriteBoolean(CollisionEnabled);
+            writer.WriteBoolean(IsStatic);
+            writer.WriteInt32((int)Elements);
             writer.WriteInt32(components.Length);
             for (int index = 0; index < components.Length; index++) components[index].WriteState(writer);
             writer.WriteFixed64(body.Position.X);

@@ -59,6 +59,14 @@ namespace GameScene.Simulation.Core
             return SpawnWithId(nextEntityId, prefabId, ownerUserId, position);
         }
 
+        public SimulationEntity Spawn(string prefabId, long ownerUserId, SimVector3 position)
+        {
+            SimulationEntity entity = SpawnWithId(nextEntityId, prefabId, ownerUserId,
+                new SimVector2(position.X, position.Y));
+            entity.SetPosition3D(position);
+            return entity;
+        }
+
         public SimulationEntity SpawnWithId(int entityId, string prefabId, long ownerUserId, SimVector2 position)
         {
             SimulationPrefabDefinition prefab = prefabRegistry.GetRequired(prefabId);
@@ -165,6 +173,10 @@ namespace GameScene.Simulation.Core
 
         public SimulationSnapshot CreateSnapshot() => new SimulationSnapshot(FrameNumber, entities);
 
+        internal SimulationSnapshot CreateSnapshot(
+            IReadOnlyDictionary<int, SimulationEntityPresentation> presentation) =>
+            new SimulationSnapshot(FrameNumber, entities, presentation);
+
         public ulong CalculateStateHash()
         {
             CanonicalStateWriter writer = new CanonicalStateWriter();
@@ -236,7 +248,9 @@ namespace GameScene.Simulation.Core
             Spawn(
                 SimulationPrefabRegistry.PlayerPrefabId,
                 BootstrapOwnerUserId(bootstrapEvent, sessionStart),
-                new SimVector2((Fix64)(decimal)bootstrapEvent.position.x, (Fix64)(decimal)bootstrapEvent.position.z));
+                new SimVector3((Fix64)(decimal)bootstrapEvent.position.x,
+                    (Fix64)(decimal)bootstrapEvent.position.z,
+                    (Fix64)(decimal)bootstrapEvent.position.y));
         }
 
         private void ValidateBootstrapEvent(

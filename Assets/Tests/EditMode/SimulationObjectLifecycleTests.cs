@@ -82,7 +82,20 @@ namespace GameScene.Simulation.Tests
             world.ApplyBootstrap(Session(Player(2, 3), Player(1, -3)));
             world.Destroy(0);
 
-            Assert.That(world.CalculateStateHash(), Is.EqualTo(0x6105ABA9BF4C4B9BUL));
+            Assert.That(world.CalculateStateHash(), Is.EqualTo(0x2E781AB05CF462E9UL));
+        }
+
+        [Test]
+        public void ElementalChartUsesServerPairwiseAverageAndIntegerTruncation()
+        {
+            Assert.That(SimulationElementalChart.ScaleDamage(10,
+                SimulationElement.Fire, SimulationElement.Water), Is.EqualTo(20));
+            Assert.That(SimulationElementalChart.ScaleDamage(7,
+                SimulationElement.Rock,
+                SimulationElement.Nature | SimulationElement.Wind), Is.EqualTo(7));
+            Assert.That(SimulationElementalChart.ScaleDamage(5,
+                SimulationElement.Fire | SimulationElement.Rock,
+                SimulationElement.Water), Is.EqualTo(9));
         }
 
         private static BootstrapEventMessage Player(int sequence, float x)
