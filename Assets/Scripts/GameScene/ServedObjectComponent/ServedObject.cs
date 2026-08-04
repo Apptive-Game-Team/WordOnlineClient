@@ -67,9 +67,6 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            // PositionUpdater moved the transform from server DTOs and raised OnMoved.
-            // The simulation renderer bridge owns the transform now, so nothing raises
-            // OnMoved yet and movement sfx stays silent. Tracked in #447.
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))
@@ -101,6 +98,15 @@ namespace GameScene.ServedObjectComponent
         public void NotifySpawned()
         {
             OnSpawned?.Invoke();
+        }
+
+        /// <summary>
+        /// Raises <see cref="OnMoved"/>. The renderer owns the transform, so it also owns the
+        /// decision that this object moved. Only the spawner should call this.
+        /// </summary>
+        public void NotifyMoved()
+        {
+            OnMoved?.Invoke();
         }
 
         private void OnEnable()
