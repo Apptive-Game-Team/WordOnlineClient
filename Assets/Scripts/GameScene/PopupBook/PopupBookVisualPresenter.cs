@@ -1,22 +1,36 @@
+using DG.Tweening;
 using GameScene.ServedObjectComponent;
+using GameScene.ServedObjectComponent.Effect;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 namespace GameScene.PopupBook
 {
     public class PopupBookVisualPresenter : MonoBehaviour
     {
+        private const float SpawnStartAngle = -84f;
+        private const float SpawnDuration = 0.42f;
+
         private Transform visualRoot;
+        private Transform spawnPresentationPivot;
         private Camera worldCamera;
         private Transform[] worldSpaceUiRoots;
+        private bool[] worldSpaceCanvasEnabledStates;
+        private Sequence spawnSequence;
 
-        public static void Attach(ServedObject servedObject)
+        public static PopupBookVisualPresenter Attach(ServedObject servedObject)
         {
             Transform actualTransform = servedObject.GetActualTransform();
-            if (actualTransform == servedObject.transform ||
-                actualTransform.parent == null ||
-                actualTransform.parent.name == nameof(PopupBookVisualPresenter))
+            if (actualTransform == servedObject.transform || actualTransform.parent == null)
             {
-                return;
+                return null;
+            }
+
+            PopupBookVisualPresenter existingPresenter =
+                actualTransform.GetComponentInParent<PopupBookVisualPresenter>();
+            if (existingPresenter != null)
+            {
+                return existingPresenter;
             }
 
             Transform originalParent = actualTransform.parent;
@@ -31,15 +45,54 @@ namespace GameScene.PopupBook
             presenterTransform.localRotation = Quaternion.identity;
             presenterTransform.localScale = Vector3.one;
 
-            actualTransform.SetParent(presenterTransform, false);
-            actualTransform.localPosition = Vector3.zero;
+            GameObject pivotObject = new GameObject("SpawnPresentationPivot");
+            Transform pivotTransform = pivotObject.transform;
+            pivotTransform.SetParent(presenterTransform, false);
+
+            float bottomOffset = GetBottomOffset(actualTransform, originalLocalScale);
+            pivotTransform.localPosition = new Vector3(0f, bottomOffset, 0f);
+
+            actualTransform.SetParent(pivotTransform, false);
+            actualTransform.localPosition = new Vector3(0f, -bottomOffset, 0f);
             actualTransform.localRotation = originalLocalRotation;
             actualTransform.localScale = originalLocalScale;
 
             PopupBookVisualPresenter presenter = presenterObject.AddComponent<PopupBookVisualPresenter>();
             presenter.visualRoot = presenterTransform;
+            presenter.spawnPresentationPivot = pivotTransform;
             presenter.worldCamera = Camera.main;
             presenter.worldSpaceUiRoots = GetWorldSpaceUiRoots(servedObject);
+            presenter.AlignWithCamera();
+            return presenter;
+        }
+
+        public void PlaySpawnPresentation(bool spawnDust)
+        {
+            if (spawnPresentationPivot == null)
+            {
+                return;
+            }
+
+            StopSpawnPresentation();
+            CaptureAndSetWorldSpaceUiEnabled(false);
+
+            spawnPresentationPivot.localRotation = Quaternion.Euler(SpawnStartAngle, 0f, 0f);
+
+            Sequence currentSequence = DOTween.Sequence();
+            spawnSequence = currentSequence;
+            currentSequence.SetLink(gameObject);
+            currentSequence.Append(
+                spawnPresentationPivot
+                    .DOLocalRotate(Vector3.zero, SpawnDuration, RotateMode.Fast)
+                    .SetEase(Ease.OutBack, 1.25f));
+
+            if (spawnDust)
+            {
+                currentSequence.InsertCallback(SpawnDuration * 0.72f, SpawnBuildingDust);
+            }
+
+            currentSequence.OnComplete(() => FinishSpawnPresentation(currentSequence));
+            currentSequence.OnKill(() => FinishSpawnPresentation(currentSequence));
         }
 
         private void LateUpdate()
@@ -49,23 +102,140 @@ namespace GameScene.PopupBook
                 worldCamera = Camera.main;
             }
 
-            if (worldCamera != null)
-            {
-                visualRoot.rotation = worldCamera.transform.rotation;
+            AlignWithCamera();
+        }
 
-                if (worldSpaceUiRoots == null)
+        private void OnDestroy()
+        {
+            StopSpawnPresentation();
+        }
+
+        private void AlignWithCamera()
+        {
+            if (worldCamera == null || visualRoot == null)
+            {
+                return;
+            }
+
+            visualRoot.rotation = worldCamera.transform.rotation;
+
+            if (worldSpaceUiRoots == null)
+            {
+                return;
+            }
+
+            foreach (Transform uiRoot in worldSpaceUiRoots)
+            {
+                if (uiRoot != null)
                 {
-                    return;
+                    uiRoot.rotation = worldCamera.transform.rotation;
+                }
+            }
+        }
+
+        private void SpawnBuildingDust()
+        {
+            if (spawnPresentationPivot == null)
+            {
+                return;
+            }
+
+            SpriteRenderer referenceRenderer = GetComponentInChildren<SpriteRenderer>();
+            BuildingSpawnDustEffect.Spawn(
+                spawnPresentationPivot.position,
+                worldCamera != null ? worldCamera.transform.rotation : Quaternion.identity,
+                referenceRenderer);
+        }
+
+        private void StopSpawnPresentation()
+        {
+            Sequence sequenceToKill = spawnSequence;
+            spawnSequence = null;
+            sequenceToKill?.Kill();
+
+            if (spawnPresentationPivot != null)
+            {
+                spawnPresentationPivot.localRotation = Quaternion.identity;
+            }
+
+            RestoreWorldSpaceUiEnabled();
+        }
+
+        private void FinishSpawnPresentation(Sequence completedSequence)
+        {
+            if (spawnSequence != completedSequence)
+            {
+                return;
+            }
+
+            spawnSequence = null;
+            if (spawnPresentationPivot != null)
+            {
+                spawnPresentationPivot.localRotation = Quaternion.identity;
+            }
+
+            RestoreWorldSpaceUiEnabled();
+        }
+
+        private void CaptureAndSetWorldSpaceUiEnabled(bool enabled)
+        {
+            if (worldSpaceUiRoots == null)
+            {
+                return;
+            }
+
+            worldSpaceCanvasEnabledStates = new bool[worldSpaceUiRoots.Length];
+            for (int i = 0; i < worldSpaceUiRoots.Length; i++)
+            {
+                Transform uiRoot = worldSpaceUiRoots[i];
+                if (uiRoot == null)
+                {
+                    continue;
                 }
 
-                foreach (Transform uiRoot in worldSpaceUiRoots)
+                Canvas canvas = uiRoot.GetComponent<Canvas>();
+                if (canvas == null)
                 {
-                    if (uiRoot != null)
+                    continue;
+                }
+
+                worldSpaceCanvasEnabledStates[i] = canvas.enabled;
+                canvas.enabled = enabled;
+            }
+        }
+
+        private void RestoreWorldSpaceUiEnabled()
+        {
+            if (worldSpaceUiRoots == null || worldSpaceCanvasEnabledStates == null)
+            {
+                return;
+            }
+
+            int count = Mathf.Min(worldSpaceUiRoots.Length, worldSpaceCanvasEnabledStates.Length);
+            for (int i = 0; i < count; i++)
+            {
+                if (worldSpaceUiRoots[i] != null)
+                {
+                    Canvas canvas = worldSpaceUiRoots[i].GetComponent<Canvas>();
+                    if (canvas != null)
                     {
-                        uiRoot.rotation = worldCamera.transform.rotation;
+                        canvas.enabled = worldSpaceCanvasEnabledStates[i];
                     }
                 }
             }
+
+            worldSpaceCanvasEnabledStates = null;
+        }
+
+        private static float GetBottomOffset(Transform actualTransform, Vector3 originalLocalScale)
+        {
+            SpriteRenderer spriteRenderer = actualTransform.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null || spriteRenderer.sprite == null)
+            {
+                return 0f;
+            }
+
+            return spriteRenderer.sprite.bounds.min.y * Mathf.Abs(originalLocalScale.y);
         }
 
         private static Transform[] GetWorldSpaceUiRoots(ServedObject servedObject)

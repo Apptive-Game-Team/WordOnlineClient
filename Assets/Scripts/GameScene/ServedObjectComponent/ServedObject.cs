@@ -34,20 +34,31 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
-        private ServedObjectHpBar _servedObjectHpBar;
         private readonly List<string> _simulationEffects = new List<string>();
         private readonly List<string> _localEffects = new List<string>();
+        private ServedObjectGaugeBar _teamColorGaugeBar;
+#if UNITY_EDITOR
+        private ServedObjectGizmoRenderer _gizmoRenderer;
+#endif
 
         public event Action OnAttack;
         public event Action OnDamaged;
         public event Action<string> OnOtherStatus;
         public event Action OnDestroyed;
+        public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
 
+        /// <summary>
+        /// Raised once, right after spawning, only when the spawn presentation should play. Objects
+        /// that appear through a full-state sync rather than a real spawn never raise it.
+        /// </summary>
+        public event Action OnSpawned;
+
         private int lastHp = 0;
+        private bool hasReceivedHp;
         
         public void SetMaster(string master)
         {
@@ -59,6 +70,9 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
+            // PositionUpdater moved the transform from server DTOs and raised OnMoved.
+            // The simulation renderer bridge owns the transform now, so nothing raises
+            // OnMoved yet and movement sfx stays silent. Tracked in #447.
             UpdateTeamIndicator();
 
             if (master.Equals(RightPlayer))
@@ -70,6 +84,26 @@ namespace GameScene.ServedObjectComponent
                 }
                 gameObject.transform.Rotate(0, 180, 0);
             }
+        }
+
+        /// <summary>
+        /// Hands this ServedObject to every <see cref="IServedObjectListener"/> in the hierarchy.
+        /// Call once, after the object is fully configured, so prefab components can subscribe
+        /// without depending on Awake/Start ordering.
+        /// </summary>
+        public void BindListeners()
+        {
+            IServedObjectListener[] listeners = GetComponentsInChildren<IServedObjectListener>(true);
+            foreach (IServedObjectListener listener in listeners)
+            {
+                listener.Bind(this);
+            }
+        }
+
+        /// <summary>Raises <see cref="OnSpawned"/>. Only the spawner should call this.</summary>
+        public void NotifySpawned()
+        {
+            OnSpawned?.Invoke();
         }
 
         private void OnEnable()
@@ -152,8 +186,7 @@ namespace GameScene.ServedObjectComponent
                     break;
 
                 case "Attack":
-                    OnAttack?.Invoke();
-                    DOTweenAction.SwingMobAttack(GetActualTransform());
+                    PlayAttackPresentation();
                     break;
 
                 case "Damaged":
@@ -165,6 +198,12 @@ namespace GameScene.ServedObjectComponent
                     break;
             }
         }
+
+        public void PlayAttackPresentation()
+        {
+            OnAttack?.Invoke();
+            DOTweenAction.SwingMobAttack(GetActualTransform());
+        }
         
         public Transform GetActualTransform()
         {
@@ -173,6 +212,14 @@ namespace GameScene.ServedObjectComponent
                 return _actualTransform;
             }
 
+            Transform namedActualTransform = transform.Find("actualObject");
+            if (namedActualTransform != null)
+            {
+                _actualTransform = namedActualTransform;
+                return _actualTransform;
+            }
+
+            EnsureSpriteRenderer();
             if (_spriteRenderer != null)
             {
                 _actualTransform = _spriteRenderer.transform;
@@ -186,14 +233,27 @@ namespace GameScene.ServedObjectComponent
         public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
         {
             EnsureSpriteRenderer();
+            Vector3 anchorUp = GetAnchorUpDirection();
 
-            if (_spriteRenderer != null)
+            if (_spriteRenderer != null && _spriteRenderer.sprite != null)
             {
-                Bounds bounds = _spriteRenderer.bounds;
-                return new Vector3(bounds.center.x, bounds.max.y + verticalOffset, GetActualTransform().position.z);
+                // Sprites are billboarded to the tilted camera in 2.5D, so read the top in the
+                // renderer's own space. A world AABB loses the depth the tilt adds and drops the
+                // anchor onto the sprite itself.
+                Bounds localBounds = _spriteRenderer.sprite.bounds;
+                Vector3 topWorldPosition = _spriteRenderer.transform.TransformPoint(
+                    new Vector3(localBounds.center.x, localBounds.max.y, 0f));
+                return topWorldPosition + anchorUp * verticalOffset;
             }
 
-            return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
+            return GetActualTransform().position + anchorUp * (1f + verticalOffset);
+        }
+
+        /// <summary>Screen-up in world space, so anchors sit above the sprite from the player's view.</summary>
+        private static Vector3 GetAnchorUpDirection()
+        {
+            Camera camera = Camera.main;
+            return camera != null ? camera.transform.up : Vector3.up;
         }
 
         private void EnsureEffectRenderer()
@@ -233,6 +293,13 @@ namespace GameScene.ServedObjectComponent
         private void HandleDamageEffect(Gauge gauge)
         {
             if (!gauge.category.Equals("HP")) return;
+
+            if (!hasReceivedHp)
+            {
+                lastHp = (int) gauge.value;
+                hasReceivedHp = true;
+                return;
+            }
             
             if (gauge.value < lastHp)
             {
@@ -277,7 +344,7 @@ namespace GameScene.ServedObjectComponent
 
         private void UpdateTeamIndicator()
         {
-            if (TryUpdateHpBarTeamIndicator())
+            if (TryUpdateGaugeBarTeamIndicator())
             {
                 DisableRuntimeTeamIndicator();
                 return;
@@ -301,19 +368,28 @@ namespace GameScene.ServedObjectComponent
             UpdateTeamIndicatorPosition();
         }
 
-        private bool TryUpdateHpBarTeamIndicator()
+        private bool TryUpdateGaugeBarTeamIndicator()
         {
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
-                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+                // Buildings carry a TTL bar built from the same component, so pick by role
+                // rather than by hierarchy order — only the HP bar owns the team indicator.
+                foreach (ServedObjectGaugeBar bar in GetComponentsInChildren<ServedObjectGaugeBar>(true))
+                {
+                    if (bar.UsesTeamColors)
+                    {
+                        _teamColorGaugeBar = bar;
+                        break;
+                    }
+                }
             }
 
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
                 return false;
             }
 
-            _servedObjectHpBar.SetObjectIndicatorMaster(master);
+            _teamColorGaugeBar.SetObjectIndicatorMaster(master);
             return true;
         }
 

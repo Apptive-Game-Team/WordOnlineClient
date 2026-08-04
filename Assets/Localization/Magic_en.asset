@@ -315,7 +315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69232208460201984
-    m_Localized: Chicken Commando
+    m_Localized: Arcane Drop Corps
     m_Metadata:
       m_Items: []
   - m_Id: 69232350000000000
@@ -331,7 +331,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70132293805903872
-    m_Localized: Rallying Torch
+    m_Localized: Rallying Totem
     m_Metadata:
       m_Items: []
   - m_Id: 73103741614686208
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 73104110000000000
-    m_Localized: Dimension Toad
+    m_Localized: Boundary Carrier
     m_Metadata:
       m_Items: []
   - m_Id: 78335189718503424
@@ -364,6 +364,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78335231510548480
     m_Localized: Towerback
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335300000000000
+    m_Localized: Vine World
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335400000000000
+    m_Localized: Seed Nest
     m_Metadata:
       m_Items: []
   references:

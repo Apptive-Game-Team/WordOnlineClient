@@ -185,7 +185,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1000041
-    m_Localized: Deploys a chicken commando from the air.
+    m_Localized: Deploys an arcane paratrooper from the air.
     m_Metadata:
       m_Items: []
   - m_Id: 1000042
@@ -221,8 +221,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1864653363056640
-    m_Localized: Summons a Dimensional Toad that periodically summons Fire Tadpoles
-      and Lightning Tadpoles.
+    m_Localized: Summons a Boundary Carrier that periodically calls Cinder Shards
+      and Storm Shards.
     m_Metadata:
       m_Items: []
   - m_Id: 1864718152470528

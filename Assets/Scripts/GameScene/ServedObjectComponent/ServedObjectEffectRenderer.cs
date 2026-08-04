@@ -53,18 +53,23 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
+            HashSet<string> spawnedResourceNames = new HashSet<string>(StringComparer.Ordinal);
             foreach (string effect in activeEffects)
             {
-                SpawnEffect(effect, actualTransform);
+                string resourceName = effect;
+                if (spawnedResourceNames.Add(resourceName))
+                {
+                    SpawnEffect(effect, resourceName, actualTransform);
+                }
             }
         }
 
-        private void SpawnEffect(string effect, Transform actualTransform)
+        private void SpawnEffect(string effect, string resourceName, Transform actualTransform)
         {
-            GameObject effectPrefab = Resources.Load<GameObject>($"Prefabs/Effects/{effect}");
+            GameObject effectPrefab = Resources.Load<GameObject>($"Prefabs/Effects/{resourceName}");
             if (effectPrefab == null)
             {
-                WDebug.LogWarning($"Effect prefab '{effect}' not found.");
+                WDebug.LogWarning($"Effect prefab '{resourceName}' for '{effect}' not found.");
                 return;
             }
 

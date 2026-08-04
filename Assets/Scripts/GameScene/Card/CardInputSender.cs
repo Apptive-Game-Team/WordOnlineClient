@@ -174,10 +174,43 @@ namespace GameScene.Card
             _currentCardList.Clear();
             isFieldSelectMode = false;
             NotifySelectionChanged();
+
+            StopCoroutine(nameof(WaitInputResponseTimeout));
+            StartCoroutine(nameof(WaitInputResponseTimeout));
+        }
+
+        public bool TrySendInput(Vector3 pos)
+        {
+            if (!isFieldSelectMode || isWaitingInputResponse)
+            {
+                return false;
+            }
+
+            SendInput(pos);
+            return isWaitingInputResponse;
+        }
+
+        private System.Collections.IEnumerator WaitInputResponseTimeout()
+        {
+            yield return new WaitForSeconds(3f);
+            if (isWaitingInputResponse)
+            {
+                WDebug.LogWarning("[CardInputSender] Input response timeout. Releasing lock.");
+                isWaitingInputResponse = false;
+                
+                // 타임아웃 시 남아있는 PendingRequest 처리 (카드를 다시 복구하거나 파괴)
+                foreach (var kvp in inputRequestDict)
+                {
+                    RestorePendingSelection(kvp.Value.cards);
+                }
+                inputRequestDict.Clear();
+            }
         }
 
         public void HandleConfirmedInput(int requestId, bool accepted, string message = null)
         {
+            StopCoroutine(nameof(WaitInputResponseTimeout));
+
             if (!inputRequestDict.TryGetValue(requestId, out PendingInputRequest pendingInputRequest))
             {
                 WDebug.LogWarning($"[Lockstep] Pending input request not found. id: {requestId}");

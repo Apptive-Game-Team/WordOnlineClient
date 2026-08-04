@@ -2,7 +2,7 @@ using System;
 using Data;
 using Data.Localization;
 using Data.Magic;
-using Data.Sound;
+using Global.Sound;
 using Sound;
 using TMPro;
 using UnityEngine;
@@ -26,8 +26,8 @@ namespace TutorialScene
             {
                 cardSound = gameObject.AddComponent<AudioSource>();
             }
-            cardSound.clip = SoundAssets.DrawCard;
-            cardSound.volume = SoundData.gameVolume / 100f;
+            cardSound.clip = SoundAssets.CardSelect;
+            SoundVolumeSetter.Attach(cardSound, SoundVolumeSetter.SoundType.UI);
         }
 
         private bool isActive = false;
@@ -54,16 +54,17 @@ namespace TutorialScene
         
         public void OnCardClicked()
         {
-            cardSound.Play();
             TutorialCardSender cardInputSender = FindObjectOfType<TutorialCardSender>();
             if (isActive)
             {
+                cardSound.PlayOneShot(SoundAssets.CardDeselect);
                 cardInputSender.CancelUseCard(this);
                 SetCardActive(false);
             }
             else
             {
-                cardInputSender.TryUseCard(this);   
+                cardSound.PlayOneShot(SoundAssets.CardSelect);
+                cardInputSender.TryUseCard(this);
                 SetCardActive(true);
             }
             cardInputSender.SetExpectedMagicUI(); 

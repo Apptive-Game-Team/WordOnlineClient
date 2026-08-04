@@ -5,8 +5,9 @@ using GameScene.Card;
 using GameScene.Player;
 using GameScene.ServedObjectComponent;
 using Global;
+using Global.Sound;
+using Sound;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameScene
 {
@@ -29,9 +30,16 @@ namespace GameScene
         [SerializeField] private GameObject circleSkillIndicator;
         [SerializeField] private Collider groundCollider;
         [SerializeField] private string groundObjectName = "PopupBookGround";
+        private AudioSource interactionAudioSource;
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
+            interactionAudioSource = gameObject.GetComponent<AudioSource>();
+            if (interactionAudioSource == null)
+            {
+                interactionAudioSource = gameObject.AddComponent<AudioSource>();
+            }
+            SoundVolumeSetter.Attach(interactionAudioSource, SoundVolumeSetter.SoundType.UI);
             currentAimObj = CreateAimIndicator();
             currentRangeObj = CreateRangeIndicator();
             currentAimObj.SetActive(false);
@@ -91,11 +99,16 @@ namespace GameScene
             SetAimIndicator(currentAimObj, previewPosition);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
 
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            if (PointerInputUtility.IsPointerOverUiOrSelectable()) return;
 
             if (Input.GetMouseButtonUp(0))
             {
-                CardInputSender.Instance.SendInput(mouseWorldPos);
+                if (!CardInputSender.Instance.TrySendInput(previewPosition))
+                {
+                    return;
+                }
+
+                interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
                 PlayerFeedbackController.Instance.UseMagicFeedback();
                 currentAimObj.SetActive(false);
                 currentRangeObj.SetActive(false);
@@ -148,7 +161,7 @@ namespace GameScene
             return clampedPosition;
         }
 
-        private bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
+        public bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
         {
             groundPosition = Vector3.zero;
             Camera camera = Camera.main;

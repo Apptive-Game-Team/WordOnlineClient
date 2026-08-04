@@ -2295,7 +2295,7 @@ PrefabInstance:
     - target: {fileID: 3041834788989277352, guid: b2c6fae2e684e45e695cfebfdae66a64, type: 3}
       propertyPath: bgmClip
       value: 
-      objectReference: {fileID: 8300000, guid: c31ad8ab40e8cbc449375321cea49da8, type: 3}
+      objectReference: {fileID: 8300000, guid: 2f447123c47d4089bf691339b1f818ec, type: 3}
     - target: {fileID: 9106271791580190678, guid: b2c6fae2e684e45e695cfebfdae66a64, type: 3}
       propertyPath: m_Name
       value: BgmContainer

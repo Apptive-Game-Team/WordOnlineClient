@@ -86,3 +86,12 @@ mono_crash.*.json
 
 
 ./.claude
+
+# Local Codex/ElevenLabs credentials
+/.codex/.env
+
+# Local game-audio audition candidates (golden assets are copied into Assets)
+/.sfx-work/
+
+# Claude Code local (per-user) settings
+.claude/settings.local.json
