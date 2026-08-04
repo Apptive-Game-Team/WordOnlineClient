@@ -58,6 +58,12 @@ namespace GameScene.Simulation.Tests
             LockstepSessionGuard version = new LockstepSessionGuard(incompatible, 3);
             Assert.That(version.Failure.Reason, Is.EqualTo(LockstepFailureReason.VersionMismatch));
             Assert.That(version.Failure.Message, Does.Contain("wrong-engine"));
+
+            LockstepSessionStartMessage staleData = Start("PVP");
+            staleData.parameterDataVersion = "parameters-2";
+            Assert.Throws<InvalidOperationException>(() =>
+                LockstepVersionValidator.ValidateDataVersions(
+                    staleData, "parameters-1", "magic-1"));
         }
 
         [Test]
@@ -99,7 +105,9 @@ namespace GameScene.Simulation.Tests
             new SimulationInput(userId, sequence, SimulationInputType.SetVelocity, entityId, new SimVector2((Fix64)x, Fix64.Zero));
 
         private static LockstepSessionStartMessage Start(string type) => new LockstepSessionStartMessage
-        { protocolVersion = LockstepVersions.Protocol, simulationVersion = LockstepVersions.Simulation, configVersion = LockstepVersions.Config, initialFrame = 0, sessionType = type };
+        { protocolVersion = LockstepVersions.Protocol, simulationVersion = LockstepVersions.Simulation,
+            configVersion = LockstepVersions.Config, parameterDataVersion = "parameters-1",
+            magicDataVersion = "magic-1", initialFrame = 0, sessionType = type };
 
         private static LockstepSessionStartMessage PveStart()
         {

@@ -14,13 +14,16 @@ namespace GameScene.Simulation.Resources
         public int ManaChargeAmount { get; }
         public int CardDrawIntervalFrames { get; }
         public int DurationFrames { get; }
+        public int FeverDurationFrames { get; }
 
         public DeterministicGameRules(int maxMana, int maxHandSize, int manaChargeIntervalFrames,
             int manaChargeAmount, int cardDrawIntervalFrames, int durationFrames,
-            IReadOnlyDictionary<string, int> manaCosts, IEnumerable<IEnumerable<string>> magicRecipes)
+            IReadOnlyDictionary<string, int> manaCosts, IEnumerable<IEnumerable<string>> magicRecipes,
+            int feverDurationFrames = 0)
         {
             if (maxMana < 0 || maxHandSize < 1 || manaChargeIntervalFrames < 1
-                || manaChargeAmount < 0 || cardDrawIntervalFrames < 1 || durationFrames < 1)
+                || manaChargeAmount < 0 || cardDrawIntervalFrames < 1 || durationFrames < 1
+                || feverDurationFrames < 0 || feverDurationFrames > durationFrames)
                 throw new ArgumentOutOfRangeException(nameof(maxMana));
             MaxMana = maxMana;
             MaxHandSize = maxHandSize;
@@ -28,6 +31,7 @@ namespace GameScene.Simulation.Resources
             ManaChargeAmount = manaChargeAmount;
             CardDrawIntervalFrames = cardDrawIntervalFrames;
             DurationFrames = durationFrames;
+            FeverDurationFrames = feverDurationFrames;
             this.manaCosts = new Dictionary<string, int>(StringComparer.Ordinal);
             foreach (KeyValuePair<string, int> pair in manaCosts)
             {

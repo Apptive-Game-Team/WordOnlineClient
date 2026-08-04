@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FixMath.NET;
 using GameScene.Simulation.Core;
 using GameScene.Simulation.Protocol;
 
@@ -21,7 +22,6 @@ namespace GameScene.Simulation.Resources
     {
         private readonly List<string> deck;
         private readonly List<string> hand = new List<string>();
-        private int drawIndex;
 
         public long UserId { get; }
         public int Mana { get; internal set; }
@@ -34,8 +34,8 @@ namespace GameScene.Simulation.Resources
         internal void Draw(int maxHand)
         {
             if (hand.Count >= maxHand || deck.Count == 0) return;
-            if (drawIndex >= deck.Count) drawIndex = 0;
-            hand.Add(deck[drawIndex++]);
+            hand.Add(deck[0]);
+            deck.RemoveAt(0);
         }
 
         internal bool ContainsAll(IReadOnlyList<string> cards)
@@ -54,7 +54,7 @@ namespace GameScene.Simulation.Resources
         internal void WriteState(CanonicalStateWriter writer)
         {
             writer.WriteInt64(UserId); writer.WriteInt32(Mana); writer.WriteInt32(Health);
-            writer.WriteInt32(drawIndex); writer.WriteInt32(deck.Count);
+            writer.WriteInt32(deck.Count);
             for (int i = 0; i < deck.Count; i++) writer.WriteString(deck[i]);
             writer.WriteInt32(hand.Count);
             for (int i = 0; i < hand.Count; i++) writer.WriteString(hand[i]);
@@ -65,6 +65,8 @@ namespace GameScene.Simulation.Resources
     {
         private readonly DeterministicGameRules rules;
         private readonly List<CastResult> castResults = new List<CastResult>();
+        private Fix64 leftManaChargePercent;
+        private Fix64 rightManaChargePercent;
         public PlayerResourceState Left { get; }
         public PlayerResourceState Right { get; }
         public int FrameNumber { get; private set; }
@@ -79,6 +81,7 @@ namespace GameScene.Simulation.Resources
             Left = new PlayerResourceState(leftUserId, leftDeck);
             Right = new PlayerResourceState(rightUserId, rightDeck);
             RemainingFrames = rules.DurationFrames;
+            ApplyPassive(0, Left); ApplyPassive(0, Right);
         }
 
         public void Step(ConfirmedFrameMessage frame)
@@ -92,13 +95,19 @@ namespace GameScene.Simulation.Resources
             for (int i = 0; i < inputs.Length; i++) ApplyInput(inputs[i]);
             FrameNumber = frame.frameNum;
             RemainingFrames = Math.Max(0, RemainingFrames - 1);
-            if (RemainingFrames == 0) Result = SimulationResult.Draw;
+            if (RemainingFrames == 0)
+            {
+                if (Left.Health < Right.Health) Result = SimulationResult.RightWin;
+                else if (Right.Health < Left.Health) Result = SimulationResult.LeftWin;
+                else Result = SimulationResult.Draw;
+            }
         }
 
         public ulong CalculateStateHash()
         {
             CanonicalStateWriter writer = new CanonicalStateWriter();
             writer.WriteInt32(FrameNumber); writer.WriteInt32(RemainingFrames); writer.WriteInt32((int)Result);
+            writer.WriteFixed64(leftManaChargePercent); writer.WriteFixed64(rightManaChargePercent);
             Left.WriteState(writer); Right.WriteState(writer);
             return writer.Hash;
         }
@@ -108,14 +117,42 @@ namespace GameScene.Simulation.Resources
             PlayerResourceState state = userId == Left.UserId ? Left
                 : userId == Right.UserId ? Right : null;
             if (state == null) throw new InvalidOperationException("Unknown player resource snapshot: " + userId);
-            return new PlayerResourceSnapshot(state);
+            return new PlayerResourceSnapshot(state, RemainingFrames);
+        }
+
+        public void ResolveCombatHealth(int leftHealth, int rightHealth)
+        {
+            Left.Health = Math.Max(0, leftHealth);
+            Right.Health = Math.Max(0, rightHealth);
+            if (Result != SimulationResult.Ongoing) return;
+            if (Left.Health == 0 && Right.Health == 0) Result = SimulationResult.Draw;
+            else if (Left.Health == 0) Result = SimulationResult.RightWin;
+            else if (Right.Health == 0) Result = SimulationResult.LeftWin;
+        }
+
+        public void SetManaChargePercent(long userId, Fix64 percent)
+        {
+            if (percent < Fix64.Zero) throw new ArgumentOutOfRangeException(nameof(percent));
+            if (userId == Left.UserId) leftManaChargePercent = percent;
+            else if (userId == Right.UserId) rightManaChargePercent = percent;
+            else throw new InvalidOperationException("Unknown mana charge player: " + userId);
         }
 
         private void ApplyPassive(int frame, PlayerResourceState player)
         {
+            bool fever = rules.FeverDurationFrames > 0 &&
+                RemainingFrames < rules.FeverDurationFrames;
             if (frame % rules.ManaChargeIntervalFrames == 0)
-                player.Mana = Math.Min(rules.MaxMana, player.Mana + rules.ManaChargeAmount);
-            if (frame % rules.CardDrawIntervalFrames == 0) player.Draw(rules.MaxHandSize);
+            {
+                Fix64 percent = player.UserId == Left.UserId ? leftManaChargePercent : rightManaChargePercent;
+                int scaledPercent = checked((int)(percent * (Fix64)1000 + (Fix64)0.5m));
+                int baseAmount = fever ? checked(rules.ManaChargeAmount * 2) : rules.ManaChargeAmount;
+                int amount = checked(baseAmount * (1000 + scaledPercent) / 1000);
+                player.Mana = Math.Min(rules.MaxMana, player.Mana + amount);
+            }
+            int drawInterval = fever ? Math.Max(1, rules.CardDrawIntervalFrames / 2)
+                : rules.CardDrawIntervalFrames;
+            if (frame % drawInterval == 0) player.Draw(rules.MaxHandSize);
         }
 
         private void ApplyInput(ConfirmedInputMessage confirmed)
@@ -129,7 +166,11 @@ namespace GameScene.Simulation.Resources
             if (!player.ContainsAll(cards)) { castResults.Add(new CastResult(player.UserId, input.id, CastResultCode.MissingCard)); return; }
             int cost = 0; for (int i = 0; i < cards.Length; i++) cost = checked(cost + rules.ManaCost(cards[i]));
             if (cost > player.Mana) { castResults.Add(new CastResult(player.UserId, input.id, CastResultCode.InsufficientMana)); return; }
-            if (!rules.IsMagic(cards)) { castResults.Add(new CastResult(player.UserId, input.id, CastResultCode.InvalidMagic)); return; }
+            if (!rules.IsMagic(cards))
+            {
+                player.Mana -= cost; player.ConsumeAndReturn(cards);
+                castResults.Add(new CastResult(player.UserId, input.id, CastResultCode.InvalidMagic)); return;
+            }
             player.Mana -= cost; player.ConsumeAndReturn(cards);
             castResults.Add(new CastResult(player.UserId, input.id, CastResultCode.Success));
         }
