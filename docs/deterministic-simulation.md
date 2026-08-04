@@ -1,7 +1,7 @@
 # Deterministic Simulation Contract
 
-This document defines the client simulation boundary introduced by issue #347.
-It is intentionally smaller than the gameplay port tracked by #348.
+This document defines the production client simulation boundary completed by the
+lockstep gameplay port.
 
 ## Runtime boundary
 
@@ -22,7 +22,7 @@ It is intentionally smaller than the gameplay port tracked by #348.
 - Confirmed inputs are applied by `userId`, then input `sequence`.
 - Protocol validation must reject duplicate `(frameNum, userId, sequence)` keys.
 - Entities update and serialize by ascending entity ID.
-- Future component systems must have explicit stable type and execution order IDs.
+- Component systems use explicit stable execution phases and entity-ID ordering.
 
 ## Random contract
 
@@ -36,11 +36,11 @@ It is intentionally smaller than the gameplay port tracked by #348.
 - State fields use explicit little-endian byte order and fixed field order.
 - Current vertical slice uses FNV-1a 64-bit to expose deterministic drift cheaply.
 - The hash includes frame, next entity ID, RNG state/draw count, entity count, and BEPU position, linear/angular velocity, orientation, and lifecycle state.
-- Wire encoding and final hash algorithm must be frozen with Game #291 before protocol cutover.
+- Protocol v1 uses the hexadecimal FNV-1a state hash as `previousFrameHash`.
 
 ## Physics decision gate
 
-`bepuphysics1int` commit `9237daa68c3014fd7c2e93c6a99326ba5248d60b` is vendored as managed Release/AnyCPU assemblies for the spike. Production acceptance still requires:
+`bepuphysics1int` commit `9237daa68c3014fd7c2e93c6a99326ba5248d60b` is vendored as managed Release/AnyCPU assemblies. Remaining platform acceptance requires:
 
 - Unity 2022.3.34f1 Editor compilation;
 - Development WebGL IL2CPP/AOT build and runtime;
