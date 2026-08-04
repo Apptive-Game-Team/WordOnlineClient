@@ -44,6 +44,16 @@ namespace GameScene.Simulation.Rendering.Tests
 
         public void ApplyLocalEffects(IReadOnlyList<string> effects) =>
             EffectCount = effects?.Count ?? 0;
+
+        public int BindCount { get; private set; }
+        public int SpawnCount { get; private set; }
+        public int MoveCount { get; private set; }
+
+        public void BindListeners() => BindCount++;
+
+        public void NotifySpawned() => SpawnCount++;
+
+        public void NotifyMoved() => MoveCount++;
     }
 
     public sealed class SimulationRendererBridgeTests
@@ -174,6 +184,48 @@ namespace GameScene.Simulation.Rendering.Tests
 
             Assert.That(view.Master, Is.EqualTo("LeftPlayer"));
             Assert.That(view.Status, Is.EqualTo("Idle"));
+            Object.Destroy(host);
+            Object.Destroy(prefab);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PrefabPresentationBindsOnSpawnAndReportsMovement()
+        {
+            GameObject prefab = new GameObject("PlayerViewPrefab");
+            prefab.SetActive(false);
+            prefab.AddComponent<EntityViewSpy>();
+            GameObject host = new GameObject("RendererBridge");
+            SimulationRendererBridge bridge = host.AddComponent<SimulationRendererBridge>();
+            bridge.ConfigureParticipants(10, 20);
+            bridge.ConfigureForTests(new[]
+            {
+                new SimulationRendererBridge.PrefabBinding { prefabId = "Default", prefab = prefab }
+            });
+            SimulationWorld world = new SimulationWorld(1);
+            world.Spawn(10, SimVector2.Zero);
+
+            bridge.ApplySnapshot(world.CreateSnapshot());
+            EntityViewSpy view = bridge.FindView(0).GetComponent<EntityViewSpy>();
+            Assert.That(view.BindCount, Is.EqualTo(1));
+            Assert.That(view.SpawnCount, Is.EqualTo(1));
+            Assert.That(view.MoveCount, Is.EqualTo(0));
+
+            // A standing entity must stay silent, or movement sfx retriggers every snapshot.
+            bridge.ApplySnapshot(world.CreateSnapshot());
+            Assert.That(view.BindCount, Is.EqualTo(1));
+            Assert.That(view.SpawnCount, Is.EqualTo(1));
+            Assert.That(view.MoveCount, Is.EqualTo(0));
+
+            world.Step(new[]
+            {
+                new SimulationInput(10, 0, SimulationInputType.SetVelocity, 0,
+                    new SimVector2((Fix64)10, Fix64.Zero))
+            });
+            bridge.ApplySnapshot(world.CreateSnapshot());
+            Assert.That(view.MoveCount, Is.EqualTo(1));
+            Assert.That(view.SpawnCount, Is.EqualTo(1));
+
             Object.Destroy(host);
             Object.Destroy(prefab);
             yield return null;

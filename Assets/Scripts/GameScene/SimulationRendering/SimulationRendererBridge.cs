@@ -26,6 +26,10 @@ namespace GameScene.Simulation.Rendering
             public long OwnerUserId;
         }
 
+        // A stationary entity reports the same fixed-point position every frame, so this only has
+        // to survive the fixed-point to float conversion, not real drift.
+        private const float MovementEpsilonSqr = 1e-8f;
+
         [SerializeField] private PrefabBinding[] prefabBindings = Array.Empty<PrefabBinding>();
         [SerializeField, Min(0f)] private float interpolationDuration = 0.05f;
         [SerializeField] private MonoBehaviour playerUi;
@@ -75,12 +79,15 @@ namespace GameScene.Simulation.Rendering
                     RemoveView(entity.Id);
                     continue;
                 }
+                bool spawned = !views.ContainsKey(entity.Id);
                 ViewState view = GetOrCreate(entity);
+                Vector3 previousTarget = view.Target;
                 view.Start = view.GameObject.transform.position;
                 view.Target = ToUnityPosition(entity.Position);
                 view.StartRotation = view.GameObject.transform.rotation;
                 view.TargetRotation = ToUnityRotation(entity.Orientation);
                 ApplyPresentation(view, entity);
+                NotifyMovement(view, spawned, previousTarget);
             }
             if (playerSnapshot != null)
             {
@@ -192,6 +199,24 @@ namespace GameScene.Simulation.Rendering
                 ? null : entity.Status;
             view.LastStatus = entity.Status;
             entityView.ApplySimulationState(status, effects, entity.Gauges, Master(entity.OwnerUserId));
+        }
+
+        /// <summary>
+        /// Drives the prefab presentation contract main's ObjectSpawner used to own. Prefab
+        /// components subscribe through <c>IServedObjectListener</c>, so without the bind every
+        /// sound, spawn animation, and motion component on a spawned prefab stays inert.
+        /// </summary>
+        private static void NotifyMovement(ViewState view, bool spawned, Vector3 previousTarget)
+        {
+            ISimulationEntityView entityView = FindEntityView(view.GameObject);
+            if (entityView == null) return;
+            if (spawned)
+            {
+                entityView.BindListeners();
+                entityView.NotifySpawned();
+                return;
+            }
+            if ((view.Target - previousTarget).sqrMagnitude > MovementEpsilonSqr) entityView.NotifyMoved();
         }
 
         private static ISimulationEntityView FindEntityView(GameObject gameObject) =>
