@@ -19,6 +19,8 @@ namespace Data.GameConfig
 
         public static IReadOnlyList<GameParameterData> GetCachedParameters() => Instance.parameters;
 
+        public static string GetCachedVersion() => Instance.CachedVersion;
+
         protected override void InitializeData()
         {
             parameters = new List<GameParameterData>();

@@ -19,6 +19,8 @@ namespace Data.Magic
 
         public static IReadOnlyList<MagicInfoDto> GetCachedMagics() => Instance.magics;
 
+        public static string GetCachedVersion() => Instance.CachedVersion;
+
         protected override void InitializeData()
         {
             magics = new List<MagicInfoDto>();
