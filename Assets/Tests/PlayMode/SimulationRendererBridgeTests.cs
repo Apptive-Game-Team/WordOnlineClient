@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using FixMath.NET;
 using GameScene.Simulation.Core;
+using GameScene.Simulation.Magic;
+using GameScene.Simulation.Objects;
 using GameScene.Simulation.Protocol;
 using GameScene.Simulation.Resources;
 using NUnit.Framework;
@@ -14,16 +16,63 @@ namespace GameScene.Simulation.Rendering.Tests
     {
         public int Mana { get; private set; } = -1;
         public int HandCount { get; private set; } = -1;
+        public int RemainingFrames { get; private set; } = -1;
 
         public void Render(PlayerResourceSnapshot snapshot)
         {
             Mana = snapshot.Mana;
             HandCount = snapshot.Hand.Count;
+            RemainingFrames = snapshot.RemainingFrames;
         }
+    }
+
+    public sealed class EntityViewSpy : MonoBehaviour, ISimulationEntityView
+    {
+        public string Status { get; private set; }
+        public string Master { get; private set; }
+        public int GaugeCount { get; private set; }
+        public int EffectCount { get; private set; }
+
+        public void ApplySimulationState(string status, IReadOnlyList<string> effects,
+            IReadOnlyList<SimulationGaugeSnapshot> gauges, string master)
+        {
+            Status = status;
+            Master = master;
+            GaugeCount = gauges?.Count ?? 0;
+            EffectCount = effects?.Count ?? 0;
+        }
+
+        public void ApplyLocalEffects(IReadOnlyList<string> effects) =>
+            EffectCount = effects?.Count ?? 0;
     }
 
     public sealed class SimulationRendererBridgeTests
     {
+        [Test]
+        public void EveryProductionMagicRootPrefabExistsInResources()
+        {
+            foreach (MagicDefinition definition in ProductionMagicCatalog.Create().Definitions)
+                Assert.That(UnityEngine.Resources.Load<GameObject>("Prefabs/" +
+                    SimulationRendererBridge.ResolveResourcePrefabId(definition.PrefabId)), Is.Not.Null,
+                    definition.Id + ":" + definition.Name + " -> " + definition.PrefabId);
+        }
+
+        [Test]
+        public void EveryServerPrefabHasProductionRendererResource()
+        {
+            foreach (string prefabId in ServerPrefabManifest.All)
+            {
+                string resourceId = SimulationRendererBridge.ResolveResourcePrefabId(prefabId);
+                if (resourceId == null)
+                {
+                    Assert.That(prefabId, Is.EqualTo("Wall"));
+                    continue;
+                }
+                Assert.That(UnityEngine.Resources.Load<GameObject>("Prefabs/" + resourceId),
+                    Is.Not.Null, prefabId + " -> " + resourceId);
+            }
+        }
+
         [UnityTest]
         public IEnumerator SpawnUpdateDestroyAndReloadLeaveNoStaleBindings()
         {
@@ -97,9 +146,36 @@ namespace GameScene.Simulation.Rendering.Tests
 
             bridge.ApplySnapshot(world.CreateSnapshot(), playerSnapshot);
 
-            Assert.That(ui.Mana, Is.EqualTo(2));
+            Assert.That(ui.Mana, Is.EqualTo(4));
             Assert.That(ui.HandCount, Is.EqualTo(1));
+            Assert.That(ui.RemainingFrames, Is.EqualTo(4));
             Object.Destroy(host);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EntityPresentationUsesAsmdefSafeViewContract()
+        {
+            GameObject prefab = new GameObject("PlayerViewPrefab");
+            prefab.SetActive(false);
+            prefab.AddComponent<EntityViewSpy>();
+            GameObject host = new GameObject("RendererBridge");
+            SimulationRendererBridge bridge = host.AddComponent<SimulationRendererBridge>();
+            bridge.ConfigureParticipants(10, 20);
+            bridge.ConfigureForTests(new[]
+            {
+                new SimulationRendererBridge.PrefabBinding { prefabId = "Default", prefab = prefab }
+            });
+            SimulationWorld world = new SimulationWorld(1);
+            world.Spawn(10, SimVector2.Zero);
+
+            bridge.ApplySnapshot(world.CreateSnapshot());
+            EntityViewSpy view = bridge.FindView(0).GetComponent<EntityViewSpy>();
+
+            Assert.That(view.Master, Is.EqualTo("LeftPlayer"));
+            Assert.That(view.Status, Is.EqualTo("Idle"));
+            Object.Destroy(host);
+            Object.Destroy(prefab);
             yield return null;
         }
 
@@ -113,6 +189,23 @@ namespace GameScene.Simulation.Rendering.Tests
 
             Assert.Throws<System.InvalidOperationException>(() => bridge.ApplySnapshot(world.CreateSnapshot()));
             Assert.That(bridge.BindingCount, Is.EqualTo(0));
+
+            Object.Destroy(host);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PhysicsOnlyWallDoesNotCreateRendererBinding()
+        {
+            GameObject host = new GameObject("RendererBridge");
+            SimulationRendererBridge bridge = host.AddComponent<SimulationRendererBridge>();
+            SimulationWorld world = new SimulationWorld(1,
+                SimulationPrefabRegistry.CreateProduction());
+            SimulationEntity wall = world.Spawn("Wall", 0, SimVector2.Zero);
+
+            Assert.DoesNotThrow(() => bridge.ApplySnapshot(world.CreateSnapshot()));
+            Assert.That(bridge.BindingCount, Is.EqualTo(0));
+            Assert.That(bridge.FindView(wall.Id), Is.Null);
 
             Object.Destroy(host);
             yield return null;
