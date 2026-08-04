@@ -5,11 +5,11 @@ This file is the fail-fast allowlist for deterministic simulation config. A Unit
 | Simulation prefab | Deterministic components | Lifecycle | Gameplay behavior |
 | --- | --- | --- | --- |
 | `Default` | `Transform`, `PhysicsBody` | Supported | Physics slice only |
-| `Player` | `Transform`, `PhysicsBody`, `PlayerState` | Supported | Resources in #359; full player bridge pending #352 |
-| Magic, rune, field, drop, projectile | `Transform`, `PhysicsBody`, magic instance state | Supported | Deterministic families in #355 |
-| Mob, nest, build, tower | — | Rejected | Planned #358 |
-| PVE scenario object | — | Rejected | Planned #354 |
-| Visual/UI/effect prefab | Not simulation state | N/A | Renderer bridge planned #352 |
+| `Player` | `Transform`, `PhysicsBody`, `PlayerState` | Supported | HP, mana, hand, result, status and aura projection |
+| Magic, rune, field, drop, projectile | `Transform`, `PhysicsBody`, magic instance state | Supported | Contact, overlap, status, push, chain and timed lifecycle |
+| Mob, nest, build, tower | Mob/combat/spawner state | Supported | Deterministic detector, A*, attack, heal and spawn behavior |
+| PVE scenario object | Objective/boss state | Supported | Versioned scenarios 11–14 and ordered script events |
+| Visual/UI/effect prefab | Not simulation state | N/A | Snapshot-only renderer bridge; never feeds state back |
 
 All supported simulation prefabs use versioned `Fix64` radius/mass/trigger physics definitions. Bounds, full BEPU body state, and canonical collision/trigger events participate in checkpoints. Protocol `(x, z)` maps to the simulation `(x, y)` plane; Unity `Transform` never feeds state back.
 

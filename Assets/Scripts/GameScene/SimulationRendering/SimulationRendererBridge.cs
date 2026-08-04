@@ -22,6 +22,8 @@ namespace GameScene.Simulation.Rendering
             public Vector3 Target;
             public Quaternion StartRotation;
             public Quaternion TargetRotation;
+            public string LastStatus;
+            public long OwnerUserId;
         }
 
         [SerializeField] private PrefabBinding[] prefabBindings = Array.Empty<PrefabBinding>();
@@ -32,6 +34,8 @@ namespace GameScene.Simulation.Rendering
             new Dictionary<string, GameObject>(StringComparer.Ordinal);
         private readonly Dictionary<int, ViewState> views = new Dictionary<int, ViewState>();
         private float interpolationElapsed;
+        private long leftUserId;
+        private long rightUserId;
 
         public int BindingCount => views.Count;
 
@@ -63,7 +67,12 @@ namespace GameScene.Simulation.Rendering
                 SimulationEntitySnapshot entity = snapshot.Entities[index];
                 if (entity.IsDestroyed)
                 {
-                    Remove(entity.Id);
+                    RemoveDestroyed(entity);
+                    continue;
+                }
+                if (ResolveResourcePrefabId(entity.PrefabId) == null)
+                {
+                    RemoveView(entity.Id);
                     continue;
                 }
                 ViewState view = GetOrCreate(entity);
@@ -71,6 +80,7 @@ namespace GameScene.Simulation.Rendering
                 view.Target = ToUnityPosition(entity.Position);
                 view.StartRotation = view.GameObject.transform.rotation;
                 view.TargetRotation = ToUnityRotation(entity.Orientation);
+                ApplyPresentation(view, entity);
             }
             if (playerSnapshot != null)
             {
@@ -92,7 +102,27 @@ namespace GameScene.Simulation.Rendering
             RebuildPrefabRegistry();
         }
 
-        public void ConfigurePlayerUiForTests(MonoBehaviour ui) => playerUi = ui;
+        public void ConfigurePlayerUi(MonoBehaviour ui)
+        {
+            if (!(ui is ISimulationPlayerUi))
+                throw new ArgumentException("Player UI must implement ISimulationPlayerUi", nameof(ui));
+            playerUi = ui;
+        }
+
+        public void ConfigurePlayerUiForTests(MonoBehaviour ui) => ConfigurePlayerUi(ui);
+
+        public void ConfigureParticipants(long left, long right)
+        { leftUserId = left; rightUserId = right; }
+
+        public void ApplyLocalPlayerEffects(long userId, IReadOnlyList<string> effects)
+        {
+            foreach (ViewState view in views.Values)
+            {
+                if (view.OwnerUserId != userId || view.GameObject == null) continue;
+                ISimulationEntityView entityView = FindEntityView(view.GameObject);
+                if (entityView != null) entityView.ApplyLocalEffects(effects);
+            }
+        }
 
         public void ClearBindings()
         {
@@ -104,9 +134,12 @@ namespace GameScene.Simulation.Rendering
         private ViewState GetOrCreate(SimulationEntitySnapshot entity)
         {
             if (views.TryGetValue(entity.Id, out ViewState existing)) return existing;
+            string resourcePrefabId = ResolveResourcePrefabId(entity.PrefabId);
+            if (resourcePrefabId == null)
+                throw new InvalidOperationException("Simulation prefab has no renderer view: " + entity.PrefabId);
             if (!prefabs.TryGetValue(entity.PrefabId, out GameObject prefab) || prefab == null)
             {
-                prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/" + entity.PrefabId);
+                prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/" + resourcePrefabId);
                 if (prefab == null) throw new InvalidOperationException("Missing renderer prefab: " + entity.PrefabId);
                 prefabs[entity.PrefabId] = prefab;
             }
@@ -121,17 +154,54 @@ namespace GameScene.Simulation.Rendering
                 Start = instance.transform.position,
                 Target = instance.transform.position,
                 StartRotation = instance.transform.rotation,
-                TargetRotation = instance.transform.rotation
+                TargetRotation = instance.transform.rotation,
+                OwnerUserId = entity.OwnerUserId
             };
             views.Add(entity.Id, created);
             return created;
         }
 
-        private void Remove(int entityId)
+        private void RemoveDestroyed(SimulationEntitySnapshot entity)
+        {
+            if (!views.TryGetValue(entity.Id, out ViewState view)) return;
+            views.Remove(entity.Id);
+            if (view.GameObject == null) return;
+            ISimulationEntityView entityView = FindEntityView(view.GameObject);
+            if (entityView == null)
+            {
+                Destroy(view.GameObject);
+                return;
+            }
+            ApplyPresentation(view, entity);
+        }
+
+        private void RemoveView(int entityId)
         {
             if (!views.TryGetValue(entityId, out ViewState view)) return;
             views.Remove(entityId);
             if (view.GameObject != null) Destroy(view.GameObject);
+        }
+
+        private void ApplyPresentation(ViewState view, SimulationEntitySnapshot entity)
+        {
+            ISimulationEntityView entityView = FindEntityView(view.GameObject);
+            if (entityView == null) return;
+            List<string> effects = new List<string>(entity.Effects.Count);
+            for (int index = 0; index < entity.Effects.Count; index++) effects.Add(entity.Effects[index]);
+            string status = string.Equals(view.LastStatus, entity.Status, StringComparison.Ordinal)
+                ? null : entity.Status;
+            view.LastStatus = entity.Status;
+            entityView.ApplySimulationState(status, effects, entity.Gauges, Master(entity.OwnerUserId));
+        }
+
+        private static ISimulationEntityView FindEntityView(GameObject gameObject) =>
+            gameObject == null ? null : gameObject.GetComponent(typeof(ISimulationEntityView)) as ISimulationEntityView;
+
+        private string Master(long ownerUserId)
+        {
+            if (ownerUserId == leftUserId) return "LeftPlayer";
+            if (ownerUserId == rightUserId) return "RightPlayer";
+            return "None";
         }
 
         private void RebuildPrefabRegistry()
@@ -153,5 +223,19 @@ namespace GameScene.Simulation.Rendering
 
         private static Quaternion ToUnityRotation(SimQuaternion value) =>
             new Quaternion((float)value.X, (float)value.Z, (float)value.Y, (float)value.W);
+
+        public static string ResolveResourcePrefabId(string simulationPrefabId)
+        {
+            switch (simulationPrefabId)
+            {
+                case "FireSummon": return "FireSlime";
+                case "ElectricSummon": return "ElectricSlime";
+                case "RockSummon": return "RockSlime";
+                case "WindSummon": return "WindSlime";
+                case "VineToss": return "Vine";
+                case "Wall": return null;
+                default: return simulationPrefabId;
+            }
+        }
     }
 }

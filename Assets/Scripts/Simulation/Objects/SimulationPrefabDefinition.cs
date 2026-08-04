@@ -12,9 +12,11 @@ namespace GameScene.Simulation.Objects
         public string Id { get; }
         public IReadOnlyList<string> ComponentIds => componentIds;
         public SimulationPhysicsDefinition Physics { get; }
+        public SimulationElement Elements { get; }
 
         public SimulationPrefabDefinition(string id, params string[] componentIds)
-            : this(id, new SimulationPhysicsDefinition((Fix64)0.5m, Fix64.One), componentIds)
+            : this(id, new SimulationPhysicsDefinition((Fix64)0.5m, Fix64.One),
+                SimulationElement.None, componentIds)
         {
         }
 
@@ -22,10 +24,20 @@ namespace GameScene.Simulation.Objects
             string id,
             SimulationPhysicsDefinition physics,
             params string[] componentIds)
+            : this(id, physics, SimulationElement.None, componentIds)
+        {
+        }
+
+        public SimulationPrefabDefinition(
+            string id,
+            SimulationPhysicsDefinition physics,
+            SimulationElement elements,
+            params string[] componentIds)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("Prefab ID is required", nameof(id));
             if (componentIds == null) throw new ArgumentNullException(nameof(componentIds));
             Physics = physics ?? throw new ArgumentNullException(nameof(physics));
+            Elements = elements;
 
             Id = id;
             this.componentIds = new string[componentIds.Length];

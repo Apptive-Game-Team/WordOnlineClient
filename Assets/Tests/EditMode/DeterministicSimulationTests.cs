@@ -22,7 +22,7 @@ namespace GameScene.Simulation.Tests
                 Assert.That(right.CalculateStateHash(), Is.EqualTo(left.CalculateStateHash()), "frame " + frame);
             }
 
-            Assert.That(left.CalculateStateHash(), Is.EqualTo(0xFCEA5F056B8366C7UL));
+            Assert.That(left.CalculateStateHash(), Is.EqualTo(0x40EC87DCD1702F9EUL));
 
         }
 

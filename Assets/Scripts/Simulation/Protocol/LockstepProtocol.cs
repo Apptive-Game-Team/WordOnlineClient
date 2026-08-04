@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using GameScene.Simulation.Resources;
 
 namespace GameScene.Simulation.Protocol
 {
     public static class LockstepVersions
     {
         public const int Protocol = 1;
-        public const string Simulation = "bepuphysics1int-9237daa";
-        public const string Config = "lockstep-config-v1";
+        public const string Simulation = "wordonline-lockstep-simulation-v2-bepuphysics1int-9237daa";
+        public const string Config = "wordonline-game-config-v2";
     }
 
     public enum LockstepMessageType
@@ -15,7 +16,8 @@ namespace GameScene.Simulation.Protocol
         Unknown,
         SessionStart,
         ConfirmedFrame,
-        Abort
+        Abort,
+        Result
     }
 
     [Serializable]
@@ -24,6 +26,8 @@ namespace GameScene.Simulation.Protocol
         public int protocolVersion;
         public string simulationVersion;
         public string configVersion;
+        public string parameterDataVersion;
+        public string magicDataVersion;
     }
 
     [Serializable]
@@ -33,6 +37,8 @@ namespace GameScene.Simulation.Protocol
         public int protocolVersion;
         public string simulationVersion;
         public string configVersion;
+        public string parameterDataVersion;
+        public string magicDataVersion;
         public long rngSeed;
         public int initialFrame;
         public string sessionType;
@@ -40,7 +46,18 @@ namespace GameScene.Simulation.Protocol
         public long rightUserId;
         public string[] leftCards;
         public string[] rightCards;
+        public LockstepBotConfigMessage botConfig;
         public BootstrapEventMessage[] bootstrapEvents;
+    }
+
+    [Serializable]
+    public sealed class LockstepBotConfigMessage
+    {
+        public long participantId;
+        public int reactionIntervalFrames;
+        public int thinkingDelayFrames;
+        public string tier;
+        public double counterAggression;
     }
 
     [Serializable]
@@ -87,6 +104,38 @@ namespace GameScene.Simulation.Protocol
         public int frameNum;
         public string previousFrameHash;
         public FrameInputMessage[] inputs;
+    }
+
+    [Serializable]
+    public sealed class LockstepResultSubmissionMessage
+    {
+        public int protocolVersion;
+        public int frameNum;
+        public string stateHash;
+        public string loser;
+
+        public static LockstepResultSubmissionMessage Create(
+            int frameNumber, string postFrameHash, SimulationResult result)
+        {
+            if (frameNumber < 0) throw new ArgumentOutOfRangeException(nameof(frameNumber));
+            if (string.IsNullOrWhiteSpace(postFrameHash))
+                throw new ArgumentException("Post-frame hash is required", nameof(postFrameHash));
+            string loser;
+            switch (result)
+            {
+                case SimulationResult.LeftWin: loser = "RightPlayer"; break;
+                case SimulationResult.RightWin: loser = "LeftPlayer"; break;
+                case SimulationResult.Draw: loser = "None"; break;
+                default: throw new InvalidOperationException("Ongoing match has no result submission");
+            }
+            return new LockstepResultSubmissionMessage
+            {
+                protocolVersion = LockstepVersions.Protocol,
+                frameNum = frameNumber,
+                stateHash = postFrameHash,
+                loser = loser
+            };
+        }
     }
 
     [Serializable]
@@ -172,11 +221,25 @@ namespace GameScene.Simulation.Protocol
             if (start == null) throw new ArgumentNullException(nameof(start));
             if (start.protocolVersion != LockstepVersions.Protocol ||
                 !string.Equals(start.simulationVersion, LockstepVersions.Simulation, StringComparison.Ordinal) ||
-                !string.Equals(start.configVersion, LockstepVersions.Config, StringComparison.Ordinal))
+                !string.Equals(start.configVersion, LockstepVersions.Config, StringComparison.Ordinal) ||
+                string.IsNullOrWhiteSpace(start.parameterDataVersion) ||
+                string.IsNullOrWhiteSpace(start.magicDataVersion))
                 throw new InvalidOperationException(
                     "Lockstep version mismatch: protocol=" + start.protocolVersion +
                     ", simulation=" + (start.simulationVersion ?? "<null>") +
                     ", config=" + (start.configVersion ?? "<null>"));
+        }
+
+        public static void ValidateDataVersions(LockstepSessionStartMessage start,
+            string parameterDataVersion, string magicDataVersion)
+        {
+            Validate(start);
+            if (!string.Equals(start.parameterDataVersion, parameterDataVersion, StringComparison.Ordinal) ||
+                !string.Equals(start.magicDataVersion, magicDataVersion, StringComparison.Ordinal))
+                throw new InvalidOperationException(
+                    "Lockstep data version mismatch: parameters=" +
+                    (start.parameterDataVersion ?? "<null>") + ", magic=" +
+                    (start.magicDataVersion ?? "<null>"));
         }
     }
 
@@ -194,6 +257,22 @@ namespace GameScene.Simulation.Protocol
             int sequence = nextSequence++;
             pending.Add(new FrameInputMessage { sequence = sequence, type = "useMagic", id = requestId,
                 cards = copy, position = position ?? throw new ArgumentNullException(nameof(position)) });
+            return sequence;
+        }
+
+        public int EnqueueCardSelection(IReadOnlyList<string> cards)
+        {
+            int count = cards?.Count ?? 0;
+            string[] copy = new string[count];
+            for (int index = 0; index < count; index++) copy[index] = cards[index];
+            int sequence = nextSequence++;
+            pending.Add(new FrameInputMessage
+            {
+                sequence = sequence,
+                type = "setCardSelection",
+                id = 0,
+                cards = copy
+            });
             return sequence;
         }
 

@@ -10,13 +10,15 @@ namespace GameScene.Simulation.Resources
         public long UserId { get; }
         public int Mana { get; }
         public int Health { get; }
+        public int RemainingFrames { get; }
         public IReadOnlyList<string> Hand => hand;
 
-        internal PlayerResourceSnapshot(PlayerResourceState state)
+        internal PlayerResourceSnapshot(PlayerResourceState state, int remainingFrames)
         {
             UserId = state.UserId;
             Mana = state.Mana;
             Health = state.Health;
+            RemainingFrames = remainingFrames;
             hand = new string[state.Hand.Count];
             for (int index = 0; index < hand.Length; index++) hand[index] = state.Hand[index];
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using Data.Util;
+using Data.GameConfig;
+using Data.Magic;
 using GameScene.Lockstep;
 using GameScene.Simulation.Protocol;
 using Global;
@@ -38,6 +40,9 @@ namespace GameScene
         private readonly LocalFrameInputBuffer _localInputs = new LocalFrameInputBuffer();
         private float _lastFrameTime = -1f;
         private bool _connectedOnce;
+        private bool _shuttingDown;
+
+        public bool IsSpectator => isSpectator;
 
         public event Action<LockstepSessionStartMessage> LockstepSessionStarted;
 
@@ -76,6 +81,7 @@ namespace GameScene
 
         private void OnDestroy()
         {
+            _shuttingDown = true;
             _transport.Disconnect();
         }
 
@@ -134,10 +140,19 @@ namespace GameScene
             SendMessageToServer(destination, LockstepProtocolJson.SerializeSubmission(submission));
         }
 
+        public void SendResultSubmission(LockstepResultSubmissionMessage result)
+        {
+            string destination = $"/app/game/lockstep/result/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
+            SendMessageToServer(destination, LockstepProtocolJson.SerializeResult(result));
+        }
+
         public void QueueMagicInput(int requestId, System.Collections.Generic.IReadOnlyList<string> cards, Vector3 position)
         {
             _localInputs.EnqueueMagic(requestId, cards, new ProtocolVector3 { x = position.x, y = position.y, z = position.z });
         }
+
+        public void QueueCardSelection(System.Collections.Generic.IReadOnlyList<string> cards) =>
+            _localInputs.EnqueueCardSelection(cards);
 
         public FrameSubmissionMessage CreateFrameSubmission(int frameNumber, string previousFrameHash)
         {
@@ -165,9 +180,14 @@ namespace GameScene
             }
 
             UnsubscribeFromTopic("match-sub");
-            long userId = isSpectator ? 0 : SceneContext.UserID;
+            long userId = SceneContext.UserID;
             SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", OnFrameInfoReceived, "frame-sub");
-            if (!isSpectator)
+            if (isSpectator)
+            {
+                string spectateDestination = $"/app/game/lockstep/spectate/{sessionId}/{SceneContext.UserID}";
+                SendMessageToServer(spectateDestination, "{}");
+            }
+            else
             {
                 string readyDestination = $"/app/game/lockstep/ready/{sessionId}/{SceneContext.UserID}";
                 SendMessageToServer(readyDestination, LockstepProtocolJson.SerializeReady());
@@ -178,6 +198,13 @@ namespace GameScene
             {
                 if (Time.time - _lastFrameTime >= 10f)
                 {
+                    if (_confirmedFrames == null && IsPairingDebugSession(sessionId))
+                    {
+                        WDebug.Log("[Lockstep] Debug session is waiting for the opposite side");
+                        _lastFrameTime = Time.time;
+                        yield return new WaitForSeconds(1f);
+                        continue;
+                    }
                     WDebug.LogError("[STOMP] FrameInfo 수신 타임아웃 (10초)");
                     SystemMessageUI.Instance.ShowMessage(frameTimeout.IsEmpty ? connectionDelayed : frameTimeout);
                     SceneManager.LoadScene("LobbyScene");
@@ -186,6 +213,11 @@ namespace GameScene
                 yield return new WaitForSeconds(1f);
             }
         }
+
+        private static bool IsPairingDebugSession(string sessionId) =>
+            !string.IsNullOrEmpty(sessionId) &&
+            sessionId.StartsWith("debug-", StringComparison.Ordinal) &&
+            !sessionId.StartsWith("debug-pve-", StringComparison.Ordinal);
 
         private void OnFrameInfoReceived(string json)
         {
@@ -203,8 +235,12 @@ namespace GameScene
                     case LockstepMessageType.Abort:
                         HandleLockstepAbort(LockstepProtocolJson.DeserializeAbort(json));
                         return;
+                    case LockstepMessageType.Result:
+                        HandleResult(LockstepProtocolJson.DeserializeResult(json));
+                        return;
                     default:
-                        throw new InvalidOperationException("Unsupported lockstep message type");
+                        throw new InvalidOperationException(
+                            $"Unsupported lockstep message type '{LockstepProtocolJson.ReadRawType(json) ?? "<missing>"}'. Payload: {json}");
                 }
             }
             catch (System.Exception exception)
@@ -216,7 +252,8 @@ namespace GameScene
 
         private void HandleLockstepSessionStart(LockstepSessionStartMessage start)
         {
-            LockstepVersionValidator.Validate(start);
+            LockstepVersionValidator.ValidateDataVersions(start,
+                ParametersDataSource.GetCachedVersion(), MagicInfoDataSource.GetCachedVersion());
             _confirmedFrames = new ConfirmedFrameQueue(start.initialFrame);
             LockstepSessionStarted?.Invoke(start);
         }
@@ -234,6 +271,15 @@ namespace GameScene
             ReturnToLobby(connectionClosed);
         }
 
+        private static void HandleResult(Data.ResultInfo result)
+        {
+            if (result == null) throw new InvalidOperationException("Lockstep result payload is missing");
+            SceneContext.MatchResult = result;
+            if (GameEndEventController.Instance == null)
+                throw new InvalidOperationException("GameEndEventController is required in GameScene");
+            GameEndEventController.Instance.TriggerGameEnd();
+        }
+
         // ─── 연결 이벤트 핸들러 ──────────────────────────────────────────────
 
         private void HandleConnected()
@@ -246,6 +292,7 @@ namespace GameScene
 
         private void HandleDisconnected(string message)
         {
+            if (_shuttingDown) return;
             SystemMessageUI.Instance.ShowMessage(connectionClosed);
             WDebug.Log("[STOMP] 연결 종료: " + message);
             if (_connectedOnce)

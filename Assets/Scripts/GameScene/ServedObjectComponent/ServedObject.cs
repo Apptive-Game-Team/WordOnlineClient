@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameScene.Simulation.Core;
+using GameScene.Simulation.Rendering;
 using Data;
 using Global;
 using UnityEngine;
 
 namespace GameScene.ServedObjectComponent
 {
-    public class ServedObject : MonoBehaviour
+    public class ServedObject : MonoBehaviour, ISimulationEntityView
     {
         private const string LeftPlayer = "LeftPlayer";
         private const string RightPlayer = "RightPlayer";
@@ -33,6 +35,8 @@ namespace GameScene.ServedObjectComponent
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
         private ServedObjectHpBar _servedObjectHpBar;
+        private readonly List<string> _simulationEffects = new List<string>();
+        private readonly List<string> _localEffects = new List<string>();
 
         public event Action OnAttack;
         public event Action OnDamaged;
@@ -86,6 +90,57 @@ namespace GameScene.ServedObjectComponent
         public string GetMaster()
         {
             return master;
+        }
+
+        public void ApplySimulationState(string status, List<string> effects,
+            List<Gauge> updatedGauges, string updatedMaster)
+        {
+            UpdateMasterIfNeeded(updatedMaster);
+            EnsureEffectRenderer();
+            _simulationEffects.Clear();
+            if (effects != null) _simulationEffects.AddRange(effects);
+            RenderCombinedEffects();
+            HandleGaugeUpdate(updatedGauges);
+            if (!string.IsNullOrEmpty(status)) HandleStatus(status);
+        }
+
+        void ISimulationEntityView.ApplySimulationState(string status,
+            IReadOnlyList<string> effects, IReadOnlyList<SimulationGaugeSnapshot> gauges,
+            string updatedMaster)
+        {
+            List<string> effectList = effects == null
+                ? null : new List<string>(effects);
+            List<Gauge> gaugeList = new List<Gauge>(gauges?.Count ?? 0);
+            if (gauges != null)
+                for (int index = 0; index < gauges.Count; index++)
+                {
+                    SimulationGaugeSnapshot gauge = gauges[index];
+                    gaugeList.Add(new Gauge
+                    {
+                        value = gauge.Value,
+                        maxValue = gauge.MaxValue,
+                        category = gauge.Category
+                    });
+                }
+            ApplySimulationState(status, effectList, gaugeList, updatedMaster);
+        }
+
+        public void ApplyLocalEffects(IReadOnlyList<string> effects)
+        {
+            _localEffects.Clear();
+            if (effects != null)
+                for (int index = 0; index < effects.Count; index++)
+                    if (!_localEffects.Contains(effects[index])) _localEffects.Add(effects[index]);
+            EnsureEffectRenderer();
+            RenderCombinedEffects();
+        }
+
+        private void RenderCombinedEffects()
+        {
+            List<string> combined = new List<string>(_simulationEffects);
+            for (int index = 0; index < _localEffects.Count; index++)
+                if (!combined.Contains(_localEffects[index])) combined.Add(_localEffects[index]);
+            _effectRenderer.SetEffects(combined);
         }
         
         private void HandleStatus(string status)

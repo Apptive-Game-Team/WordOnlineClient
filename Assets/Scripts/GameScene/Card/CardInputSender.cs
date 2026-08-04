@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using Data.Magic;
@@ -29,6 +30,7 @@ namespace GameScene.Card
         private bool isWaitingInputResponse = false;
         
         private CombinedMagicResolver combinedMagicResolver;
+        public event Action<IReadOnlyList<CardType>> SelectionChanged;
 
         protected override void Awake()
         {
@@ -58,6 +60,7 @@ namespace GameScene.Card
             {
                 _currentCardNameList.Remove(cardObj.CardName);
                 _currentCardList.Remove(cardObj);
+                NotifySelectionChanged();
             }
         }
 
@@ -143,6 +146,7 @@ namespace GameScene.Card
             PlayerFeedbackController.Instance.UseMagicFeedback();
             SetExpectedMagicUI();
             isFieldSelectMode = false;
+            NotifySelectionChanged();
         }
 
         public void TryUseCard(CardUI cardObj)
@@ -169,6 +173,7 @@ namespace GameScene.Card
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
+            NotifySelectionChanged();
         }
 
         public void HandleConfirmedInput(int requestId, bool accepted, string message = null)
@@ -231,6 +236,7 @@ namespace GameScene.Card
 
             isFieldSelectMode = CanSelectField;
             SetExpectedMagicUI();
+            NotifySelectionChanged();
         }
 
         private void AddCardList(CardUI card)
@@ -238,6 +244,7 @@ namespace GameScene.Card
             WDebug.Log("AddCardList: " + card.CardName);
             _currentCardNameList.Add(card.CardName);
             _currentCardList.Add(card);
+            NotifySelectionChanged();
         }
 
 
@@ -257,5 +264,7 @@ namespace GameScene.Card
         {
             GameSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
         }
+
+        private void NotifySelectionChanged() => SelectionChanged?.Invoke(GetCurrentRecipeTypes());
     }
 }

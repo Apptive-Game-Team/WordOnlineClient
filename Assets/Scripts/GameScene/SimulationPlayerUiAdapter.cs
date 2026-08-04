@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GameScene.Simulation.Rendering;
 using GameScene.Simulation.Resources;
+using GameScene.UI;
 using UnityEngine;
 
 namespace GameScene
@@ -9,10 +10,14 @@ namespace GameScene
     {
         [SerializeField] private GameSceneUIController controller;
 
+        public void Configure(GameSceneUIController value) => controller = value;
+
         public void Render(PlayerResourceSnapshot snapshot)
         {
             if (snapshot == null || controller == null) return;
             controller.UpdateMana(snapshot.Mana);
+            if (TimerController.Instance != null)
+                TimerController.Instance.UpdateTimer((snapshot.RemainingFrames + 19) / 20);
 
             List<string> remaining = controller.GetAllCards();
             for (int index = 0; index < snapshot.Hand.Count; index++)

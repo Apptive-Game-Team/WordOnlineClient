@@ -22,4 +22,7 @@
 | float `attackInterval` / detector timer | absolute simulation frame deadlines |
 | `RigidBody.addVelocity` | per-frame `SetVelocity` |
 
-Map obstacle extraction and prefab-specific balance definitions remain integration inputs. The navigation grid itself is immutable after session construction so every peer hashes the same topology.
+The production 18×10 arena grid, bounds, prefab-specific balance definitions,
+status-modified cooldowns, aerial height, and PVE boss behavior are constructed
+by the versioned production factories. The navigation grid is immutable after
+session construction so every peer hashes the same topology.

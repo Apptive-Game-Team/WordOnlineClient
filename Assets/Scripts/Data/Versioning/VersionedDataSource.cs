@@ -16,6 +16,8 @@ namespace Data.Versioning
         protected string Version { get; set; }
         protected string SourceUrl { get; private set; }
 
+        protected string CachedVersion => Version;
+
         protected override void Awake()
         {
             base.Awake();
