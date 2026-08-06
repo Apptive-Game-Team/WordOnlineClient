@@ -3,9 +3,20 @@ using UnityEngine;
 
 namespace GameScene.ServedObjectComponent.Effect
 {
+    /// <summary>
+    /// Two reactions to taking damage, driven by different signals.
+    /// <para>
+    /// The recoil follows any HP drop, including sources with no attacker such as damage over time.
+    /// The star only plays for a server <c>hit</c> event, which is what tells us where the blow came
+    /// from, and it is placed on the side of the sprite facing the attacker.
+    /// </para>
+    /// </summary>
     public class HitEffectController : MonoBehaviour
     {
         [SerializeField] private ServedObject servedObject;
+
+        [Tooltip("How far toward the attacker the star sits, as a fraction of the sprite's half size.")]
+        [SerializeField, Range(0f, 1f)] private float attackerSideBias = 0.6f;
 
         private void Start()
         {
@@ -16,22 +27,40 @@ namespace GameScene.ServedObjectComponent.Effect
 
             if (servedObject != null)
             {
-                servedObject.OnHpDecreased += PlayHitEffect;
+                servedObject.OnHpDecreased += PlayRecoil;
             }
         }
-        
+
         private void OnDestroy()
         {
             if (servedObject != null)
             {
-                servedObject.OnHpDecreased -= PlayHitEffect;
+                servedObject.OnHpDecreased -= PlayRecoil;
             }
         }
-        
-        private void PlayHitEffect()
+
+        public void PlayHitFrom(Vector3 attackerWorldPosition)
         {
+            if (servedObject == null)
+            {
+                PlayHit();
+                return;
+            }
+
             WDebug.Log($"Hit effect played for ServedObject ID: {servedObject.id}");
-            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect",transform);
+            DamagedObjectEffect.SetSelfDestroyEffect(
+                "HitEffect",
+                servedObject.GetEdgeWorldPositionTowards(attackerWorldPosition, attackerSideBias));
+        }
+
+        /// <summary>Used when the attacker is no longer on the client, so there is no side to favour.</summary>
+        public void PlayHit()
+        {
+            DamagedObjectEffect.SetSelfDestroyEffect("HitEffect", transform.position);
+        }
+
+        private void PlayRecoil()
+        {
             DOTweenAction.BounceMob(transform);
         }
     }
