@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using GameScene.Dto.Event;
+
 namespace GameScene.Dto
 {
     [System.Serializable]
@@ -10,5 +13,6 @@ namespace GameScene.Dto
         public int rightPlayerHp;
         public CardInfo cards;
         public ObjectsInfo objects;
+        public List<GameEvent> events;
     }
 }

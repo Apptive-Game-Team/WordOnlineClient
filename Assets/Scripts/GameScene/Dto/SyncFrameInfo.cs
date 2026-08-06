@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameScene.Dto.Event;
 using GameScene.Dto.Projectile;
 
 namespace GameScene.Dto
@@ -13,5 +14,6 @@ namespace GameScene.Dto
         public int rightPlayerHp;
         public SnapshotDto snapshotResponseDto;
         public List<ProjectileDto> projectileDtos;
+        public List<GameEvent> events;
     }
 }

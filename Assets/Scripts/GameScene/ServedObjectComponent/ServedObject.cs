@@ -206,6 +206,51 @@ namespace GameScene.ServedObjectComponent
             return _actualTransform;
         }
 
+        /// <summary>
+        /// Point on the sprite facing <paramref name="fromWorldPosition"/>, at
+        /// <paramref name="edgeBias"/> of the way out to its edge.
+        /// <para>
+        /// Sprites are billboarded to the tilted 2.5D camera, so the direction is taken in screen space
+        /// and applied along the renderer's own axes. A world-space offset would slide off the sprite.
+        /// </para>
+        /// </summary>
+        public Vector3 GetEdgeWorldPositionTowards(Vector3 fromWorldPosition, float edgeBias)
+        {
+            EnsureSpriteRenderer();
+
+            if (_spriteRenderer == null || _spriteRenderer.sprite == null)
+            {
+                return GetActualTransform().position;
+            }
+
+            Bounds localBounds = _spriteRenderer.sprite.bounds;
+            Vector3 centerWorldPosition = _spriteRenderer.transform.TransformPoint(localBounds.center);
+
+            Vector2 screenDirection = GetScreenDirection(centerWorldPosition, fromWorldPosition);
+            if (screenDirection == Vector2.zero)
+            {
+                return centerWorldPosition;
+            }
+
+            Vector3 localOffset = new Vector3(
+                localBounds.extents.x * screenDirection.x,
+                localBounds.extents.y * screenDirection.y,
+                0f) * edgeBias;
+
+            return centerWorldPosition + _spriteRenderer.transform.TransformVector(localOffset);
+        }
+
+        private static Vector2 GetScreenDirection(Vector3 fromWorldPosition, Vector3 toWorldPosition)
+        {
+            Camera camera = Camera.main;
+            Vector3 delta = camera != null
+                ? camera.WorldToScreenPoint(toWorldPosition) - camera.WorldToScreenPoint(fromWorldPosition)
+                : toWorldPosition - fromWorldPosition;
+
+            Vector2 direction = new Vector2(delta.x, delta.y);
+            return direction.sqrMagnitude < Mathf.Epsilon ? Vector2.zero : direction.normalized;
+        }
+
         public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
         {
             EnsureSpriteRenderer();
