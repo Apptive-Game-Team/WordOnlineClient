@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Data;
 using Data.Net;
 using GameScene.Handler;
 using Global;
@@ -80,14 +81,14 @@ namespace GameScene
         {
             if (_transport.IsConnected) return;
 
-            string gameServerUrl = SceneContext.MatchInfo.server;
-            if (!ServerEndpoint.TryOf(gameServerUrl, out ServerEndpoint gameServer))
+            MatchedInfoDto matchInfo = SceneContext.MatchInfo;
+            if (!matchInfo.TryResolveWebSocket(StompPath, out ServerEndpoint gameServer))
             {
-                WDebug.LogError($"[STOMP] 게임 서버 URL을 해석하지 못했습니다: {gameServerUrl}");
+                WDebug.LogError($"[STOMP] 게임 서버 URL을 해석하지 못했습니다: {matchInfo.ConnectionSource}");
                 return;
             }
 
-            string url = gameServer.AsWebSocket().Path(StompPath).Query("token", SceneContext.JwtToken);
+            string url = gameServer.Query("token", SceneContext.JwtToken);
             _transport.Connect(url, SceneContext.JwtToken);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Data;
+using Data.Net;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,28 +11,81 @@ namespace LobbyScene
 {
     public class MatchQueueApiService : MonoBehaviour
     {
-        public IEnumerator Enqueue(Action<SimpleMessageDto> callback)
+        private static ServerEndpoint MatchTickets =>
+            ServerList.MatchingServer.Api.Path("api", "match", "tickets");
+
+        public IEnumerator CreateTicket(Action<MatchTicket> callback)
         {
-            using var webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/queue/me");
+            using var webRequest = new UnityWebRequest(MatchTickets, "POST");
+            webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes("{}"));
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", "application/json");
+            yield return SendTicketRequest(webRequest, callback, "CreateTicket");
+        }
+
+        public IEnumerator GetActiveTicket(Action<bool, MatchTicket> callback)
+        {
+            using var webRequest = UnityWebRequest.Get(MatchTickets.Path("active"));
             Server.SetAcceptLanguage(webRequest);
             Server.SetAuthorization(webRequest);
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.Success)
+            if (webRequest.responseCode == 404)
             {
-                SimpleMessageDto messageDto = JsonCodec.Deserialize<SimpleMessageDto>(webRequest.downloadHandler.text);
-                callback(messageDto);
+                callback(true, null);
+                yield break;
             }
-            else
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                WDebug.LogError($"Enqueue error: {webRequest.error}");
+                WDebug.LogError($"GetActiveTicket error: {webRequest.responseCode} / {webRequest.error}");
+                callback(false, null);
+                yield break;
+            }
+
+            callback(true, JsonCodec.Deserialize<MatchTicket>(webRequest.downloadHandler.text));
+        }
+
+        public IEnumerator CancelTicket(string ticketId, Action<MatchCancelResult> callback)
+        {
+            using var webRequest = UnityWebRequest.Delete(MatchTickets.Path(ticketId));
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                WDebug.LogError($"CancelTicket error: {webRequest.responseCode} / {webRequest.error}");
                 callback(null);
+                yield break;
             }
+
+            callback(JsonCodec.Deserialize<MatchCancelResult>(webRequest.downloadHandler.text));
+        }
+
+        private static IEnumerator SendTicketRequest(
+            UnityWebRequest webRequest,
+            Action<MatchTicket> callback,
+            string operation)
+        {
+            Server.SetAcceptLanguage(webRequest);
+            Server.SetAuthorization(webRequest);
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                WDebug.LogError($"{operation} error: {webRequest.responseCode} / {webRequest.error}");
+                callback(null);
+                yield break;
+            }
+
+            callback(JsonCodec.Deserialize<MatchTicket>(webRequest.downloadHandler.text));
         }
 
         public IEnumerator MatchPractice(Action<MatchedInfoDto> callback)
         {
-            using var webRequest = UnityWebRequest.Get($"{ServerList.MatchingServer.url}/api/match/practice/me");
+            using var webRequest = UnityWebRequest.Get(ServerList.MatchingServer.Api.Path("api", "match", "practice", "me"));
             Server.SetAcceptLanguage(webRequest);
             Server.SetAuthorization(webRequest);
             yield return webRequest.SendWebRequest();
@@ -45,49 +99,6 @@ namespace LobbyScene
             {
                 WDebug.LogError($"MatchPractice error: {webRequest.error}");
                 callback(null);
-            }
-        }
-        
-        public IEnumerator RemoveFromQueue(Action<bool> callback = null)
-        {
-            using var webRequest = new UnityWebRequest($"{ServerList.MatchingServer.url}/api/match/queue/me", "DELETE");
-        
-            Server.SetAcceptLanguage(webRequest);
-            Server.SetAuthorization(webRequest);
-            
-            yield return webRequest.SendWebRequest();
-
-            bool isSuccess = webRequest.result == UnityWebRequest.Result.Success;
-            if (!isSuccess)
-            {
-                WDebug.LogError($"RemoveFromQueue error: {webRequest.error}");
-            }
-
-            callback?.Invoke(isSuccess);
-        }
-    
-        public IEnumerator IsMeInQueue(Action<LobbySceneViewModel.LobbyState> callback)
-        {
-            using var webRequest = new UnityWebRequest($"{ServerList.MatchingServer.url}/api/match/queue/me/exist", "GET");
-        
-            Server.SetAcceptLanguage(webRequest);
-            Server.SetAuthorization(webRequest);
-            
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.responseCode == 200)
-            {
-                WDebug.Log("User is in queue.");
-                callback(LobbySceneViewModel.LobbyState.Matching);
-            }
-            else if (webRequest.responseCode == 404)
-            {
-                WDebug.Log("Not in queue.");
-                callback(LobbySceneViewModel.LobbyState.Idle);
-            }
-            else
-            {
-                WDebug.LogError($"Error checking queue status: {webRequest.error}");
             }
         }
 
