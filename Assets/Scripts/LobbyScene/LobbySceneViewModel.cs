@@ -9,7 +9,7 @@ namespace LobbyScene
     public class LobbySceneViewModel : LocalSingletonObject<LobbySceneViewModel>
     {
         [SerializeField] private MatchQueueApiService _matchQueueApi;
-        [SerializeField] private MatchStatusPoller _poller;
+        private MatchmakingCoordinator coordinator;
 
         public enum LobbyState
         {
@@ -22,30 +22,28 @@ namespace LobbyScene
         public event Action OnMatchingStop;
         public event Action OnMatchingFailed;
         public event Action OnMatchingCanceled;
-        private bool _isCancelRequested;
-
         protected override void Awake()
         {
             base.Awake();
-            _poller.OnIdle += HandlePolledIdle;
-            _poller.OnMatching += () => CurrentState.UpdateData(LobbyState.Matching);
-            _poller.OnMatched += () => StartCoroutine(StatusTracker.RecoverGameSession());
+            coordinator = gameObject.GetComponent<MatchmakingCoordinator>();
+            if (coordinator == null) coordinator = gameObject.AddComponent<MatchmakingCoordinator>();
+            coordinator.StateChanged += HandleMatchmakingState;
+            coordinator.Matched += OnMatched;
+            coordinator.Initialize(_matchQueueApi);
+        }
+
+        private void OnDestroy()
+        {
+            if (coordinator == null) return;
+            coordinator.StateChanged -= HandleMatchmakingState;
+            coordinator.Matched -= OnMatched;
         }
 
         public void Enqueue()
         {
             Debug.Log("Enqueue button clicked: Enqueueing player.");
             StartMatching();
-            StartCoroutine(_matchQueueApi.Enqueue(messageDto =>
-            {
-                if (messageDto == null || messageDto.message.Contains("Failed"))
-                {
-                    Debug.LogWarning("Enqueue failed.");
-                    StopMatchingAsFailed();
-                    return;
-                }
-                Debug.Log("Enqueued: waiting for match.");
-            }));
+            coordinator.Enqueue();
         }
 
         public void PlayPracticeMatch()
@@ -72,47 +70,45 @@ namespace LobbyScene
         public void RemoveFromQueue()
         {
             Debug.Log("Remove button clicked: Removing player.");
-            _isCancelRequested = true;
-            StartCoroutine(_matchQueueApi.RemoveFromQueue(isSuccess =>
-            {
-                if (isSuccess) return;
-
-                _isCancelRequested = false;
-                CheckIfInQueue();
-            }));
+            coordinator.Cancel();
         }
 
         public void CheckIfInQueue()
         {
-            Debug.Log("Check button clicked: Checking player.");
-            StartCoroutine(_matchQueueApi.IsMeInQueue(state =>
-            {
-                CurrentState.UpdateData(state);
-            }));
+            coordinator.RecoverSnapshot();
         }
 
         private void StartMatching()
         {
-            _isCancelRequested = false;
             CurrentState.UpdateData(LobbyState.Matching);
             OnMatchingStart?.Invoke();
         }
 
-        private void HandlePolledIdle()
+        private void HandleMatchmakingState(MatchTicketState state, MatchTicket ticket)
         {
-            bool wasMatching = CurrentState.Data == LobbyState.Matching;
-            CurrentState.UpdateData(LobbyState.Idle);
-            if (!wasMatching) return;
-
-            if (_isCancelRequested)
-                StopMatchingAsCanceled();
-            else
-                StopMatchingAsFailed();
+            switch (state)
+            {
+                case MatchTicketState.Queued:
+                case MatchTicketState.CancelPending:
+                case MatchTicketState.Allocating:
+                case MatchTicketState.Reconnecting:
+                    CurrentState.UpdateData(LobbyState.Matching);
+                    break;
+                case MatchTicketState.Canceled:
+                    StopMatchingAsCanceled();
+                    break;
+                case MatchTicketState.Failed:
+                case MatchTicketState.Expired:
+                    StopMatchingAsFailed();
+                    break;
+                case MatchTicketState.Idle:
+                    CurrentState.UpdateData(LobbyState.Idle);
+                    break;
+            }
         }
 
         private void StopMatchingAsFailed()
         {
-            _isCancelRequested = false;
             CurrentState.UpdateData(LobbyState.Idle);
             OnMatchingFailed?.Invoke();
             OnMatchingStop?.Invoke();
@@ -120,7 +116,6 @@ namespace LobbyScene
 
         private void StopMatchingAsCanceled()
         {
-            _isCancelRequested = false;
             CurrentState.UpdateData(LobbyState.Idle);
             OnMatchingCanceled?.Invoke();
             OnMatchingStop?.Invoke();

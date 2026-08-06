@@ -92,7 +92,7 @@ namespace LobbyScene
         
             PopulateDropdown();
         
-            StartCoroutine(StatusTracker.GetUserStatus());
+            LobbySceneViewModel.Instance.CheckIfInQueue();
         }
 
         // 2) 드랍다운 옵션 갱신

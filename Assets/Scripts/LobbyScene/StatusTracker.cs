@@ -3,7 +3,6 @@ using System.Collections;
 using Data;
 using Global;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Global.Serialization;
@@ -13,12 +12,6 @@ namespace LobbyScene
     public static class StatusTracker
     {
         [Serializable]
-        private class StatusDto
-        {
-            public string status;
-        } 
-
-        [Serializable]
         public class SessionDto
         {
             public string sessionId;
@@ -26,72 +19,6 @@ namespace LobbyScene
             public User rightUser;
         }
 
-        private static readonly LocalizedString sessionRestoredMatching = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredMatching" };
-        private static LocalizedString sessionRestoredGame = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredGame" };
-
-        public static IEnumerator GetUserStatus()
-        {
-            return GetUserStatus(HandleUserStatus);
-        }
-    
-        public static IEnumerator GetUserStatus(Func<string, IEnumerator> handler)
-        {
-            var url = ServerList.MatchingServer.url + "/api/users/mine/status";
-
-            using var www = UnityWebRequest.Get(url);
-            Server.SetAcceptLanguage(www);
-            Server.SetAuthorization(www);
-        
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                WDebug.LogError($"[GetUserStatus] fail: {www.responseCode} / {www.error}");
-                yield break;
-            }
-
-            StatusDto dto = null;
-            bool jsonParseError = false;
-            try { dto = JsonCodec.Deserialize<StatusDto>(www.downloadHandler.text); }
-            catch (Exception e)
-            {
-                WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
-                jsonParseError = true;
-            }
-
-            if (jsonParseError || dto == null || string.IsNullOrEmpty(dto.status))
-            {
-                WDebug.LogWarning("[GetUserStatus] empty status");
-                yield return handler.Invoke(null);
-                yield break;
-            }
-
-            WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
-
-            yield return handler.Invoke(dto.status);
-        }
-
-        private static IEnumerator HandleUserStatus(string status)
-        {
-            switch (status)
-            {
-                case "Online":
-                    yield break;
-
-                case "OnMatching":
-                    SystemMessageUI.Instance.ShowMessage(sessionRestoredMatching);
-                    LobbySceneViewModel.Instance.Enqueue();
-                    yield break;
-
-                case "OnPlaying":
-                    yield return RecoverGameSession();
-                    yield break;
-                default:
-                    WDebug.LogWarning($"[GetUserStatus] unknown status: {status}");
-                    yield break;
-            }
-        }
-    
         public static IEnumerator RecoverGameSession()
         {
             var getSessionUrl = $"{ServerList.MatchingServer.url}/api/users/mine/match-info";

@@ -1,4 +1,5 @@
 using Admin.Dto;
+using Data.Net;
 
 namespace Data
 {
@@ -7,9 +8,36 @@ namespace Data
     {
         public string message;
         public string server;
+        public string webSocketUrl;
         public User leftUser;
         public User rightUser;
         public string sessionId;
+
+        /// <summary>접속 주소를 어느 필드에서 가져왔는지. 진단 로그용이다.</summary>
+        public string ConnectionSource => string.IsNullOrEmpty(webSocketUrl) ? server : webSocketUrl;
+
+        /// <summary>
+        /// 게임 서버 웹소켓 접속 엔드포인트를 만든다.
+        ///
+        /// 서버가 <c>webSocketUrl</c>을 내려주면 경로까지 서버가 정한 값이므로 그대로 쓰고,
+        /// <c>server</c>만 오는 응답이면 base URL이므로 <paramref name="fallbackPath"/>를 붙인다.
+        /// 토큰 같은 쿼리는 호출부가 <see cref="ServerEndpoint.Query"/>로 덧붙인다.
+        /// </summary>
+        public bool TryResolveWebSocket(string fallbackPath, out ServerEndpoint endpoint)
+        {
+            if (!string.IsNullOrEmpty(webSocketUrl))
+            {
+                if (!ServerEndpoint.TryOf(webSocketUrl, out endpoint)) return false;
+
+                endpoint = endpoint.AsWebSocket();
+                return true;
+            }
+
+            if (!ServerEndpoint.TryOf(server, out endpoint)) return false;
+
+            endpoint = endpoint.AsWebSocket().Path(fallbackPath);
+            return true;
+        }
 
         public static MatchedInfoDto CreateDebugSession(string sessionId, string userSide, long userId)
         {
