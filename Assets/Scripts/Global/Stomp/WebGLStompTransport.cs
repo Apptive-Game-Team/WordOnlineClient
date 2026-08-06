@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 #endif
 using System;
 using UnityEngine;
+using Global.Serialization;
 
 namespace Global.Stomp
 {
@@ -106,7 +107,11 @@ namespace Global.Stomp
         /// </summary>
         private void OnSubscriptionMessage(string json)
         {
-            var msg = JsonUtility.FromJson<SubscriptionMessageDto>(json);
+            if (!JsonCodec.TryDeserialize(json, out SubscriptionMessageDto msg))
+            {
+                return;
+            }
+
             MessageReceived?.Invoke(msg.id, msg.body);
         }
 

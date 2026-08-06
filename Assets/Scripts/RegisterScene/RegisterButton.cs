@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Global.Serialization;
 
 namespace RegisterScene
 {
@@ -18,7 +19,7 @@ namespace RegisterScene
     
         private IEnumerator RegisterCoroutine(RegisterRequestDto registerRequestDto)
         {
-            string jsonData = JsonUtility.ToJson(registerRequestDto);
+            string jsonData = JsonCodec.Serialize(registerRequestDto);
         
             using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members", "POST"))
             {
@@ -41,7 +42,7 @@ namespace RegisterScene
             
                 WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
-                AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
+                AuthResponseDto authResponseDto = JsonCodec.Deserialize<AuthResponseDto>(webRequest.downloadHandler.text);
             
                 SceneContext.JwtToken = authResponseDto.jwt;
                     

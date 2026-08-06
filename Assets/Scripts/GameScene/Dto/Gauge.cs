@@ -1,4 +1,4 @@
-namespace GameScene.ServedObjectComponent
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class Gauge

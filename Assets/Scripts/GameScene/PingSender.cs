@@ -1,6 +1,7 @@
 using System;
 using Global;
 using UnityEngine;
+using Global.Serialization;
 
 namespace GameScene
 {
@@ -20,7 +21,7 @@ namespace GameScene
     
         private void Awake()
         {
-            pingMessage = JsonUtility.ToJson(new PingDto());
+            pingMessage = JsonCodec.Serialize(new PingDto());
             destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
         }
 

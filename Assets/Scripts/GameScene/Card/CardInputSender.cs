@@ -6,6 +6,7 @@ using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
 using UnityEngine;
+using Global.Serialization;
 
 namespace GameScene.Card
 {
@@ -169,7 +170,7 @@ namespace GameScene.Card
             }
 
             var input = new CardUseInput(new List<string>(_currentCardNameList), pos);
-            string json = JsonUtility.ToJson(input);
+            string json = JsonCodec.Serialize(input);
         
             string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
             StompConnector.Instance.SendMessageToServer(destination, json);
@@ -296,7 +297,7 @@ namespace GameScene.Card
 
         private static void SendCardSelectionInput(object input)
         {
-            string json = JsonUtility.ToJson(input);
+            string json = JsonCodec.Serialize(input);
             string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
             StompConnector.Instance.SendMessageToServer(destination, json);
         }

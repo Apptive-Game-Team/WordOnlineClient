@@ -4,6 +4,7 @@ using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using Data.Adventures.Dto;
+using Global.Serialization;
 
 namespace Data.Adventures
 {
@@ -23,7 +24,7 @@ namespace Data.Adventures
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 string jsonResponse = webRequest.downloadHandler.text;
-                AdventuresResponseDto adventuresResponseDto = JsonUtility.FromJson<AdventuresResponseDto>(jsonResponse);
+                AdventuresResponseDto adventuresResponseDto = JsonCodec.Deserialize<AdventuresResponseDto>(jsonResponse);
                 callback.Invoke(adventuresResponseDto);
             }
             else

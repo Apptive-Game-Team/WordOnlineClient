@@ -3,6 +3,7 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Data.Versioning
 {
@@ -30,7 +31,7 @@ namespace Data.Versioning
             {
                 var rawJson = request.downloadHandler.text;
                 OnSuccessRawJson(rawJson);
-                var response = JsonUtility.FromJson<TResponse>(rawJson);
+                var response = JsonCodec.Deserialize<TResponse>(rawJson);
                 onSuccess?.Invoke(response);
             }
             else

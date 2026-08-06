@@ -19,6 +19,10 @@
     <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
     <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
   </assembly>
+  <!-- Json.NET resolves contracts through reflection, so neither it nor the DTOs it fills may be stripped. -->
+  <assembly fullname="Newtonsoft.Json" preserve="all" />
+  <assembly fullname="WordOnline.Serialization" preserve="all" />
+  <assembly fullname="WordOnline.GameContracts" preserve="all" />
   <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Object" preserve="all" />
   </assembly>

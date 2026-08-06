@@ -7,6 +7,7 @@ using Global;
 using Global.Util;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace DeckScene
 {
@@ -33,7 +34,7 @@ namespace DeckScene
             }
 
             WDebug.Log($"보유 카드 리스트: {request.downloadHandler.text}");
-            CardPoolDto poolDto = JsonUtility.FromJson<CardPoolDto>(request.downloadHandler.text);
+            CardPoolDto poolDto = JsonCodec.Deserialize<CardPoolDto>(request.downloadHandler.text);
             callback?.Invoke(poolDto?.cards ?? Array.Empty<CardDto>());
         }
 
@@ -58,7 +59,7 @@ namespace DeckScene
             }
 
             WDebug.Log($"유저 덱 리스트: {request.downloadHandler.text}");
-            callback?.Invoke(JsonHelper.FromJson<DeckResponseDto>(request.downloadHandler.text) ?? Array.Empty<DeckResponseDto>());
+            callback?.Invoke(JsonCodec.Deserialize<DeckResponseDto[]>(request.downloadHandler.text) ?? Array.Empty<DeckResponseDto>());
         }
 
         public IEnumerator CreateDeck(DeckRequestDto dto, Action<bool> callback)
@@ -142,7 +143,7 @@ namespace DeckScene
             string failureLogPrefix,
             Action<bool> callback)
         {
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             WDebug.Log($"{payloadLogPrefix}: {json}");
 
             using var request = new UnityWebRequest(url, method)
@@ -178,7 +179,7 @@ namespace DeckScene
             string failureLogPrefix,
             Action<bool, string> callback)
         {
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             WDebug.Log($"{payloadLogPrefix}: {json}");
 
             using var request = new UnityWebRequest(url, method)
@@ -215,7 +216,7 @@ namespace DeckScene
 
             try
             {
-                return JsonUtility.FromJson<DeckResponseDto>(responseText);
+                return JsonCodec.Deserialize<DeckResponseDto>(responseText);
             }
             catch (ArgumentException e)
             {

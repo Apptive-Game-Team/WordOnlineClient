@@ -1,4 +1,3 @@
-using Data;
 using GameScene.Dto.Projectile;
 
 namespace GameScene.Dto

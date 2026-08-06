@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace LoginScene
 {
@@ -60,7 +61,7 @@ namespace LoginScene
                 DeployStatusDto dto = null;
                 try
                 {
-                    dto = JsonUtility.FromJson<DeployStatusDto>(www.downloadHandler.text);
+                    dto = JsonCodec.Deserialize<DeployStatusDto>(www.downloadHandler.text);
                 }
                 catch (Exception e)
                 {

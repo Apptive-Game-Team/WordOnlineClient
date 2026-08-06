@@ -1,17 +1,14 @@
-using UnityEngine;
+using Newtonsoft.Json;
 
 namespace GameScene.Dto.Projectile
 {
-    [System.Serializable]
-    public class ProjectileTarget
+    /// <summary>
+    /// Where a projectile starts or ends. Mirrors the server hierarchy: either a fixed world position
+    /// or a reference to a live object.
+    /// </summary>
+    [JsonConverter(typeof(ProjectileTargetConverter))]
+    public abstract class ProjectileTarget
     {
         public string targetType;
-        public int id;
-        public float x, y, z;
-        
-        public Vector3 GetVector3()
-        {
-            return new Vector3(x, y, z);
-        }
     }
 }

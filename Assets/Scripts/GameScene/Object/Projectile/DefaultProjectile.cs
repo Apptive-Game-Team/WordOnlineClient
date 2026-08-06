@@ -15,14 +15,14 @@ namespace GameScene.Object.Projectile
             actualObject.rotation = ProjectileUtil.GetRotation(projectileDto);
             transform.position = ProjectileUtil.GetPosition(projectileDto.start);
             
-            switch (projectileDto.end.targetType)
+            switch (projectileDto.end)
             {
-                case "position":
-                    transform.DOMove(ProjectileUtil.GetPosition(projectileDto.end), projectileDto.duration)
+                case PositionProjectileTarget position:
+                    transform.DOMove(position.ToVector3(), projectileDto.duration)
                         .SetEase(Ease.Linear);
                     break;
-                case "reference":
-                    ServedObject targetObject = ObjectContainer.Instance.FindById(projectileDto.end.id);
+                case ReferenceProjectileTarget reference:
+                    ServedObject targetObject = ObjectContainer.Instance.FindById(reference.id);
                     if (targetObject == null)
                     {
                         Destroy(gameObject);

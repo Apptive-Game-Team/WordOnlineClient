@@ -3,6 +3,7 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Data.Magic
 {
@@ -25,7 +26,7 @@ namespace Data.Magic
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                UserMagicResponse response = JsonUtility.FromJson<UserMagicResponse>(webRequest.downloadHandler.text);
+                UserMagicResponse response = JsonCodec.Deserialize<UserMagicResponse>(webRequest.downloadHandler.text);
             
                 callback.Invoke(response);
             }

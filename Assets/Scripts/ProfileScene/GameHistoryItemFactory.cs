@@ -7,6 +7,7 @@ using Data.Profile;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace ProfileScene
 {
@@ -156,7 +157,7 @@ namespace ProfileScene
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                AccountUser accountUser = JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
+                AccountUser accountUser = JsonCodec.Deserialize<AccountUser>(webRequest.downloadHandler.text);
                 string username = string.IsNullOrEmpty(accountUser?.DisplayName) ? fallbackUsername : accountUser.DisplayName;
                 opponentUsernameCache[opponentId] = username;
                 callback?.Invoke(username);

@@ -7,6 +7,7 @@ using Global;
 using Global.Util;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Admin.Client
 {
@@ -17,7 +18,7 @@ namespace Admin.Client
         public IEnumerator SummonMagic(DebugSummonMagicRequestDto dto, Action<DebugActionResponseDto> callback)
         {
             string url = $"{BaseUrl}/magic";
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             
             yield return PostJson(url, json, (responseJson) =>
             {
@@ -27,7 +28,7 @@ namespace Admin.Client
                 }
                 else
                 {
-                    callback?.Invoke(JsonUtility.FromJson<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(JsonCodec.Deserialize<DebugActionResponseDto>(responseJson));
                 }
             });
         }
@@ -35,7 +36,7 @@ namespace Admin.Client
         public IEnumerator SpawnPrefab(DebugSpawnPrefabRequestDto dto, Action<DebugActionResponseDto> callback)
         {
             string url = $"{BaseUrl}/prefab";
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             
             yield return PostJson(url, json, (responseJson) =>
             {
@@ -45,7 +46,7 @@ namespace Admin.Client
                 }
                 else
                 {
-                    callback?.Invoke(JsonUtility.FromJson<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(JsonCodec.Deserialize<DebugActionResponseDto>(responseJson));
                 }
             });
         }
@@ -66,7 +67,7 @@ namespace Admin.Client
             }
             else
             {
-                DebugMagicDto[] magics = JsonHelper.FromJson<DebugMagicDto>(request.downloadHandler.text);
+                DebugMagicDto[] magics = JsonCodec.Deserialize<DebugMagicDto[]>(request.downloadHandler.text);
                 callback?.Invoke(magics);
             }
         }
@@ -87,7 +88,7 @@ namespace Admin.Client
             }
             else
             {
-                DebugPrefabDto[] prefabs = JsonHelper.FromJson<DebugPrefabDto>(request.downloadHandler.text);
+                DebugPrefabDto[] prefabs = JsonCodec.Deserialize<DebugPrefabDto[]>(request.downloadHandler.text);
                 callback?.Invoke(prefabs);
             }
         }

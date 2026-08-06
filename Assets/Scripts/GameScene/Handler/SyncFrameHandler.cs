@@ -11,12 +11,12 @@ namespace GameScene.Handler
     {
         public void Handler(SyncFrameInfo syncFrameInfo)
         {
-            if (syncFrameInfo == null)
+            if (syncFrameInfo?.snapshotResponseDto == null)
             {
                 WDebug.LogError("[SyncFrameHandler] syncFrameInfo is null");
                 return;
             }
-            
+
             // 마나 UI 업데이트
             GameSceneUIController.Instance.UpdateMana(syncFrameInfo.updatedMana);
             
@@ -56,13 +56,16 @@ namespace GameScene.Handler
                 WDebug.Log("[SyncFrameHandler] 카드 추가 중 오류 발생");
             }
  
-            foreach (var projectile in syncFrameInfo.projectileDtos)
+            if (syncFrameInfo.projectileDtos != null)
             {
-                ProjectileSpawner.Instance.Spawn(projectile);
+                foreach (var projectile in syncFrameInfo.projectileDtos)
+                {
+                    ProjectileSpawner.Instance.Spawn(projectile);
+                }
             }
-            
+
             // 동기화
-            ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects);
+            ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects ?? Array.Empty<SnapshotObjectDto>());
             
             TimerController.Instance.UpdateTimer(syncFrameInfo.remainingTime);
         }

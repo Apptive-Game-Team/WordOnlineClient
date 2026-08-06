@@ -16,6 +16,7 @@ using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -79,8 +80,7 @@ namespace LobbyScene
                 yield break;
             }
 
-            // JsonHelper 는 이전에 정의한 generic 래퍼 유틸리티
-            userDecks = JsonHelper.FromJson<DeckResponseDto>(www.downloadHandler.text);
+            userDecks = JsonCodec.Deserialize<DeckResponseDto[]>(www.downloadHandler.text);
         
             if (userDecks == null || userDecks.Length == 0)
             {
@@ -296,10 +296,10 @@ namespace LobbyScene
             var trimmed = json.TrimStart();
             if (trimmed.StartsWith("["))
             {
-                return JsonHelper.FromJson<QuestRewardDto>(json) ?? Array.Empty<QuestRewardDto>();
+                return JsonCodec.Deserialize<QuestRewardDto[]>(json) ?? Array.Empty<QuestRewardDto>();
             }
 
-            var response = JsonUtility.FromJson<QuestRewardResponseDto>(json);
+            var response = JsonCodec.Deserialize<QuestRewardResponseDto>(json);
             return response?.rewards ?? Array.Empty<QuestRewardDto>();
         }
 

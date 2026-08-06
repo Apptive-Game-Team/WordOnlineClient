@@ -3,6 +3,7 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Data.Profile
 {
@@ -52,7 +53,7 @@ namespace Data.Profile
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                callback?.Invoke(JsonUtility.FromJson<UserStatisticsOverviewDto>(webRequest.downloadHandler.text));
+                callback?.Invoke(JsonCodec.Deserialize<UserStatisticsOverviewDto>(webRequest.downloadHandler.text));
             }
             else
             {
@@ -81,7 +82,7 @@ namespace Data.Profile
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                UserGameHistoryResponseDto response = JsonUtility.FromJson<UserGameHistoryResponseDto>(
+                UserGameHistoryResponseDto response = JsonCodec.Deserialize<UserGameHistoryResponseDto>(
                     NormalizeGameHistoryJson(webRequest.downloadHandler.text));
                 callback?.Invoke(response ?? new UserGameHistoryResponseDto());
             }
