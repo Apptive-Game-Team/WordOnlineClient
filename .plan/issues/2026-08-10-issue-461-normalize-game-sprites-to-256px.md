@@ -4,6 +4,13 @@
 - GitHub Issue: #461
 - Status: Complete
 
+## 2026-08-10 Post-merge follow-up
+
+- [x] `feature/460` 병합 후 장변이 다시 256px가 아닌 스프라이트를 조사했다.
+- [x] `CloudDragon.png`, `CloudDragonAttacking.png`, `LightningCloud.png`를 장변 256px로 정규화했다.
+- [x] Cloud Dragon 두 프레임을 460 작업물의 월드 장변 2.2 기준인 PPU 116.363636으로 일치시켰다.
+- [x] Unity 임포트, GUID, 피벗, 프리팹 참조와 비교 시트를 재검증했다.
+
 ## Goal
 
 `Assets/Resources/Game/sprites`의 PNG 스프라이트를 종횡비와 알파를 유지한 채 장변 256px 기준으로 정규화하고, 변환 전 월드 크기는 Sprite Importer의 Pixels Per Unit 값으로 보존한다.
