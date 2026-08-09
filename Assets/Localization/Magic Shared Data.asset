@@ -375,6 +375,10 @@ MonoBehaviour:
     m_Key: seedNest
     m_Metadata:
       m_Items: []
+  - m_Id: 78335500000000000
+    m_Key: lightningCloud
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
