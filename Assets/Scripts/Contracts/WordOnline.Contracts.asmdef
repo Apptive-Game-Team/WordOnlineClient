@@ -1,19 +1,15 @@
 {
-    "name": "Client.EditModeTests",
+    "name": "WordOnline.Contracts",
+    "rootNamespace": "",
     "references": [
-        "Assembly-CSharp"
+        "WordOnline.Net"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
