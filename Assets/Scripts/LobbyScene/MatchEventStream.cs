@@ -74,15 +74,13 @@ namespace LobbyScene
         {
             QueueCallback(() =>
             {
-                try
+                if (!JsonCodec.TryDeserialize(json, out MatchTicket ticket, out string error))
                 {
-                    MatchTicket ticket = JsonCodec.Deserialize<MatchTicket>(json);
-                    TicketReceived?.Invoke(ticket);
+                    WDebug.LogError($"[Match SSE] Invalid event: {error} / {JsonCodec.Excerpt(json)}");
+                    return;
                 }
-                catch (Exception exception)
-                {
-                    WDebug.LogError($"[Match SSE] Invalid event: {exception.Message}");
-                }
+
+                TicketReceived?.Invoke(ticket);
             });
         }
 
@@ -112,7 +110,12 @@ namespace LobbyScene
         // Called by MatchEventStream.jslib through Unity SendMessage.
         public void OnMatchSseEvent(string envelopeJson)
         {
-            SseEnvelope envelope = JsonCodec.Deserialize<SseEnvelope>(envelopeJson);
+            if (!JsonCodec.TryDeserialize(envelopeJson, out SseEnvelope envelope, out string error))
+            {
+                WDebug.LogError($"[Match SSE] Invalid envelope: {error} / {JsonCodec.Excerpt(envelopeJson)}");
+                return;
+            }
+
             QueueEvent(envelope.data);
         }
 

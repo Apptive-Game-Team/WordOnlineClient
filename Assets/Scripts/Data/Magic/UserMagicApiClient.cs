@@ -26,8 +26,12 @@ namespace Data.Magic
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                UserMagicResponse response = JsonCodec.Deserialize<UserMagicResponse>(webRequest.downloadHandler.text);
-            
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out UserMagicResponse response, out string error))
+                {
+                    WDebug.LogError($"Failed to parse user magics: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback.Invoke(response);
             }
             else

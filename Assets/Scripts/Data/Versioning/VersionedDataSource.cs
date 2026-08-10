@@ -56,7 +56,12 @@ namespace Data.Versioning
             }
 
             var json = PlayerPrefs.GetString(PlayerPrefsKey);
-            var saved = JsonCodec.Deserialize<TResponse>(json);
+            // A stale or corrupt cache must not take the scene down; fall back to fetching fresh data.
+            if (!JsonCodec.TryDeserialize(json, out TResponse saved, out string error))
+            {
+                WDebug.LogError($"[{GetType().Name}] Cached payload unreadable: {error}");
+            }
+
             if (saved != null)
             {
                 ProcessResponse(saved);

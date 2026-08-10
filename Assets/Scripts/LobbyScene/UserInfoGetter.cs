@@ -29,7 +29,15 @@ namespace LobbyScene
                     yield break;
                 }
             
-                accountUser = JsonCodec.Deserialize<AccountUser>(webRequest.downloadHandler.text);
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out accountUser, out string error))
+                {
+                    WDebug.LogError($"GetUserInfo account parse error: {error} / {JsonCodec.Excerpt(body)}");
+                    SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                    LoadingPage.Instance.IsLoading = false;
+                    SceneManager.LoadScene("LoginScene");
+                    yield break;
+                }
             }
         
             using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
@@ -47,7 +55,15 @@ namespace LobbyScene
                     yield break;
                 }
             
-                gameUser = JsonCodec.Deserialize<GameUser>(webRequest.downloadHandler.text);
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out gameUser, out string error))
+                {
+                    WDebug.LogError($"GetUserInfo game parse error: {error} / {JsonCodec.Excerpt(body)}");
+                    SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                    LoadingPage.Instance.IsLoading = false;
+                    SceneManager.LoadScene("LoginScene");
+                    yield break;
+                }
             }
             
             WDebug.Log(accountUser);

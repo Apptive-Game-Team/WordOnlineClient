@@ -58,14 +58,10 @@ namespace LoginScene
                     yield break;
                 }
 
-                DeployStatusDto dto = null;
-                try
+                string body = www.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DeployStatusDto dto, out string parseError))
                 {
-                    dto = JsonCodec.Deserialize<DeployStatusDto>(www.downloadHandler.text);
-                }
-                catch (Exception e)
-                {
-                    WDebug.LogError($"[CheckDeployStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
+                    WDebug.LogError($"[CheckDeployStatus] JSON parse error: {parseError}\n{JsonCodec.Excerpt(body)}");
                     SystemMessageUI.Instance.ShowMessage(serverDown);
                     onResult?.Invoke(false, serverDown.GetLocalizedString());
                     yield break;

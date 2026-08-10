@@ -26,9 +26,14 @@ namespace Admin.Client
                 {
                     callback?.Invoke(new DebugActionResponseDto { success = false, message = "Network error" });
                 }
+                else if (!JsonCodec.TryDeserialize(responseJson, out DebugActionResponseDto response, out string error))
+                {
+                    WDebug.LogError($"Debug action parse error: {error} / {JsonCodec.Excerpt(responseJson)}");
+                    callback?.Invoke(new DebugActionResponseDto { success = false, message = "Invalid response" });
+                }
                 else
                 {
-                    callback?.Invoke(JsonCodec.Deserialize<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(response);
                 }
             });
         }
@@ -44,9 +49,14 @@ namespace Admin.Client
                 {
                     callback?.Invoke(new DebugActionResponseDto { success = false, message = "Network error" });
                 }
+                else if (!JsonCodec.TryDeserialize(responseJson, out DebugActionResponseDto response, out string error))
+                {
+                    WDebug.LogError($"Debug action parse error: {error} / {JsonCodec.Excerpt(responseJson)}");
+                    callback?.Invoke(new DebugActionResponseDto { success = false, message = "Invalid response" });
+                }
                 else
                 {
-                    callback?.Invoke(JsonCodec.Deserialize<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(response);
                 }
             });
         }
@@ -67,7 +77,12 @@ namespace Admin.Client
             }
             else
             {
-                DebugMagicDto[] magics = JsonCodec.Deserialize<DebugMagicDto[]>(request.downloadHandler.text);
+                string body = request.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DebugMagicDto[] magics, out string error))
+                {
+                    WDebug.LogError($"Error parsing magics: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback?.Invoke(magics);
             }
         }
@@ -88,7 +103,12 @@ namespace Admin.Client
             }
             else
             {
-                DebugPrefabDto[] prefabs = JsonCodec.Deserialize<DebugPrefabDto[]>(request.downloadHandler.text);
+                string body = request.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DebugPrefabDto[] prefabs, out string error))
+                {
+                    WDebug.LogError($"Error parsing prefabs: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback?.Invoke(prefabs);
             }
         }
