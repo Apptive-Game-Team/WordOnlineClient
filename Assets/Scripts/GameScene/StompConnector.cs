@@ -7,7 +7,6 @@ using Global;
 using Global.Stomp;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.SceneManagement;
 
 namespace GameScene
 {
@@ -38,6 +37,9 @@ namespace GameScene
 
         private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
         private float _lastFrameTime = -1f;
+
+        /// <summary>이탈 신고가 진행 중인지. 여러 이탈 경로가 동시에 터져도 한 번만 신고한다.</summary>
+        private bool _reportingSessionLoss;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────
 
@@ -134,8 +136,14 @@ namespace GameScene
                 {
                     WDebug.LogError("[STOMP] 연결 타임아웃 (10초)");
                     SystemMessageUI.Instance.ShowMessage(connectionClosed);
-                    SceneManager.LoadScene("LobbyScene");
-                    yield break;
+
+                    bool sessionAlive = false;
+                    yield return AbandonSession(SessionLossReason.ConnectTimeout, () => sessionAlive = true);
+                    if (!sessionAlive) yield break;
+
+                    // 세션이 살아있다는 판정이다. 이탈하지 않고 연결만 다시 시도한다.
+                    elapsed = 0f;
+                    ConnectToServer();
                 }
                 yield return null;
             }
@@ -151,8 +159,13 @@ namespace GameScene
                 {
                     WDebug.LogError("[STOMP] FrameInfo 수신 타임아웃 (10초)");
                     SystemMessageUI.Instance.ShowMessage(frameTimeout.IsEmpty ? connectionDelayed : frameTimeout);
-                    SceneManager.LoadScene("LobbyScene");
-                    yield break;
+
+                    bool sessionAlive = false;
+                    yield return AbandonSession(SessionLossReason.FrameInfoTimeout, () => sessionAlive = true);
+                    if (!sessionAlive) yield break;
+
+                    // 세션이 살아있다는 판정이다. 수신 대기를 이어간다.
+                    _lastFrameTime = Time.time;
                 }
                 yield return new WaitForSeconds(1f);
             }
@@ -189,6 +202,40 @@ namespace GameScene
         private void HandleMaxRetriesExceeded()
         {
             WDebug.LogError("[STOMP] 재연결 불가 – 최대 횟수 초과");
+            StartCoroutine(AbandonSession(SessionLossReason.ReconnectAttemptsExhausted, RetryFromScratch));
+        }
+
+        /// <summary>세션이 살아있다는 판정을 받았을 때 재연결 예산을 되돌리고 다시 붙는다.</summary>
+        private void RetryFromScratch()
+        {
+            _reconnect.ResetRetries();
+            ConnectToServer();
+        }
+
+        // ─── 이탈 ───────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// 세션 소실을 서버에 신고하고 판정대로 처리한다. 이탈이면 로비로 돌아가고,
+        /// 세션이 살아있다는 판정이면 <paramref name="onSessionAlive"/>를 부른 뒤 게임씬에 남는다.
+        /// </summary>
+        private IEnumerator AbandonSession(SessionLossReason reason, Action onSessionAlive)
+        {
+            if (_reportingSessionLoss)
+            {
+                // 다른 이탈 경로가 이미 신고 중이다. 중복 신고하지 않고 그 판정을 함께 따른다.
+                // 이탈로 판정되면 로비 로드로 이 코루틴도 함께 사라진다.
+                while (_reportingSessionLoss) yield return null;
+                onSessionAlive?.Invoke();
+                yield break;
+            }
+
+            _reportingSessionLoss = true;
+
+            yield return SessionLossReporter.ReportAndLeave(reason, () =>
+            {
+                _reportingSessionLoss = false;
+                onSessionAlive?.Invoke();
+            });
         }
     }
 }
