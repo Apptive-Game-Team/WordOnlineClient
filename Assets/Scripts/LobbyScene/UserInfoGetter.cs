@@ -4,6 +4,7 @@ using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -29,7 +30,7 @@ namespace LobbyScene
                     yield break;
                 }
             
-                accountUser = JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
+                accountUser = JsonCodec.Deserialize<AccountUser>(webRequest.downloadHandler.text);
             }
         
             using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
@@ -48,7 +49,7 @@ namespace LobbyScene
                     yield break;
                 }
             
-                gameUser = JsonUtility.FromJson<GameUser>(webRequest.downloadHandler.text);
+                gameUser = JsonCodec.Deserialize<GameUser>(webRequest.downloadHandler.text);
             }
             
             WDebug.Log(accountUser);

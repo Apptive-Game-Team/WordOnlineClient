@@ -1,11 +1,10 @@
 using System;
 
-namespace Data
+namespace GameScene.Dto
 {
     [Serializable]
-    public class ResultInfo
+    public class ResultInfo : ServerMessage
     {
-        public string type = "result";
         public string leftPlayer;
         public string rightPlayer;
         public short lastLeftPlayerMmr;

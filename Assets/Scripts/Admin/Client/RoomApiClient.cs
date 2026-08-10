@@ -5,6 +5,7 @@ using Admin.Dto;
 using Data;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Admin.Client
 {
@@ -76,7 +77,7 @@ namespace Admin.Client
             else
             {
                 string jsonResponse = request.downloadHandler.text;
-                RoomList roomList = JsonUtility.FromJson<RoomList>(jsonResponse);
+                RoomList roomList = JsonCodec.Deserialize<RoomList>(jsonResponse);
                 ApplySource(roomList, sourceName, baseUrl, isLocalSource);
                 callback(roomList);
             }

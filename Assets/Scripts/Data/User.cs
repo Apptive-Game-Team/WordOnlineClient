@@ -8,7 +8,13 @@ namespace Data
         public int mmr;
         public string name;
         public string email;
-        
+
+        /// <summary>
+        /// Json.NET needs a parameterless constructor. Declaring any constructor removes the implicit one,
+        /// and the two below are ambiguous to the serializer.
+        /// </summary>
+        public User() { }
+
         public User(AccountUser accountUser, GameUser gameUser)
         {
             this.id = gameUser.id;

@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -50,7 +51,7 @@ namespace LobbyScene
                 yield break;
             }
         
-            QueueLengthResponse response = JsonUtility.FromJson<QueueLengthResponse>(webRequest.downloadHandler.text);
+            QueueLengthResponse response = JsonCodec.Deserialize<QueueLengthResponse>(webRequest.downloadHandler.text);
         
             _queueLengthText.text = $"{_queueLengthLocalizedString.GetLocalizedString()} {response.length}";
         }

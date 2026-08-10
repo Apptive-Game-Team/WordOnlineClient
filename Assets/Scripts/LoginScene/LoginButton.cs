@@ -8,6 +8,7 @@ using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Global.Serialization;
 
 namespace LoginScene
 {
@@ -20,7 +21,7 @@ namespace LoginScene
     
         private IEnumerator LoginCoroutine(LoginRequestDto loginRequestDto)
         {
-            string jsonData = JsonUtility.ToJson(loginRequestDto);
+            string jsonData = JsonCodec.Serialize(loginRequestDto);
         
             using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/login", "POST"))
             {
@@ -45,7 +46,7 @@ namespace LoginScene
 
                 try
                 {
-                    AuthResponseDto authResponseDto = JsonUtility.FromJson<AuthResponseDto>(webRequest.downloadHandler.text);
+                    AuthResponseDto authResponseDto = JsonCodec.Deserialize<AuthResponseDto>(webRequest.downloadHandler.text);
                     SceneContext.JwtToken = authResponseDto.jwt;
                 } catch (System.Exception e)
                 {

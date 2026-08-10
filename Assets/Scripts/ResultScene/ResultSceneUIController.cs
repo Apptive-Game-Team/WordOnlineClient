@@ -1,4 +1,5 @@
 using Data;
+using GameScene.Dto;
 using Global;
 using TMPro;
 using UnityEngine;

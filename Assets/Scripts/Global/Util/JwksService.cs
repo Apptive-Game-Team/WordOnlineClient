@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Data;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Global.Util
 {
@@ -45,7 +46,7 @@ namespace Global.Util
 
             try
             {
-                JwksResponse response = JsonUtility.FromJson<JwksResponse>(request.downloadHandler.text);
+                JwksResponse response = JsonCodec.Deserialize<JwksResponse>(request.downloadHandler.text);
                 if (response?.keys != null)
                 {
                     _cachedKeys.Clear();

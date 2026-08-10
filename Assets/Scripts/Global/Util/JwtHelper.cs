@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
+using Global.Serialization;
 
 namespace Global.Util
 {
@@ -112,7 +113,7 @@ namespace Global.Util
             JwtHeader header;
             try
             {
-                header = JsonUtility.FromJson<JwtHeader>(headerJson);
+                header = JsonCodec.Deserialize<JwtHeader>(headerJson);
             }
             catch (Exception)
             {
@@ -210,7 +211,7 @@ namespace Global.Util
 
             try
             {
-                JwtPayload payload = JsonUtility.FromJson<JwtPayload>(payloadJson);
+                JwtPayload payload = JsonCodec.Deserialize<JwtPayload>(payloadJson);
                 if (payload == null || string.IsNullOrEmpty(payload.scope))
                     return Array.Empty<string>();
 

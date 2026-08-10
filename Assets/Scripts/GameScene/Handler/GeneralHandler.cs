@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using Data;
 using GameScene.Dto;
-using UnityEngine;
+using Global.Serialization;
 
 namespace GameScene.Handler
 {
@@ -11,93 +9,55 @@ namespace GameScene.Handler
         private readonly ResultHandler resultHandler = new ResultHandler();
         private readonly SyncFrameHandler syncFrameHandler = new SyncFrameHandler();
         private readonly MagicValidHandler magicValidHandler = new MagicValidHandler();
+        private readonly PveScriptEventHandler pveScriptEventHandler = new PveScriptEventHandler();
 
         public void Handler(string json)
         {
-            TypeChecker infotype = JsonUtility.FromJson<TypeChecker>(json);
-            switch (infotype.type)
+            if (!JsonCodec.TryDeserialize(json, out ServerMessage message))
             {
-                case "frame":
-                    FrameInfoDto info = JsonUtility.FromJson<FrameInfoDto>(json);
-                    deltaFrameHandler.Handler(info);
+                HandleUntypedPveScriptEvent(json);
+                return;
+            }
+
+            switch (message)
+            {
+                case FrameInfoDto frame:
+                    deltaFrameHandler.Handler(frame);
                     break;
-                case "sync":
-                    SyncFrameInfo syncFrameInfo = JsonUtility.FromJson<SyncFrameInfo>(json);
-                    syncFrameHandler.Handler(syncFrameInfo);
+                case SyncFrameInfo sync:
+                    syncFrameHandler.Handler(sync);
                     break;
-                case "magicValid":
-                    MagicValidInfo magicValid = JsonUtility.FromJson<MagicValidInfo>(json);
-                    //vaildCheck
+                case MagicValidInfo magicValid:
                     magicValidHandler.Handler(magicValid);
-                    return;
-                case "result":
-                    ResultInfo result = JsonUtility.FromJson<ResultInfo>(json);
+                    break;
+                case ResultInfo result:
                     resultHandler.Handler(result);
                     break;
-                case "pveScript":
-                case "pveScriptEvent":
-                    HandlePveScriptEvent(json);
-                    break;
-                default:
-                    TryHandleUntypedPveScriptEvent(json);
+                case PveScriptEventInfo pveScriptEvent:
+                    pveScriptEventHandler.Handler(pveScriptEvent);
                     break;
             }
         }
 
-        private static void HandlePveScriptEvent(string json)
+        /// <summary>
+        /// PVE 스크립트 이벤트는 <c>type</c> 없이 오는 경우가 있어 마지막 수단으로 형태만 보고 처리한다.
+        /// </summary>
+        private void HandleUntypedPveScriptEvent(string json)
         {
-            PveScriptPayload payload = JsonUtility.FromJson<PveScriptPayload>(json);
-            ShowPveScriptPayload(payload);
-        }
-
-        private static void TryHandleUntypedPveScriptEvent(string json)
-        {
-            PveScriptPayload payload = JsonUtility.FromJson<PveScriptPayload>(json);
-            if (payload == null)
+            if (!JsonCodec.TryDeserialize(json, out PveScriptEventInfo payload))
             {
                 return;
             }
 
             bool hasKey = !string.IsNullOrWhiteSpace(payload.key);
             bool hasLines = payload.lines != null && payload.lines.Count > 0;
+
             if (!hasKey && !hasLines)
             {
                 return;
             }
 
-            ShowPveScriptPayload(payload);
-        }
-
-        private static void ShowPveScriptPayload(PveScriptPayload payload)
-        {
-            if (payload == null)
-            {
-                return;
-            }
-
-            if (payload.lines != null && payload.lines.Count > 0)
-            {
-                foreach (string line in payload.lines)
-                {
-                    PveDialoguePresenter.ShowLine(payload.speakerObjectId, line);
-                }
-
-                return;
-            }
-
-            if (!string.IsNullOrWhiteSpace(payload.key))
-            {
-                PveDialoguePresenter.ShowLine(payload.speakerObjectId, payload.key);
-            }
-        }
-
-        [System.Serializable]
-        private class PveScriptPayload
-        {
-            public string type;
-            public string key;
-            public int speakerObjectId;
-            public List<string> lines;
+            pveScriptEventHandler.Handler(payload);
         }
     }
 }

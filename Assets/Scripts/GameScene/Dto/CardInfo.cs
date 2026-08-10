@@ -1,4 +1,4 @@
-namespace Data
+namespace GameScene.Dto
 {
     [System.Serializable]
     public class CardInfo

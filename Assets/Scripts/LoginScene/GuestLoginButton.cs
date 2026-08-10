@@ -5,6 +5,7 @@ using Global.Button;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LoginScene
 {
@@ -33,7 +34,7 @@ namespace LoginScene
             
                 WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
-                GuestAuthResponseDto authResponseDto = JsonUtility.FromJson<GuestAuthResponseDto>(webRequest.downloadHandler.text);
+                GuestAuthResponseDto authResponseDto = JsonCodec.Deserialize<GuestAuthResponseDto>(webRequest.downloadHandler.text);
             
                 SceneContext.JwtToken = authResponseDto.jwt;
                 GuestContext.GuestPassword = authResponseDto.password;

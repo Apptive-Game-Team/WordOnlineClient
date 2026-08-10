@@ -4,6 +4,7 @@ using Data;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -18,7 +19,7 @@ namespace LobbyScene
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                SimpleMessageDto messageDto = JsonUtility.FromJson<SimpleMessageDto>(webRequest.downloadHandler.text);
+                SimpleMessageDto messageDto = JsonCodec.Deserialize<SimpleMessageDto>(webRequest.downloadHandler.text);
                 callback(messageDto);
             }
             else
@@ -37,7 +38,7 @@ namespace LobbyScene
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(webRequest.downloadHandler.text);
+                MatchedInfoDto matchedInfoDto = JsonCodec.Deserialize<MatchedInfoDto>(webRequest.downloadHandler.text);
                 callback(matchedInfoDto);
             }
             else

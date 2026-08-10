@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -51,7 +52,7 @@ namespace LobbyScene
 
             StatusDto dto = null;
             bool jsonParseError = false;
-            try { dto = JsonUtility.FromJson<StatusDto>(www.downloadHandler.text); }
+            try { dto = JsonCodec.Deserialize<StatusDto>(www.downloadHandler.text); }
             catch (Exception e)
             {
                 WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
@@ -124,7 +125,7 @@ namespace LobbyScene
                     yield break;
                 }
 
-                matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
+                matchedInfoDto = JsonCodec.Deserialize<MatchedInfoDto>(json);
 
                 if (matchedInfoDto == null)
                 {
