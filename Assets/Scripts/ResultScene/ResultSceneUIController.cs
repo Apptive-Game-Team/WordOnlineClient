@@ -25,9 +25,13 @@ namespace ResultScene
 
         private void Start()
         {
+            // 결과 화면에 들어왔다는 것은 세션이 닫혔다는 뜻이다. 신고하지 않으면 로비 티켓이
+            // MATCHED로 남아 다음 매칭이 조용히 무시된다. 결과 표시와는 독립적으로 진행한다.
+            StartCoroutine(SessionLossReporter.ReportMatchCompleted());
+
             resultInfo = SceneContext.MatchResult;
             SceneContext.MatchResult = null;
-        
+
             if (resultInfo == null)
             {
                 WDebug.LogError("ResultInfo is null. Cannot display result.");
