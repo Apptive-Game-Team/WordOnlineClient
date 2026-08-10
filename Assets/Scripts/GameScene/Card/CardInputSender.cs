@@ -78,6 +78,25 @@ namespace GameScene.Card
             {
                 Confirm();
             }
+
+            if (CardHotkey.TryGetPressedSlotIndex(out int slotIndex))
+            {
+                ToggleCardBySlot(slotIndex);
+            }
+        }
+
+        private void ToggleCardBySlot(int slotIndex)
+        {
+            if (isWaitingInputResponse || GameSceneUIController.Instance == null)
+            {
+                return;
+            }
+
+            CardUI card = GameSceneUIController.Instance.GetCardAt(slotIndex);
+            if (card != null)
+            {
+                card.OnCardClicked();
+            }
         }
 
         public void Cancel()

@@ -56,6 +56,12 @@ namespace GameScene
             }
         }
 
+        public CardUI GetCardAt(int index)
+        {
+            if (lowerBar == null) return null;
+            return CardHotkey.FindCardAt<CardUI>(lowerBar.transform, index);
+        }
+
         public List<string> GetAllCards()
         {
             if (lowerBar == null) return new List<string>();
