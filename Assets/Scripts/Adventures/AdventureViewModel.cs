@@ -4,6 +4,7 @@ using Global;
 using LobbyScene.Debugger;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace Adventures
 {
@@ -45,7 +46,7 @@ namespace Adventures
 
         private void HandleDebugSessionCreated(string json)
         {
-            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
+            JsonCodec.TryDeserialize(json, out DebugGameResponse response);
             if (response == null || string.IsNullOrWhiteSpace(response.sessionId))
             {
                 HandleDebugFailure("Invalid debug session response.");

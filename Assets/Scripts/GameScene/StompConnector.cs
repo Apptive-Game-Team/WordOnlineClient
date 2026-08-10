@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Data.Util;
+using Data;
+using Data.Net;
 using GameScene.Handler;
 using Global;
 using Global.Stomp;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.SceneManagement;
 
 namespace GameScene
 {
@@ -16,25 +16,50 @@ namespace GameScene
     ///
     /// 의존 관계:
     ///   StompConnector (게임 로직)
-    ///     ├─ IStompTransport      ← WebGLStompTransport | NativeStompTransport
+    ///     ├─ IStompTransport            ← WebGLStompTransport | NativeStompTransport
     ///     ├─ StompSubscriptionRegistry  ← 구독 보관 및 재구독
-    ///     └─ StompReconnectController   ← 지수 백오프 재연결
+    ///     ├─ StompReconnectController   ← 재연결 사다리 (인게임은 짧은 고정 간격)
+    ///     ├─ ConnectAttemptSchedule     ← 최초 연결 재시도 예산
+    ///     └─ FrameSilenceWatch          ← FrameInfo 무음 단계 판정
+    ///
+    /// 끊김 처리는 두 단계다. 무음 1초에는 씬을 유지한 채 제자리 재연결만 시도하고,
+    /// 무음 3초 또는 재연결 사다리 소진에서 세션을 신고하고 메인으로 돌아간다.
     /// </summary>
     public class StompConnector : LocalSingletonObject<StompConnector>
     {
+        private const string StompPath = "ws";
+        private const string MessageTable = "SystemMessageUI";
+
+        /// <summary>인게임 재연결 간격(초). 합이 무음 3초 이탈 예산 안에 들어가야 한다.</summary>
+        private static readonly float[] DefaultReconnectDelays = { 0f, 0.5f, 1f };
+
         [SerializeField] private bool isSpectator;
+
+        [Tooltip("인게임 재연결 간격(초). 비워두면 즉시 → 0.5초 → 1초를 쓴다.")]
+        [SerializeField] private float[] inGameReconnectDelays = { 0f, 0.5f, 1f };
 
         public LocalizedString notConnectedToServer;
         public LocalizedString connectionClosed;
         public LocalizedString connectionDelayed;
         public LocalizedString frameTimeout;
 
+        /// <summary>
+        /// 인스펙터에 연결된 필드가 아니라 코드에서 테이블을 직접 가리킨다.
+        /// 기존 프리팹을 다시 배선하지 않아도 문구가 나온다.
+        /// </summary>
+        private static readonly LocalizedString reconnecting = new LocalizedString
+            { TableReference = MessageTable, TableEntryReference = "sessionReconnecting" };
+
         private IStompTransport _transport;
         private StompSubscriptionRegistry _registry;
         private StompReconnectController _reconnect;
 
         private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
-        private float _lastFrameTime = -1f;
+        private readonly FrameSilenceWatch _silence = new FrameSilenceWatch();
+        private readonly ConnectAttemptSchedule _connectSchedule = new ConnectAttemptSchedule();
+
+        /// <summary>이탈 신고가 진행 중인지. 여러 이탈 경로가 동시에 터져도 한 번만 신고한다.</summary>
+        private bool _reportingSessionLoss;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────
 
@@ -45,6 +70,12 @@ namespace GameScene
 
             _registry = new StompSubscriptionRegistry();
             _reconnect = gameObject.AddComponent<StompReconnectController>();
+
+            // 이탈 예산이 3초뿐이라 기본 지수 백오프(1→2→4→8→16초)로는 첫 재시도도 들어가지 않는다.
+            _reconnect.UseFixedSchedule(
+                inGameReconnectDelays != null && inGameReconnectDelays.Length > 0
+                    ? inGameReconnectDelays
+                    : DefaultReconnectDelays);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             _transport = gameObject.AddComponent<WebGLStompTransport>();
@@ -61,6 +92,16 @@ namespace GameScene
             _reconnect.OnMaxRetriesExceeded += HandleMaxRetriesExceeded;
         }
 
+        private void OnEnable()
+        {
+            Application.focusChanged += HandleFocusChanged;
+        }
+
+        private void OnDisable()
+        {
+            Application.focusChanged -= HandleFocusChanged;
+        }
+
         private void Start()
         {
             ConnectToServer();
@@ -72,12 +113,37 @@ namespace GameScene
             _transport.Disconnect();
         }
 
+        /// <summary>
+        /// 브라우저는 백그라운드 탭의 루프를 스로틀링한다. 돌아왔을 때 밀려 있는 시간은
+        /// 연결이 끊겼다는 증거가 아니므로 무음 판정을 처음부터 다시 시작한다.
+        /// </summary>
+        private void HandleFocusChanged(bool hasFocus)
+        {
+            if (!hasFocus) return;
+            _silence.NoteSignal(Time.unscaledTime);
+        }
+
         // ─── 퍼블릭 API ─────────────────────────────────────────────────────
 
         public void ConnectToServer()
         {
-            if (_transport.IsConnected) return;
-            string url = UrlUtil.httpToWebSocket(SceneContext.MatchInfo.server, SceneContext.JwtToken);
+            if (_transport.IsConnected)
+            {
+                // 소켓이 열린 채 데이터만 끊긴 무음 정지가 여기로 온다. 소켓을 강제로 닫고
+                // 다시 여는 것은 두 transport 모두 종료가 비동기라 새 연결 상태를 덮어쓸 수
+                // 있어 하지 않는다. 이 경우 사다리는 그대로 소진되고 신고 경로로 넘어간다.
+                WDebug.Log("[STOMP] 소켓이 열려 있어 재연결을 건너뜁니다");
+                return;
+            }
+
+            MatchedInfoDto matchInfo = SceneContext.MatchInfo;
+            if (!matchInfo.TryResolveWebSocket(StompPath, out ServerEndpoint gameServer))
+            {
+                WDebug.LogError($"[STOMP] 게임 서버 URL을 해석하지 못했습니다: {matchInfo.ConnectionSource}");
+                return;
+            }
+
+            string url = gameServer.Query("token", SceneContext.JwtToken);
             _transport.Connect(url, SceneContext.JwtToken);
         }
 
@@ -115,41 +181,90 @@ namespace GameScene
 
         private IEnumerator GameFlowCoroutine(string sessionId)
         {
-            float elapsed = 0f;
-            while (!_transport.IsConnected)
-            {
-                elapsed += Time.deltaTime;
-                if (elapsed >= 10f)
-                {
-                    WDebug.LogError("[STOMP] 연결 타임아웃 (10초)");
-                    SystemMessageUI.Instance.ShowMessage(connectionClosed);
-                    SceneManager.LoadScene("LobbyScene");
-                    yield break;
-                }
-                yield return null;
-            }
+            yield return AwaitConnection();
+            if (!_transport.IsConnected) yield break;
 
             UnsubscribeFromTopic("match-sub");
             long userId = isSpectator ? 0 : SceneContext.UserID;
             SubscribeToTopic($"/game/{sessionId}/frameInfos/{userId}", OnFrameInfoReceived, "frame-sub");
 
-            _lastFrameTime = Time.time;
+            yield return WatchFrameSilence();
+        }
+
+        /// <summary>
+        /// 소켓이 열릴 때까지 기다린다. 예산 안에 열리지 않으면 다시 걸고, 시도를 모두 쓰면 신고한다.
+        /// </summary>
+        private IEnumerator AwaitConnection()
+        {
+            while (!_transport.IsConnected)
+            {
+                yield return null;
+
+                ConnectAttemptDecision decision = _connectSchedule.Advance(Time.unscaledDeltaTime);
+                if (decision == ConnectAttemptDecision.Wait) continue;
+
+                if (decision == ConnectAttemptDecision.Retry)
+                {
+                    WDebug.LogWarning($"[STOMP] 연결 재시도 ({_connectSchedule.Attempt}/{_connectSchedule.MaxAttempts})");
+                    SystemMessageUI.Instance.ShowMessage(reconnecting);
+                    ConnectToServer();
+                    continue;
+                }
+
+                WDebug.LogError($"[STOMP] 연결 실패 – {_connectSchedule.MaxAttempts}회 시도");
+                SystemMessageUI.Instance.ShowMessage(connectionClosed);
+
+                bool sessionAlive = false;
+                yield return AbandonSession(SessionLossReason.ConnectTimeout, () => sessionAlive = true);
+                if (!sessionAlive) yield break;
+
+                // 세션이 살아있다는 판정이다. 이탈하지 않고 예산을 되돌려 다시 시도한다.
+                _connectSchedule.Reset();
+                ConnectToServer();
+            }
+        }
+
+        /// <summary>
+        /// FrameInfo 무음을 감시한다.
+        ///
+        /// 소켓이 열린 채 데이터만 끊기는 정지에서는 transport가 Errored를 내지 않아
+        /// 재연결 사다리가 저절로 돌지 않는다. 무음 자체를 끊김 신호로 삼아 사다리를 건다.
+        /// </summary>
+        private IEnumerator WatchFrameSilence()
+        {
+            _silence.NoteSignal(Time.unscaledTime);
+
             while (true)
             {
-                if (Time.time - _lastFrameTime >= 10f)
+                yield return null;
+
+                SilenceEscalation escalation = _silence.Tick(Time.unscaledTime, Time.unscaledDeltaTime);
+                if (escalation == SilenceEscalation.None) continue;
+
+                if (escalation == SilenceEscalation.Reconnect)
                 {
-                    WDebug.LogError("[STOMP] FrameInfo 수신 타임아웃 (10초)");
-                    SystemMessageUI.Instance.ShowMessage(frameTimeout.IsEmpty ? connectionDelayed : frameTimeout);
-                    SceneManager.LoadScene("LobbyScene");
-                    yield break;
+                    WDebug.LogWarning($"[STOMP] FrameInfo 무음 {_silence.SilenceSeconds(Time.unscaledTime):F1}초 – 제자리 재연결");
+                    SystemMessageUI.Instance.ShowMessage(reconnecting);
+                    _reconnect.NotifyConnectionLost();
+                    continue;
                 }
-                yield return new WaitForSeconds(1f);
+
+                WDebug.LogError($"[STOMP] FrameInfo 무음 {_silence.SilenceSeconds(Time.unscaledTime):F1}초 – 세션 포기");
+                SystemMessageUI.Instance.ShowMessage(frameTimeout.IsEmpty ? connectionDelayed : frameTimeout);
+
+                bool sessionAlive = false;
+                yield return AbandonSession(SessionLossReason.FrameInfoTimeout, () => sessionAlive = true);
+                if (!sessionAlive) yield break;
+
+                // 세션이 살아있다는 판정이다. 감시를 처음부터 다시 시작한다.
+                _silence.NoteSignal(Time.unscaledTime);
+                RetryFromScratch();
             }
         }
 
         private void OnFrameInfoReceived(string json)
         {
-            _lastFrameTime = Time.time;
+            _silence.NoteSignal(Time.unscaledTime);
             _frameInfoHandler.Handler(json);
         }
 
@@ -178,6 +293,40 @@ namespace GameScene
         private void HandleMaxRetriesExceeded()
         {
             WDebug.LogError("[STOMP] 재연결 불가 – 최대 횟수 초과");
+            StartCoroutine(AbandonSession(SessionLossReason.ReconnectAttemptsExhausted, RetryFromScratch));
+        }
+
+        /// <summary>세션이 살아있다는 판정을 받았을 때 재연결 예산을 되돌리고 다시 붙는다.</summary>
+        private void RetryFromScratch()
+        {
+            _reconnect.ResetRetries();
+            ConnectToServer();
+        }
+
+        // ─── 이탈 ───────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// 세션 소실을 서버에 신고하고 판정대로 처리한다. 이탈이면 로비로 돌아가고,
+        /// 세션이 살아있다는 판정이면 <paramref name="onSessionAlive"/>를 부른 뒤 게임씬에 남는다.
+        /// </summary>
+        private IEnumerator AbandonSession(SessionLossReason reason, Action onSessionAlive)
+        {
+            if (_reportingSessionLoss)
+            {
+                // 다른 이탈 경로가 이미 신고 중이다. 중복 신고하지 않고 그 판정을 함께 따른다.
+                // 이탈로 판정되면 로비 로드로 이 코루틴도 함께 사라진다.
+                while (_reportingSessionLoss) yield return null;
+                onSessionAlive?.Invoke();
+                yield break;
+            }
+
+            _reportingSessionLoss = true;
+
+            yield return SessionLossReporter.ReportAndLeave(reason, () =>
+            {
+                _reportingSessionLoss = false;
+                onSessionAlive?.Invoke();
+            });
         }
     }
 }

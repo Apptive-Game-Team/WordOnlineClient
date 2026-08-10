@@ -18,7 +18,7 @@ namespace GameScene.PopupBook
             "PveNatureSlimeNest",
             "PveVineColony",
             "PveWaterSlimeNest",
-            "RallyingTorch",
+            "RallyingTotem",
             "RockTurret",
             "SeedNest",
             "Vine",

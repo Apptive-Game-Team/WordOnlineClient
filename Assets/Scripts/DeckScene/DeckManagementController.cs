@@ -31,6 +31,7 @@ namespace DeckScene
         private DeckManagementViewModel viewModel;
         private DeckManagementView view;
         private IConfirmationDialog deleteConfirmDialog;
+        private LoadingHandle loadingHandle;
         
         public LocalizedString newDeck;
         public LocalizedString deckCreationFailed;
@@ -92,7 +93,7 @@ namespace DeckScene
 
         private void Start()
         {
-            LoadingPage.Instance.IsLoading = true;
+            loadingHandle = LoadingPage.Begin(this);
             if (viewModel.HasCachedData)
             {
                 PopulateDeckList();
@@ -106,14 +107,14 @@ namespace DeckScene
         {
             if (!isSuccess)
             {
-                LoadingPage.Instance.IsLoading = false;
+                loadingHandle?.Dispose();
                 return;
             }
 
             PopulateDeckList();
             PopulateOwnedCardsList();
             UpdateDeckRequirements();
-            LoadingPage.Instance.IsLoading = false;
+            loadingHandle?.Dispose();
         }
         
         private void PopulateOwnedCardsList()

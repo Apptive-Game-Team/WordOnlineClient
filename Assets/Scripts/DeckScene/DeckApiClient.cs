@@ -7,6 +7,7 @@ using Global;
 using Global.Util;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace DeckScene
 {
@@ -33,7 +34,14 @@ namespace DeckScene
             }
 
             WDebug.Log($"보유 카드 리스트: {request.downloadHandler.text}");
-            CardPoolDto poolDto = JsonUtility.FromJson<CardPoolDto>(request.downloadHandler.text);
+            string poolBody = request.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(poolBody, out CardPoolDto poolDto, out string poolError))
+            {
+                WDebug.LogError($"보유 카드 풀 파싱 실패: {poolError}\n{JsonCodec.Excerpt(poolBody)}");
+                callback?.Invoke(null);
+                yield break;
+            }
+
             callback?.Invoke(poolDto?.cards ?? Array.Empty<CardDto>());
         }
 
@@ -58,7 +66,15 @@ namespace DeckScene
             }
 
             WDebug.Log($"유저 덱 리스트: {request.downloadHandler.text}");
-            callback?.Invoke(JsonHelper.FromJson<DeckResponseDto>(request.downloadHandler.text) ?? Array.Empty<DeckResponseDto>());
+            string decksBody = request.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(decksBody, out DeckResponseDto[] decks, out string decksError))
+            {
+                WDebug.LogError($"유저 덱 리스트 파싱 실패: {decksError}\n{JsonCodec.Excerpt(decksBody)}");
+                callback?.Invoke(null);
+                yield break;
+            }
+
+            callback?.Invoke(decks ?? Array.Empty<DeckResponseDto>());
         }
 
         public IEnumerator CreateDeck(DeckRequestDto dto, Action<bool> callback)
@@ -142,7 +158,7 @@ namespace DeckScene
             string failureLogPrefix,
             Action<bool> callback)
         {
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             WDebug.Log($"{payloadLogPrefix}: {json}");
 
             using var request = new UnityWebRequest(url, method)
@@ -178,7 +194,7 @@ namespace DeckScene
             string failureLogPrefix,
             Action<bool, string> callback)
         {
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             WDebug.Log($"{payloadLogPrefix}: {json}");
 
             using var request = new UnityWebRequest(url, method)
@@ -213,15 +229,14 @@ namespace DeckScene
                 return null;
             }
 
-            try
+            // The old catch only covered ArgumentException, which a JsonSerializationException is not.
+            if (!JsonCodec.TryDeserialize(responseText, out DeckResponseDto deck, out string error))
             {
-                return JsonUtility.FromJson<DeckResponseDto>(responseText);
-            }
-            catch (ArgumentException e)
-            {
-                WDebug.LogWarning($"Deck response parse failed: {e.Message}\n{responseText}");
+                WDebug.LogWarning($"Deck response parse failed: {error}\n{JsonCodec.Excerpt(responseText)}");
                 return null;
             }
+
+            return deck;
         }
     }
 }

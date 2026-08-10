@@ -4,6 +4,7 @@ using Data;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Adventures
 {
@@ -28,7 +29,12 @@ namespace Adventures
                 yield break;
             }
             
-            MatchedInfoDto dto = JsonUtility.FromJson<MatchedInfoDto>(www.downloadHandler.text);
+            string body = www.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchedInfoDto dto, out string error))
+            {
+                WDebug.LogError($"[RequestPVE] parse error: {error} / {JsonCodec.Excerpt(body)}");
+            }
+
             callback?.Invoke(dto);
         }
 

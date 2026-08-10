@@ -104,6 +104,34 @@ MonoBehaviour:
     m_Localized: Dictionary
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000001
+    m_Localized: Matching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000002
+    m_Localized: Searching for an opponent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000003
+    m_Localized: Preparing the game server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000004
+    m_Localized: Opponent found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000005
+    m_Localized: Reconnecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000006
+    m_Localized: Canceling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000007
+    m_Localized: Leave
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

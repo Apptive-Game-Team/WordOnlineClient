@@ -35,7 +35,7 @@ namespace GameScene.ServedObjectComponent
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
-        private ServedObjectHpBar _servedObjectHpBar;
+        private ServedObjectGaugeBar _teamColorGaugeBar;
 #if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
 #endif
@@ -206,17 +206,75 @@ namespace GameScene.ServedObjectComponent
             return _actualTransform;
         }
 
-        public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
+        /// <summary>
+        /// Point on the sprite facing <paramref name="fromWorldPosition"/>, at
+        /// <paramref name="edgeBias"/> of the way out to its edge.
+        /// <para>
+        /// Sprites are billboarded to the tilted 2.5D camera, so the direction is taken in screen space
+        /// and applied along the renderer's own axes. A world-space offset would slide off the sprite.
+        /// </para>
+        /// </summary>
+        public Vector3 GetEdgeWorldPositionTowards(Vector3 fromWorldPosition, float edgeBias)
         {
             EnsureSpriteRenderer();
 
-            if (_spriteRenderer != null)
+            if (_spriteRenderer == null || _spriteRenderer.sprite == null)
             {
-                Bounds bounds = _spriteRenderer.bounds;
-                return new Vector3(bounds.center.x, bounds.max.y + verticalOffset, GetActualTransform().position.z);
+                return GetActualTransform().position;
             }
 
-            return GetActualTransform().position + Vector3.up * (1f + verticalOffset);
+            Bounds localBounds = _spriteRenderer.sprite.bounds;
+            Vector3 centerWorldPosition = _spriteRenderer.transform.TransformPoint(localBounds.center);
+
+            Vector2 screenDirection = GetScreenDirection(centerWorldPosition, fromWorldPosition);
+            if (screenDirection == Vector2.zero)
+            {
+                return centerWorldPosition;
+            }
+
+            Vector3 localOffset = new Vector3(
+                localBounds.extents.x * screenDirection.x,
+                localBounds.extents.y * screenDirection.y,
+                0f) * edgeBias;
+
+            return centerWorldPosition + _spriteRenderer.transform.TransformVector(localOffset);
+        }
+
+        private static Vector2 GetScreenDirection(Vector3 fromWorldPosition, Vector3 toWorldPosition)
+        {
+            Camera camera = Camera.main;
+            Vector3 delta = camera != null
+                ? camera.WorldToScreenPoint(toWorldPosition) - camera.WorldToScreenPoint(fromWorldPosition)
+                : toWorldPosition - fromWorldPosition;
+
+            Vector2 direction = new Vector2(delta.x, delta.y);
+            return direction.sqrMagnitude < Mathf.Epsilon ? Vector2.zero : direction.normalized;
+        }
+
+        public Vector3 GetSpeechBubbleAnchorWorldPosition(float verticalOffset = 0.15f)
+        {
+            EnsureSpriteRenderer();
+            Vector3 anchorUp = GetAnchorUpDirection();
+
+            if (_spriteRenderer != null && _spriteRenderer.sprite != null)
+            {
+                // Sprites are billboarded to the tilted camera in 2.5D, so read the top in the
+                // renderer's own space. A world AABB loses the depth the tilt adds and drops the
+                // anchor onto the sprite itself.
+                Bounds localBounds = _spriteRenderer.sprite.bounds;
+                Vector3 topWorldPosition = _spriteRenderer.transform.TransformPoint(
+                    new Vector3(localBounds.center.x, localBounds.max.y, 0f));
+                return topWorldPosition + anchorUp * verticalOffset;
+            }
+
+            return GetActualTransform().position + anchorUp * (1f + verticalOffset);
+        }
+
+        /// <summary>Screen-up in world space, so anchors sit above the sprite from the player's view.</summary>
+        private static Vector3 GetAnchorUpDirection()
+        {
+            Camera camera = Camera.main;
+            return camera != null ? camera.transform.up : Vector3.up;
         }
 
         private void EnsureEffectRenderer()
@@ -307,7 +365,7 @@ namespace GameScene.ServedObjectComponent
 
         private void UpdateTeamIndicator()
         {
-            if (TryUpdateHpBarTeamIndicator())
+            if (TryUpdateGaugeBarTeamIndicator())
             {
                 DisableRuntimeTeamIndicator();
                 return;
@@ -331,19 +389,28 @@ namespace GameScene.ServedObjectComponent
             UpdateTeamIndicatorPosition();
         }
 
-        private bool TryUpdateHpBarTeamIndicator()
+        private bool TryUpdateGaugeBarTeamIndicator()
         {
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
-                _servedObjectHpBar = GetComponentInChildren<ServedObjectHpBar>();
+                // Buildings carry a TTL bar built from the same component, so pick by role
+                // rather than by hierarchy order — only the HP bar owns the team indicator.
+                foreach (ServedObjectGaugeBar bar in GetComponentsInChildren<ServedObjectGaugeBar>(true))
+                {
+                    if (bar.UsesTeamColors)
+                    {
+                        _teamColorGaugeBar = bar;
+                        break;
+                    }
+                }
             }
 
-            if (_servedObjectHpBar == null)
+            if (_teamColorGaugeBar == null)
             {
                 return false;
             }
 
-            _servedObjectHpBar.SetObjectIndicatorMaster(master);
+            _teamColorGaugeBar.SetObjectIndicatorMaster(master);
             return true;
         }
 

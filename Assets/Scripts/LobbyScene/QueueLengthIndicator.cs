@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -20,7 +21,9 @@ namespace LobbyScene
             public int length;
         }
     
-        private void Start()
+        // OnEnable, not Start: the matching page keeps its own indicator on a page
+        // that is deactivated between matches, and polling has to resume on reopen.
+        private void OnEnable()
         {
             StartCoroutine(UpdateLengthPeriodically());
         }
@@ -50,8 +53,13 @@ namespace LobbyScene
                 yield break;
             }
         
-            QueueLengthResponse response = JsonUtility.FromJson<QueueLengthResponse>(webRequest.downloadHandler.text);
-        
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out QueueLengthResponse response, out string error))
+            {
+                WDebug.LogError($"Error parsing queue length: {error} / {JsonCodec.Excerpt(body)}");
+                yield break;
+            }
+
             _queueLengthText.text = $"{_queueLengthLocalizedString.GetLocalizedString()} {response.length}";
         }
     }

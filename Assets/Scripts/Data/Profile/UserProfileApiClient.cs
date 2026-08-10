@@ -3,6 +3,7 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Data.Profile
 {
@@ -52,7 +53,13 @@ namespace Data.Profile
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                callback?.Invoke(JsonUtility.FromJson<UserStatisticsOverviewDto>(webRequest.downloadHandler.text));
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out UserStatisticsOverviewDto overview, out string error))
+                {
+                    WDebug.LogError($"Failed to parse user statistics overview: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
+                callback?.Invoke(overview);
             }
             else
             {
@@ -81,8 +88,12 @@ namespace Data.Profile
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                UserGameHistoryResponseDto response = JsonUtility.FromJson<UserGameHistoryResponseDto>(
-                    NormalizeGameHistoryJson(webRequest.downloadHandler.text));
+                string body = NormalizeGameHistoryJson(webRequest.downloadHandler.text);
+                if (!JsonCodec.TryDeserialize(body, out UserGameHistoryResponseDto response, out string error))
+                {
+                    WDebug.LogError($"Failed to parse user game history: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback?.Invoke(response ?? new UserGameHistoryResponseDto());
             }
             else

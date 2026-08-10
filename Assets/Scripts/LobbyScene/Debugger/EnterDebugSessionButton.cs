@@ -6,6 +6,7 @@ using Global.Button;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LobbyScene.Debugger
 {
@@ -43,7 +44,12 @@ namespace LobbyScene.Debugger
             string json = request.downloadHandler.text;
             WDebug.Log(json);
 
-            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
+            if (!JsonCodec.TryDeserialize(json, out DebugGameResponse response, out string error))
+            {
+                WDebug.LogError($"Error parsing debug session: {error} / {JsonCodec.Excerpt(json)}");
+                yield break;
+            }
+
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, "left", SceneContext.UserID);
             yield return GameDataRefresh.Refresh();
             SceneManager.LoadScene("GameScene");
@@ -66,7 +72,12 @@ namespace LobbyScene.Debugger
             string json = request.downloadHandler.text;
             WDebug.Log(json);
 
-            DebugGameResponse response = JsonUtility.FromJson<DebugGameResponse>(json);
+            if (!JsonCodec.TryDeserialize(json, out DebugGameResponse response, out string error))
+            {
+                WDebug.LogError($"Error parsing debug session: {error} / {JsonCodec.Excerpt(json)}");
+                yield break;
+            }
+
             SceneContext.MatchInfo = MatchedInfoDto.CreateDebugSession(response.sessionId, side, SceneContext.UserID);
             yield return GameDataRefresh.Refresh();
             SceneManager.LoadScene("GameScene");

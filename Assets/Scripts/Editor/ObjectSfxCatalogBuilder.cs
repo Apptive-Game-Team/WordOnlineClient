@@ -23,7 +23,9 @@ public static class ObjectSfxCatalogBuilder
         new("OrganicBuilding", ObjectSfxElement.Nature, ObjectSfxArchetype.Building),
         new("StoneBuilding", ObjectSfxElement.Rock, ObjectSfxArchetype.Building),
         new("ArcaneDevice", ObjectSfxElement.Neutral, ObjectSfxArchetype.Building),
-        new("TransientLegacy", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell)
+        new("TransientLegacy", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
+        new("TransientShot", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
+        new("TransientExplode", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell)
     };
 
     private static readonly CatalogGroup[] CatalogGroups =
@@ -42,22 +44,28 @@ public static class ObjectSfxCatalogBuilder
         new("RockCreature", "DimensionToad", "RockGolem", "RockMage", "RockSlime"),
         new("WindCreature", "CloudDragon", "WindSlime", "WindSpirit"),
         new("OrganicBuilding",
-            "LifeTree", "PveNatureSlimeNest", "PveVineColony",
-            "PveWaterSlimeNest", "Vine", "VineColony"),
+            "GiantVine", "LifeTree", "PveNatureSlimeNest", "PveVineColony",
+            "PveWaterSlimeNest", "SeedNest", "Vine", "VineColony"),
         new("StoneBuilding", "Crater", "GroundCannon", "GroundTower", "RockTurret"),
         new("ArcaneDevice",
             "BubbleGenerator", "ElectricTower", "FireRune", "FrenzyTotem",
             "HealingTotem", "LightningRune", "ManaWell", "NatureRune",
-            "RallyingTorch", "RockRune", "WaterRune", "WindRune", "WindTotem"),
+            "RallyingTotem", "RockRune", "WaterRune", "WindRune", "WindTotem"),
+        // Fields and falls stay silent by concept-doc rule; only the release and
+        // the impact are audible, and each is one shared sound for every element.
         new("TransientLegacy",
-            "ChainLightning", "CraterEmber", "ElectricExplode", "ElectricField",
-            "ElectricShot", "FireDrop", "FireExplode", "FireField", "FireShot",
-            "LeafExplode", "LeafField", "LeafShot", "Leafair", "LightningDrop",
-            "MagmaExplosion", "MagmaFist", "MeteorDrop", "MeteorShower", "MiniRock",
+            "CraterEmber", "ElectricField", "FireDrop", "FireField", "LeafField",
+            "Leafair", "LightningDrop", "MeteorDrop", "MeteorShower", "MiniRock",
             "NatureDrop", "Overgrowth", "RainCloud", "RazorGale", "RockDrop",
-            "RockExplode", "RockRemnant", "RockRolling", "SandStorm", "ShockOverload",
-            "TideCall", "TornadoStrike", "WaterExplode", "WaterExplosion", "WaterField",
-            "WaterShot", "WindBlade", "WindDrop", "WindExplode")
+            "RockRemnant", "RockRolling", "SandStorm", "TornadoStrike", "WaterField",
+            "WindDrop"),
+        new("TransientShot",
+            "ChainLightning", "ElectricShot", "FireShot", "LeafShot", "MagmaFist",
+            "TideCall", "WaterShot", "WindBlade"),
+        new("TransientExplode",
+            "ElectricExplode", "FireExplode", "LeafExplode", "MagmaExplosion",
+            "RockExplode", "ShockOverload", "WaterExplode", "WaterExplosion",
+            "WindExplode")
     };
 
     private static readonly string[] IntentionalSilentRuntimeTypes =

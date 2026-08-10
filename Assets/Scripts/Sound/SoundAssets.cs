@@ -32,7 +32,7 @@ namespace Sound
         private static AudioClip _cardDeselect;
 
         public static AudioClip DrawCard => Load(ref _drawCard, "Sound/Game/Card/draw_card");
-        public static AudioClip CardHover => Load(ref _cardHover, "Sound/Game/Card/card_hover_v1");
+        public static AudioClip CardHover => Load(ref _cardHover, "Sound/Game/Card/card_hover_v2");
         public static AudioClip CardSelect => Load(ref _cardSelect, "Sound/Game/Card/card_select_v1");
         public static AudioClip CardDeselect => Load(ref _cardDeselect, "Sound/Game/Card/card_deselect_v1");
 

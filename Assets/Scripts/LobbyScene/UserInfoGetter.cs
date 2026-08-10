@@ -4,6 +4,7 @@ using Global;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -24,12 +25,18 @@ namespace LobbyScene
                 {
                     WDebug.LogError("Error: " + webRequest.error);
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
             
-                accountUser = JsonUtility.FromJson<AccountUser>(webRequest.downloadHandler.text);
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out accountUser, out string error))
+                {
+                    WDebug.LogError($"GetUserInfo account parse error: {error} / {JsonCodec.Excerpt(body)}");
+                    SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                    SceneManager.LoadScene("LoginScene");
+                    yield break;
+                }
             }
         
             using (UnityWebRequest webRequest = new UnityWebRequest(ServerList.MatchingServer.url + "/api/users/mine", "GET"))
@@ -43,12 +50,18 @@ namespace LobbyScene
                 {
                     WDebug.LogError("Error: " + webRequest.error + webRequest.downloadHandler.text);
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
             
-                gameUser = JsonUtility.FromJson<GameUser>(webRequest.downloadHandler.text);
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out gameUser, out string error))
+                {
+                    WDebug.LogError($"GetUserInfo game parse error: {error} / {JsonCodec.Excerpt(body)}");
+                    SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
+                    SceneManager.LoadScene("LoginScene");
+                    yield break;
+                }
             }
             
             WDebug.Log(accountUser);

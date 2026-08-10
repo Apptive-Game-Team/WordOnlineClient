@@ -1,4 +1,4 @@
-using Data;
+using GameScene.Dto;
 using Global;
 
 namespace GameScene.Handler

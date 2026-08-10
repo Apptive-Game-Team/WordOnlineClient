@@ -16,6 +16,7 @@ using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Global.Serialization;
 
 namespace LobbyScene
 {
@@ -34,11 +35,12 @@ namespace LobbyScene
         public LocalizedString deckSelectionSuccess;
         
         private bool initializing = true;
-    
+        private LoadingHandle loadingHandle;
+
         private IEnumerator Start()
         {
             WDebug.Log("LobbyUIController Start");
-            LoadingPage.Instance.IsLoading = true;
+            loadingHandle = LoadingPage.Begin(this);
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
             yield return GameDataRefresh.Refresh();
             yield return LoadUserInfo();
@@ -74,25 +76,29 @@ namespace LobbyScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
                 WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
-                LoadingPage.Instance.IsLoading = false;
+                loadingHandle?.Dispose();
                 SceneManager.LoadScene("LoginScene");
                 yield break;
             }
 
-            // JsonHelper 는 이전에 정의한 generic 래퍼 유틸리티
-            userDecks = JsonHelper.FromJson<DeckResponseDto>(www.downloadHandler.text);
-        
+            string body = www.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out userDecks, out string parseError))
+            {
+                WDebug.LogError($"덱 리스트 파싱 실패: {parseError} / {JsonCodec.Excerpt(body)}");
+            }
+
             if (userDecks == null || userDecks.Length == 0)
             {
                 SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
                 WDebug.LogWarning("덱이 하나도 없습니다.");
+                loadingHandle?.Dispose();
                 SceneManager.LoadScene("ManageDeckScene");
                 yield break;
             }
         
             PopulateDropdown();
         
-            StartCoroutine(StatusTracker.GetUserStatus());
+            LobbySceneViewModel.Instance.CheckIfInQueue();
         }
 
         // 2) 드랍다운 옵션 갱신
@@ -120,10 +126,13 @@ namespace LobbyScene
 
             deckDropdown.value = idx;
             deckDropdown.RefreshShownValue();
-        
+
+            // 드랍다운을 건드리지 않아도 선택된 덱이 컨텍스트에 반영되어야 매칭 화면에서 읽을 수 있다.
+            DeckSceneContext.CurrentDeck = userDecks[idx];
+
             UpdateCaption(names[idx]);
         
-            LoadingPage.Instance.IsLoading = false;
+            loadingHandle?.Dispose();
             initializing = false;
         }
 
@@ -296,10 +305,10 @@ namespace LobbyScene
             var trimmed = json.TrimStart();
             if (trimmed.StartsWith("["))
             {
-                return JsonHelper.FromJson<QuestRewardDto>(json) ?? Array.Empty<QuestRewardDto>();
+                return JsonCodec.Deserialize<QuestRewardDto[]>(json) ?? Array.Empty<QuestRewardDto>();
             }
 
-            var response = JsonUtility.FromJson<QuestRewardResponseDto>(json);
+            var response = JsonCodec.Deserialize<QuestRewardResponseDto>(json);
             return response?.rewards ?? Array.Empty<QuestRewardDto>();
         }
 

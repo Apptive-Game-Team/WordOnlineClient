@@ -127,6 +127,22 @@ MonoBehaviour:
     m_Key: deckDeletionSuccessMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 7600000000000
+    m_Key: sessionLost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7700000000000
+    m_Key: sessionLossPending
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7800000000000
+    m_Key: sessionStillAlive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7900000000000
+    m_Key: sessionReconnecting
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

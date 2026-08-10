@@ -331,7 +331,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70132293805903872
-    m_Localized: Rallying Torch
+    m_Localized: Rallying Totem
     m_Metadata:
       m_Items: []
   - m_Id: 73103741614686208
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 73104110000000000
-    m_Localized: Dimension Toad
+    m_Localized: Boundary Carrier
     m_Metadata:
       m_Items: []
   - m_Id: 78335189718503424
@@ -372,6 +372,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78335400000000000
     m_Localized: Seed Nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335500000000000
+    m_Localized: Lightning Cloud
     m_Metadata:
       m_Items: []
   references:

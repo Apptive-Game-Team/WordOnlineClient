@@ -161,7 +161,7 @@ namespace GameScene
             return clampedPosition;
         }
 
-        private bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
+        public bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
         {
             groundPosition = Vector3.zero;
             Camera camera = Camera.main;

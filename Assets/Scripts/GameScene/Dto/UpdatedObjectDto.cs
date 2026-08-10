@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GameScene.ServedObjectComponent;
 using UnityEngine;
 
 namespace GameScene.Dto
@@ -13,7 +12,7 @@ namespace GameScene.Dto
         public string status;
         public List<string> effects;
         public List<Gauge> gauges;
-        
+
         public UpdatedObjectDto() { }
 
         public UpdatedObjectDto(SnapshotObjectDto snapshotObjectDto)

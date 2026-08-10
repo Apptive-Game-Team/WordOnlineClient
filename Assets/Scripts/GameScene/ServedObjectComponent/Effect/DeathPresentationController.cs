@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityObject = UnityEngine.Object;
 using Sequence = DG.Tweening.Sequence;
 
 namespace GameScene.ServedObjectComponent.Effect
@@ -82,31 +84,35 @@ namespace GameScene.ServedObjectComponent.Effect
             }
         }
 
+        /// <summary>
+        /// Runs the whole presentation — fade plus every fragment — on a single sequence.
+        /// <para>
+        /// One sequence per dying unit, not one per fragment: each sequence occupies a slot in
+        /// DOTween's active-tween list, and a wipe that killed a handful of units at once used to
+        /// exhaust the pool and corrupt the list while DOTween reorganized it mid-frame.
+        /// </para>
+        /// </summary>
         private void PlayFade(SpriteRenderer source)
         {
             GameObject visual = DeathVisualFactory.CreateSpriteClone(source, $"{Owner.name}DeathFade");
             SpriteRenderer visualRenderer = visual.GetComponent<SpriteRenderer>();
+            List<UnityObject> spawned = new List<UnityObject> { visual };
 
             Sequence sequence = DOTween.Sequence();
             sequence.SetLink(visual);
-            sequence
-                .Append(visualRenderer.DOFade(0f, fadeDuration).SetEase(Ease.InQuad))
-                .OnComplete(() => Destroy(visual))
-                .OnKill(() =>
-                {
-                    if (visual != null)
-                    {
-                        Destroy(visual);
-                    }
-                });
+            sequence.Append(visualRenderer.DOFade(0f, fadeDuration).SetEase(Ease.InQuad));
 
             if (scatterFragments)
             {
-                ScatterFragments(source);
+                ScatterFragments(sequence, source, spawned);
             }
+
+            // Sole cleanup path: OnKill covers both natural completion (auto-kill) and the
+            // SetLink kill that fires when the clone is destroyed early, e.g. on scene unload.
+            sequence.OnKill(() => DestroySpawned(spawned));
         }
 
-        private static void ScatterFragments(SpriteRenderer source)
+        private static void ScatterFragments(Sequence sequence, SpriteRenderer source, List<UnityObject> spawned)
         {
             Sprite sprite = source.sprite;
             Rect textureRect = sprite.textureRect;
@@ -137,12 +143,14 @@ namespace GameScene.ServedObjectComponent.Effect
                         (row - (FragmentGridSize - 1) * 0.5f) * cellWorldHeight,
                         0f);
 
-                    SpawnFragment(source, sprite, cell, cellPosition, offsetFromCenter);
+                    SpawnFragment(sequence, spawned, source, sprite, cell, cellPosition, offsetFromCenter);
                 }
             }
         }
 
         private static void SpawnFragment(
+            Sequence sequence,
+            List<UnityObject> spawned,
             SpriteRenderer source,
             Sprite sprite,
             Rect cell,
@@ -171,28 +179,26 @@ namespace GameScene.ServedObjectComponent.Effect
                 FragmentRiseDistance,
                 0f);
 
-            Sequence sequence = DOTween.Sequence();
-            sequence.SetLink(fragment);
-            sequence
-                .Append(fragment.transform.DOMove(position + drift, FragmentLifetime).SetEase(Ease.OutQuad))
-                .Join(fragment.transform.DORotate(
-                    new Vector3(0f, 0f, offsetFromCenter * FragmentSpin),
-                    FragmentLifetime))
-                .Join(fragmentRenderer.DOFade(0f, FragmentLifetime).SetEase(Ease.InQuad))
-                .OnComplete(() => DestroyFragment(fragment, fragmentSprite))
-                .OnKill(() => DestroyFragment(fragment, fragmentSprite));
+            // Inserted at 0 so every fragment still starts with the fade, as it did when each
+            // fragment owned its own sequence.
+            sequence.Insert(0f, fragment.transform.DOMove(position + drift, FragmentLifetime).SetEase(Ease.OutQuad));
+            sequence.Insert(0f, fragment.transform.DORotate(
+                new Vector3(0f, 0f, offsetFromCenter * FragmentSpin),
+                FragmentLifetime));
+            sequence.Insert(0f, fragmentRenderer.DOFade(0f, FragmentLifetime).SetEase(Ease.InQuad));
+
+            spawned.Add(fragment);
+            spawned.Add(fragmentSprite);
         }
 
-        private static void DestroyFragment(GameObject fragment, Sprite fragmentSprite)
+        private static void DestroySpawned(List<UnityObject> spawned)
         {
-            if (fragment != null)
+            foreach (UnityObject spawnedObject in spawned)
             {
-                Destroy(fragment);
-            }
-
-            if (fragmentSprite != null)
-            {
-                Destroy(fragmentSprite);
+                if (spawnedObject != null)
+                {
+                    Destroy(spawnedObject);
+                }
             }
         }
     }

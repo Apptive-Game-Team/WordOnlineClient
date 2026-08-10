@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Global;
 using UnityEngine;
+using Global.Serialization;
 
 namespace Data.Versioning
 {
@@ -55,7 +56,12 @@ namespace Data.Versioning
             }
 
             var json = PlayerPrefs.GetString(PlayerPrefsKey);
-            var saved = JsonUtility.FromJson<TResponse>(json);
+            // A stale or corrupt cache must not take the scene down; fall back to fetching fresh data.
+            if (!JsonCodec.TryDeserialize(json, out TResponse saved, out string error))
+            {
+                WDebug.LogError($"[{GetType().Name}] Cached payload unreadable: {error}");
+            }
+
             if (saved != null)
             {
                 ProcessResponse(saved);
@@ -76,7 +82,7 @@ namespace Data.Versioning
             saved.Version = Version;
             saved.SourceUrl = SourceUrl ?? Client.SourceUrl;
 
-            var json = JsonUtility.ToJson(saved);
+            var json = JsonCodec.Serialize(saved);
             PlayerPrefs.SetString(PlayerPrefsKey, json);
             PlayerPrefs.Save();
         }

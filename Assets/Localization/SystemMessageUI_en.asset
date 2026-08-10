@@ -130,6 +130,22 @@ MonoBehaviour:
     m_Localized: Deck deleted.
     m_Metadata:
       m_Items: []
+  - m_Id: 7600000000000
+    m_Localized: The game session has ended. Returning to the main screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7700000000000
+    m_Localized: Could not reach the game server. Returning to the main screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7800000000000
+    m_Localized: The game session is still active. Reconnecting.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7900000000000
+    m_Localized: Connection interrupted. Reconnecting.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

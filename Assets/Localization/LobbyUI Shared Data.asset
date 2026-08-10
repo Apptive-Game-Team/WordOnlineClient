@@ -103,6 +103,34 @@ MonoBehaviour:
     m_Key: New Entry
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000001
+    m_Key: MatchingPageTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000002
+    m_Key: MatchingStateQueued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000003
+    m_Key: MatchingStateAllocating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000004
+    m_Key: MatchingStateMatched
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000005
+    m_Key: MatchingStateReconnecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000006
+    m_Key: MatchingStateCancelPending
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000007
+    m_Key: MatchingLeave
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

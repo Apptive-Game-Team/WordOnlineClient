@@ -7,6 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Global.Serialization;
 
 namespace LobbyScene.SettingPage
 {
@@ -20,7 +21,7 @@ namespace LobbyScene.SettingPage
         
         private IEnumerator RegisterCoroutine(MemberPutRequest memberPutRequest)
         {
-            string jsonData = JsonUtility.ToJson(memberPutRequest);
+            string jsonData = JsonCodec.Serialize(memberPutRequest);
 
             using UnityWebRequest webRequest = new UnityWebRequest(ServerList.AccountServer.url + "/api/members/me", "PUT");
             Server.SetAcceptLanguage(webRequest);

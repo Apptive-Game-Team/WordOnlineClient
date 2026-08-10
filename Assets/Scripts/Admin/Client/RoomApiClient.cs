@@ -5,6 +5,7 @@ using Admin.Dto;
 using Data;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Admin.Client
 {
@@ -76,7 +77,13 @@ namespace Admin.Client
             else
             {
                 string jsonResponse = request.downloadHandler.text;
-                RoomList roomList = JsonUtility.FromJson<RoomList>(jsonResponse);
+                if (!JsonCodec.TryDeserialize(jsonResponse, out RoomList roomList, out string error))
+                {
+                    Debug.LogError($"Room list parse error: {error} / {JsonCodec.Excerpt(jsonResponse)}");
+                    callback(null);
+                    yield break;
+                }
+
                 ApplySource(roomList, sourceName, baseUrl, isLocalSource);
                 callback(roomList);
             }

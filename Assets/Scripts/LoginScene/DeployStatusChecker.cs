@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace LoginScene
 {
@@ -57,14 +58,10 @@ namespace LoginScene
                     yield break;
                 }
 
-                DeployStatusDto dto = null;
-                try
+                string body = www.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DeployStatusDto dto, out string parseError))
                 {
-                    dto = JsonUtility.FromJson<DeployStatusDto>(www.downloadHandler.text);
-                }
-                catch (Exception e)
-                {
-                    WDebug.LogError($"[CheckDeployStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
+                    WDebug.LogError($"[CheckDeployStatus] JSON parse error: {parseError}\n{JsonCodec.Excerpt(body)}");
                     SystemMessageUI.Instance.ShowMessage(serverDown);
                     onResult?.Invoke(false, serverDown.GetLocalizedString());
                     yield break;

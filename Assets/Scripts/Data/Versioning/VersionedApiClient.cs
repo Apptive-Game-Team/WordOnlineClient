@@ -3,6 +3,7 @@ using System.Collections;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Data.Versioning
 {
@@ -26,18 +27,26 @@ namespace Data.Versioning
 
             yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                var rawJson = request.downloadHandler.text;
-                OnSuccessRawJson(rawJson);
-                var response = JsonUtility.FromJson<TResponse>(rawJson);
-                onSuccess?.Invoke(response);
-            }
-            else
+            if (request.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"[{GetType().Name}] Request failed: {request.error}");
                 onSuccess?.Invoke(default);
+                yield break;
             }
+
+            var rawJson = request.downloadHandler.text;
+            OnSuccessRawJson(rawJson);
+
+            // A parse failure must still reach the callback: callers block on it, so throwing here would
+            // kill this coroutine and leave them waiting forever.
+            if (!JsonCodec.TryDeserialize(rawJson, out TResponse response, out string error))
+            {
+                WDebug.LogError($"[{GetType().Name}] Parse failed: {error} / {JsonCodec.Excerpt(rawJson)}");
+                onSuccess?.Invoke(default);
+                yield break;
+            }
+
+            onSuccess?.Invoke(response);
         }
     }
 }

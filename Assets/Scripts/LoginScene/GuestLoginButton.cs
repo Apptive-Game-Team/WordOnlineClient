@@ -5,6 +5,7 @@ using Global.Button;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LoginScene
 {
@@ -33,8 +34,15 @@ namespace LoginScene
             
                 WDebug.Log("Response: " + webRequest.downloadHandler.text);
             
-                GuestAuthResponseDto authResponseDto = JsonUtility.FromJson<GuestAuthResponseDto>(webRequest.downloadHandler.text);
-            
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out GuestAuthResponseDto authResponseDto, out string error))
+                {
+                    // The body is a 200 payload the client could not read, so it is not worth showing.
+                    WDebug.LogError($"GuestLogin parse error: {error} / {JsonCodec.Excerpt(body)}");
+                    ResetButton();
+                    yield break;
+                }
+
                 SceneContext.JwtToken = authResponseDto.jwt;
                 GuestContext.GuestPassword = authResponseDto.password;
             

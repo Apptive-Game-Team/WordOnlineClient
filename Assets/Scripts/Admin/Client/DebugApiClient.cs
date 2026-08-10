@@ -7,6 +7,7 @@ using Global;
 using Global.Util;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Admin.Client
 {
@@ -17,7 +18,7 @@ namespace Admin.Client
         public IEnumerator SummonMagic(DebugSummonMagicRequestDto dto, Action<DebugActionResponseDto> callback)
         {
             string url = $"{BaseUrl}/magic";
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             
             yield return PostJson(url, json, (responseJson) =>
             {
@@ -25,9 +26,14 @@ namespace Admin.Client
                 {
                     callback?.Invoke(new DebugActionResponseDto { success = false, message = "Network error" });
                 }
+                else if (!JsonCodec.TryDeserialize(responseJson, out DebugActionResponseDto response, out string error))
+                {
+                    WDebug.LogError($"Debug action parse error: {error} / {JsonCodec.Excerpt(responseJson)}");
+                    callback?.Invoke(new DebugActionResponseDto { success = false, message = "Invalid response" });
+                }
                 else
                 {
-                    callback?.Invoke(JsonUtility.FromJson<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(response);
                 }
             });
         }
@@ -35,7 +41,7 @@ namespace Admin.Client
         public IEnumerator SpawnPrefab(DebugSpawnPrefabRequestDto dto, Action<DebugActionResponseDto> callback)
         {
             string url = $"{BaseUrl}/prefab";
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
             
             yield return PostJson(url, json, (responseJson) =>
             {
@@ -43,9 +49,14 @@ namespace Admin.Client
                 {
                     callback?.Invoke(new DebugActionResponseDto { success = false, message = "Network error" });
                 }
+                else if (!JsonCodec.TryDeserialize(responseJson, out DebugActionResponseDto response, out string error))
+                {
+                    WDebug.LogError($"Debug action parse error: {error} / {JsonCodec.Excerpt(responseJson)}");
+                    callback?.Invoke(new DebugActionResponseDto { success = false, message = "Invalid response" });
+                }
                 else
                 {
-                    callback?.Invoke(JsonUtility.FromJson<DebugActionResponseDto>(responseJson));
+                    callback?.Invoke(response);
                 }
             });
         }
@@ -66,7 +77,12 @@ namespace Admin.Client
             }
             else
             {
-                DebugMagicDto[] magics = JsonHelper.FromJson<DebugMagicDto>(request.downloadHandler.text);
+                string body = request.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DebugMagicDto[] magics, out string error))
+                {
+                    WDebug.LogError($"Error parsing magics: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback?.Invoke(magics);
             }
         }
@@ -87,7 +103,12 @@ namespace Admin.Client
             }
             else
             {
-                DebugPrefabDto[] prefabs = JsonHelper.FromJson<DebugPrefabDto>(request.downloadHandler.text);
+                string body = request.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out DebugPrefabDto[] prefabs, out string error))
+                {
+                    WDebug.LogError($"Error parsing prefabs: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 callback?.Invoke(prefabs);
             }
         }

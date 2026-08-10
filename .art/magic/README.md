@@ -91,7 +91,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [물의 궁수](pages/aqua_archer.md) | `aqua_archer` | 물 슬라임 | `AquaArcher` |
 | [거품 정령](pages/bubble_spirit.md) | `bubble_spirit` | 물 슬라임 | `BubbleSpirit` |
 | [운룡](pages/cloud_dragon.md) | `cloud_dragon` | 세계수 바람 정령 | `CloudDragon` |
-| [차원 두꺼비](pages/dimension_toad.md) | `dimension_toad` | 차원 유랑종 | `DimensionToad` |
+| [경계 운반자](pages/dimension_toad.md) | `dimension_toad` | 차원 유랑종 | `DimensionToad` |
 | [불씨 정령 무리](pages/ember_spirit_swarm.md) | `ember_spirit_swarm` | 지옥불 군단 | `EmberSpirit` |
 | [불 대왕 정령](pages/fire_lord_spirit.md) | `fire_lord_spirit` | 지옥불 군단 | `FireLordSpirit` |
 | [불의 정령](pages/fire_spirit.md) | `fire_spirit` | 지옥불 군단 | `FireSpirit` |

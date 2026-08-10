@@ -25,17 +25,13 @@ namespace GameScene.Object.Projectile
 
         public static Vector3 GetPosition(ProjectileTarget target)
         {
-            switch (target.targetType)
+            switch (target)
             {
-                case "position":
-                    return new Vector3(target.x, target.y, target.z);
-                case "reference":
-                    ServedObject servedObject = ObjectContainer.Instance.FindById(target.id);
-                    if (servedObject != null)
-                    {
-                        return servedObject.transform.position;
-                    }
-                    return Vector3.zero;
+                case PositionProjectileTarget position:
+                    return position.ToVector3();
+                case ReferenceProjectileTarget reference:
+                    ServedObject servedObject = ObjectContainer.Instance.FindById(reference.id);
+                    return servedObject != null ? servedObject.transform.position : Vector3.zero;
                 default:
                     return Vector3.zero;
             }

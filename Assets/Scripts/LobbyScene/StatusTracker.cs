@@ -3,20 +3,14 @@ using System.Collections;
 using Data;
 using Global;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Global.Serialization;
 
 namespace LobbyScene
 {
     public static class StatusTracker
     {
-        [Serializable]
-        private class StatusDto
-        {
-            public string status;
-        } 
-
         [Serializable]
         public class SessionDto
         {
@@ -25,72 +19,6 @@ namespace LobbyScene
             public User rightUser;
         }
 
-        private static readonly LocalizedString sessionRestoredMatching = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredMatching" };
-        private static LocalizedString sessionRestoredGame = new LocalizedString { TableReference = "SystemMessageUI", TableEntryReference = "sessionRestoredGame" };
-
-        public static IEnumerator GetUserStatus()
-        {
-            return GetUserStatus(HandleUserStatus);
-        }
-    
-        public static IEnumerator GetUserStatus(Func<string, IEnumerator> handler)
-        {
-            var url = ServerList.MatchingServer.url + "/api/users/mine/status";
-
-            using var www = UnityWebRequest.Get(url);
-            Server.SetAcceptLanguage(www);
-            Server.SetAuthorization(www);
-        
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                WDebug.LogError($"[GetUserStatus] fail: {www.responseCode} / {www.error}");
-                yield break;
-            }
-
-            StatusDto dto = null;
-            bool jsonParseError = false;
-            try { dto = JsonUtility.FromJson<StatusDto>(www.downloadHandler.text); }
-            catch (Exception e)
-            {
-                WDebug.LogError($"[GetUserStatus] JSON parse error: {e}\n{www.downloadHandler.text}");
-                jsonParseError = true;
-            }
-
-            if (jsonParseError || dto == null || string.IsNullOrEmpty(dto.status))
-            {
-                WDebug.LogWarning("[GetUserStatus] empty status");
-                yield return handler.Invoke(null);
-                yield break;
-            }
-
-            WDebug.Log("[GetUserStatus] successfully recover status: " + dto.status);
-
-            yield return handler.Invoke(dto.status);
-        }
-
-        private static IEnumerator HandleUserStatus(string status)
-        {
-            switch (status)
-            {
-                case "Online":
-                    yield break;
-
-                case "OnMatching":
-                    SystemMessageUI.Instance.ShowMessage(sessionRestoredMatching);
-                    LobbySceneViewModel.Instance.Enqueue();
-                    yield break;
-
-                case "OnPlaying":
-                    yield return RecoverGameSession();
-                    yield break;
-                default:
-                    WDebug.LogWarning($"[GetUserStatus] unknown status: {status}");
-                    yield break;
-            }
-        }
-    
         public static IEnumerator RecoverGameSession()
         {
             var getSessionUrl = $"{ServerList.MatchingServer.url}/api/users/mine/match-info";
@@ -104,47 +32,49 @@ namespace LobbyScene
             if (getSessionReq.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"[EnterInGameByMine] fail: {getSessionReq.responseCode} / {getSessionReq.error}\n{getSessionReq.downloadHandler.text}");
+                yield return ReportRecoveryFailure();
                 yield break;
             }
 
-            if (getSessionReq.responseCode == 404)
+            string body = getSessionReq.downloadHandler.text;
+
+            if (string.IsNullOrWhiteSpace(body))
             {
-                WDebug.Log("[EnterInGameByMine] NO_SESSION (로비/매칭 상태)");
+                WDebug.LogError("[EnterInGameByMine] Response body is empty.");
+                yield return ReportRecoveryFailure();
                 yield break;
             }
-        
-            MatchedInfoDto matchedInfoDto;
-            try
-            {
-                string json = getSessionReq.downloadHandler.text;
-                
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    WDebug.LogError("[EnterInGameByMine] Response body is empty.");
-                    yield break;
-                }
 
-                matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(json);
-
-                if (matchedInfoDto == null)
-                {
-                    WDebug.LogError($"[EnterInGameByMine] Failed to parse JSON.\n{json}");
-                    yield break;
-                }
-            }
-            catch (Exception e)
+            if (!JsonCodec.TryDeserialize(body, out MatchedInfoDto matchedInfoDto, out string parseError) ||
+                matchedInfoDto == null)
             {
-                WDebug.LogError($"[EnterInGameByMine] JSON parse error: {e}\n{getSessionReq.downloadHandler.text}");
+                WDebug.LogError($"[EnterInGameByMine] parse error: {parseError} / {JsonCodec.Excerpt(body)}");
+                yield return ReportRecoveryFailure();
                 yield break;
             }
-            finally
-            {
-                WDebug.Log("[EnterInGameByMine] successfully recover session: " + getSessionReq.downloadHandler.text);
-            }
+
+            WDebug.Log("[EnterInGameByMine] successfully recover session: " + body);
 
             SceneContext.MatchInfo = matchedInfoDto;
             yield return GameDataRefresh.Refresh();
             SceneManager.LoadScene("GameScene");
+        }
+
+        /// <summary>
+        /// 복구에 실패했다고 서버에 신고한다. 이미 로비에 있으므로 씬은 옮기지 않는다.
+        /// 세션 소실이 확정되면 매칭 UI만 다시 읽어 바로 재매칭할 수 있게 한다.
+        /// </summary>
+        private static IEnumerator ReportRecoveryFailure()
+        {
+            yield return SessionLossReporter.Report(SessionLossReason.SessionRecoveryFailed, verdict =>
+            {
+                WDebug.Log($"[EnterInGameByMine] 세션 복구 실패 신고 판정: {verdict}");
+
+                // 판정이 보류면 상태를 단정하지 않는다. 서버가 정리한 뒤 스냅샷이 따라온다.
+                if (!verdict.ClearsMatchState()) return;
+                if (LobbySceneViewModel.Instance == null) return;
+                LobbySceneViewModel.Instance.CheckIfInQueue();
+            });
         }
     }
 }

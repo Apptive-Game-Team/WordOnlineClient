@@ -6,6 +6,7 @@ using Data;
 using Global;
 using UnityEngine;
 using UnityEngine.Networking;
+using Global.Serialization;
 
 namespace Admin.Client
 {
@@ -14,7 +15,7 @@ namespace Admin.Client
         public IEnumerator MatchBots(BotMatchRequestDto dto, Action<MatchedInfoDto> callback)
         {
             string url = $"{ServerList.MatchingServer.url}/api/admin/matches/bots";
-            string json = JsonUtility.ToJson(dto);
+            string json = JsonCodec.Serialize(dto);
 
             using UnityWebRequest request = new UnityWebRequest(url, "POST");
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
@@ -33,7 +34,14 @@ namespace Admin.Client
                 yield break;
             }
 
-            MatchedInfoDto matchedInfoDto = JsonUtility.FromJson<MatchedInfoDto>(request.downloadHandler.text);
+            string body = request.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchedInfoDto matchedInfoDto, out string error))
+            {
+                WDebug.LogError($"MatchBots parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback?.Invoke(null);
+                yield break;
+            }
+
             callback?.Invoke(matchedInfoDto);
         }
     }

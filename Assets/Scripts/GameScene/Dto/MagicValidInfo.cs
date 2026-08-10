@@ -1,9 +1,8 @@
 namespace GameScene.Dto
 {
     [System.Serializable]
-    public class MagicValidInfo
+    public class MagicValidInfo : ServerMessage
     {
-        public string type;
         public string message;
         public bool valid;
         public string resultCode;
