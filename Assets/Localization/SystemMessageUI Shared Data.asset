@@ -139,6 +139,10 @@ MonoBehaviour:
     m_Key: sessionStillAlive
     m_Metadata:
       m_Items: []
+  - m_Id: 7900000000000
+    m_Key: sessionReconnecting
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
