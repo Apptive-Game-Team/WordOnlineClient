@@ -53,8 +53,13 @@ namespace LobbyScene
                 yield break;
             }
         
-            QueueLengthResponse response = JsonCodec.Deserialize<QueueLengthResponse>(webRequest.downloadHandler.text);
-        
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out QueueLengthResponse response, out string error))
+            {
+                WDebug.LogError($"Error parsing queue length: {error} / {JsonCodec.Excerpt(body)}");
+                yield break;
+            }
+
             _queueLengthText.text = $"{_queueLengthLocalizedString.GetLocalizedString()} {response.length}";
         }
     }

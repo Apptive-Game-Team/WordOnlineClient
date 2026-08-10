@@ -81,8 +81,12 @@ namespace LobbyScene
                 yield break;
             }
 
-            userDecks = JsonCodec.Deserialize<DeckResponseDto[]>(www.downloadHandler.text);
-        
+            string body = www.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out userDecks, out string parseError))
+            {
+                WDebug.LogError($"덱 리스트 파싱 실패: {parseError} / {JsonCodec.Excerpt(body)}");
+            }
+
             if (userDecks == null || userDecks.Length == 0)
             {
                 SystemMessageUI.Instance.ShowMessage(noDecksAvailable);

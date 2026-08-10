@@ -46,7 +46,7 @@ namespace Adventures
 
         private void HandleDebugSessionCreated(string json)
         {
-            DebugGameResponse response = JsonCodec.Deserialize<DebugGameResponse>(json);
+            JsonCodec.TryDeserialize(json, out DebugGameResponse response);
             if (response == null || string.IsNullOrWhiteSpace(response.sessionId))
             {
                 HandleDebugFailure("Invalid debug session response.");

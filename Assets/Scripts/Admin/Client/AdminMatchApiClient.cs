@@ -34,7 +34,14 @@ namespace Admin.Client
                 yield break;
             }
 
-            MatchedInfoDto matchedInfoDto = JsonCodec.Deserialize<MatchedInfoDto>(request.downloadHandler.text);
+            string body = request.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchedInfoDto matchedInfoDto, out string error))
+            {
+                WDebug.LogError($"MatchBots parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback?.Invoke(null);
+                yield break;
+            }
+
             callback?.Invoke(matchedInfoDto);
         }
     }

@@ -43,7 +43,15 @@ namespace LobbyScene
                 yield break;
             }
 
-            callback(true, JsonCodec.Deserialize<MatchTicket>(webRequest.downloadHandler.text));
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchTicket ticket, out string error))
+            {
+                WDebug.LogError($"GetActiveTicket parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback(false, null);
+                yield break;
+            }
+
+            callback(true, ticket);
         }
 
         public IEnumerator CancelTicket(string ticketId, Action<MatchCancelResult> callback)
@@ -61,7 +69,15 @@ namespace LobbyScene
                 yield break;
             }
 
-            callback(JsonCodec.Deserialize<MatchCancelResult>(webRequest.downloadHandler.text));
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchCancelResult result, out string error))
+            {
+                WDebug.LogError($"CancelTicket parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback(null);
+                yield break;
+            }
+
+            callback(result);
         }
 
         private static IEnumerator SendTicketRequest(
@@ -80,7 +96,15 @@ namespace LobbyScene
                 yield break;
             }
 
-            callback(JsonCodec.Deserialize<MatchTicket>(webRequest.downloadHandler.text));
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchTicket ticket, out string error))
+            {
+                WDebug.LogError($"{operation} parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback(null);
+                yield break;
+            }
+
+            callback(ticket);
         }
 
         public IEnumerator MatchPractice(Action<MatchedInfoDto> callback)
@@ -90,16 +114,22 @@ namespace LobbyScene
             Server.SetAuthorization(webRequest);
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.Success)
-            {
-                MatchedInfoDto matchedInfoDto = JsonCodec.Deserialize<MatchedInfoDto>(webRequest.downloadHandler.text);
-                callback(matchedInfoDto);
-            }
-            else
+            if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 WDebug.LogError($"MatchPractice error: {webRequest.error}");
                 callback(null);
+                yield break;
             }
+
+            string body = webRequest.downloadHandler.text;
+            if (!JsonCodec.TryDeserialize(body, out MatchedInfoDto matchedInfoDto, out string error))
+            {
+                WDebug.LogError($"MatchPractice parse error: {error} / {JsonCodec.Excerpt(body)}");
+                callback(null);
+                yield break;
+            }
+
+            callback(matchedInfoDto);
         }
 
     }

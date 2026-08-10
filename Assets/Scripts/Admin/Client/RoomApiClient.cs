@@ -77,7 +77,13 @@ namespace Admin.Client
             else
             {
                 string jsonResponse = request.downloadHandler.text;
-                RoomList roomList = JsonCodec.Deserialize<RoomList>(jsonResponse);
+                if (!JsonCodec.TryDeserialize(jsonResponse, out RoomList roomList, out string error))
+                {
+                    Debug.LogError($"Room list parse error: {error} / {JsonCodec.Excerpt(jsonResponse)}");
+                    callback(null);
+                    yield break;
+                }
+
                 ApplySource(roomList, sourceName, baseUrl, isLocalSource);
                 callback(roomList);
             }

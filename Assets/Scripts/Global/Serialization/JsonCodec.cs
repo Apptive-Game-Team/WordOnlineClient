@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -25,10 +26,20 @@ namespace Global.Serialization
         /// </summary>
         public static bool TryDeserialize<T>(string json, out T value)
         {
+            return TryDeserialize(json, out value, out _);
+        }
+
+        /// <summary>
+        /// Same as <see cref="TryDeserialize{T}(string, out T)"/> but hands back why the payload was rejected,
+        /// so callers can log it next to the endpoint they were reading.
+        /// </summary>
+        public static bool TryDeserialize<T>(string json, out T value, out string error)
+        {
             value = default;
 
             if (string.IsNullOrWhiteSpace(json))
             {
+                error = "empty response body";
                 return false;
             }
 
@@ -36,12 +47,37 @@ namespace Global.Serialization
             {
                 value = JsonConvert.DeserializeObject<T>(json, Settings);
             }
-            catch (JsonException)
+            // Json.NET wraps its own failures, but a converter reaching a type the IL2CPP linker stripped
+            // surfaces as a plain reflection error instead.
+            catch (Exception exception) when (exception is JsonException
+                                              || exception is MissingMethodException
+                                              || exception is InvalidCastException)
             {
+                error = exception.Message;
                 return false;
             }
 
-            return value != null;
+            if (value == null)
+            {
+                error = $"payload parsed to null as {typeof(T).Name}";
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
+        /// <summary>
+        /// Shortens a response body for log lines so a large payload does not flood the console.
+        /// </summary>
+        public static string Excerpt(string json, int maxLength = 200)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return "<empty>";
+            }
+
+            return json.Length <= maxLength ? json : json.Substring(0, maxLength) + "…";
         }
 
         public static string Serialize(object value)

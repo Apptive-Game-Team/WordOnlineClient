@@ -24,7 +24,11 @@ namespace Data.Adventures
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 string jsonResponse = webRequest.downloadHandler.text;
-                AdventuresResponseDto adventuresResponseDto = JsonCodec.Deserialize<AdventuresResponseDto>(jsonResponse);
+                if (!JsonCodec.TryDeserialize(jsonResponse, out AdventuresResponseDto adventuresResponseDto, out string error))
+                {
+                    WDebug.LogError($"Error parsing adventures: {error} / {JsonCodec.Excerpt(jsonResponse)}");
+                }
+
                 callback.Invoke(adventuresResponseDto);
             }
             else

@@ -157,7 +157,12 @@ namespace ProfileScene
 
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                AccountUser accountUser = JsonCodec.Deserialize<AccountUser>(webRequest.downloadHandler.text);
+                string body = webRequest.downloadHandler.text;
+                if (!JsonCodec.TryDeserialize(body, out AccountUser accountUser, out string error))
+                {
+                    WDebug.LogError($"Opponent profile parse error: {error} / {JsonCodec.Excerpt(body)}");
+                }
+
                 string username = string.IsNullOrEmpty(accountUser?.DisplayName) ? fallbackUsername : accountUser.DisplayName;
                 opponentUsernameCache[opponentId] = username;
                 callback?.Invoke(username);
