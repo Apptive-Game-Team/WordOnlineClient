@@ -9,6 +9,8 @@ namespace GameScene.Handler
 {
     public class SyncFrameHandler : IFrameInfoHandler<SyncFrameInfo>
     {
+        private readonly GameEventHandler gameEventHandler = new GameEventHandler();
+
         public void Handler(SyncFrameInfo syncFrameInfo)
         {
             if (syncFrameInfo?.snapshotResponseDto == null)
@@ -63,6 +65,9 @@ namespace GameScene.Handler
                     ProjectileSpawner.Instance.Spawn(projectile);
                 }
             }
+
+            // 동기화가 사라진 오브젝트를 지우기 전에 이벤트를 먼저 처리한다.
+            gameEventHandler.Handler(syncFrameInfo.events);
 
             // 동기화
             ObjectSyncer.Instance.Sync(syncFrameInfo.snapshotResponseDto.objects ?? Array.Empty<SnapshotObjectDto>());

@@ -7,6 +7,8 @@ namespace GameScene.Handler
 {
     public class DeltaFrameHandler : IFrameInfoHandler<FrameInfoDto>
     {
+        private readonly GameEventHandler gameEventHandler = new GameEventHandler();
+
         public void Handler(FrameInfoDto data)
         {
             if (data == null)
@@ -36,6 +38,9 @@ namespace GameScene.Handler
                         ObjectSpawner.Instance.SpawnObject(created);
                     }
                 }
+
+                // 이벤트는 오브젝트가 생긴 뒤, 파괴가 반영되는 업데이트보다 먼저 처리해야 공격자를 찾을 수 있다.
+                gameEventHandler.Handler(data.events);
 
                 if (data.objects.projectile != null)
                 {
