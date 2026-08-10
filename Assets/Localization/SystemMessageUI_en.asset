@@ -142,6 +142,10 @@ MonoBehaviour:
     m_Localized: The game session is still active. Reconnecting.
     m_Metadata:
       m_Items: []
+  - m_Id: 7900000000000
+    m_Localized: Connection interrupted. Reconnecting.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
