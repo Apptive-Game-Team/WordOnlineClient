@@ -21,7 +21,9 @@ namespace LobbyScene
             public int length;
         }
     
-        private void Start()
+        // OnEnable, not Start: the matching page keeps its own indicator on a page
+        // that is deactivated between matches, and polling has to resume on reopen.
+        private void OnEnable()
         {
             StartCoroutine(UpdateLengthPeriodically());
         }

@@ -120,7 +120,10 @@ namespace LobbyScene
 
             deckDropdown.value = idx;
             deckDropdown.RefreshShownValue();
-        
+
+            // 드랍다운을 건드리지 않아도 선택된 덱이 컨텍스트에 반영되어야 매칭 화면에서 읽을 수 있다.
+            DeckSceneContext.CurrentDeck = userDecks[idx];
+
             UpdateCaption(names[idx]);
         
             LoadingPage.Instance.IsLoading = false;
