@@ -18,6 +18,11 @@ namespace LobbyScene
         }
 
         public StateEvent<LobbyState> CurrentState = new (LobbyState.Idle);
+
+        // LobbyState only says "matching or not". The matching page needs the ticket
+        // state behind it to tell waiting apart from allocating or reconnecting.
+        public StateEvent<MatchTicketState> TicketState = new (MatchTicketState.Idle);
+
         public event Action OnMatchingStart;
         public event Action OnMatchingStop;
         public event Action OnMatchingFailed;
@@ -86,6 +91,8 @@ namespace LobbyScene
 
         private void HandleMatchmakingState(MatchTicketState state, MatchTicket ticket)
         {
+            TicketState.UpdateData(state);
+
             switch (state)
             {
                 case MatchTicketState.Queued:
