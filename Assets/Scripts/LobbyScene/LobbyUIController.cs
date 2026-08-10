@@ -34,11 +34,12 @@ namespace LobbyScene
         public LocalizedString deckSelectionSuccess;
         
         private bool initializing = true;
-    
+        private LoadingHandle loadingHandle;
+
         private IEnumerator Start()
         {
             WDebug.Log("LobbyUIController Start");
-            LoadingPage.Instance.IsLoading = true;
+            loadingHandle = LoadingPage.Begin(this);
             deckDropdown.onValueChanged.AddListener(OnDropdownChanged);
             yield return GameDataRefresh.Refresh();
             yield return LoadUserInfo();
@@ -74,7 +75,7 @@ namespace LobbyScene
             {
                 SystemMessageUI.Instance.ShowMessage(deckLoadFailed);
                 WDebug.LogError($"덱 리스트 로드 실패: {www.error}");
-                LoadingPage.Instance.IsLoading = false;
+                loadingHandle?.Dispose();
                 SceneManager.LoadScene("LoginScene");
                 yield break;
             }
@@ -86,6 +87,7 @@ namespace LobbyScene
             {
                 SystemMessageUI.Instance.ShowMessage(noDecksAvailable);
                 WDebug.LogWarning("덱이 하나도 없습니다.");
+                loadingHandle?.Dispose();
                 SceneManager.LoadScene("ManageDeckScene");
                 yield break;
             }
@@ -123,7 +125,7 @@ namespace LobbyScene
         
             UpdateCaption(names[idx]);
         
-            LoadingPage.Instance.IsLoading = false;
+            loadingHandle?.Dispose();
             initializing = false;
         }
 

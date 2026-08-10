@@ -12,11 +12,10 @@ namespace LoginScene
         
         private IEnumerator Start()
         {
-            LoadingPage.Instance.IsLoading = true;
+            using LoadingHandle loadingHandle = LoadingPage.Begin(this);
 
             yield return DeployStatusChecker.CheckDeployStatus((isHealthy, message) =>
             {
-                LoadingPage.Instance.IsLoading = false;
                 if (!isHealthy)
                 {
                     penal.SetActive(true);
