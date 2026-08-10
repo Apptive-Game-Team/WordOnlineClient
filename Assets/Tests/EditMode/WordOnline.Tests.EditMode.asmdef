@@ -5,7 +5,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "WordOnline.Serialization",
-        "WordOnline.GameContracts"
+        "WordOnline.GameContracts",
+        "WordOnline.Net",
+        "WordOnline.Contracts"
     ],
     "includePlatforms": [
         "Editor"

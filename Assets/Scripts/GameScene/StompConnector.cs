@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
-using Data.Util;
+using Data;
+using Data.Net;
 using GameScene.Handler;
 using Global;
 using Global.Stomp;
@@ -22,6 +23,8 @@ namespace GameScene
     /// </summary>
     public class StompConnector : LocalSingletonObject<StompConnector>
     {
+        private const string StompPath = "ws";
+
         [SerializeField] private bool isSpectator;
 
         public LocalizedString notConnectedToServer;
@@ -77,7 +80,15 @@ namespace GameScene
         public void ConnectToServer()
         {
             if (_transport.IsConnected) return;
-            string url = UrlUtil.httpToWebSocket(SceneContext.MatchInfo.server, SceneContext.JwtToken);
+
+            MatchedInfoDto matchInfo = SceneContext.MatchInfo;
+            if (!matchInfo.TryResolveWebSocket(StompPath, out ServerEndpoint gameServer))
+            {
+                WDebug.LogError($"[STOMP] 게임 서버 URL을 해석하지 못했습니다: {matchInfo.ConnectionSource}");
+                return;
+            }
+
+            string url = gameServer.Query("token", SceneContext.JwtToken);
             _transport.Connect(url, SceneContext.JwtToken);
         }
 
