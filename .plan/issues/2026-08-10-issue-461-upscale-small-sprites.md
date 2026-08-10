@@ -2,7 +2,7 @@
 
 - Date: 2026-08-10
 - GitHub Issue: #461
-- Status: Awaiting Art Approval
+- Status: Completed
 
 ## Goal
 
@@ -25,7 +25,7 @@
 - [x] **Step 0: Recon** 정규화 직전 Git 원본의 크기와 현재 파일을 비교해 업스케일 대상만 목록화한다. 확대 대상 54개(128px 이하 18개)를 확인했고, 축소된 2개는 제외했다.
 - [x] **Step 1: Implementation** 128px 이하 원본 18개를 개별 복원하고, 원래 캔버스 비율·알파·접지점을 유지한 긴 축 256px 후보를 생성했다. 원형이 바뀐 3개는 입력 원본만 사용해 재생성했다.
 - [x] **Step 2: Tests** 18개 후보의 크기, RGBA, 투명 모서리, 알파 실루엣 겹침률과 64px/256px 비교 시트를 검증했다.
-- [ ] **Step 3: Rollout / Rollback** 사용자 검토용 시트를 제공하고 승인된 후보만 런타임 경로에 반영한다.
+- [x] **Step 3: Rollout / Rollback** 사용자 승인에 따라 18개 후보를 런타임 경로에 반영하고 기존 `.meta`를 유지한다.
 
 ## Validation
 - **Commands to run:** 이미지 크기/알파 검사, 64px 및 256px 비교 시트 생성, Unity importer와 `.meta` 차이 검사
@@ -36,5 +36,5 @@
 - **Rollback steps:** 후보는 별도 경로에 보관하고, 승인 전 런타임 파일을 수정하지 않는다. 반영 후 문제 시 해당 PNG만 직전 Git 버전으로 되돌린다.
 
 ## Open Questions
-- `.art/concept/upscale-issue-461/comparison-18-256.png`와 `comparison-18-64.png` 검토 후 18개 후보를 런타임 `Assets`에 반영할지 사용자 승인이 필요하다.
-- 작업 도중 활성 브랜치가 외부에서 `feature/461`에서 `main`으로 변경되어, `main`의 128px 원본을 깨끗한 베이스라인으로 사용했다. 브랜치 전환이나 런타임 파일 변경은 수행하지 않았다.
+- 없음. 2026-08-10 사용자 승인 후 18개 후보를 `Assets/Resources/Game/sprites/`에 반영했다.
+- 기존 `feature/461`은 `main`에 병합되어, 런타임 반영은 최신 `main`에서 분기한 `feature/461-art-rollout`에서 진행했다.
