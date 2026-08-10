@@ -34,7 +34,6 @@ namespace LobbyScene
                 {
                     WDebug.LogError($"GetUserInfo account parse error: {error} / {JsonCodec.Excerpt(body)}");
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
@@ -60,7 +59,6 @@ namespace LobbyScene
                 {
                     WDebug.LogError($"GetUserInfo game parse error: {error} / {JsonCodec.Excerpt(body)}");
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
