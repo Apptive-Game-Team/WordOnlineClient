@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Data;
-using Data.Net;
 using Global;
+using Global.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
 #if UNITY_WEBGL && !UNITY_EDITOR
 using System.Runtime.InteropServices;
-using Global.Serialization;
 #endif
 
 namespace LobbyScene
