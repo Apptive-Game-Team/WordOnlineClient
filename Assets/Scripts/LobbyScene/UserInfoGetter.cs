@@ -25,7 +25,6 @@ namespace LobbyScene
                 {
                     WDebug.LogError("Error: " + webRequest.error);
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
@@ -44,7 +43,6 @@ namespace LobbyScene
                 {
                     WDebug.LogError("Error: " + webRequest.error + webRequest.downloadHandler.text);
                     SystemMessageUI.Instance.ShowMessage("Failed to retrieve user data. Please log in again.");
-                    LoadingPage.Instance.IsLoading = false;
                     SceneManager.LoadScene("LoginScene");
                     yield break;
                 }
