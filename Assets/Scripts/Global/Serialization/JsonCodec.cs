@@ -57,6 +57,9 @@ namespace Global.Serialization
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 // Fields initialized at declaration must be replaced, otherwise Json.NET appends into them.
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
+                // Server payloads may send null for numeric fields, which non-nullable value types cannot take.
+                // Skipping nulls keeps the field default instead of throwing.
+                NullValueHandling = NullValueHandling.Ignore,
                 Converters =
                 {
                     new Vector3JsonConverter(),
