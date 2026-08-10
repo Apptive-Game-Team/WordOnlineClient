@@ -19,10 +19,22 @@
     <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
     <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
   </assembly>
-  <!-- Json.NET resolves contracts through reflection, so neither it nor the DTOs it fills may be stripped. -->
+  <!--
+    Json.NET resolves contracts through reflection, so neither it nor the DTOs it fills may be stripped.
+    Unlike JsonUtility the linker cannot see these members, and a stripped field turns into silently
+    missing data in the WebGL build rather than an exception. Every assembly holding a type that Json.NET
+    deserializes belongs here; add new assembly definitions to this list when they are created.
+  -->
   <assembly fullname="Newtonsoft.Json" preserve="all" />
   <assembly fullname="WordOnline.Serialization" preserve="all" />
   <assembly fullname="WordOnline.GameContracts" preserve="all" />
+  <assembly fullname="WordOnline.Contracts" preserve="all" />
+  <assembly fullname="WordOnline.Net" preserve="all" />
+  <!--
+    Response DTOs still live next to the code that requests them, so the whole default assembly has to
+    stay. Narrow this once those types have moved into WordOnline.Contracts.
+  -->
+  <assembly fullname="Assembly-CSharp" preserve="all" />
   <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Object" preserve="all" />
   </assembly>
