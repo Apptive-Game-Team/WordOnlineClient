@@ -80,3 +80,14 @@ Transform 스케일 변형은 적용하지 않는다.
 - 컨셉과 축소 인게임 이미지가 같은 포즈면 컨셉만 표시한다.
 - 오라는 소환수 상세의 `부속 에셋`으로 표시한다.
 - 마법 상세와 소환수 상세은 양방향 링크를 제공한다.
+
+## Cloud Dragon 프레임
+
+| 실제 파일 | 의미 이름 | 프리팹 연결 |
+|---|---|---|
+| `CloudDragon.png` | 운룡 · 기본 자세 · 입에 물 없음 | `CloudDragon.prefab` 기본 SpriteRenderer |
+| `CloudDragonAttacking.png` | 운룡 · 물 분사 공격 자세 | `AttackSpriteSwapController.swapSprite` |
+
+두 프레임은 `220x156`, PPU 100, Bottom Center 피벗과 본체 배치를 공유한다.
+공격 이벤트가 발생하면 `CloudDragonAttacking.png`를 0.1초간 표시한 뒤 기본 자세로 복원한다.
+구형 물 아우라 `cloud.png`는 두 본체 프레임과 계속 분리해서 렌더링한다.
