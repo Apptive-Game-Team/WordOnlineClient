@@ -14,6 +14,21 @@ namespace Sound.Config
         Wind
     }
 
+    // Identity in this world is factional, not elemental: `.art/WORLD.md` groups
+    // units by where they came from, and the sound material follows that. Element
+    // stays as the sub-material that separates the three World Tree spirits.
+    // Append new values at the end; the index is serialized.
+    public enum ObjectSfxFaction
+    {
+        Neutral,
+        BurningLegion,
+        WorldTreeSpirit,
+        WaterSlime,
+        RockGolemTribe,
+        HumanCivilization,
+        DimensionWanderer
+    }
+
     public enum ObjectSfxArchetype
     {
         Creature,
@@ -42,6 +57,7 @@ namespace Sound.Config
     public class ObjectSfxProfile : ScriptableObject
     {
         [SerializeField] private string profileId;
+        [SerializeField] private ObjectSfxFaction faction;
         [SerializeField] private ObjectSfxElement element;
         [SerializeField] private ObjectSfxArchetype archetype;
         [SerializeField] private ObjectSfxEventSlot spawn = new();
@@ -53,6 +69,7 @@ namespace Sound.Config
         [SerializeField, Min(0f)] private float movementCooldown = 0.45f;
 
         public string ProfileId => profileId;
+        public ObjectSfxFaction Faction => faction;
         public ObjectSfxElement Element => element;
         public ObjectSfxArchetype Archetype => archetype;
         public ObjectSfxEventSlot Spawn => spawn;

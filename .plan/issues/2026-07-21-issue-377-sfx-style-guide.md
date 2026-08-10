@@ -1,6 +1,7 @@
 # 2026-07-23 — 효과음 사운드 스타일 가이드
 
 - Date: 2026-07-23
+- Revised: 2026-08-10 (issue #475) — metal exception, hellfire material correction
 - GitHub Issue: #377
 - Status: Revised after listening feedback — review pending
 
@@ -89,13 +90,20 @@ Consequences:
 | Card | coated paper fiber plus felt/wood surface contact |
 | Field confirm | fingertip tap on soil or dry grass, very small |
 | Spawn (shared) | paper unfold layer + family material arrival |
-| Fire | match ignition, dry twig catching, small ember pops |
+| Fire (hellfire legion) | a dry paper husk cracking open, embers leaking from the split |
 | Water | fingertip drips, slosh inside a small cup |
 | Nature | dry leaf rub, seed pod, bent twig |
 | Rock | pebbles knocking, gravel grind, stone set down |
 | Lightning | real static discharge crackle on cloth (not a digital tick) |
 | Wind | short air movement from cloth or a hand fan |
+| Human structure | bronze coupling seating, a plate taking load — non-ringing metal only |
+| Dimension wanderer | one contact, then the same contact again 0.1 s later, slightly lower and thinner |
 | Building | wooden peg placement or stone set-down; collapse of parts on death; never movement |
+
+Fire was `match ignition, dry twig catching, small ember pops` until 2026-08-10.
+The art direction states that every fire unit is a demon of the burning legion,
+**not a fire spirit**, so ignition is the wrong gesture — the husk cracking is
+the right one. See issue #475.
 
 ### Required character
 
@@ -122,6 +130,27 @@ Consequences:
 - cartoon pops, boings, toy mechanisms, comedy impacts, or exaggerated squash
 - radio crackle, speaker breakup, codec chatter, digital ticks, or electrical
   interference that is not part of the depicted event
+
+### Metal exception — human structures only (2026-08-10)
+
+The metal ban above carries an escape clause: a material is allowed when the
+visible source explicitly contains it. Exactly one faction qualifies.
+
+`.art/magic/pages/` describes human magic-civilization structures as **cold
+stone, steel-blue metal, and bronze couplings** — `GroundCannon`, `GroundTower`,
+`RallyingTotem`, and the human half of `Towerback`. Those are the only places
+metal may be heard, and only under both conditions:
+
+- **Non-ringing metal.** Bronze being tightened, a coupling seating, a plate
+  taking load. Never a bell, chime, blade, or coin. The `audio_probe.py`
+  metallic filter (`ring_prominence_db >= 12 && hf_decay >= 0.15 s`) still
+  applies unchanged — a candidate that rings is still rejected.
+- **Structures only.** Human infantry (`ChickenCommando`) carries leather,
+  cloth, and wood. No metal on a soldier.
+
+Every other faction keeps the ban absolute. The rock golem tribe is the strict
+case: its art direction requires it to read as **warm stone and moss, distinct
+from human grey machinery**, so metal there is zero regardless of context.
 
 ## Sound Construction Grammar
 
@@ -192,16 +221,22 @@ This sound communicates successful input submission, not damage or spell cast.
 
 ## Elemental Material Palette
 
-### Fire
+### Fire (burning legion)
 
-Core materials: ember, resin crackle, charcoal, small flame pressure.
+Core materials: dry paper husk, ember, charcoal, slow lava pressure.
 
-- transient: soft ignition or close ember catch, never a metallic snap
-- body: a compact natural flame flare, the audible “화르륵” gesture
-- tail: very short air-fed flame decay
-- frequency character: warm midrange with controlled bright detail
-- avoid: gasoline blast, pressure explosion, fireplace loop, huge explosion,
-  dragon roar, sword-like “챙”, bell, coin, metal, or glass
+- transient: a thick husk splitting, never an ignition and never a metallic snap
+- body: embers leaking from the split under low slow pressure
+- tail: very short air-fed ember decay
+- frequency character: warm midrange, highs pressed down so only embers remain
+- avoid: match strike, gasoline blast, pressure explosion, fireplace loop, huge
+  explosion, dragon roar, the “화르륵” flare, sword-like “챙”, bell, coin, metal,
+  or glass
+
+Every fire unit belongs to the burning legion and is a demon, not a fire spirit.
+Ignition reads as a spirit catching light; the husk reads as a demon opening.
+Revised 2026-08-10 (issue #475) — the previous text asked for ignition and a
+“화르륵” flare, both of which the concept document had already forbidden.
 
 ### Water
 
