@@ -124,42 +124,31 @@ namespace Data.GameConfig
         private static bool TryGetMagicFamilyObjectName(CombinedMagicData magic, out string objectName)
         {
             objectName = null;
-            if (magic?.recipe == null)
+            if (magic == null)
             {
                 return false;
             }
 
-            if (magic.recipe.Contains(CardType.Shoot))
+            switch (magic.castType)
             {
-                objectName = "shoot";
-                return true;
+                case CardType.Spawn:
+                    objectName = "spawn";
+                    return true;
+                case CardType.Drop:
+                    objectName = "drop";
+                    return true;
+                case CardType.Explode:
+                    objectName = "explode";
+                    return true;
+                case CardType.Build:
+                    objectName = "build";
+                    return true;
+                case CardType.Shoot:
+                    objectName = "shoot";
+                    return true;
+                default:
+                    return false;
             }
-
-            if (magic.recipe.Contains(CardType.Explode))
-            {
-                objectName = "explode";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Drop))
-            {
-                objectName = "drop";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Spawn))
-            {
-                objectName = "spawn";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Build))
-            {
-                objectName = "build";
-                return true;
-            }
-
-            return false;
         }
 
         private static List<string> GetObjectNamesForMagic(

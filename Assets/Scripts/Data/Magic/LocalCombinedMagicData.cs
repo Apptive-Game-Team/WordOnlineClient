@@ -54,6 +54,12 @@ namespace Data.Magic
             var result = new List<CombinedMagicData>(source.Count);
             foreach (var serverRecipe in source)
             {
+                if (!System.Enum.TryParse(serverRecipe.CastType, true, out CardType castType) ||
+                    !IsCastType(castType))
+                {
+                    continue;
+                }
+
                 var recipe = new List<CardType>(serverRecipe.Cards.Count);
                 var valid = true;
                 foreach (var cardName in serverRecipe.Cards)
@@ -83,6 +89,7 @@ namespace Data.Magic
                         ? StringUtils.ToSnakeCase(serverRecipe.Name)
                         : serverRecipe.Text,
                     resourceName = StringUtils.ToPascalCase(serverRecipe.Name),
+                    castType = castType,
                     recipe = recipe,
                 });
             }
@@ -91,6 +98,15 @@ namespace Data.Magic
         }
 
         private static readonly List<CombinedMagicData> emptyDataList = new();
+
+        private static bool IsCastType(CardType cardType)
+        {
+            return cardType == CardType.Spawn ||
+                   cardType == CardType.Drop ||
+                   cardType == CardType.Explode ||
+                   cardType == CardType.Build ||
+                   cardType == CardType.Shoot;
+        }
 
         private static bool AreSameMultiset(IList<CardType> a, IList<CardType> b)
         {

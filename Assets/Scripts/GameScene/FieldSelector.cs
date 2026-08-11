@@ -278,15 +278,7 @@ namespace GameScene
 
         private static bool IsLineMagic(CombinedMagicData magicData)
         {
-            return magicData.recipe != null && magicData.recipe.Contains(CardType.Shoot) ||
-                   IsSameMagicName(magicData.serverName, "Shoot") ||
-                   IsSameMagicName(magicData.resourceName, "Shoot") ||
-                   IsSameMagicName(magicData.localizationKey, "Shoot");
-        }
-
-        private static bool IsSameMagicName(string value, string expected)
-        {
-            return string.Equals(value, expected, System.StringComparison.OrdinalIgnoreCase);
+            return magicData.castType == CardType.Shoot;
         }
 
         private void UpdateSkillIndicator(
