@@ -1,0 +1,321 @@
+name: Release Build
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build (e.g. v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  # ProjectSettings/ProjectVersion.txt 기준. deploy-itch.yml 과 deploy-test.yml 은
+  # 아직 2022.3.22f1 로 고정되어 있어 프로젝트 버전과 어긋난다.
+  UNITY_VERSION: 2022.3.34f1
+  BUILD_NAME: WordOnlineClient
+
+jobs:
+  prepare:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+    steps:
+      - name: Resolve tag and ensure release exists
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          EVENT_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          TAG="${EVENT_TAG:-$INPUT_TAG}"
+          if [ -z "$TAG" ]; then
+            echo "::error::릴리스 태그를 확인할 수 없습니다."
+            exit 1
+          fi
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "릴리스가 없어 새로 만듭니다: $TAG"
+            gh release create "$TAG" --title "$TAG" --target "$GITHUB_SHA" --generate-notes
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+  desktop:
+    name: Build ${{ matrix.label }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - targetPlatform: StandaloneOSX
+            label: macOS
+          - targetPlatform: StandaloneWindows64
+            label: Windows
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Docker prune
+        run: docker system prune -af
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Library folder
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+            Library-
+
+      # 데스크톱은 BuildScript 에 대응하는 메서드가 없어 game-ci 기본 빌드를 쓴다.
+      # BuildScript 의 DEV_BUILD 심볼은 WebGL 그룹에만 적용되므로 영향이 없다.
+      - name: Build ${{ matrix.label }}
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ env.BUILD_NAME }}
+          buildsPath: build
+          customParameters: -logFile -
+
+      - name: Package build
+        id: package
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
+          TARGET: ${{ matrix.targetPlatform }}
+          LABEL: ${{ matrix.label }}
+        run: |
+          set -euo pipefail
+          sudo chown -R "$(id -u):$(id -g)" build
+          if [ "$TARGET" = "StandaloneOSX" ]; then
+            # .app 번들의 실행 권한이 유지되도록 보정
+            chmod -R +x "build/$TARGET/$BUILD_NAME.app/Contents/MacOS" || true
+          fi
+          ARCHIVE="$BUILD_NAME-$TAG-$LABEL.zip"
+          (cd "build/$TARGET" && zip -r -y -q "$GITHUB_WORKSPACE/$ARCHIVE" .)
+          echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
+
+      - name: Upload build to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+          ARCHIVE: ${{ steps.package.outputs.archive }}
+        run: gh release upload "$TAG" "$ARCHIVE" --clobber
+
+  webgl:
+    name: Build WebGL
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Docker prune
+        run: docker system prune -af
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Library folder
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-WebGL-
+            Library-
+
+      # 릴리스는 프로덕션 빌드다. BuildScript.BuildWebGL 은 DEV_BUILD 를 끄고 굽는다.
+      # (deploy-test.yml 이 쓰는 BuildDevWebGL 은 DEV_BUILD 를 켠다.)
+      - name: Build WebGL
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: WebGL
+          buildName: ${{ env.BUILD_NAME }}
+          buildsPath: build
+          buildMethod: BuildScript.BuildWebGL
+          customParameters: -logFile -
+
+      - name: Package WebGL build
+        id: package
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          set -euo pipefail
+          sudo chown -R "$(id -u):$(id -g)" build
+          ARCHIVE="$BUILD_NAME-$TAG-WebGL.zip"
+          (cd "build/WebGL/$BUILD_NAME" && zip -r -y -q "$GITHUB_WORKSPACE/$ARCHIVE" .)
+          echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
+
+      - name: Upload WebGL build to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+          ARCHIVE: ${{ steps.package.outputs.archive }}
+        run: gh release upload "$TAG" "$ARCHIVE" --clobber
+
+      - name: Upload WebGL build for publishing
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-webgl
+          path: build/WebGL/${{ env.BUILD_NAME }}
+          retention-days: 7
+
+  publish-play:
+    name: Publish WebGL to WordOnline_Play
+    needs: [prepare, webgl]
+    runs-on: ubuntu-latest
+    outputs:
+      play_url: ${{ steps.publish.outputs.play_url }}
+    steps:
+      - name: Download WebGL build
+        uses: actions/download-artifact@v4
+        with:
+          name: release-webgl
+          path: ./webgl-build
+
+      # 이 저장소는 private 이라 자체 GitHub Pages 를 쓸 수 없다. 웹 플레이는
+      # deploy-test.yml 과 마찬가지로 public 저장소 WordOnline_Play 가 호스팅한다.
+      - name: Push build to WordOnline_Play
+        id: publish
+        env:
+          PLAY_TOKEN: ${{ secrets.WORD_ONLINE_PLAY_TOKEN }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone "https://x-access-token:$PLAY_TOKEN@github.com/Apptive-Game-Team/WordOnline_Play.git" play
+          cd play
+
+          # 릴리스마다 고유 경로에 올린다. 저장소 루트의 라이브 사이트는 건드리지
+          # 않으므로 테스트 릴리스가 운영 중인 플레이 페이지를 덮어쓰지 않는다.
+          rm -rf "releases/$TAG"
+          mkdir -p "releases/$TAG"
+          cp -r ../webgl-build/. "releases/$TAG/"
+
+          git add "releases/$TAG"
+          if git diff --cached --quiet; then
+            echo "변경 사항이 없어 푸시를 건너뜁니다."
+          else
+            git commit -m "Add WebGL build for $TAG"
+            # deploy-test.yml 도 같은 저장소 main 에 푸시한다. 경합하면
+            # non-fast-forward 로 거절되므로 rebase 후 재시도한다.
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                pushed=1
+                break
+              fi
+              git pull --rebase origin main
+            done
+            if [ "$pushed" != 1 ]; then
+              echo "::error::WordOnline_Play 로 푸시하지 못했습니다."
+              exit 1
+            fi
+          fi
+
+          echo "play_url=https://apptive-game-team.github.io/WordOnline_Play/releases/$TAG/" >> "$GITHUB_OUTPUT"
+
+  links:
+    name: Link builds on release
+    needs: [prepare, desktop, webgl, publish-play]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update release notes with download links
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+          PLAY_URL: ${{ needs.publish-play.outputs.play_url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+
+          asset_url() {
+            # 릴리스에 실제로 올라간 에셋만 링크로 노출
+            name=$(gh release view "$TAG" --json assets -q ".assets[].name | select(endswith(\"$1\"))" | head -n 1)
+            if [ -n "$name" ]; then
+              printf '[%s](%s/%s/releases/download/%s/%s)' \
+                "$name" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$TAG" "$name"
+            fi
+          }
+
+          MAC=$(asset_url "-macOS.zip")
+          WIN=$(asset_url "-Windows.zip")
+          WEB=$(asset_url "-WebGL.zip")
+          FAILED="빌드 실패 — [로그 보기]($RUN_URL)"
+
+          {
+            echo '<!-- release-links:start -->'
+            echo '## 📦 다운로드'
+            echo
+            echo '| 플랫폼 | 링크 |'
+            echo '| --- | --- |'
+            echo "| 🍎 macOS | ${MAC:-$FAILED} |"
+            echo "| 🪟 Windows | ${WIN:-$FAILED} |"
+            if [ -n "$PLAY_URL" ]; then
+              echo "| 🌐 웹에서 바로 플레이 | [$PLAY_URL]($PLAY_URL) |"
+            else
+              echo "| 🌐 웹에서 바로 플레이 | $FAILED |"
+            fi
+            echo "| 🌐 웹 빌드 (직접 호스팅용) | ${WEB:-$FAILED} |"
+            echo
+            echo '> macOS 빌드는 코드 서명이 되어 있지 않습니다. 실행이 막히면 압축을 푼 뒤'
+            echo '> `xattr -dr com.apple.quarantine '"$BUILD_NAME"'.app` 을 실행해 주세요.'
+            echo '<!-- release-links:end -->'
+          } > links.md
+
+          gh release view "$TAG" --json body -q .body > body.md
+
+          # 이전에 추가된 링크 블록이 있으면 교체
+          awk '
+            $0 == "<!-- release-links:start -->" { skip = 1 }
+            !skip { print }
+            $0 == "<!-- release-links:end -->" { skip = 0 }
+          ' body.md > body-clean.md
+
+          { cat body-clean.md; echo; cat links.md; } > new-body.md
+          gh release edit "$TAG" --notes-file new-body.md
