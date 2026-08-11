@@ -53,6 +53,25 @@ namespace TutorialScene
             {
                 Confirm();
             }
+
+            if (CardHotkey.TryGetPressedSlotIndex(out int slotIndex))
+            {
+                ToggleCardBySlot(slotIndex);
+            }
+        }
+
+        private void ToggleCardBySlot(int slotIndex)
+        {
+            if (TutorialSceneUIController.Instance == null)
+            {
+                return;
+            }
+
+            TutorialCardUI card = TutorialSceneUIController.Instance.GetCardAt(slotIndex);
+            if (card != null)
+            {
+                card.OnCardClicked();
+            }
         }
 
         public void Cancel()

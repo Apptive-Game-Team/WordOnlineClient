@@ -117,6 +117,12 @@ namespace TutorialScene
             cardUI.Init(cardname);
         }
 
+        public TutorialCardUI GetCardAt(int index)
+        {
+            if (lowerBar == null) return null;
+            return CardHotkey.FindCardAt<TutorialCardUI>(lowerBar.transform, index);
+        }
+
         public void TrySetExpectedMagicUI(IList<CardType> recipe)
         {
             if (expectedMagicUI == null) return;
