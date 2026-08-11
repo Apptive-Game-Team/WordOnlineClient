@@ -7,6 +7,7 @@ namespace Data.Magic
         long Id { get; }
         string Name { get; }
         string Text { get; }
+        string CastType { get; }
         IReadOnlyList<string> Cards { get; }
     }
 }

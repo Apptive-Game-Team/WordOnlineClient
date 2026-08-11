@@ -10,6 +10,7 @@ namespace Data.Magic
         public string localizationKey;
         public string textLocalizationKey;
         public string resourceName;
+        public CardType castType;
         public List<CardType> recipe;
 
         private const string SpriteResourceRoot = "Game/sprites";
