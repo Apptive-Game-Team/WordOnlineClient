@@ -11,18 +11,53 @@ using UnityEngine;
 
 namespace GameScene
 {
+    /// <summary>
+    /// 필드 선택 모드에서 조준/사거리/스킬 인디케이터를 마우스에 맞춰 갱신한다.
+    /// <para>
+    /// 이 Update는 마우스를 따라가야 하므로 프레임당 비용이 곧 체감 반응성이다.
+    /// 씬 전역 탐색, GetComponent, UI 레이캐스트처럼 매 프레임 반복할 이유가 없는 작업은
+    /// 캐시하거나 실제로 필요한 시점까지 미룬다.
+    /// </para>
+    /// </summary>
     public class FieldSelector : MonoBehaviour
     {
         private const int RangeIndicatorSortingOrder = 5;
         private const int AimIndicatorSortingOrder = 16;
         private const float AimIndicatorRadius = 0.18f;
 
+        /// <summary>참조를 찾지 못했을 때 씬 전체 스캔을 매 프레임 되풀이하지 않기 위한 재시도 간격.</summary>
+        private const float MissingReferenceRetryInterval = 0.5f;
+
         CardInputSender cardInputSender;
         private GameObject currentAimObj;
         private GameObject currentRangeObj;
         private GameObject currentSkillIndicator;
         private bool currentSkillIndicatorIsLine;
-        private string lastLoggedMagicParameterKey;
+
+        // 인디케이터 컴포넌트는 생성 시점에 잡아 둔다. 매 프레임 GetComponent를 부를 이유가 없다.
+        private SkillIndicatorShapeRenderer aimShapeRenderer;
+        private SkillIndicatorShapeRenderer rangeShapeRenderer;
+        private CircleSkillIndicator currentCircleIndicator;
+        private LineSkillIndicator currentLineIndicator;
+
+        // 매 프레임 다시 구할 필요가 없는 참조/결과 캐시.
+        private Camera cachedCamera;
+        private ServedObject cachedCaster;
+        private Vector3 cachedCasterSourcePosition;
+        private Vector3 cachedCasterGroundPosition;
+        private bool hasCachedCasterGroundPosition;
+        private float nextCasterSearchTime;
+        private float nextGroundColliderSearchTime;
+
+        // 경고 로그가 필드 선택 중 매 프레임 쏟아지지 않도록 상태 전환에서만 남긴다.
+        private bool warnedMissingCaster;
+        private bool warnedMissingMagicData;
+        private string warnedMissingRangeMagicName;
+
+        private string lastLoggedMagicName;
+        private float lastLoggedRange;
+        private float lastLoggedRadius;
+        private bool hasLoggedMagicParameters;
 
         [SerializeField] private GameObject aimObject;
         [SerializeField] private GameObject rangeObject;
@@ -31,6 +66,7 @@ namespace GameScene
         [SerializeField] private Collider groundCollider;
         [SerializeField] private string groundObjectName = "PopupBookGround";
         private AudioSource interactionAudioSource;
+
         void Start()
         {
             cardInputSender = FindObjectOfType<CardInputSender>();
@@ -40,12 +76,13 @@ namespace GameScene
                 interactionAudioSource = gameObject.AddComponent<AudioSource>();
             }
             SoundVolumeSetter.Attach(interactionAudioSource, SoundVolumeSetter.SoundType.UI);
-            currentAimObj = CreateAimIndicator();
-            currentRangeObj = CreateRangeIndicator();
+            currentAimObj = CreateAimIndicator(out aimShapeRenderer);
+            currentRangeObj = CreateRangeIndicator(out rangeShapeRenderer);
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
 
-            currentSkillIndicator = CreateCircleSkillIndicator();
+            currentSkillIndicator = CreateCircleSkillIndicator(out currentCircleIndicator);
+            currentLineIndicator = null;
             currentSkillIndicatorIsLine = false;
             currentSkillIndicator.SetActive(false);
         }
@@ -54,27 +91,33 @@ namespace GameScene
         {
             if (!CardInputSender.Instance.IsFieldSelectMode())
             {
-                currentAimObj.SetActive(false);
-                currentRangeObj.SetActive(false);
-                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
+                if (currentAimObj.activeSelf) currentAimObj.SetActive(false);
+                if (currentRangeObj.activeSelf) currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null && currentSkillIndicator.activeSelf)
+                {
+                    currentSkillIndicator.SetActive(false);
+                }
 
                 return;
             }
-        
+
             if (!currentAimObj.activeSelf) currentAimObj.SetActive(true);
-            currentRangeObj.SetActive(true);
+            if (!currentRangeObj.activeSelf) currentRangeObj.SetActive(true);
 
 
             if (!TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius))
             {
-                currentRangeObj.SetActive(false);
-                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
+                if (currentRangeObj.activeSelf) currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null && currentSkillIndicator.activeSelf)
+                {
+                    currentSkillIndicator.SetActive(false);
+                }
                 return;
             }
             LogMagicParametersIfChanged(magicData, range, radius);
 
             Vector3 casterPosition = GetCasterPosition();
-            SetCircleWorldRadius(currentRangeObj, casterPosition, range);
+            rangeShapeRenderer.SetCircle(casterPosition, range, true, RangeIndicatorSortingOrder, 0f);
 
 
             bool wantLine = IsLineMagic(magicData);
@@ -83,7 +126,16 @@ namespace GameScene
             if (currentSkillIndicator == null || currentSkillIndicatorIsLine != wantLine)
             {
                 if (currentSkillIndicator != null) Destroy(currentSkillIndicator);
-                currentSkillIndicator = wantLine ? CreateLineSkillIndicator() : CreateCircleSkillIndicator();
+                if (wantLine)
+                {
+                    currentSkillIndicator = CreateLineSkillIndicator(out currentLineIndicator);
+                    currentCircleIndicator = null;
+                }
+                else
+                {
+                    currentSkillIndicator = CreateCircleSkillIndicator(out currentCircleIndicator);
+                    currentLineIndicator = null;
+                }
                 currentSkillIndicatorIsLine = wantLine;
             }
 
@@ -96,38 +148,85 @@ namespace GameScene
             }
 
             Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
-            SetAimIndicator(currentAimObj, previewPosition);
+            aimShapeRenderer.SetCircle(previewPosition, AimIndicatorRadius, true, AimIndicatorSortingOrder, 0f);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
+
+            // UI 레이캐스트는 클릭을 걸러내는 용도뿐이므로, 실제로 버튼을 뗀 프레임에만 수행한다.
+            if (!Input.GetMouseButtonUp(0))
+            {
+                return;
+            }
 
             if (PointerInputUtility.IsPointerOverUiOrSelectable()) return;
 
-            if (Input.GetMouseButtonUp(0))
+            if (!CardInputSender.Instance.TrySendInput(previewPosition))
             {
-                if (!CardInputSender.Instance.TrySendInput(previewPosition))
-                {
-                    return;
-                }
-
-                interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
-                PlayerFeedbackController.Instance.UseMagicFeedback();
-                currentAimObj.SetActive(false);
-                currentRangeObj.SetActive(false);
-                currentSkillIndicator.SetActive(false);
-                CardInputSender.Instance.SetExpectedMagicUI();
+                return;
             }
+
+            interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
+            PlayerFeedbackController.Instance.UseMagicFeedback();
+            currentAimObj.SetActive(false);
+            currentRangeObj.SetActive(false);
+            currentSkillIndicator.SetActive(false);
+            CardInputSender.Instance.SetExpectedMagicUI();
         }
 
         private Vector3 GetCasterPosition()
         {
-            ServedObject caster = FindPlayerObject(SceneContext.Me);
-            if (caster != null)
+            ServedObject caster = ResolveCaster();
+            if (caster == null)
             {
-                Vector3 position = caster.transform.position;
-                return TryProjectToGround(position, out Vector3 groundPosition) ? groundPosition : position;
+                if (!warnedMissingCaster)
+                {
+                    warnedMissingCaster = true;
+                    WDebug.LogWarning($"[FieldSelector] Could not find caster object for {SceneContext.Me}.");
+                }
+                return currentRangeObj.transform.position;
             }
 
-            WDebug.LogWarning($"[FieldSelector] Could not find caster object for {SceneContext.Me}.");
-            return currentRangeObj.transform.position;
+            warnedMissingCaster = false;
+            Vector3 position = caster.transform.position;
+
+            // 캐스터가 그대로면 지면 투영 레이캐스트를 다시 쏠 이유가 없다.
+            if (hasCachedCasterGroundPosition && cachedCasterSourcePosition == position)
+            {
+                return cachedCasterGroundPosition;
+            }
+
+            // 투영에 실패했을 때는 캐시하지 않는다. 지면 콜라이더가 뒤늦게 잡히면 그때 제대로 투영되어야 한다.
+            if (!TryProjectToGround(position, out Vector3 groundPosition))
+            {
+                hasCachedCasterGroundPosition = false;
+                return position;
+            }
+
+            cachedCasterSourcePosition = position;
+            cachedCasterGroundPosition = groundPosition;
+            hasCachedCasterGroundPosition = true;
+            return cachedCasterGroundPosition;
+        }
+
+        /// <summary>
+        /// 캐스터를 찾는 씬 스캔은 비싸므로 결과를 들고 있는다.
+        /// 아직 못 찾았을 때(사망/미스폰)만 일정 간격으로 다시 시도한다.
+        /// </summary>
+        private ServedObject ResolveCaster()
+        {
+            if (cachedCaster != null)
+            {
+                return cachedCaster;
+            }
+
+            if (Time.unscaledTime < nextCasterSearchTime)
+            {
+                return null;
+            }
+
+            nextCasterSearchTime = Time.unscaledTime + MissingReferenceRetryInterval;
+            cachedCaster = FindPlayerObject(SceneContext.Me);
+            hasCachedCasterGroundPosition = false;
+            return cachedCaster;
         }
 
         private static ServedObject FindPlayerObject(string master)
@@ -164,21 +263,21 @@ namespace GameScene
         public bool TryGetGroundPosition(Vector3 screenPosition, out Vector3 groundPosition)
         {
             groundPosition = Vector3.zero;
-            Camera camera = Camera.main;
+            Camera camera = ResolveCamera();
             if (camera == null)
             {
                 return false;
             }
 
             Ray ray = camera.ScreenPointToRay(screenPosition);
-            if (TryGetGroundCollider(out Collider resolvedGroundCollider) &&
-                resolvedGroundCollider.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            bool hasGroundCollider = TryGetGroundCollider(out Collider resolvedGroundCollider);
+            if (hasGroundCollider && resolvedGroundCollider.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
                 groundPosition = hit.point;
                 return true;
             }
 
-            Plane groundPlane = TryGetGroundCollider(out resolvedGroundCollider)
+            Plane groundPlane = hasGroundCollider
                 ? new Plane(resolvedGroundCollider.transform.up, resolvedGroundCollider.transform.position)
                 : new Plane(Vector3.up, Vector3.zero);
             if (!groundPlane.Raycast(ray, out float distance))
@@ -188,6 +287,16 @@ namespace GameScene
 
             groundPosition = ray.GetPoint(distance);
             return true;
+        }
+
+        private Camera ResolveCamera()
+        {
+            if (cachedCamera == null)
+            {
+                cachedCamera = Camera.main;
+            }
+
+            return cachedCamera;
         }
 
         private bool TryProjectToGround(Vector3 worldPosition, out Vector3 groundPosition)
@@ -223,6 +332,15 @@ namespace GameScene
                 resolvedGroundCollider = groundCollider;
                 return true;
             }
+
+            // 인스펙터 참조가 비어 있어도 씬 전체 스캔이 매 프레임 반복되지는 않게 한다.
+            if (Time.unscaledTime < nextGroundColliderSearchTime)
+            {
+                resolvedGroundCollider = null;
+                return false;
+            }
+
+            nextGroundColliderSearchTime = Time.unscaledTime + MissingReferenceRetryInterval;
 
             if (!string.IsNullOrEmpty(groundObjectName))
             {
@@ -262,16 +380,27 @@ namespace GameScene
 
             if (!CardInputSender.Instance.TryGetCurrentMagicData(out magicData))
             {
-                WDebug.LogWarning("[FieldSelector] Could not resolve current magic data.");
+                if (!warnedMissingMagicData)
+                {
+                    warnedMissingMagicData = true;
+                    WDebug.LogWarning("[FieldSelector] Could not resolve current magic data.");
+                }
                 return false;
             }
+
+            warnedMissingMagicData = false;
 
             if (!GameParameterResolver.TryGetMagicParameter(magicData, "range", out range))
             {
-                WDebug.LogWarning($"[FieldSelector] Could not find range parameter for {magicData.serverName}.");
+                if (warnedMissingRangeMagicName != magicData.serverName)
+                {
+                    warnedMissingRangeMagicName = magicData.serverName;
+                    WDebug.LogWarning($"[FieldSelector] Could not find range parameter for {magicData.serverName}.");
+                }
                 return false;
             }
 
+            warnedMissingRangeMagicName = null;
             GameParameterResolver.TryGetMagicParameter(magicData, "radius", out radius);
             return true;
         }
@@ -290,95 +419,63 @@ namespace GameScene
         {
             if (isLine)
             {
-                LineSkillIndicator lineIndicator = currentSkillIndicator.GetComponent<LineSkillIndicator>();
-                if (lineIndicator != null)
+                if (currentLineIndicator != null)
                 {
-                    lineIndicator.SetIndicator(casterPosition, previewPosition, range, radius);
+                    currentLineIndicator.SetIndicator(casterPosition, previewPosition, range, radius);
                 }
                 return;
             }
 
-            CircleSkillIndicator circleIndicator = currentSkillIndicator.GetComponent<CircleSkillIndicator>();
-            if (circleIndicator != null)
+            if (currentCircleIndicator != null)
             {
-                circleIndicator.SetIndicator(previewPosition, radius);
+                currentCircleIndicator.SetIndicator(previewPosition, radius);
             }
         }
 
-        private static void SetCircleWorldRadius(GameObject indicator, Vector3 position, float radius)
-        {
-            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
-            if (shapeRenderer == null)
-            {
-                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
-            }
-
-            shapeRenderer.SetCircle(position, radius, true, RangeIndicatorSortingOrder, 0f);
-        }
-
-        private static void ConfigureAimIndicator(GameObject indicator)
-        {
-            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
-            if (shapeRenderer == null)
-            {
-                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
-            }
-
-            if (shapeRenderer != null)
-            {
-                shapeRenderer.SetLocalCircle(AimIndicatorRadius, AimIndicatorSortingOrder);
-            }
-        }
-
-        private static void SetAimIndicator(GameObject indicator, Vector3 position)
-        {
-            SkillIndicatorShapeRenderer shapeRenderer = indicator.GetComponent<SkillIndicatorShapeRenderer>();
-            if (shapeRenderer == null)
-            {
-                shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
-            }
-
-            shapeRenderer.SetCircle(position, AimIndicatorRadius, true, AimIndicatorSortingOrder, 0f);
-        }
-
-        private static GameObject CreateAimIndicator()
+        private static GameObject CreateAimIndicator(out SkillIndicatorShapeRenderer shapeRenderer)
         {
             GameObject indicator = new GameObject("AimIndicator");
-            indicator.AddComponent<SkillIndicatorShapeRenderer>();
-            ConfigureAimIndicator(indicator);
+            shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            shapeRenderer.SetLocalCircle(AimIndicatorRadius, AimIndicatorSortingOrder);
             return indicator;
         }
 
-        private static GameObject CreateRangeIndicator()
+        private static GameObject CreateRangeIndicator(out SkillIndicatorShapeRenderer shapeRenderer)
         {
             GameObject indicator = new GameObject("RangeIndicator");
-            indicator.AddComponent<SkillIndicatorShapeRenderer>();
+            shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
             return indicator;
         }
 
-        private static GameObject CreateLineSkillIndicator()
+        private static GameObject CreateLineSkillIndicator(out LineSkillIndicator lineIndicator)
         {
             GameObject indicator = new GameObject("LineSkillIndicator");
-            indicator.AddComponent<LineSkillIndicator>();
+            lineIndicator = indicator.AddComponent<LineSkillIndicator>();
             return indicator;
         }
 
-        private static GameObject CreateCircleSkillIndicator()
+        private static GameObject CreateCircleSkillIndicator(out CircleSkillIndicator circleIndicator)
         {
             GameObject indicator = new GameObject("CircleSkillIndicator");
-            indicator.AddComponent<CircleSkillIndicator>();
+            circleIndicator = indicator.AddComponent<CircleSkillIndicator>();
             return indicator;
         }
 
         private void LogMagicParametersIfChanged(CombinedMagicData magicData, float range, float radius)
         {
-            string key = $"{magicData.serverName}:{range:F3}:{radius:F3}";
-            if (lastLoggedMagicParameterKey == key)
+            // 문자열 키를 만들어 비교하면 매 프레임 문자열이 할당된다. 값 비교로 충분하다.
+            if (hasLoggedMagicParameters &&
+                lastLoggedMagicName == magicData.serverName &&
+                lastLoggedRange == range &&
+                lastLoggedRadius == radius)
             {
                 return;
             }
 
-            lastLoggedMagicParameterKey = key;
+            hasLoggedMagicParameters = true;
+            lastLoggedMagicName = magicData.serverName;
+            lastLoggedRange = range;
+            lastLoggedRadius = radius;
             WDebug.Log($"[FieldSelector] magic={magicData.serverName}, range={range:F3}, radius={radius:F3}");
         }
     }
