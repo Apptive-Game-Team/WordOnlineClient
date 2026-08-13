@@ -201,7 +201,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1000045
-    m_Localized: Drops a torch that rallies nearby allies.
+    m_Localized: Builds a totem that rallies nearby allies and directs them to attack
+      enemies around it.
     m_Metadata:
       m_Items: []
   - m_Id: 1000046
