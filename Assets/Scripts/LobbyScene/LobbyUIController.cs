@@ -29,6 +29,14 @@ namespace LobbyScene
         [SerializeField] private CardImageMapper cardImageMapper;
         private static DeckResponseDto[] userDecks;
 
+        /// <summary>
+        /// Drops decks cached from the matching server, so the next lobby load refetches them.
+        /// </summary>
+        public static void ClearCachedDecks()
+        {
+            userDecks = null;
+        }
+
         public LocalizedString deckLoadFailed;
         public LocalizedString noDecksAvailable;
         public LocalizedString deckSelectionFailed;

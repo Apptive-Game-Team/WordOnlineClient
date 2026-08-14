@@ -46,6 +46,15 @@ namespace DeckScene
 
         private readonly DeckApiClient deckApiClient = new DeckApiClient();
 
+        /// <summary>
+        /// Drops decks and cards cached from the matching server, so the next fetch reloads them.
+        /// </summary>
+        public static void ClearCachedUserData()
+        {
+            cachedUserDecks = null;
+            cachedOwnedCards = null;
+        }
+
         public DeckResponseDto[] UserDecks => cachedUserDecks ?? Array.Empty<DeckResponseDto>();
         public CardDto[] OwnedCards => cachedOwnedCards ?? Array.Empty<CardDto>();
         public DeckResponseDto CurrentDeck { get; private set; }
