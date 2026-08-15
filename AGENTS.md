@@ -57,3 +57,13 @@ For Unity Editor automation through MCP, use the project skill at
 
 ## Configuration Notes
 `DEV_BUILD` controls development server routing for WebGL builds. Avoid editing generated Unity metadata by hand unless the change is intentional, and keep `ProjectSettings/ProjectVersion.txt` in sync with the Unity version used for the change.
+
+## Versioning
+
+`PlayerSettings.bundleVersion`, serialized as `bundleVersion` in
+`ProjectSettings/ProjectSettings.asset`, is the client's single version source.
+Update it in every runtime-behavior change: PATCH for backward-compatible fixes
+and internal changes, MINOR for backward-compatible features, and MAJOR for
+breaking server contracts or incompatible releases. Do not bump for
+documentation, tests, or agent-instruction-only changes. Do not maintain a
+second client version value.
