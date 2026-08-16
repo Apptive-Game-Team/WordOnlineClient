@@ -11,6 +11,10 @@ namespace GameScene
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
 
+        // PointerEventData를 호출마다 새로 만들면 그대로 GC 부담이 된다. EventSystem이 바뀔 때만 다시 만든다.
+        private static EventSystem cachedEventSystem;
+        private static PointerEventData cachedPointerEventData;
+
         public static bool IsPointerOverUi()
         {
             RefreshRaycastResults();
@@ -49,11 +53,14 @@ namespace GameScene
                 return;
             }
 
-            PointerEventData pointerData = new PointerEventData(eventSystem)
+            if (cachedPointerEventData == null || cachedEventSystem != eventSystem)
             {
-                position = Input.mousePosition
-            };
-            eventSystem.RaycastAll(pointerData, RaycastResults);
+                cachedEventSystem = eventSystem;
+                cachedPointerEventData = new PointerEventData(eventSystem);
+            }
+
+            cachedPointerEventData.position = Input.mousePosition;
+            eventSystem.RaycastAll(cachedPointerEventData, RaycastResults);
         }
     }
 }

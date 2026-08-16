@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 468314681180972983, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_Name
-      value: AbstractProjectile Variant
+      value: WaterShot
       objectReference: {fileID: 0}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.030777
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.7384624
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -51,6 +51,10 @@ PrefabInstance:
     - target: {fileID: 4511551496717632115, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982256350504164619, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5982256350504164619, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
       propertyPath: m_Sprite

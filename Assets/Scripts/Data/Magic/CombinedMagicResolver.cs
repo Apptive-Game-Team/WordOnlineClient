@@ -57,23 +57,29 @@ namespace Data.Magic
             return false;
         }
     
+        // CardType은 값이 촘촘한 작은 enum이라 Dictionary 대신 고정 배열로 센다.
+        // TryResolve가 필드 선택 중 매 프레임, dataList 항목마다 호출되므로 여기서 할당이 생기면 안 된다.
+        private static readonly int[] RecipeCounts = new int[System.Enum.GetValues(typeof(CardType)).Length];
+
         private static bool AreSameMultiset(IList<CardType> a, IList<CardType> b)
         {
             if (a == null || b == null) return false;
             if (a.Count != b.Count) return false;
 
-            var counts = new Dictionary<CardType, int>();
-            foreach (var x in a)
+            System.Array.Clear(RecipeCounts, 0, RecipeCounts.Length);
+
+            for (int i = 0; i < a.Count; i++)
             {
-                counts.TryGetValue(x, out var c);
-                counts[x] = c + 1;
+                int index = (int)a[i];
+                if (index < 0 || index >= RecipeCounts.Length) return false;
+                RecipeCounts[index]++;
             }
 
-            foreach (var y in b)
+            for (int i = 0; i < b.Count; i++)
             {
-                if (!counts.TryGetValue(y, out var c) || c == 0)
-                    return false;
-                counts[y] = c - 1;
+                int index = (int)b[i];
+                if (index < 0 || index >= RecipeCounts.Length || RecipeCounts[index] == 0) return false;
+                RecipeCounts[index]--;
             }
 
             return true;

@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using Admin.Dto;
 using Data;
 using Global;
@@ -34,7 +36,20 @@ namespace Admin
         {
             string sourceName = string.IsNullOrEmpty(roomInfo.sourceName) ? "Lobby" : roomInfo.sourceName;
             string serverUrl = string.IsNullOrEmpty(roomInfo.serverUrl) ? roomInfo.sourceBaseUrl : roomInfo.serverUrl;
-            return $"[{sourceName}] {serverUrl}";
+            string createdAt = FormatCreatedAt(roomInfo.createdAt);
+            return string.IsNullOrEmpty(createdAt)
+                ? $"[{sourceName}] {serverUrl}"
+                : $"[{sourceName}] {serverUrl} · {createdAt}";
+        }
+
+        // Rows are ordered oldest first, so a local wall-clock time is what makes "this room was
+        // created later than that one" checkable at a glance. Older servers omit the field entirely,
+        // which lands here as default(DateTime).
+        private static string FormatCreatedAt(DateTime createdAt)
+        {
+            return createdAt == default
+                ? string.Empty
+                : createdAt.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture);
         }
 
         private void ApplySourceStyle(RoomInfo roomInfo)

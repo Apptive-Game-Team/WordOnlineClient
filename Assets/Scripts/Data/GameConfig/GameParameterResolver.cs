@@ -27,6 +27,12 @@ namespace Data.GameConfig
             "mass"
         };
 
+        // FieldSelector는 필드 선택 중 매 프레임 range/radius를 조회한다. 아래 해석 로직은
+        // parameters 전체를 몇 번씩 훑는 LINQ 파이프라인이라 프레임마다 돌리면 비용이 크므로
+        // (magic, paramName)별 결과를 메모이즈한다. null 값은 "찾지 못함"을 뜻한다.
+        private static readonly Dictionary<MagicParameterKey, float?> MagicParameterCache = new();
+        private static IReadOnlyList<GameParameterData> cachedParameterSource;
+
         public static string GetMagicDisplayStats(CombinedMagicData magic)
         {
             if (magic == null)
@@ -86,6 +92,46 @@ namespace Data.GameConfig
                 return false;
             }
 
+            InvalidateCacheIfSourceChanged(parameters);
+
+            var key = new MagicParameterKey(magic, paramName);
+            if (MagicParameterCache.TryGetValue(key, out float? cached))
+            {
+                if (!cached.HasValue)
+                {
+                    return false;
+                }
+
+                value = cached.Value;
+                return true;
+            }
+
+            bool resolved = ResolveMagicParameter(parameters, magic, paramName, out value);
+            MagicParameterCache[key] = resolved ? value : (float?)null;
+            return resolved;
+        }
+
+        /// <summary>
+        /// ParametersDataSource는 갱신될 때마다 새 List를 배정하므로, 참조가 바뀌면 캐시를 버린다.
+        /// </summary>
+        private static void InvalidateCacheIfSourceChanged(IReadOnlyList<GameParameterData> parameters)
+        {
+            if (ReferenceEquals(cachedParameterSource, parameters))
+            {
+                return;
+            }
+
+            cachedParameterSource = parameters;
+            MagicParameterCache.Clear();
+        }
+
+        private static bool ResolveMagicParameter(
+            IReadOnlyList<GameParameterData> parameters,
+            CombinedMagicData magic,
+            string paramName,
+            out float value)
+        {
+            value = 0f;
             var objectNames = GetObjectNamesForParameter(parameters, magic, paramName);
             foreach (var objectName in objectNames)
             {
@@ -124,42 +170,31 @@ namespace Data.GameConfig
         private static bool TryGetMagicFamilyObjectName(CombinedMagicData magic, out string objectName)
         {
             objectName = null;
-            if (magic?.recipe == null)
+            if (magic == null)
             {
                 return false;
             }
 
-            if (magic.recipe.Contains(CardType.Shoot))
+            switch (magic.castType)
             {
-                objectName = "shoot";
-                return true;
+                case CardType.Spawn:
+                    objectName = "spawn";
+                    return true;
+                case CardType.Drop:
+                    objectName = "drop";
+                    return true;
+                case CardType.Explode:
+                    objectName = "explode";
+                    return true;
+                case CardType.Build:
+                    objectName = "build";
+                    return true;
+                case CardType.Shoot:
+                    objectName = "shoot";
+                    return true;
+                default:
+                    return false;
             }
-
-            if (magic.recipe.Contains(CardType.Explode))
-            {
-                objectName = "explode";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Drop))
-            {
-                objectName = "drop";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Spawn))
-            {
-                objectName = "spawn";
-                return true;
-            }
-
-            if (magic.recipe.Contains(CardType.Build))
-            {
-                objectName = "build";
-                return true;
-            }
-
-            return false;
         }
 
         private static List<string> GetObjectNamesForMagic(
@@ -241,6 +276,56 @@ namespace Data.GameConfig
             return Math.Abs(value - Math.Round(value)) < 0.001f
                 ? ((int)Math.Round(value)).ToString(CultureInfo.InvariantCulture)
                 : value.ToString("0.##", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// <see cref="ResolveMagicParameter"/>가 실제로 읽는 입력만 담는 캐시 키.
+        /// 여기 없는 필드가 결과에 영향을 주지 않으므로 잘못된 캐시 적중이 생기지 않는다.
+        /// </summary>
+        private readonly struct MagicParameterKey : IEquatable<MagicParameterKey>
+        {
+            private readonly long magicId;
+            private readonly CardType castType;
+            private readonly string serverName;
+            private readonly string resourceName;
+            private readonly string localizationKey;
+            private readonly string paramName;
+
+            public MagicParameterKey(CombinedMagicData magic, string paramName)
+            {
+                magicId = magic.id;
+                castType = magic.castType;
+                serverName = magic.serverName;
+                resourceName = magic.resourceName;
+                localizationKey = magic.localizationKey;
+                this.paramName = paramName;
+            }
+
+            public bool Equals(MagicParameterKey other)
+            {
+                return magicId == other.magicId &&
+                       castType == other.castType &&
+                       string.Equals(serverName, other.serverName, StringComparison.Ordinal) &&
+                       string.Equals(resourceName, other.resourceName, StringComparison.Ordinal) &&
+                       string.Equals(localizationKey, other.localizationKey, StringComparison.Ordinal) &&
+                       string.Equals(paramName, other.paramName, StringComparison.Ordinal);
+            }
+
+            public override bool Equals(object obj) => obj is MagicParameterKey other && Equals(other);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = magicId.GetHashCode();
+                    hash = hash * 397 ^ (int)castType;
+                    hash = hash * 397 ^ (serverName?.GetHashCode() ?? 0);
+                    hash = hash * 397 ^ (resourceName?.GetHashCode() ?? 0);
+                    hash = hash * 397 ^ (localizationKey?.GetHashCode() ?? 0);
+                    hash = hash * 397 ^ (paramName?.GetHashCode() ?? 0);
+                    return hash;
+                }
+            }
         }
     }
 }

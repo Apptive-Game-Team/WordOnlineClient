@@ -28,6 +28,10 @@ namespace GameScene.Card
         private readonly Dictionary<int, PendingInputRequest> inputRequestDict = new Dictionary<int, PendingInputRequest>();
         private readonly List<string> _currentCardNameList = new List<string>();
         private readonly List<CardUI> _currentCardList = new List<CardUI>();
+
+        // FieldSelector가 매 프레임 호출하는 조회 전용 경로에서 쓰는 재사용 버퍼.
+        // 호출자가 리스트를 보관하지 않는 경우에만 쓴다.
+        private readonly List<CardType> _recipeQueryBuffer = new List<CardType>();
     
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
@@ -77,6 +81,25 @@ namespace GameScene.Card
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Confirm();
+            }
+
+            if (CardHotkey.TryGetPressedSlotIndex(out int slotIndex))
+            {
+                ToggleCardBySlot(slotIndex);
+            }
+        }
+
+        private void ToggleCardBySlot(int slotIndex)
+        {
+            if (isWaitingInputResponse || GameSceneUIController.Instance == null)
+            {
+                return;
+            }
+
+            CardUI card = GameSceneUIController.Instance.GetCardAt(slotIndex);
+            if (card != null)
+            {
+                card.OnCardClicked();
             }
         }
 
@@ -134,7 +157,8 @@ namespace GameScene.Card
                 return false;
             }
 
-            return combinedMagicResolver.TryResolve(GetCurrentRecipeTypes(), out data);
+            // TryResolve는 recipe를 읽기만 하므로 프레임마다 새 리스트를 만들 필요가 없다.
+            return combinedMagicResolver.TryResolve(FillRecipeTypes(_recipeQueryBuffer), out data);
         }
     
         private void CancelAll()
@@ -304,15 +328,20 @@ namespace GameScene.Card
 
         private List<CardType> GetCurrentRecipeTypes()
         {
-            var list = new List<CardType>(_currentCardList.Count);
+            return FillRecipeTypes(new List<CardType>(_currentCardList.Count));
+        }
+
+        private List<CardType> FillRecipeTypes(List<CardType> buffer)
+        {
+            buffer.Clear();
             foreach (var c in _currentCardList)
             {
                 if (CardNameMapper.TryMapToCardType(c.CardName, out var t))
-                    list.Add(t);
+                    buffer.Add(t);
                 else
                     WDebug.LogWarning($"[CardInputSender] Unknown CardName → CardType map: {c.CardName}");
             }
-            return list;
+            return buffer;
         }
         public void SetExpectedMagicUI()
         {
