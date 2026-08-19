@@ -12,12 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Installed into the runner temp directory to match deploy-itch.yml, where
+      # unpacking into the workspace breaks the Unity build.
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
+          curl -L -o "$RUNNER_TEMP/butler.zip" https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -o "$RUNNER_TEMP/butler.zip" -d "$RUNNER_TEMP/butler-bin"
+          chmod +x "$RUNNER_TEMP/butler-bin/butler"
+          echo "$RUNNER_TEMP/butler-bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/butler-bin/butler" -V
 
       # A push denial is almost always the key's account not owning or
       # administering the target rather than the key itself being bad, which is
@@ -39,4 +42,4 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
           ITCH_USER: ${{ secrets.ITCH_USER }}
           ITCH_GAME: ${{ secrets.ITCH_GAME }}
-        run: ./butler status "$ITCH_USER/$ITCH_GAME:webgl"
+        run: butler status "$ITCH_USER/$ITCH_GAME:webgl"
