@@ -13,19 +13,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Butler unpacks butler, butler.zip, 7z.so and libc7zip.so next to itself.
+      # Unpacking into the workspace leaves those as untracked files, and
+      # game-ci/unity-builder refuses to build on a dirty branch because its
+      # default semantic versioning reads the git tree. Keep them in the runner
+      # temp directory and expose the binary through PATH instead.
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
+          curl -L -o "$RUNNER_TEMP/butler.zip" https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -o "$RUNNER_TEMP/butler.zip" -d "$RUNNER_TEMP/butler-bin"
+          chmod +x "$RUNNER_TEMP/butler-bin/butler"
+          echo "$RUNNER_TEMP/butler-bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/butler-bin/butler" -V
 
       # Verify the push target before the Unity build so credential and target
       # errors surface in a minute instead of after a full WebGL build.
       - name: Verify Itch.io credentials
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
-        run: ./butler status ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
+        run: butler status ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
 
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -74,4 +80,4 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          ./butler push build/WebGL/WebGL ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
+          butler push build/WebGL/WebGL ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:webgl
