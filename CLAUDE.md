@@ -15,14 +15,14 @@ Unity WebGL client for a competitive online word/card game. Target platform is W
 There is no local build command — builds run exclusively through Unity Editor or GitHub Actions.
 
 - Push to `main` → GitHub Actions builds WebGL → pushes artifacts to `WordOnline_Play` repo → deploys to itch.io
-- Non-`main`/`deploy` branches get `-customDefines DEV_BUILD` injected, which points `MatchingServer` to `dev.lobby.ac.yunseong.dev` instead of `lobby.ac.yunseong.dev`
+- Non-`main`/`deploy` branches get `-customDefines DEV_BUILD` injected. The server switch it used to drive is disabled in source, so every build currently starts on `dev.lobby.ac.yunseong.dev`; admins pick another matching server from the lobby dropdown
 - Library folder is cached in CI keyed on `Assets/**`, `Packages/**`, `ProjectSettings/**`
 
 ## Scripting Defines
 
 | Define | Effect |
 |---|---|
-| `DEV_BUILD` | Uses `dev.lobby.ac.yunseong.dev` for the matching/lobby server |
+| `DEV_BUILD` | Currently inert for server routing — the matching server default lives in `MatchingServerCatalog` |
 | `UNITY_WEBGL && !UNITY_EDITOR` | Selects `WebGLStompTransport` over `NativeStompTransport` |
 
 ## Architecture
@@ -40,8 +40,10 @@ Two base classes in `Assets/Scripts/Global/`:
 
 ### Server Endpoints (`Data.ServerList`)
 
-- `ServerList.MatchingServer` — lobby/matchmaking (`lobby.ac.yunseong.dev:443`, HTTPS/WSS)
+- `ServerList.MatchingServer` — lobby/matchmaking; resolves to `MatchingServerCatalog.Current`, which defaults to `dev.lobby.ac.yunseong.dev:443` and can be switched by admins
 - `ServerList.AccountServer` — auth/account (`account.ac.yunseong.dev:443`, HTTPS/WSS)
+
+`MatchingServerCatalog` holds the switchable candidates (`localhost:6209`, dev, deploy — in auto-select priority order). `LobbyScene.MatchingServerDropdown` (an `AdminOnly` GameObject in `LobbyScene`) health-checks each candidate via `/api/deploy/status`, lists only the healthy ones, and `LobbyScene.MatchingServerSwitcher` clears server-scoped state and reloads the lobby on a change.
 
 HTTP helpers are on `Server`: `SetAuthorization(req)` adds Bearer token; `SetAcceptLanguage(req)` adds locale header.
 

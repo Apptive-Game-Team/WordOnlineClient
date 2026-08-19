@@ -20,7 +20,10 @@ namespace Global
             get => _user;
             set
             {
-                WDebug.Log("Setting User: " + value.name + ", ID: " + value.id);
+                // null clears the cached user, e.g. when the matching server changes.
+                WDebug.Log(value == null
+                    ? "Clearing User"
+                    : "Setting User: " + value.name + ", ID: " + value.id);
                 _user = value;
             }
         }
