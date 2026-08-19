@@ -38,7 +38,7 @@ namespace MagicBookScene
             /* Wind      */ { 1f, 1f, 1f, 1f, 2f, 2f, 1f },
         };
 
-        // None has no card art, so its icon falls back to a plain disc.
+        // None has no card art; its header cell is left empty.
         private static readonly CardType[] SlotCardTypes =
         {
             CardType.Dummy,
@@ -143,6 +143,14 @@ namespace MagicBookScene
         private void CreateIconCell(RectTransform grid, ElementSlot slot)
         {
             GameObject cell = CreateCell(grid, slot + "Cell");
+            Sprite sprite = ResolveIcon(slot);
+            if (sprite == null)
+            {
+                // None has no card art. Leave the cell empty instead of drawing an
+                // untextured Image, which shows up as a white box.
+                return;
+            }
+
             var iconObject = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             var iconRect = iconObject.GetComponent<RectTransform>();
             iconRect.SetParent(cell.transform, false);
@@ -152,7 +160,7 @@ namespace MagicBookScene
             iconRect.offsetMax = new Vector2(-IconInset, -IconInset);
 
             var icon = iconObject.GetComponent<Image>();
-            icon.sprite = ResolveIcon(slot);
+            icon.sprite = sprite;
             icon.preserveAspect = true;
             icon.raycastTarget = false;
         }
@@ -169,6 +177,8 @@ namespace MagicBookScene
             cellObject.transform.SetParent(grid, false);
 
             var background = cellObject.GetComponent<Image>();
+            // Same reason as the icon cells: an Image with no sprite draws a white box.
+            background.enabled = cellBackground != null;
             background.sprite = cellBackground;
             background.type = Image.Type.Sliced;
             background.pixelsPerUnitMultiplier = CellCornerScale;
@@ -201,13 +211,13 @@ namespace MagicBookScene
             return label;
         }
 
+        // Returns null when the slot has no card art, which is the case for None.
         private Sprite ResolveIcon(ElementSlot slot)
         {
             CardType cardType = SlotCardTypes[(int)slot];
-            Sprite sprite = cardImageMapper != null
+            return cardImageMapper != null
                 ? cardImageMapper.GetCardImage(cardType)
                 : DeckScene.DeckCardSpriteResolver.GetCardSprite(cardType);
-            return sprite != null ? sprite : Resources.GetBuiltinResource<Sprite>("UI/Skin/Knob.psd");
         }
 
         private static string FormatMultiplier(float multiplier)
