@@ -75,7 +75,7 @@ namespace GameScene.Coach
         {
             if (helper == null)
             {
-                helper = Object.FindObjectOfType<MagicHelperUI>();
+                helper = UnityEngine.Object.FindObjectOfType<MagicHelperUI>();
             }
 
             return helper;

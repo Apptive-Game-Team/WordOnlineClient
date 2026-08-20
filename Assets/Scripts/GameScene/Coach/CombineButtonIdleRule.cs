@@ -37,7 +37,7 @@ namespace GameScene.Coach
         {
             if (combineButton == null)
             {
-                combineButton = Object.FindObjectOfType<MagicCombineButton>();
+                combineButton = UnityEngine.Object.FindObjectOfType<MagicCombineButton>();
             }
 
             return combineButton != null ? new[] { combineButton.transform } : null;

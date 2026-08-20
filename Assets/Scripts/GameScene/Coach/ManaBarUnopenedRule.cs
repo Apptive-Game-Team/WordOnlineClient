@@ -45,7 +45,7 @@ namespace GameScene.Coach
         {
             if (barController == null)
             {
-                barController = Object.FindObjectOfType<BarController>();
+                barController = UnityEngine.Object.FindObjectOfType<BarController>();
             }
 
             return barController;
