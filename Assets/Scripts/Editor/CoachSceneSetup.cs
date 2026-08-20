@@ -20,6 +20,7 @@ namespace WordOnline.EditorTools
     public static class CoachSceneSetup
     {
         private const string CoachRootName = "CoachSystem";
+        private const string CoachPanelName = "CoachPanel";
         private const string CloseButtonName = "CoachCloseButton";
         private const string ToggleName = "CoachHintToggle";
         private const string FillName = "Fill";
@@ -96,10 +97,13 @@ namespace WordOnline.EditorTools
                     return;
                 }
 
-                if (FindDeepChild(contents.transform, ToggleName) != null)
+                Transform stale = FindDeepChild(contents.transform, ToggleName);
+                if (stale != null)
                 {
-                    Debug.Log("[CoachSceneSetup] The settings panel already carries the hint toggle.");
-                    return;
+                    // 그냥 두고 나가면 옛 버전으로 만든 토글이 영영 그대로 남는다.
+                    // 갈아끼워야 이 메뉴를 다시 돌리는 것으로 최신 모양이 된다.
+                    Object.DestroyImmediate(stale.gameObject);
+                    Debug.Log("[CoachSceneSetup] 기존 토글을 지우고 다시 만든다.");
                 }
 
                 GameObject toggleObject = BuildToggle(parent);
@@ -278,10 +282,14 @@ namespace WordOnline.EditorTools
 
         private static TutorialPanel InstantiatePanel(GameObject root)
         {
-            TutorialPanel existing = root.GetComponentInChildren<TutorialPanel>(true);
-            if (existing != null)
+            // 패널은 root가 아니라 Canvas 아래에 붙는다. root 밑에서만 찾으면 재실행할 때마다
+            // 패널이 하나씩 늘어나므로 씬 전체에서 이름으로 찾는다.
+            foreach (TutorialPanel candidate in Object.FindObjectsOfType<TutorialPanel>(true))
             {
-                return existing;
+                if (candidate.gameObject.name == CoachPanelName)
+                {
+                    return candidate;
+                }
             }
 
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PanelPrefabPath);
@@ -295,7 +303,7 @@ namespace WordOnline.EditorTools
             Transform parent = canvas != null ? canvas.transform : root.transform;
 
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
-            instance.name = "CoachPanel";
+            instance.name = CoachPanelName;
             Undo.RegisterCreatedObjectUndo(instance, "Create Coach Panel");
 
             // 훈수는 입력을 막지 않는다. 여기서 화면을 어둡게 하거나 잠그지 않는 이유다.
