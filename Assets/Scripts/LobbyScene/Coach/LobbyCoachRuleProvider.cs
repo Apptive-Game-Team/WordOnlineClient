@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LobbyScene.Coach
 {
-    /// <summary>Adds the lobby rules to the director beside it.</summary>
+    /// <summary>옆에 붙은 director에 로비 규칙을 넣어 준다.</summary>
     [RequireComponent(typeof(CoachDirector))]
     public class LobbyCoachRuleProvider : MonoBehaviour, ICoachRuleProvider
     {

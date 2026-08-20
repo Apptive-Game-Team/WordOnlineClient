@@ -4,8 +4,8 @@ using UnityEngine;
 namespace GameScene.Coach
 {
     /// <summary>
-    /// Cards are selected but the cast button has not been pressed. The player
-    /// has done the hard half and stopped one step short.
+    /// 카드는 골랐는데 주문 버튼을 누르지 않았다. 어려운 절반을 해 놓고 한 걸음 앞에서
+    /// 멈춘 상태다.
     /// </summary>
     public class CombineButtonIdleRule : GameCoachRule
     {

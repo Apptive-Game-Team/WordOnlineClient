@@ -6,9 +6,8 @@ using UnityEngine.UI;
 namespace Global.Coach
 {
     /// <summary>
-    /// Pulses an outline around whatever a hint points at. Anything it touches
-    /// is restored exactly as it was, because targets such as CardUI own an
-    /// Outline of their own that the game toggles independently.
+    /// 힌트가 가리키는 대상에 테두리를 둘러 깜빡인다. 건드린 것은 원래 상태로 정확히
+    /// 되돌린다. CardUI처럼 자기 Outline을 갖고 게임이 따로 켜고 끄는 대상이 있기 때문이다.
     /// </summary>
     public class CoachHighlighter : MonoBehaviour
     {
@@ -79,7 +78,7 @@ namespace Global.Coach
             Graphic graphic = target.GetComponent<Graphic>();
             if (graphic == null)
             {
-                // Outline is a UI effect, so it cannot decorate a plain transform.
+                // Outline은 UI 이펙트라 Graphic 없는 transform에는 붙지 않는다.
                 return;
             }
 

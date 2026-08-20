@@ -4,20 +4,20 @@ using UnityEngine;
 namespace Global.Coach
 {
     /// <summary>
-    /// Where a coach hint sits on screen. TutorialPanel hard-codes positions
-    /// tuned for the onboarding flow, which is free to cover the field; a
-    /// non-blocking hint is not, so the director places the panel itself.
+    /// 훈수 힌트가 화면 어디에 앉을지. TutorialPanel은 온보딩에 맞춘 위치를 하드코딩하는데,
+    /// 온보딩은 필드를 가려도 되지만 비차단 힌트는 그러면 안 된다. 그래서 director가
+    /// 배치를 직접 잡는다.
     /// </summary>
     [Serializable]
     public struct CoachPanelPlacement
     {
-        [Tooltip("Normalized anchor on the canvas. (0.5, 1) is top centre, (0, 0) is bottom left.")]
+        [Tooltip("캔버스 기준 정규화 anchor. (0.5, 1)이 상단 중앙, (0, 0)이 좌측 하단이다.")]
         public Vector2 anchor;
 
-        [Tooltip("Pivot of the panel itself, usually matching the anchor.")]
+        [Tooltip("패널 자신의 pivot. 보통 anchor와 같게 둔다.")]
         public Vector2 pivot;
 
-        [Tooltip("Offset from the anchor, in canvas units.")]
+        [Tooltip("anchor에서 밀어낼 거리. 캔버스 단위다.")]
         public Vector2 offset;
 
         public void ApplyTo(RectTransform target)
@@ -33,7 +33,7 @@ namespace Global.Coach
             target.anchoredPosition = offset;
         }
 
-        /// <summary>Top centre, clear of the hand, the mana bar and the field.</summary>
+        /// <summary>상단 중앙. 손패와 마나 바, 필드를 모두 비켜난 자리다.</summary>
         public static CoachPanelPlacement TopCentre => new CoachPanelPlacement
         {
             anchor = new Vector2(0.5f, 1f),
@@ -41,7 +41,7 @@ namespace Global.Coach
             offset = new Vector2(0f, -40f)
         };
 
-        /// <summary>Top right, for hints whose target sits on the left.</summary>
+        /// <summary>상단 우측. 대상이 왼쪽에 있는 힌트가 쓴다.</summary>
         public static CoachPanelPlacement TopRight => new CoachPanelPlacement
         {
             anchor = new Vector2(1f, 1f),

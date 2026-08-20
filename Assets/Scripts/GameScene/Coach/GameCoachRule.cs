@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameScene.Coach
 {
-    /// <summary>Shared defaults for the in-game coach rules.</summary>
+    /// <summary>게임 씬 훈수 규칙이 공유하는 기본값.</summary>
     public abstract class GameCoachRule : ICoachRule
     {
         public abstract CoachRuleId Id { get; }
@@ -32,9 +32,8 @@ namespace GameScene.Coach
         }
 
         /// <summary>
-        /// Scene singletons are torn down between matches, so a rule that
-        /// cached one would point at a dead object. Reading through the
-        /// singleton every frame keeps that from happening.
+        /// 씬 싱글턴은 매치 사이에 사라지므로, 캐시해 두면 죽은 오브젝트를 가리키게 된다.
+        /// 매 프레임 싱글턴을 새로 읽어 그 상황을 피한다.
         /// </summary>
         protected static bool TryGetInput(out Card.CardInputSender sender)
         {

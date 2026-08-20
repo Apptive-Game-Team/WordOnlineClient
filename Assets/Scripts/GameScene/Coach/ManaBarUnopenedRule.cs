@@ -4,8 +4,8 @@ using UnityEngine;
 namespace GameScene.Coach
 {
     /// <summary>
-    /// The mana bar is still tucked away. Nothing blocks the player here, so
-    /// this sits below the hints about a stalled cast.
+    /// 마나 바를 아직 한 번도 올리지 않았다. 진행이 막힌 것은 아니라서 시전이 멈춘
+    /// 힌트들보다 뒤에 둔다.
     /// </summary>
     public class ManaBarUnopenedRule : GameCoachRule
     {
@@ -21,7 +21,7 @@ namespace GameScene.Coach
 
         public override int MaxShowsPerSession => 2;
 
-        /// <summary>The mana bar button sits below the primary spot, so move aside.</summary>
+        /// <summary>마나 바 버튼이 기본 자리 아래에 있어서 패널을 옆으로 비킨다.</summary>
         public override bool UseAlternatePlacement => true;
 
         public override bool IsActive()

@@ -14,9 +14,8 @@ using UnityEngine.UI;
 namespace WordOnline.EditorTools
 {
     /// <summary>
-    /// Wires the coach hint system into a scene and into the settings panel.
-    /// Both jobs are pure object graph plumbing, so doing them from a menu item
-    /// keeps the scene and prefab YAML out of hand-editing range.
+    /// 훈수 시스템을 씬과 설정 패널에 배선한다. 둘 다 오브젝트 그래프를 잇는 단순 작업이라,
+    /// 메뉴에서 처리하면 씬과 프리팹 YAML을 손으로 고칠 일이 없어진다.
     /// </summary>
     public static class CoachSceneSetup
     {
@@ -129,11 +128,10 @@ namespace WordOnline.EditorTools
         }
 
         /// <summary>
-        /// Unity's stock toggle is a small checkmark on a white box, which says
-        /// almost nothing about its state and matches nothing else in this
-        /// project. This builds the switch from the design system instead: the
-        /// whole row fills with the primary teal when hints are on, and a word
-        /// beside it spells the state out for anyone the colour does not reach.
+        /// Unity 기본 토글은 흰 상자에 작은 체크 표시라 상태를 거의 말해 주지 않고,
+        /// 이 프로젝트의 어떤 UI와도 어울리지 않는다. 대신 디자인 시스템으로 직접 만든다.
+        /// 켜지면 행 전체가 primary 청록으로 차고, 옆의 글자가 상태를 말로 적어
+        /// 색이 닿지 않는 유저에게도 알려 준다.
         /// </summary>
         private static GameObject BuildToggle(Transform parent)
         {
@@ -223,9 +221,8 @@ namespace WordOnline.EditorTools
         }
 
         /// <summary>
-        /// A hint the player cannot get rid of is worse than no hint. This puts
-        /// a close button in the panel's top-right corner, parented to the panel
-        /// so it comes and goes with it.
+        /// 치울 수 없는 힌트는 없느니만 못하다. 패널 우측 상단에 닫기 버튼을 붙인다.
+        /// 패널의 자식이라 패널과 함께 나타나고 사라진다.
         /// </summary>
         private static Button BuildCloseButton(RectTransform panelRect)
         {
@@ -301,7 +298,7 @@ namespace WordOnline.EditorTools
             instance.name = "CoachPanel";
             Undo.RegisterCreatedObjectUndo(instance, "Create Coach Panel");
 
-            // The coach never blocks input, so nothing here dims or gates the screen.
+            // 훈수는 입력을 막지 않는다. 여기서 화면을 어둡게 하거나 잠그지 않는 이유다.
             instance.SetActive(false);
 
             return instance.GetComponent<TutorialPanel>();

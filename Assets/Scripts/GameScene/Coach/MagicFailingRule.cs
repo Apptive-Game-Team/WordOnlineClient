@@ -6,9 +6,8 @@ using UnityEngine;
 namespace GameScene.Coach
 {
     /// <summary>
-    /// Casting keeps failing, which usually means the player does not yet know
-    /// which cards combine. Points at the suggestion list and outlines the
-    /// cards that would actually work.
+    /// 시전이 계속 실패한다. 보통 어떤 카드가 조합되는지 아직 모른다는 뜻이다. 추천 목록을
+    /// 가리키고 실제로 되는 카드에 테두리를 둘러 준다.
     /// </summary>
     public class MagicFailingRule : GameCoachRule, ICoachRuleLifecycle
     {
@@ -23,7 +22,7 @@ namespace GameScene.Coach
 
         public override int Priority => 3;
 
-        /// <summary>The streak itself is the wait, so no extra dwell is needed.</summary>
+        /// <summary>연속 실패를 세는 것 자체가 대기라서 dwell을 따로 두지 않는다.</summary>
         public override float DwellSeconds => 0f;
 
         public override int MaxShowsPerSession => 2;

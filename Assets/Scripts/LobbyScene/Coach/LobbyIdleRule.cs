@@ -6,8 +6,8 @@ using UnityEngine;
 namespace LobbyScene.Coach
 {
     /// <summary>
-    /// The player has been sitting in the lobby doing nothing and is not in a
-    /// queue. Nudges them toward a bot match rather than leaving them parked.
+    /// 로비에서 아무것도 하지 않고 앉아 있고 매칭 큐에도 없다. 그대로 세워 두는 대신
+    /// 봇 전투 쪽으로 밀어 준다.
     /// </summary>
     public class LobbyIdleRule : ICoachRule
     {
@@ -63,8 +63,8 @@ namespace LobbyScene.Coach
         }
 
         /// <summary>
-        /// Mouse movement counts as activity too. A player who is reading the
-        /// deck dropdown is not idle just because they pressed no key.
+        /// 마우스 이동도 활동으로 친다. 덱 드롭다운을 읽고 있는 유저가 키를 안 눌렀다고
+        /// 놀고 있는 것은 아니다.
         /// </summary>
         private bool HasInputThisFrame()
         {

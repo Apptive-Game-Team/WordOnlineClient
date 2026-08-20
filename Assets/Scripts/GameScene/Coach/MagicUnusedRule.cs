@@ -6,9 +6,8 @@ using UnityEngine;
 namespace GameScene.Coach
 {
     /// <summary>
-    /// No card has been played for a while. The dwell timer measures exactly
-    /// the gap since the last card, because using one flips this rule inactive
-    /// for that frame and the scheduler resets the timer.
+    /// 한동안 카드를 한 장도 쓰지 않았다. 카드를 쓰면 그 프레임에 이 규칙이 거짓이 되고
+    /// 스케줄러가 타이머를 초기화하므로, dwell 타이머가 곧 마지막 카드 이후 경과 시간이 된다.
     /// </summary>
     public class MagicUnusedRule : GameCoachRule, ICoachRuleLifecycle
     {

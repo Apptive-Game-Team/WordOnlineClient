@@ -8,9 +8,8 @@ using UnityEngine.UI;
 namespace LobbyScene.SettingPage
 {
     /// <summary>
-    /// Binds the coach hint on/off switch in the lobby settings page. Unlike
-    /// the volume sliders this cannot fire repeatedly while dragging, so the
-    /// write goes straight through instead of being coalesced.
+    /// 로비 설정 페이지의 훈수 on/off 스위치를 연결한다. 볼륨 슬라이더와 달리 드래그 중
+    /// 연달아 발생할 일이 없어서, 저장을 모으지 않고 바로 쓴다.
     /// </summary>
     public class CoachDataSetter : MonoBehaviour
     {
@@ -24,8 +23,8 @@ namespace LobbyScene.SettingPage
         [SerializeField] private TMP_Text titleLabel;
 
         /// <summary>
-        /// Spells out the current state in words. The switch also changes color,
-        /// but color alone reads as ambiguous and leaves colorblind players guessing.
+        /// 현재 상태를 글자로 적는다. 스위치 색도 같이 바뀌지만 색만으로는 애매하고,
+        /// 색각 이상 유저는 알 수 없다.
         /// </summary>
         [SerializeField] private TMP_Text stateLabel;
 
