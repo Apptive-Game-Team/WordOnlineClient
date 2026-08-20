@@ -67,8 +67,20 @@ namespace TutorialScene
             SceneManager.LoadScene(sceneName);
         }
 
+        private bool completed;
+
+        // 두 번 불려도 안전해야 한다. 이 오브젝트는 스스로를 파괴하므로, 두 번째 호출은
+        // 파괴된 오브젝트에 Destroy를 걸어 MissingReferenceException을 낸다. 진행이 이미
+        // 끝났다는 사실 자체는 오류가 아니라 그냥 할 일이 없는 상태다.
         private void CompleteOnboarding()
         {
+            if (completed)
+            {
+                return;
+            }
+
+            completed = true;
+
             if (currentState != null)
             {
                 currentState.Exit();
