@@ -6,21 +6,21 @@ namespace WordOnline.Tests
     public class OnboardingBattleWatchTests
     {
         [Test]
-        public void FinishesOnboardingWhenTheLobbyComesBackAfterTheBattle()
+        public void CompletesOnboardingWhenTheLobbyComesBackAfterTheBattle()
         {
             var watch = new OnboardingBattleWatch();
 
             Assert.AreEqual(OnboardingBattleAction.None, watch.OnSceneLoaded("GameScene"));
-            Assert.AreEqual(OnboardingBattleAction.FinishOnboarding, watch.OnSceneLoaded("LobbyScene"));
+            Assert.AreEqual(OnboardingBattleAction.CompleteOnboarding, watch.OnSceneLoaded("LobbyScene"));
         }
 
         // 매칭 실패로 로비에 남은 경우다. 여기서 온보딩을 끝내면 마지막 전투를 통째로 건너뛴다.
         [Test]
-        public void RetriesTheMatchWhenTheLobbyLoadsWithoutABattleHavingStarted()
+        public void PromptsAgainWhenTheLobbyLoadsWithoutABattleHavingStarted()
         {
             var watch = new OnboardingBattleWatch();
 
-            Assert.AreEqual(OnboardingBattleAction.StartPracticeMatch, watch.OnSceneLoaded("LobbyScene"));
+            Assert.AreEqual(OnboardingBattleAction.PromptPracticeMatch, watch.OnSceneLoaded("LobbyScene"));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace WordOnline.Tests
             watch.OnSceneLoaded("GameScene");
             watch.OnSceneLoaded("LobbyScene");
 
-            Assert.AreEqual(OnboardingBattleAction.FinishOnboarding, watch.OnSceneLoaded("LobbyScene"));
+            Assert.AreEqual(OnboardingBattleAction.CompleteOnboarding, watch.OnSceneLoaded("LobbyScene"));
         }
     }
 }

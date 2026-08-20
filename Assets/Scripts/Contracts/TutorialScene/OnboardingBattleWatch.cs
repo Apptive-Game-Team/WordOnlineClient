@@ -4,8 +4,12 @@ namespace TutorialScene
     public enum OnboardingBattleAction
     {
         None,
-        StartPracticeMatch,
-        FinishOnboarding,
+
+        /// <summary>아직 전투를 안 했다. 프랙티스 버튼을 누르라고 안내한다.</summary>
+        PromptPracticeMatch,
+
+        /// <summary>전투를 마치고 돌아왔다. 마무리 안내 후 온보딩을 끝낸다.</summary>
+        CompleteOnboarding,
     }
 
     /// <summary>
@@ -16,9 +20,9 @@ namespace TutorialScene
         private const string LobbySceneName = "LobbyScene";
         private const string GameSceneName = "GameScene";
 
-        // 매칭이 실패하면 게임 씬에 못 들어간 채 로비에 남는다. 그 상태로 온보딩을 끝내면
-        // 플레이어는 튜토리얼의 마지막 전투를 통째로 건너뛴 셈이 된다. 그래서 "전투에 들어갔다"를
-        // 따로 기억하고, 로비로 돌아온 것만으로는 끝내지 않는다.
+        // 플레이어가 버튼을 안 눌렀거나 매칭이 실패하면 게임 씬에 못 들어간 채 로비에 남는다.
+        // 그 상태로 온보딩을 끝내면 튜토리얼의 마지막 전투를 통째로 건너뛴 셈이 되므로,
+        // "전투에 들어갔다"를 따로 기억하고 로비로 돌아온 것만으로는 끝내지 않는다.
         private bool enteredBattle;
 
         public OnboardingBattleAction OnSceneLoaded(string sceneName)
@@ -40,8 +44,8 @@ namespace TutorialScene
             }
 
             return enteredBattle
-                ? OnboardingBattleAction.FinishOnboarding
-                : OnboardingBattleAction.StartPracticeMatch;
+                ? OnboardingBattleAction.CompleteOnboarding
+                : OnboardingBattleAction.PromptPracticeMatch;
         }
     }
 }
