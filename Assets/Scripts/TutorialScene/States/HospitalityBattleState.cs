@@ -19,6 +19,10 @@ namespace TutorialScene
 
         private LobbyTutorialController lobbyController;
 
+        // 로비 씬이 다시 로드되면 씬 이벤트가 또 온다. 마무리 안내를 두 번 띄우면 두 번째
+        // 패널이 이미 끝난 온보딩을 다시 끝내려 든다.
+        private bool completing;
+
         public void Enter()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -36,16 +40,24 @@ namespace TutorialScene
             HidePrompt();
         }
 
+        // 안내를 띄웠던 컨트롤러를 계속 들고 있어야 Exit에서 패널을 걷을 수 있다. 걷지 않으면
+        // 온보딩이 끝난 뒤에도 마지막 안내가 로비에 그대로 남는다.
+        private void ShowThrough(LobbyTutorialController controller, System.Action show)
+        {
+            lobbyController = controller;
+            show();
+        }
+
         private void PromptPracticeMatch()
         {
             // 로비 씬이 아직 준비되지 않았으면 아무것도 하지 않는다. 씬이 로드될 때 다시 온다.
-            lobbyController = LobbyTutorialController.Instance;
-            if (lobbyController == null)
+            LobbyTutorialController controller = LobbyTutorialController.Instance;
+            if (controller == null)
             {
                 return;
             }
 
-            lobbyController.ShowPracticeButton(OnPracticeButtonClicked);
+            ShowThrough(controller, () => controller.ShowPracticeButton(OnPracticeButtonClicked));
         }
 
         // 버튼을 누르면 로비 뷰모델이 매칭을 걸고 게임 씬으로 넘어간다. 안내는 여기서 걷는다.
@@ -67,16 +79,34 @@ namespace TutorialScene
 
         private void CompleteOnboarding()
         {
+            if (completing)
+            {
+                return;
+            }
+
+            completing = true;
+
             LobbyTutorialController controller = LobbyTutorialController.Instance;
             if (controller == null)
             {
                 // 마무리 안내를 띄울 곳이 없다면 안내 없이 끝낸다. 안내가 없다고 튜토리얼이
                 // 끝나지 않은 채 남는 쪽이 더 나쁘다.
-                GlobalTutorialManager.Instance.FinishOnboarding();
+                FinishOnboarding();
                 return;
             }
 
-            controller.ShowFirstMatchComplete(() => GlobalTutorialManager.Instance.FinishOnboarding());
+            ShowThrough(controller, () => controller.ShowFirstMatchComplete(FinishOnboarding));
+        }
+
+        private static void FinishOnboarding()
+        {
+            GlobalTutorialManager manager = GlobalTutorialManager.Instance;
+            if (manager == null)
+            {
+                return;
+            }
+
+            manager.FinishOnboarding();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
