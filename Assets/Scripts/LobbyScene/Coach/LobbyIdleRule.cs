@@ -41,7 +41,7 @@ namespace LobbyScene.Coach
         {
             if (practiceButton == null)
             {
-                practiceButton = Object.FindObjectOfType<PracticeButton>();
+                practiceButton = UnityEngine.Object.FindObjectOfType<PracticeButton>();
             }
 
             return practiceButton != null ? new[] { practiceButton.transform } : null;
