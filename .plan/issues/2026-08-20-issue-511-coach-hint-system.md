@@ -134,11 +134,24 @@
 - [x] `Assets/Scripts/Global/Coach/CoachHighlighter.cs`
   - 대상에 `Outline`을 붙이거나 기존 것을 켜고 DOTween으로 알파 펄스
   - `CardUI`처럼 자기 `Outline`을 가진 대상은 켜져 있었는지와 색을 기억해 원상 복구한다
+- [x] `Assets/Scripts/Global/Coach/CoachPanelPlacement.cs` — 패널 배치.
+  `TutorialPanel`은 좌우 위치를 `(480, -360)` / `(-480, -360)`으로 하드코딩하는데,
+  온보딩은 화면을 가려도 되지만 훈수는 안 된다. 그래서 `Show` 뒤에 배치를 덮어쓴다.
+  기본은 상단 중앙, 대체는 상단 우측이고 둘 다 인스펙터에서 조정한다
 - [x] `Assets/Scripts/Global/Coach/CoachDirector.cs` — `LocalSingletonObject<CoachDirector>`.
   옵션이 꺼져 있거나 온보딩 진행 중이면 통째로 억제하고, 매 프레임 규칙 상태를 스케줄러에 넣은 뒤
-  결과대로 패널과 강조를 켜고 끈다. 숙달 누적은 `CoachData`에 쌓는다
+  결과대로 패널과 강조를 켜고 끈다. 숙달과 거부 누적은 `CoachData`에 쌓는다.
+  `DismissVisible()`이 X 버튼에 연결된다
 - [x] `Assets/Tests/EditMode/CoachSchedulerTests.cs` — dwell, 쿨다운, 백오프, 숙달 판정, 세션 상한,
-  은퇴, 우선순위를 덮는 14개 테스트
+  은퇴, 우선순위, 직접 닫기를 덮는 18개 테스트
+
+#### 직접 닫기
+
+X 버튼으로 닫는 것은 그냥 흘려보내는 것과 다르다. 명시적인 거부이므로
+
+- 백오프를 마지막 단계(120초)로 바로 올린다
+- 뒤늦은 행동을 힌트를 따른 것으로 세지 않는다
+- 같은 힌트를 2번 직접 닫으면 영구 은퇴한다 (따라서 은퇴하는 기준 3회보다 낮다)
 
 ### Step 3: 규칙 6종
 
@@ -173,11 +186,15 @@
   - `Tools/Coach/Setup Coach In Active Scene` — 현재 씬에 `CoachSystem` 오브젝트를 만들고
     `CoachDirector`, `CoachHighlighter`, 씬에 맞는 규칙 공급자를 붙인 뒤
     `TutorialMessagePanel.prefab`을 Canvas 아래에 인스턴스로 넣고 참조까지 연결한다
+    패널 우측 상단에 X 버튼도 만들어 `CoachDirector.DismissVisible()`에 연결한다
   - `Tools/Coach/Add Hint Toggle To Settings Panel` — `Assets/Prefabs/UI/Lobby/Panal.prefab`의
-    `SoundSliders` 아래에 Toggle을 만들고 `CoachDataSetter`에 연결한다
+    `SoundSliders` 아래에 Toggle을 만들고 `CoachDataSetter`에 연결한다.
+    Unity 기본 토글은 흰 상자에 작은 체크 표시라 상태가 잘 안 읽히고 프로젝트 디자인과도 맞지 않는다.
+    그래서 `DESIGN.md` 토큰으로 직접 만든다. 켜지면 행 전체가 primary 청록으로 차고,
+    옆의 글자가 "켬" / "끔"으로 상태를 말로 적는다 (색만으로는 애매하고 색각 이상 유저에게 안 보인다)
 - [ ] `GameScene.unity`에서 메뉴 실행 후 저장 (에디터 필요)
 - [ ] `LobbyScene.unity`에서 메뉴 실행 후 저장 (에디터 필요)
-- [ ] Toggle 메뉴 실행 후 위치와 라벨 정리 (에디터 필요)
+- [ ] Toggle 메뉴 실행 후 패널 안에서 위치 정리 (에디터 필요)
 
 ### Step 6: 로컬라이제이션
 
@@ -192,6 +209,8 @@
   | `coach.combineButton` | 주문 버튼을 눌러 시전해 보세요. |
   | `coach.fieldSelect` | 마법을 시전할 위치를 클릭해 보세요. |
   | `coach.lobbyIdle` | 봇 전투로 연습해 보세요. |
+
+- [x] `LobbyUI` 테이블에 `CoachHint`(훈수), `CoachHintOn`(켬), `CoachHintOff`(끔) 추가
 
 ### Step 7: 버전과 마무리
 
@@ -218,6 +237,11 @@
   10. 같은 힌트를 3번 따르면 그 뒤로는 다시 뜨지 않는다. `PlayerPrefs` 초기화 후에는 다시 뜬다
   11. 온보딩 튜토리얼 진행 중에는 훈수가 뜨지 않는다
   12. 로비에서 45초 무입력이면 봇 전투 버튼이 강조된다
+  13. 힌트 패널이 필드나 손패를 가리지 않는다
+  14. 패널 우측 상단 X 버튼을 누르면 힌트가 바로 사라진다
+  15. X로 닫은 힌트는 최소 120초 동안 다시 뜨지 않는다
+  16. 같은 힌트를 두 번 X로 닫으면 그 뒤로는 다시 뜨지 않는다
+  17. 설정 토글이 켜짐일 때 행이 청록으로 차고 "켬", 꺼짐일 때 갈색에 "끔"으로 보인다
 
 ## Risks & Rollback
 

@@ -24,8 +24,11 @@ namespace Global.Coach
         /// <summary>Upper bound on how often this hint may appear in one scene visit.</summary>
         int MaxShowsPerSession { get; }
 
-        /// <summary>Which side of the screen the message panel sits on.</summary>
-        bool ShowPanelOnRight { get; }
+        /// <summary>
+        /// Use the director's alternate placement instead of its primary one.
+        /// A hint whose target sits under the primary spot needs the other one.
+        /// </summary>
+        bool UseAlternatePlacement { get; }
 
         /// <summary>
         /// True while the problem exists. Going false resets the dwell timer,

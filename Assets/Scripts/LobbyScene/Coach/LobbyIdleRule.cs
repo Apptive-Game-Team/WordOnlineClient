@@ -25,7 +25,7 @@ namespace LobbyScene.Coach
 
         public int MaxShowsPerSession => 2;
 
-        public bool ShowPanelOnRight => true;
+        public bool UseAlternatePlacement => true;
 
         public bool IsActive()
         {

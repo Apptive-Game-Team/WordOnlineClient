@@ -3,6 +3,7 @@ using Coach;
 using Data.Coach;
 using TutorialScene;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Global.Coach
 {
@@ -16,6 +17,24 @@ namespace Global.Coach
     {
         [SerializeField] private TutorialPanel panel;
         [SerializeField] private CoachHighlighter highlighter;
+
+        /// <summary>Closes the current hint. Sits on the panel, so it hides with it.</summary>
+        [SerializeField] private Button closeButton;
+
+        [Header("Placement")]
+        [SerializeField] private CoachPanelPlacement primaryPlacement = new CoachPanelPlacement
+        {
+            anchor = new Vector2(0.5f, 1f),
+            pivot = new Vector2(0.5f, 1f),
+            offset = new Vector2(0f, -40f)
+        };
+
+        [SerializeField] private CoachPanelPlacement alternatePlacement = new CoachPanelPlacement
+        {
+            anchor = new Vector2(1f, 1f),
+            pivot = new Vector2(1f, 1f),
+            offset = new Vector2(-40f, -40f)
+        };
 
         [Header("Timing")]
         [SerializeField] private float globalCooldownSeconds = CoachTuning.GlobalCooldownSeconds;
@@ -36,6 +55,11 @@ namespace Global.Coach
 
         private void OnEnable()
         {
+            if (closeButton != null)
+            {
+                closeButton.onClick.AddListener(DismissVisible);
+            }
+
             foreach (ICoachRule rule in rules.Values)
             {
                 if (rule is ICoachRuleLifecycle lifecycle)
@@ -47,6 +71,11 @@ namespace Global.Coach
 
         private void OnDisable()
         {
+            if (closeButton != null)
+            {
+                closeButton.onClick.RemoveListener(DismissVisible);
+            }
+
             HideVisible();
 
             // CardInputSender exposes static events, so a subscription that
@@ -111,7 +140,22 @@ namespace Global.Coach
 
             CoachAction action = scheduler.Tick(Time.time, Time.deltaTime);
             Apply(action);
-            DrainSatisfied();
+            DrainVerdicts();
+        }
+
+        /// <summary>
+        /// Closes the hint on screen. Wired to the panel's close button, and
+        /// safe to call from anywhere that wants the screen back.
+        /// </summary>
+        public void DismissVisible()
+        {
+            if (scheduler == null || !scheduler.HasVisibleHint)
+            {
+                return;
+            }
+
+            Apply(scheduler.Dismiss(Time.time));
+            DrainVerdicts();
         }
 
         /// <summary>
@@ -157,10 +201,13 @@ namespace Global.Coach
 
             if (panel != null)
             {
-                panel.Show(
-                    rule.MessageKey,
-                    null,
-                    rule.ShowPanelOnRight ? TutorialPanelSide.Right : TutorialPanelSide.Left);
+                panel.Show(rule.MessageKey, null);
+
+                // TutorialPanel.Show pins the panel to positions tuned for the
+                // onboarding flow, which may cover the field. A hint must not,
+                // so the placement is overridden right after.
+                CoachPanelPlacement placement = rule.UseAlternatePlacement ? alternatePlacement : primaryPlacement;
+                placement.ApplyTo(panel.RootRectTransform);
             }
         }
 
@@ -186,20 +233,30 @@ namespace Global.Coach
         }
 
         /// <summary>
-        /// A hint the player actually followed counts toward retiring it, so a
-        /// player who has learned the move stops being told about it.
+        /// Both verdicts retire a hint, for opposite reasons. Following it means
+        /// the player has learned the move; closing it means they do not want to
+        /// be told. Either way the hint has done all the good it is going to do.
         /// </summary>
-        private void DrainSatisfied()
+        private void DrainVerdicts()
         {
-            while (scheduler.TryDequeueSatisfied(out CoachRuleId ruleId))
+            while (scheduler.TryDequeueSatisfied(out CoachRuleId satisfiedRule))
             {
-                string key = ruleId.ToString();
-                CoachData.IncreaseSatisfied(key);
+                CoachData.IncreaseSatisfied(satisfiedRule.ToString());
+                RetireIfEarned(satisfiedRule);
+            }
 
-                if (CoachData.IsRetired(key))
-                {
-                    scheduler.SetRetired(ruleId, true);
-                }
+            while (scheduler.TryDequeueDismissed(out CoachRuleId dismissedRule))
+            {
+                CoachData.IncreaseDismissed(dismissedRule.ToString());
+                RetireIfEarned(dismissedRule);
+            }
+        }
+
+        private void RetireIfEarned(CoachRuleId ruleId)
+        {
+            if (CoachData.IsRetired(ruleId.ToString()))
+            {
+                scheduler.SetRetired(ruleId, true);
             }
         }
     }

@@ -56,6 +56,7 @@ namespace Coach
         private readonly Dictionary<CoachRuleId, Entry> entries = new Dictionary<CoachRuleId, Entry>();
         private readonly List<CoachRuleId> order = new List<CoachRuleId>();
         private readonly Queue<CoachRuleId> satisfied = new Queue<CoachRuleId>();
+        private readonly Queue<CoachRuleId> dismissed = new Queue<CoachRuleId>();
 
         private readonly float globalCooldownSeconds;
         private readonly float maxVisibleSeconds;
@@ -143,6 +144,40 @@ namespace Coach
             }
 
             ruleId = satisfied.Dequeue();
+            return true;
+        }
+
+        /// <summary>
+        /// 유저가 힌트를 직접 닫았다. 그냥 흘려보낸 것과 달리 명시적인 거부이므로
+        /// 백오프를 마지막 단계로 바로 올리고, 뒤늦은 행동을 따랐다고 세지 않는다.
+        /// </summary>
+        public CoachAction Dismiss(float now)
+        {
+            if (!hasShowing)
+            {
+                return CoachAction.None;
+            }
+
+            Entry entry = entries[showing];
+            entry.IgnoredStreak = ignoreBackoffSeconds.Length;
+            entry.NextAllowedTime = now + ignoreBackoffSeconds[ignoreBackoffSeconds.Length - 1];
+
+            dismissed.Enqueue(showing);
+            hasPending = false;
+
+            return HideCurrent(now);
+        }
+
+        /// <summary>유저가 직접 닫은 규칙을 하나씩 꺼낸다.</summary>
+        public bool TryDequeueDismissed(out CoachRuleId ruleId)
+        {
+            if (dismissed.Count == 0)
+            {
+                ruleId = default;
+                return false;
+            }
+
+            ruleId = dismissed.Dequeue();
             return true;
         }
 

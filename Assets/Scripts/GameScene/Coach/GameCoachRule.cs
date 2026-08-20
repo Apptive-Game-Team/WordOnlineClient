@@ -17,7 +17,7 @@ namespace GameScene.Coach
 
         public abstract int MaxShowsPerSession { get; }
 
-        public virtual bool ShowPanelOnRight => false;
+        public virtual bool UseAlternatePlacement => false;
 
         public abstract bool IsActive();
 

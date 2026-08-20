@@ -135,6 +135,14 @@ MonoBehaviour:
     m_Key: CoachHint
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000009
+    m_Key: CoachHintOn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000010
+    m_Key: CoachHintOff
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

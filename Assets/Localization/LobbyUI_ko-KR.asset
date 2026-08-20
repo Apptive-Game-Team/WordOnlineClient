@@ -136,6 +136,14 @@ MonoBehaviour:
     m_Localized: "훈수"
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000009
+    m_Localized: "켬"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76060000000000010
+    m_Localized: "끔"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

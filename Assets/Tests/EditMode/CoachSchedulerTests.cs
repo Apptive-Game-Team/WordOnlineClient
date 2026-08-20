@@ -260,6 +260,62 @@ namespace WordOnline.Tests
         }
 
         [Test]
+        public void DismissingAHintHidesItAtOnceAndIsNotCountedAsFollowed()
+        {
+            CoachScheduler scheduler = WithRule(NewScheduler(), CoachRuleId.FieldSelectIdle, dwellSeconds: 6f, priority: 1);
+            AdvanceUntil(scheduler, CoachActionKind.Show, CoachRuleId.FieldSelectIdle, 20f);
+
+            CoachAction action = scheduler.Dismiss(now);
+
+            Assert.AreEqual(CoachActionKind.Hide, action.Kind);
+            Assert.AreEqual(CoachRuleId.FieldSelectIdle, action.RuleId);
+            Assert.IsFalse(scheduler.HasVisibleHint);
+            Assert.IsTrue(scheduler.TryDequeueDismissed(out CoachRuleId dismissed));
+            Assert.AreEqual(CoachRuleId.FieldSelectIdle, dismissed);
+            Assert.IsFalse(scheduler.TryDequeueSatisfied(out _));
+        }
+
+        [Test]
+        public void DismissingAHintJumpsStraightToTheLongestBackoff()
+        {
+            CoachScheduler scheduler = WithRule(NewScheduler(), CoachRuleId.FieldSelectIdle, dwellSeconds: 6f, priority: 1);
+            AdvanceUntil(scheduler, CoachActionKind.Show, CoachRuleId.FieldSelectIdle, 20f);
+
+            scheduler.Dismiss(now);
+            float dismissedAt = now;
+
+            float longest = Backoff[Backoff.Length - 1];
+            Assert.IsEmpty(Advance(scheduler, longest - 1f));
+            float reshownAt = AdvanceUntil(scheduler, CoachActionKind.Show, CoachRuleId.FieldSelectIdle, 5f);
+
+            Assert.GreaterOrEqual(reshownAt - dismissedAt, longest);
+        }
+
+        [Test]
+        public void ActingAfterADismissIsNotCreditedAsFollowingTheHint()
+        {
+            CoachScheduler scheduler = WithRule(NewScheduler(), CoachRuleId.FieldSelectIdle, dwellSeconds: 6f, priority: 1);
+            AdvanceUntil(scheduler, CoachActionKind.Show, CoachRuleId.FieldSelectIdle, 20f);
+
+            scheduler.Dismiss(now);
+            scheduler.SetActive(CoachRuleId.FieldSelectIdle, false);
+            Advance(scheduler, 1f);
+
+            Assert.IsFalse(scheduler.TryDequeueSatisfied(out _));
+        }
+
+        [Test]
+        public void DismissingWithNothingOnScreenDoesNothing()
+        {
+            CoachScheduler scheduler = WithRule(NewScheduler(), CoachRuleId.FieldSelectIdle, dwellSeconds: 6f, priority: 1);
+
+            CoachAction action = scheduler.Dismiss(now);
+
+            Assert.AreEqual(CoachActionKind.None, action.Kind);
+            Assert.IsFalse(scheduler.TryDequeueDismissed(out _));
+        }
+
+        [Test]
         public void RetiringARuleMidSessionStopsItForGood()
         {
             CoachScheduler scheduler = WithRule(

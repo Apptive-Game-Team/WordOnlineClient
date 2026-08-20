@@ -21,7 +21,8 @@ namespace GameScene.Coach
 
         public override int MaxShowsPerSession => 2;
 
-        public override bool ShowPanelOnRight => true;
+        /// <summary>The mana bar button sits below the primary spot, so move aside.</summary>
+        public override bool UseAlternatePlacement => true;
 
         public override bool IsActive()
         {
