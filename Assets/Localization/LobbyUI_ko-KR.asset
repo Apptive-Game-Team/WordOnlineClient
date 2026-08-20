@@ -132,6 +132,10 @@ MonoBehaviour:
     m_Localized: "\uB098\uAC00\uAE30"
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000008
+    m_Localized: "훈수"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

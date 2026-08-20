@@ -131,6 +131,10 @@ MonoBehaviour:
     m_Key: MatchingLeave
     m_Metadata:
       m_Items: []
+  - m_Id: 76060000000000008
+    m_Key: CoachHint
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
