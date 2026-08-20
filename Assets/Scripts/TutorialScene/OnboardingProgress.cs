@@ -26,6 +26,9 @@ namespace TutorialScene
         MagicBook_OpenElementChart,
         MagicBook_ReturnToLobby,
 
+        // Hospitality battle
+        HospitalityBattle,
+
         // Common
         Common_SelectDeck,
         Common_ExplainMatch,
