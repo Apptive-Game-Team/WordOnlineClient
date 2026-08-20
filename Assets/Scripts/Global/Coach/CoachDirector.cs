@@ -3,7 +3,6 @@ using Coach;
 using Data.Coach;
 using TutorialScene;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Global.Coach
 {
@@ -19,7 +18,7 @@ namespace Global.Coach
         [SerializeField] private CoachHighlighter highlighter;
 
         /// <summary>Closes the current hint. Sits on the panel, so it hides with it.</summary>
-        [SerializeField] private Button closeButton;
+        [SerializeField] private UnityEngine.UI.Button closeButton;
 
         [Header("Placement")]
         [SerializeField] private CoachPanelPlacement primaryPlacement = new CoachPanelPlacement
