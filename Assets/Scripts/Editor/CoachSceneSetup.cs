@@ -58,15 +58,23 @@ namespace WordOnline.EditorTools
             {
                 root = new GameObject(CoachRootName);
                 Undo.RegisterCreatedObjectUndo(root, "Create Coach System");
+                Debug.Log($"[CoachSceneSetup] {CoachRootName} 을 새로 만들었다.");
             }
 
             CoachDirector director = GetOrAddComponent<CoachDirector>(root);
             CoachHighlighter highlighter = GetOrAddComponent<CoachHighlighter>(root);
             AddProviderForScene(scene.name, root);
 
-            TutorialPanel panel = InstantiatePanel(root);
+            WarnOnDuplicatePanels();
 
-            Button closeButton = panel != null ? BuildCloseButton(panel.RootRectTransform) : null;
+            TutorialPanel panel = InstantiatePanel(root);
+            if (panel == null)
+            {
+                Debug.LogError($"[CoachSceneSetup] {scene.name}: 패널을 만들지도 찾지도 못했다. 배선을 중단한다.");
+                return;
+            }
+
+            Button closeButton = BuildCloseButton(panel.RootRectTransform);
 
             SerializedObject serialized = new SerializedObject(director);
             serialized.FindProperty("panel").objectReferenceValue = panel;
@@ -74,8 +82,44 @@ namespace WordOnline.EditorTools
             serialized.FindProperty("closeButton").objectReferenceValue = closeButton;
             serialized.ApplyModifiedProperties();
 
+            // MarkSceneDirty 는 더티 표시만 한다. 저장까지 하지 않으면 유저가 Ctrl+S 를
+            // 누르지 않는 한 결과가 사라지고, 메뉴는 성공했다고 로그만 남긴다.
             EditorSceneManager.MarkSceneDirty(scene);
-            Debug.Log($"[CoachSceneSetup] Wired the coach system into {scene.name}. Save the scene to keep it.");
+            EditorSceneManager.SaveScene(scene);
+
+            Debug.Log(
+                $"[CoachSceneSetup] {scene.name} 배선 완료 후 저장했다. " +
+                $"panel={Describe(panel)}, highlighter={Describe(highlighter)}, closeButton={Describe(closeButton)}");
+        }
+
+        /// <summary>
+        /// 참조가 실제로 채워졌는지 로그에서 바로 보이게 한다. 메뉴가 조용히 절반만
+        /// 하고 성공했다고 말하는 상황을 막으려는 것이다.
+        /// </summary>
+        private static string Describe(Object target)
+        {
+            return target != null ? target.name : "없음";
+        }
+
+        /// <summary>
+        /// 예전 버전은 패널을 root 밑에서만 찾아서 재실행할 때마다 하나씩 더 만들었다.
+        /// 그렇게 남은 중복은 사람이 지워야 하므로 조용히 넘어가지 않는다.
+        /// </summary>
+        private static void WarnOnDuplicatePanels()
+        {
+            int count = 0;
+            foreach (TutorialPanel candidate in Object.FindObjectsOfType<TutorialPanel>(true))
+            {
+                if (candidate.gameObject.name == CoachPanelName)
+                {
+                    count++;
+                }
+            }
+
+            if (count > 1)
+            {
+                Debug.LogWarning($"[CoachSceneSetup] {CoachPanelName} 이 {count} 개 있다. 하나만 남기고 지워라.");
+            }
         }
 
         [MenuItem("Tools/Coach/Add Hint Toggle To Settings Panel")]
@@ -239,6 +283,7 @@ namespace WordOnline.EditorTools
             Transform existing = FindDeepChild(panelRect, CloseButtonName);
             if (existing != null)
             {
+                Debug.Log($"[CoachSceneSetup] {CloseButtonName} 이 이미 있어 그대로 쓴다.");
                 return existing.GetComponent<Button>();
             }
 
