@@ -25,6 +25,11 @@ namespace GameScene.Card
         private const string Success = "SUCCESS";
         private const string FailInvalidMagic = "FAIL_INVALID_MAGIC";
 
+        // 훈수 시스템이 구독한다. 정적 이벤트이므로 구독자는 씬을 떠날 때 반드시 해제해야 한다.
+        public static event System.Action OnCardUsed;
+        public static event System.Action OnMagicFailed;
+        public static event System.Action OnMagicSucceeded;
+
         private readonly Dictionary<int, PendingInputRequest> inputRequestDict = new Dictionary<int, PendingInputRequest>();
         private readonly List<string> _currentCardNameList = new List<string>();
         private readonly List<CardUI> _currentCardList = new List<CardUI>();
@@ -142,6 +147,7 @@ namespace GameScene.Card
             {
                 WDebug.Log("Cannot resolve the current recipe.");
                 PlayerFeedbackController.Instance.UseMagicFeedback();
+                OnMagicFailed?.Invoke();
                 SendInput(GameConfig.FIELD_CENTER);
                 return;
             }
@@ -210,6 +216,7 @@ namespace GameScene.Card
             }
 
             AddCardList(cardObj);
+            OnCardUsed?.Invoke();
         }
 
         public void SendInput(Vector3 pos) //whenFieldSelect
@@ -284,12 +291,24 @@ namespace GameScene.Card
                 }
 
                 isWaitingInputResponse = false;
+
+                // FAIL_INVALID_MAGIC도 카드를 소비하므로 이 분기에 들어온다. 카드가 사라졌다고
+                // 시전에 성공한 것은 아니라서 결과 코드로 다시 갈라야 한다.
+                if (IsSuccess(magicValid))
+                {
+                    OnMagicSucceeded?.Invoke();
+                }
+                else
+                {
+                    OnMagicFailed?.Invoke();
+                }
             }
             else
             {
                 RestorePendingSelection(pendingInputRequest.cards);
                 SystemMessageUI.Instance.ShowMessage(magicValid.message);
                 WDebug.Log("[Magic Valid]" + magicValid.message);
+                OnMagicFailed?.Invoke();
             }
 
             inputRequestDict.Remove(magicValid.id);
@@ -324,6 +343,16 @@ namespace GameScene.Card
 
             isFieldSelectMode = CanSelectField;
             SetExpectedMagicUI();
+        }
+
+        private static bool IsSuccess(MagicValidInfo magicValid)
+        {
+            if (string.IsNullOrEmpty(magicValid.resultCode))
+            {
+                return magicValid.valid;
+            }
+
+            return string.Equals(magicValid.resultCode, Success, System.StringComparison.Ordinal);
         }
 
         private static bool ShouldConsumeCards(MagicValidInfo magicValid)

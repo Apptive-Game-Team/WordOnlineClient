@@ -146,6 +146,30 @@ MonoBehaviour:
     m_Localized: "속성표에서 속성 관계를 확인할 수 있어요."
     m_Metadata:
       m_Items: []
+  - m_Id: 318000000033
+    m_Localized: "마법을 시전할 위치를 클릭해 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000034
+    m_Localized: "주문 버튼을 눌러 시전해 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000035
+    m_Localized: "조합이 맞지 않아요. 강조된 카드로 다시 시도해 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000036
+    m_Localized: "테두리가 강조된 카드를 골라 마법을 써 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000037
+    m_Localized: "마나 바를 클릭해서 띄워 보세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000038
+    m_Localized: "봇 전투로 연습해 보세요."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
