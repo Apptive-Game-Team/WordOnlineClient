@@ -92,8 +92,23 @@ namespace GameScene.ServedObjectComponent
                 outlineComponent.enabled = false;
             }
 
+            CardInputSender cardInputSender = CardInputSender.Instance;
+            if (cardInputSender == null)
+            {
+                return;
+            }
+
+            // SendInput을 직접 부르면 isFieldSelectMode 게이트를 건너뛰어,
+            // 조합을 확정하지 않은 상태에서 유닛을 클릭하는 것만으로 useMagic이 전송된다.
+            // TrySendInput은 필드 선택 모드일 때만 실제로 보낸다.
             Vector3 pos = GetSelectionPosition();
-            CardInputSender.Instance.SendInput(pos);
+            if (!cardInputSender.TrySendInput(pos))
+            {
+                return;
+            }
+
+            // 전송되면 선택 카드 목록이 비워지므로 예상 마법 UI도 같이 갱신한다.
+            cardInputSender.SetExpectedMagicUI();
         }
 
         private Vector3 GetSelectionPosition()
