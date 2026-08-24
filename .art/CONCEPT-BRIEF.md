@@ -208,6 +208,37 @@ around it. Worth one piece even though no sprite depends on it directly.
 
 ---
 
+## Lightning strike — cloud and bolt on one canvas
+
+`LightningDropMagic` renders as two objects that must line up: the storm cloud
+that lives for the whole cast, and the bolt that strikes out of it. They are
+drawn as one composition so the bolt leaves the cloud's underside exactly.
+
+Two transparent sources, generated separately so the bolt can be revealed
+progressively without redrawing the cloud:
+
+> `.art/concept/lightning-strike/storm_cloud_source.png` — a single dark storm
+> cloud seen straight on, wider than tall, chunky overlapping matte paper shapes,
+> three value bands, soft light from upper-left, no outer contour line, no
+> sparks, restrained `#F6DB5F` underglow along the bottom edge only, flat-ish
+> underside a bolt can drop out of. Storm gray `#4A4F63` `#6E7488` `#2E3242`.
+
+> `.art/concept/lightning-strike/lightning_bolt_source.png` — one thick jagged
+> vertical bolt, tall canvas, wide at the very top edge and tapering to a point
+> at the very bottom edge so it can be revealed top-to-bottom, 4 to 6 chunky
+> zigzag segments, at most two short chunky forks, no hairline strokes and no
+> scattered fragments. `#FCFBD5` `#F6DB5F` `#D7A313` `#996B07`.
+
+The tapering-to-a-point requirement is what makes progressive reveal work: a
+bolt that ends in a blunt edge reads as a cut-off shape, not a descending
+leader. The old `LightningDrop.png` failed the 64px silhouette rule and was
+replaced by this set.
+
+Composition into the shipped sprites is deterministic, not generated — see the
+canvas invariant in `ANIMATION-ASSETS.md`.
+
+---
+
 ## Recording the outcome
 
 After picking, write down in `STYLE.md` which variant won and why. A chosen

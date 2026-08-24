@@ -91,3 +91,48 @@ Transform 스케일 변형은 적용하지 않는다.
 두 프레임은 `220x156`, PPU 100, Bottom Center 피벗과 본체 배치를 공유한다.
 공격 이벤트가 발생하면 `CloudDragonAttacking.png`를 0.1초간 표시한 뒤 기본 자세로 복원한다.
 구형 물 아우라 `cloud.png`는 두 본체 프레임과 계속 분리해서 렌더링한다.
+
+## 번개 강타 프레임
+
+`LightningDropMagic`은 먹구름 오브젝트 하나와, 그 자리에서 반복 소환되는 번개
+오브젝트로 나뉜다. 둘은 같은 캔버스 구성을 공유해서 번개가 구름 밑면에서
+빠져나오는 것처럼 보이게 한다.
+
+| 실제 파일 | 의미 이름 | 런타임 연결 |
+|---|---|---|
+| `sprites/LightningCloud.png` | 먹구름 · 대기 | `LightningCloud.prefab` 기본 SpriteRenderer |
+| `drop/lightning_strike_frame_0.png` | 번개 강타 · 구름 밑에서 뻗기 시작 | `LightningDrop.prefab` 기본 Sprite, `SpriteFrameAnimator.frames[0]` |
+| `drop/lightning_strike_frame_1.png` | 번개 강타 · 중간까지 내려온 줄기 | `SpriteFrameAnimator.frames[1]` |
+| `drop/lightning_strike_frame_2.png` | 번개 강타 · 지면 도달, 최대 밝기 | `SpriteFrameAnimator.frames[2]` |
+| `drop/lightning_strike_frame_3.png` | 번개 강타 · 잔광 | `SpriteFrameAnimator.frames[3]` |
+| `drop/lightning_strike_frame_4.png` | 번개 강타 · 소멸 직전 | `SpriteFrameAnimator.frames[4]` |
+
+### 캔버스 불변식
+
+- 여섯 파일 모두 `320x640`, PPU 160, 중앙 피벗이다. 월드로는 `2.0 x 4.0` 유닛.
+- 서버가 먹구름과 번개를 같은 좌표, 높이 `y=2`(`AERIAL_STANDARD_HEIGHT`)에
+  소환한다. 중앙 피벗이므로 스프라이트는 지면 `y=0`부터 `y=4`까지를 정확히
+  덮는다. 구름은 캔버스 최상단(월드 `y 2.8~4.0`), 번개는 구름 밑면
+  (`y≈2.95`)에서 지면까지 내려온다.
+- 먹구름 높이는 서버 소환 좌표가 아니라 캔버스 안에서의 구름 위치로 조절한다.
+  강타 판정 박스는 지면부터 `y=10`까지라 그림만 움직여도 판정은 그대로다.
+- `SpriteFrameAnimator`는 `frameInterval` 0.06, `loop` 꺼짐이다. 5프레임 =
+  0.3초로, 서버 `LightningDropPrefabInitializer.STRIKE_VISUAL_DURATION`과 같은
+  값이어야 한다. 한쪽만 바꾸면 연출이 잘리거나 마지막 프레임이 멈춰 있는다.
+- `LightningDrop`과 `LightningCloud` 변형은 `Selectable`을 제거한다. 스프라이트
+  높이가 지면까지 닿으면서 선택 콜라이더가 그 아래 필드 클릭을 먹는다.
+  `LightningDrop`은 `SpawnPopInEffect`도 제거한다. 이 컴포넌트는 `Awake`에서
+  재생하므로 비활성화만으로는 막히지 않고, 번개가 작게 튀어나오며 커진다.
+
+### 합성
+
+프레임은 생성물이 아니라 결정적 합성 결과다. 원본 두 장
+(`.art/concept/lightning-strike/`)에서 다시 만들 수 있다.
+
+```bash
+.art/tools/compose-lightning-strike.py \
+  --cloud .art/concept/lightning-strike/storm_cloud_source.png \
+  --bolt .art/concept/lightning-strike/lightning_bolt_source.png \
+  --cloud-out Assets/Resources/Game/sprites/LightningCloud.png \
+  --frame-out 'Assets/Resources/Game/drop/lightning_strike_frame_{index}.png'
+```
