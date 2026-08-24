@@ -14,6 +14,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `RockGolem2.png` | 이끼바위 골렘 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `TreeGolem.png` | 고목 수호자 · 기본 자세 | `TreeGolem.prefab` 기본 SpriteRenderer |
 | `TreeGolem2.png` | 고목 수호자 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
+| `EvilEnt.png` | 사악한 고목 · 기본 자세 | `EvilEnt.prefab` 기본 SpriteRenderer |
+| `EvilEnt2.png` | 사악한 고목 · 팔을 뻗은 공격 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
 | `AquaArcher.png` | 물결 궁수 · 활시위를 당긴 기본 자세 | `AquaArcherAttackPresenter` 기본 Sprite |
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 | `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
@@ -40,6 +42,12 @@ Transform 스케일 변형은 적용하지 않는다.
 다른 건물 프리팹은 `swapSprite`가 비어 있어 공격 이벤트를 구독하지 않으며,
 `RockTurret`만 발사 직후 프레임을 0.1초 표시한다.
 
+`EvilEnt`는 공용 `AbstractRangeMob`의 `AttackSpriteSwapController`를 사용한다.
+`TreeGolem`이 쓰는 레거시 `OnAttackSpriteSwapper`가 아니다. `EvilEnt.prefab`은
+`swapSprite`에 `EvilEnt2.png`만 지정하고 `duration`은 상위 프리팹 값 0.1초를
+그대로 쓴다. 이 컨트롤러도 Transform은 건드리지 않고 `SpriteRenderer.sprite`만
+바꾸므로 아래 조건이 그대로 적용된다.
+
 - 동일 PPU
 - 동일 `Bottom Center` 피벗
 - 동일 캐릭터 몸 배율
@@ -51,6 +59,13 @@ Transform 스케일 변형은 적용하지 않는다.
 검증할 때 두 PNG를 같은 PPU로 겹쳐 발점, 골반, 머리 중심을 대조한다.
 `RockGolem`과 `RockGolem2`는 256x244, PPU 100, Bottom Center로 교정했다. 현재
 `TreeGolem`과 `TreeGolem2`는 PPU가 서로 달라 재작업 전에 교정이 필요하다.
+`TreeGolem`은 240x256에 PPU 100, `TreeGolem2`는 256x215에 PPU 80이다.
+
+`EvilEnt`와 `EvilEnt2`는 224x256, PPU 100, Bottom Center로 일치한다. 두 프레임을
+프레임마다 따로 자르지 않고 하나의 공유 크롭 박스와 하나의 공유 배율로 함께
+내보냈기 때문에, 지면 접점 픽셀이 사후 대조가 아니라 제작 방식으로 이미 동일하다.
+`TreeGolem` 쌍이 어긋난 원인이 프레임별 개별 크롭·개별 배율이므로, 새 공격
+프레임은 이 방식으로 만든다. 캔버스 크기가 같아지는 것은 결과이지 목표가 아니다.
 
 ## 오라 의미
 

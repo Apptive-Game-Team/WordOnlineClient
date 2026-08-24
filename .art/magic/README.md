@@ -2,7 +2,7 @@
 
 game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 문서다.
 
-- 생성 페이지: 67개
+- 생성 페이지: 68개
 - 생성기: `../tools/generate-magic-pages.py`
 - 서버 수치: 미포함. 런타임 DB 파라미터 키만 기록
 - 재생성: `python3 .art/tools/generate-magic-pages.py`
@@ -17,6 +17,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 - 인간 마법 문명: 5개
 - 지옥불 군단: 11개
 - 차원 유랑종: 1개
+- 타락한 정령: 1개
 
 ## 설치 (18)
 
@@ -84,7 +85,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [도깨비불](pages/will_o_wisp.md) | `will_o_wisp` | 세계수 풀 정령 | `WillOWisp` |
 | [바람 칼날](pages/wind_blade.md) | `wind_blade` | 세계수 바람 정령 | `WindBlade` |
 
-## 소환 (21)
+## 소환 (22)
 
 | 이름 | 서버 키 | 진영 | 주 프리팹 |
 |---|---|---|---|
@@ -93,6 +94,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [운룡](pages/cloud_dragon.md) | `cloud_dragon` | 세계수 바람 정령 | `CloudDragon` |
 | [경계 운반자](pages/dimension_toad.md) | `dimension_toad` | 차원 유랑종 | `DimensionToad` |
 | [불씨 정령 무리](pages/ember_spirit_swarm.md) | `ember_spirit_swarm` | 지옥불 군단 | `EmberSpirit` |
+| [사악한 나무 골렘](pages/evil_ent.md) | `evil_ent` | 타락한 정령 | `EvilEnt` |
 | [불 대왕 정령](pages/fire_lord_spirit.md) | `fire_lord_spirit` | 지옥불 군단 | `FireLordSpirit` |
 | [불의 정령](pages/fire_spirit.md) | `fire_spirit` | 지옥불 군단 | `FireSpirit` |
 | [용암 정령](pages/magma_spirit.md) | `magma_spirit` | 지옥불 군단 | `MagmaSpirit` |

@@ -54,6 +54,26 @@ files were removed so they cannot be mixed into generation prompts.
 - Characters face right.
 - Silhouette must survive downscale to 64px. Thin strokes and scattered
   fragments are rejects — that is why `ChainLightning` and `LightningDrop` fail.
+
+### Named exception — `EvilEnt`
+
+`EvilEnt` is allowed a gaunt, lanky silhouette where every other creature is
+chunky. Its concept is a World Tree spirit dried out by the hellfire dimension
+(see [`WORLD.md`](WORLD.md) 타락한 정령), and chunky proportions read as a
+healthy tree golem, which is the wrong unit — `TreeGolem` already exists and the
+two must not be confusable at a glance.
+
+The exemption is narrow and applies to this one sprite set:
+
+- **Exempt from**: chunky proportions around three heads tall, and the 64px
+  silhouette rule.
+- **Still bound by**: everything else. Faceted flat planes, three value bands,
+  no outer contour, no texture or grain, no ember scatter, transparent
+  background, upper-left light. Thin limbs are built from the same big flat
+  facets as a chunky one — long and narrow, never wispy, never fragmented, and
+  always one connected shape.
+
+Do not extend this to other units. Anything else gaunt needs its own decision.
 - Max size by tier, aspect preserved, then trimmed tight:
   small `128x128`, middle `192x192`, big `256x256`.
 
@@ -166,9 +186,8 @@ portal cyan `#64D4E8`, magma `#E65E08`, lightning `#77E9F2`.
 
 Palette: `#E65E08` `#9B3014` `#5A291E` `#2A1512`, ash `#6D4A39`
 
-**No anchor exists.** `FrenzyTotem` is the only sprite whose shape language is
-on-concept (dark crimson, angular, tribal) and whose technique is clean — use it
-as the provisional shape/palette reference until a real creature anchor is made.
+Anchor: `master-v2/HellfireDemon.png`. `FrenzyTotem` remains a usable secondary
+shape/palette reference (dark crimson, angular, tribal).
 
 Redesign list: `FireSpirit`, `EmberSpiritSwarm`, `FireLordSpirit`,
 `FireChildSpirit`, `MagmaSpirit`, `MagmaSpiritAttacking`, `MagmaExplosion`, `Crater`,

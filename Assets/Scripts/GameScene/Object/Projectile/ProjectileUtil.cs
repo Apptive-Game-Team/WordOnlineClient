@@ -8,8 +8,11 @@ namespace GameScene.Object.Projectile
     {
         public static Quaternion GetRotation(ProjectileDto dto)
         {
-            Vector3 start = GetPosition(dto.start);
-            Vector3 end = GetPosition(dto.end);
+            return GetRotation(GetPosition(dto.start), GetPosition(dto.end));
+        }
+
+        public static Quaternion GetRotation(Vector3 start, Vector3 end)
+        {
             Camera camera = Camera.main;
             Vector3 dir = camera != null
                 ? camera.WorldToScreenPoint(end) - camera.WorldToScreenPoint(start)
@@ -21,6 +24,29 @@ namespace GameScene.Object.Projectile
             return camera != null
                 ? camera.transform.rotation * screenRotation
                 : screenRotation;
+        }
+
+        /// <summary>
+        /// Distance from start to end measured inside the plane GetRotation orients the sprite in.
+        /// The world is a tilted 2.5D view under a perspective camera, so the world distance
+        /// between two points is not the distance the sprite has to cover on screen: a delta along
+        /// world +Z is foreshortened while a delta along world +X is not. Rounding the end point
+        /// through screen space at the start point's depth gives the one world point that both
+        /// lies in the sprite's plane and lands on the target's pixel.
+        /// </summary>
+        public static float GetCameraPlaneLength(Vector3 start, Vector3 end)
+        {
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return Vector3.Distance(start, end);
+            }
+
+            Vector3 startScreen = camera.WorldToScreenPoint(start);
+            Vector3 endScreen = camera.WorldToScreenPoint(end);
+            Vector3 reachable = camera.ScreenToWorldPoint(new Vector3(endScreen.x, endScreen.y, startScreen.z));
+
+            return Vector3.Distance(start, reachable);
         }
 
         public static Vector3 GetPosition(ProjectileTarget target)
