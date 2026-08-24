@@ -105,5 +105,21 @@ namespace TutorialScene
                     return false;
             }
         }
+
+        public static bool IsMagicBookOnboardingActive()
+        {
+            switch (GetCurrentProgress())
+            {
+                case OnboardingProgress.MagicBook_EnterScene:
+                case OnboardingProgress.MagicBook_ExplainMagicBook:
+                case OnboardingProgress.MagicBook_SelectMagic:
+                case OnboardingProgress.MagicBook_ExplainMagicInfo:
+                case OnboardingProgress.MagicBook_OpenElementChart:
+                case OnboardingProgress.MagicBook_ReturnToLobby:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
