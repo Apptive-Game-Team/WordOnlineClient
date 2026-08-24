@@ -88,5 +88,38 @@ namespace TutorialScene
         {
             return Instance != null ? Instance.CurrentProgress : OnboardingProgress.None;
         }
+
+        public static bool IsDeckOnboardingActive()
+        {
+            switch (GetCurrentProgress())
+            {
+                case OnboardingProgress.Deck_EnterScene:
+                case OnboardingProgress.Deck_ExplainCard:
+                case OnboardingProgress.Deck_ExplainDeck:
+                case OnboardingProgress.Deck_SelectCreateDeck:
+                case OnboardingProgress.Deck_CreateDeck:
+                case OnboardingProgress.Deck_SaveDeck:
+                case OnboardingProgress.Deck_ReturnToLobby:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsMagicBookOnboardingActive()
+        {
+            switch (GetCurrentProgress())
+            {
+                case OnboardingProgress.MagicBook_EnterScene:
+                case OnboardingProgress.MagicBook_ExplainMagicBook:
+                case OnboardingProgress.MagicBook_SelectMagic:
+                case OnboardingProgress.MagicBook_ExplainMagicInfo:
+                case OnboardingProgress.MagicBook_OpenElementChart:
+                case OnboardingProgress.MagicBook_ReturnToLobby:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

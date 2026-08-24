@@ -21,8 +21,17 @@ namespace TutorialScene
         public event System.Action ElementChartOpened;
         public event System.Action ReturnToLobbySelected;
 
+        private bool isSubscribedToMagicBookScene;
+
         private void OnEnable()
         {
+            // This controller lives in the regular magic book scene, so it must stay inert
+            // unless the magic book onboarding step is the one currently running.
+            if (!GlobalTutorialManager.IsMagicBookOnboardingActive())
+            {
+                return;
+            }
+
             if (magicInfoFactory == null)
             {
                 magicInfoFactory = GetComponent<MagicInfoFactory>();
@@ -47,10 +56,19 @@ namespace TutorialScene
             {
                 returnToLobbyButton.OnClick += NotifyReturnToLobbySelected;
             }
+
+            isSubscribedToMagicBookScene = true;
         }
 
         private void OnDisable()
         {
+            if (!isSubscribedToMagicBookScene)
+            {
+                return;
+            }
+
+            isSubscribedToMagicBookScene = false;
+
             if (magicInfoFactory != null)
             {
                 magicInfoFactory.MagicSelected -= NotifyMagicSelected;
@@ -111,7 +129,7 @@ namespace TutorialScene
                 TutorialPanelSide.Right);
         }
 
-        public void NotifyMagicSelected()
+        private void NotifyMagicSelected()
         {
             MagicSelected?.Invoke();
         }
