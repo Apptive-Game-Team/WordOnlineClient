@@ -6,6 +6,7 @@ using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
 using UnityEngine;
+using UnityEngine.Localization;
 using Global.Serialization;
 
 namespace GameScene.Card
@@ -25,6 +26,13 @@ namespace GameScene.Card
         private const string Success = "SUCCESS";
         private const string FailInvalidMagic = "FAIL_INVALID_MAGIC";
 
+        // 로컬라이즈 문자열이 씬에 연결되지 않아도 플레이어가 아무 반응 없는 화면을 보지 않도록 두는 최후 문구.
+        private const string RecipeDataNotReadyFallbackMessage =
+            "Magic list is still loading. Please try again in a moment.";
+
+        // 같은 안내가 메시지 큐에 쌓이지 않도록 최소 간격을 둔다. 로그는 매번 남긴다.
+        private const float RecipeDataNotReadyMessageInterval = 3f;
+
         private readonly Dictionary<int, PendingInputRequest> inputRequestDict = new Dictionary<int, PendingInputRequest>();
         private readonly List<string> _currentCardNameList = new List<string>();
         private readonly List<CardUI> _currentCardList = new List<CardUI>();
@@ -38,6 +46,9 @@ namespace GameScene.Card
         private bool isWaitingInputResponse = false;
         
         private CombinedMagicResolver combinedMagicResolver;
+
+        [SerializeField] private LocalizedString recipeDataNotReadyMessage;
+        private float nextRecipeDataNotReadyMessageTime;
 
         protected override void Awake()
         {
@@ -123,20 +134,71 @@ namespace GameScene.Card
                 return;
             }
 
-            if (CanSelectField)
+            if (!CanSelectField)
             {
-                if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
-                {
-                    WDebug.Log("Cannot resolve the current recipe.");
-                    PlayerFeedbackController.Instance.UseMagicFeedback();
-                    SendInput(Vector2.zero);
-                    return;
-                }
-            
-                isFieldSelectMode = true;
+                return;
             }
+
+            // 보유 마법 목록이 아직 없으면 CanResolve의 false가 "잘못된 조합"인지
+            // "아직 안 왔음"인지 구분되지 않는다. 그 상태로 SendInput을 태우면
+            // 유효한 조합이 원점 시전으로 소모되므로, 여기서 멈추고 플레이어에게 알린다.
+            if (!IsRecipeDataReady())
+            {
+                NotifyRecipeDataNotReady();
+                return;
+            }
+
+            if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
+            {
+                WDebug.Log("Cannot resolve the current recipe.");
+                PlayerFeedbackController.Instance.UseMagicFeedback();
+                SendInput(Vector2.zero);
+                return;
+            }
+
+            isFieldSelectMode = true;
         }
-    
+
+        /// <summary>
+        /// 레시피 판정을 신뢰할 수 있는 상태인지 확인한다.
+        /// Awake 시점에 리졸버가 아직 없었을 수 있으므로 여기서 한 번 더 찾는다.
+        /// </summary>
+        private bool IsRecipeDataReady()
+        {
+            if (combinedMagicResolver == null)
+            {
+                combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
+            }
+
+            return combinedMagicResolver != null && combinedMagicResolver.IsRecipeDataReady;
+        }
+
+        private void NotifyRecipeDataNotReady()
+        {
+            WDebug.LogWarning("[CardInputSender] Combined magic data is not ready. Confirm blocked; cards kept.");
+
+            // 로드 실패가 그 판 내내 확정 불가로 굳지 않도록 재시도 기회를 준다.
+            if (combinedMagicResolver != null)
+            {
+                combinedMagicResolver.RequestReloadIfFailed();
+            }
+
+            if (SystemMessageUI.Instance == null || Time.unscaledTime < nextRecipeDataNotReadyMessageTime)
+            {
+                return;
+            }
+
+            nextRecipeDataNotReadyMessageTime = Time.unscaledTime + RecipeDataNotReadyMessageInterval;
+
+            if (recipeDataNotReadyMessage != null && !recipeDataNotReadyMessage.IsEmpty)
+            {
+                SystemMessageUI.Instance.ShowMessage(recipeDataNotReadyMessage);
+                return;
+            }
+
+            SystemMessageUI.Instance.ShowMessage(RecipeDataNotReadyFallbackMessage);
+        }
+
 
         public string GetMagicName()
         {
@@ -345,6 +407,11 @@ namespace GameScene.Card
         }
         public void SetExpectedMagicUI()
         {
+            if (GameSceneUIController.Instance == null)
+            {
+                return;
+            }
+
             GameSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
         }
     }

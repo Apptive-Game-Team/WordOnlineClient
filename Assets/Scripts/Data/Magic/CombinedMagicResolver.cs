@@ -3,10 +3,30 @@ using UnityEngine;
 
 namespace Data.Magic
 {
+    /// <summary>
+    /// 보유 조합 마법 목록의 로드 상태.
+    /// "아직 안 옴"과 "받았는데 일치하는 레시피가 없음"은 호출자가 반드시 구분해야 한다.
+    /// </summary>
+    public enum MagicRecipeLoadState
+    {
+        Loading,
+        Loaded,
+        Failed
+    }
+
     public class CombinedMagicResolver : MonoBehaviour
     {
         private List<CombinedMagicData> dataList = new();
         [SerializeField] private UserMagicService userMagicService;
+
+        /// <summary>레시피 목록 로드 상태.</summary>
+        public MagicRecipeLoadState LoadState { get; private set; } = MagicRecipeLoadState.Loading;
+
+        /// <summary>
+        /// <see cref="CanResolve"/>와 <see cref="TryResolve"/>의 false를 "일치하는 레시피 없음"으로
+        /// 해석해도 되는 상태인지. 로드 전이거나 로드에 실패했으면 false다.
+        /// </summary>
+        public bool IsRecipeDataReady => LoadState == MagicRecipeLoadState.Loaded;
 
         private void Awake()
         {
@@ -14,10 +34,43 @@ namespace Data.Magic
             if (userMagicService == null)
             {
                 Debug.LogWarning("[CombinedMagicResolver] UserMagicService was not found.");
+                LoadState = MagicRecipeLoadState.Failed;
                 return;
             }
 
-            userMagicService.GetCombinedMagicData(list => dataList = list ?? new List<CombinedMagicData>());
+            RequestLoad();
+        }
+
+        /// <summary>
+        /// 로드에 실패한 상태에서만 다시 요청한다.
+        /// 실패가 영구 상태로 굳으면 그 판에서는 마법 확정 자체가 막히기 때문이다.
+        /// </summary>
+        public void RequestReloadIfFailed()
+        {
+            if (LoadState != MagicRecipeLoadState.Failed || userMagicService == null)
+            {
+                return;
+            }
+
+            RequestLoad();
+        }
+
+        private void RequestLoad()
+        {
+            LoadState = MagicRecipeLoadState.Loading;
+            userMagicService.GetCombinedMagicData(list =>
+            {
+                if (list == null)
+                {
+                    Debug.LogWarning("[CombinedMagicResolver] Failed to load combined magic data.");
+                    dataList = new List<CombinedMagicData>();
+                    LoadState = MagicRecipeLoadState.Failed;
+                    return;
+                }
+
+                dataList = list;
+                LoadState = MagicRecipeLoadState.Loaded;
+            });
         }
 
         public bool CanResolve(IList<CardType> recipe)
