@@ -108,5 +108,11 @@ namespace TutorialScene
         }
 
         private GameObject Root => root != null ? root : gameObject;
+
+        /// <summary>
+        /// 좌우 고정 위치가 맞지 않는 화면에서 배치를 직접 잡을 수 있게 연다.
+        /// 훈수 힌트는 화면을 가리면 안 되므로 Show 뒤에 이 값을 덮어쓴다.
+        /// </summary>
+        public RectTransform RootRectTransform => Root.transform as RectTransform;
     }
 }

@@ -14,6 +14,12 @@ namespace GameScene
         [SerializeField] private Button fieldButton;
         private bool lastActive = false;
         private Coroutine _moveBarCoroutine;
+
+        /// <summary>훈수 시스템이 마나 바를 띄웠는지 판단할 때 읽는다.</summary>
+        public bool IsBarOpen => isActive;
+
+        /// <summary>훈수 시스템이 강조할 마나 바 버튼.</summary>
+        public Transform ManaBarButtonTransform => manaBarButton != null ? manaBarButton.transform : null;
     
         private void Awake()
         {

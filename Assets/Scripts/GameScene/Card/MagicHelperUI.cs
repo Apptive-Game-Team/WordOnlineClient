@@ -17,7 +17,48 @@ namespace GameScene.Card
         [SerializeField] private MagicSuggestion magicSuggestion;
         
         private readonly List<MagicSuggestionItemView> _spawnedItems = new();
-        
+
+        /// <summary>훈수 시스템이 강조할 추천 목록 루트.</summary>
+        public Transform SuggestionRoot => suggestionRoot;
+
+        /// <summary>
+        /// 추천을 새로 뽑고 가장 위 후보의 재료 카드를 강조한다. 훈수가 마법 실패나 미사용을
+        /// 짚을 때 쓰며, 유저가 추천을 직접 눌렀을 때와 같은 강조 경로를 탄다.
+        /// </summary>
+        public bool TryHighlightTopSuggestion()
+        {
+            RefreshSuggestions();
+
+            if (_spawnedItems.Count == 0)
+            {
+                return false;
+            }
+
+            var handTypes = new List<CardType>();
+            foreach (var card in handRoot.GetComponentsInChildren<CardUI>())
+            {
+                handTypes.Add(card.CardType);
+            }
+
+            var candidates = magicSuggestion.PickTopN(handTypes, 1);
+            if (candidates.Count == 0)
+            {
+                return false;
+            }
+
+            OnSuggestionClicked(candidates[0]);
+            return true;
+        }
+
+        /// <summary>손패 강조를 모두 끈다.</summary>
+        public void ClearHandHighlight()
+        {
+            foreach (var card in handRoot.GetComponentsInChildren<CardUI>())
+            {
+                card.SetHighlighted(false);
+            }
+        }
+
         public void RefreshSuggestions()
         {
             var handCards = handRoot.GetComponentsInChildren<CardUI>();
