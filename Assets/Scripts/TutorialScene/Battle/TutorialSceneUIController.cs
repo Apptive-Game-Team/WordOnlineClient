@@ -102,11 +102,34 @@ namespace TutorialScene
             rightUserIDText.text = $"ENEMY\n HP: {rightUserHp}";
         }
 
+        private ManaCostPreview manaCostPreview;
+        private int currentMana;
+        private int expectedManaCost;
+
         public void UpdateMana(int mana)
         {
             if (manaText == null || manaSlider == null) return;
             manaText.text = mana.ToString();
             manaSlider.value = mana;
+            currentMana = mana;
+            RefreshManaCostPreview();
+        }
+
+        /// <summary>
+        /// 준비 중인 조합이 먹을 마나를 마나 바에 덧그린다. 조합이 비거나 시전 입력을 보낸 뒤에는
+        /// 0을 넣어 덧그리기를 지운다.
+        /// </summary>
+        public void SetExpectedManaCost(int cost)
+        {
+            expectedManaCost = cost;
+            RefreshManaCostPreview();
+        }
+
+        private void RefreshManaCostPreview()
+        {
+            if (manaSlider == null) return;
+            manaCostPreview ??= new ManaCostPreview(manaSlider);
+            manaCostPreview.Render(currentMana, expectedManaCost);
         }
 
         public void AddCard(string cardname)
