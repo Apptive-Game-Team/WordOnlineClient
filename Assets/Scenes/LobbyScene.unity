@@ -5483,46 +5483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadingPage
       objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_margin.w
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_margin.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_margin.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_margin.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 9a8c64c89aee44fa2ac41fff91221f41, type: 2}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_fontStyle
+    - target: {fileID: 7859570182354026429, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2629108057595473853, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8931800007668859955, guid: c2106abaa45b149f08fa47aafd60a150, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 700072846}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
