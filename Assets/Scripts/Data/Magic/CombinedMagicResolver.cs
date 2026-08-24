@@ -3,30 +3,17 @@ using UnityEngine;
 
 namespace Data.Magic
 {
-    /// <summary>
-    /// 보유 조합 마법 목록의 로드 상태.
-    /// "아직 안 옴"과 "받았는데 일치하는 레시피가 없음"은 호출자가 반드시 구분해야 한다.
-    /// </summary>
-    public enum MagicRecipeLoadState
-    {
-        Loading,
-        Loaded,
-        Failed
-    }
-
     public class CombinedMagicResolver : MonoBehaviour
     {
         private List<CombinedMagicData> dataList = new();
         [SerializeField] private UserMagicService userMagicService;
 
-        /// <summary>레시피 목록 로드 상태.</summary>
-        public MagicRecipeLoadState LoadState { get; private set; } = MagicRecipeLoadState.Loading;
-
         /// <summary>
-        /// <see cref="CanResolve"/>와 <see cref="TryResolve"/>의 false를 "일치하는 레시피 없음"으로
-        /// 해석해도 되는 상태인지. 로드 전이거나 로드에 실패했으면 false다.
+        /// 보유 조합 마법 목록 로드 시도가 끝났는지. 성공이든 실패든 끝났으면 true다.
+        /// 로드 전에는 <see cref="CanResolve"/>의 false를 "일치하는 레시피 없음"으로 읽으면 안 된다.
+        /// 아직 응답을 기다리는 중이라는 뜻일 수도 있기 때문이다.
         /// </summary>
-        public bool IsRecipeDataReady => LoadState == MagicRecipeLoadState.Loaded;
+        public bool IsRecipeDataSettled { get; private set; }
 
         private void Awake()
         {
@@ -34,42 +21,20 @@ namespace Data.Magic
             if (userMagicService == null)
             {
                 Debug.LogWarning("[CombinedMagicResolver] UserMagicService was not found.");
-                LoadState = MagicRecipeLoadState.Failed;
+                // 요청 자체가 나가지 않으므로 영구히 대기 상태로 두지 않는다.
+                IsRecipeDataSettled = true;
                 return;
             }
 
-            RequestLoad();
-        }
-
-        /// <summary>
-        /// 로드에 실패한 상태에서만 다시 요청한다.
-        /// 실패가 영구 상태로 굳으면 그 판에서는 마법 확정 자체가 막히기 때문이다.
-        /// </summary>
-        public void RequestReloadIfFailed()
-        {
-            if (LoadState != MagicRecipeLoadState.Failed || userMagicService == null)
-            {
-                return;
-            }
-
-            RequestLoad();
-        }
-
-        private void RequestLoad()
-        {
-            LoadState = MagicRecipeLoadState.Loading;
             userMagicService.GetCombinedMagicData(list =>
             {
                 if (list == null)
                 {
                     Debug.LogWarning("[CombinedMagicResolver] Failed to load combined magic data.");
-                    dataList = new List<CombinedMagicData>();
-                    LoadState = MagicRecipeLoadState.Failed;
-                    return;
                 }
 
-                dataList = list;
-                LoadState = MagicRecipeLoadState.Loaded;
+                dataList = list ?? new List<CombinedMagicData>();
+                IsRecipeDataSettled = true;
             });
         }
 
