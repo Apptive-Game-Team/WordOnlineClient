@@ -12,6 +12,7 @@ namespace GameScene.Dto
             { "sync", typeof(SyncFrameInfo) },
             { "magicValid", typeof(MagicValidInfo) },
             { "result", typeof(ResultInfo) },
+            { "botThought", typeof(BotThoughtInfo) },
             { "pveScript", typeof(PveScriptEventInfo) },
             { "pveScriptEvent", typeof(PveScriptEventInfo) }
         };
