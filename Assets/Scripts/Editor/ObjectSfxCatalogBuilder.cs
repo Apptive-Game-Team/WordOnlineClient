@@ -11,46 +11,87 @@ public static class ObjectSfxCatalogBuilder
     private const string ProfileRoot = ConfigRoot + "/Profiles";
     private const string CatalogPath = ConfigRoot + "/ObjectSfxCatalog.asset";
 
+    // Profiles are cut by faction, not by element. `.art/WORLD.md` and the magic
+    // concept pages define identity by where a unit came from, and the material
+    // palette follows that: hellfire demons are cracking husks, not lit matches;
+    // human structures are the only place metal is allowed. Element survives as
+    // the sub-material that separates the three World Tree spirits.
     private static readonly ProfileDefinition[] ProfileDefinitions =
     {
-        new("NeutralCreature", ObjectSfxElement.Neutral, ObjectSfxArchetype.Creature),
-        new("FireCreature", ObjectSfxElement.Fire, ObjectSfxArchetype.Creature),
-        new("WaterCreature", ObjectSfxElement.Water, ObjectSfxArchetype.Creature),
-        new("NatureCreature", ObjectSfxElement.Nature, ObjectSfxArchetype.Creature),
-        new("LightningCreature", ObjectSfxElement.Lightning, ObjectSfxArchetype.Creature),
-        new("RockCreature", ObjectSfxElement.Rock, ObjectSfxArchetype.Creature),
-        new("WindCreature", ObjectSfxElement.Wind, ObjectSfxArchetype.Creature),
-        new("OrganicBuilding", ObjectSfxElement.Nature, ObjectSfxArchetype.Building),
-        new("StoneBuilding", ObjectSfxElement.Rock, ObjectSfxArchetype.Building),
-        new("ArcaneDevice", ObjectSfxElement.Neutral, ObjectSfxArchetype.Building),
-        new("TransientLegacy", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
-        new("TransientShot", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
-        new("TransientExplode", ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell)
+        new("BurningLegionCreature", ObjectSfxFaction.BurningLegion,
+            ObjectSfxElement.Fire, ObjectSfxArchetype.Creature),
+        new("WorldTreeNatureCreature", ObjectSfxFaction.WorldTreeSpirit,
+            ObjectSfxElement.Nature, ObjectSfxArchetype.Creature),
+        new("WorldTreeLightningCreature", ObjectSfxFaction.WorldTreeSpirit,
+            ObjectSfxElement.Lightning, ObjectSfxArchetype.Creature),
+        new("WorldTreeWindCreature", ObjectSfxFaction.WorldTreeSpirit,
+            ObjectSfxElement.Wind, ObjectSfxArchetype.Creature),
+        new("WaterSlimeCreature", ObjectSfxFaction.WaterSlime,
+            ObjectSfxElement.Water, ObjectSfxArchetype.Creature),
+        new("RockGolemCreature", ObjectSfxFaction.RockGolemTribe,
+            ObjectSfxElement.Rock, ObjectSfxArchetype.Creature),
+        new("DimensionWandererCreature", ObjectSfxFaction.DimensionWanderer,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.Creature),
+        new("HumanInfantry", ObjectSfxFaction.HumanCivilization,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.Creature),
+        new("PlayerAvatar", ObjectSfxFaction.Neutral,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.Creature),
+        new("BurningLegionStructure", ObjectSfxFaction.BurningLegion,
+            ObjectSfxElement.Fire, ObjectSfxArchetype.Building),
+        new("WorldTreeBuilding", ObjectSfxFaction.WorldTreeSpirit,
+            ObjectSfxElement.Nature, ObjectSfxArchetype.Building),
+        new("WaterSlimeBuilding", ObjectSfxFaction.WaterSlime,
+            ObjectSfxElement.Water, ObjectSfxArchetype.Building),
+        new("RockGolemBuilding", ObjectSfxFaction.RockGolemTribe,
+            ObjectSfxElement.Rock, ObjectSfxArchetype.Building),
+        new("HumanStructure", ObjectSfxFaction.HumanCivilization,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.Building),
+        new("ArcaneRune", ObjectSfxFaction.Neutral,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.Building),
+        new("TransientLegacy", ObjectSfxFaction.Neutral,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
+        new("TransientShot", ObjectSfxFaction.Neutral,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell),
+        new("TransientExplode", ObjectSfxFaction.Neutral,
+            ObjectSfxElement.Neutral, ObjectSfxArchetype.TransientSpell)
     };
 
     private static readonly CatalogGroup[] CatalogGroups =
     {
-        new("NeutralCreature", "ChickenCommando", "Player"),
-        new("FireCreature",
+        // Demons of the hellfire dimension. FireTadpole is not one of them.
+        new("BurningLegionCreature",
             "EmberSpirit", "FireChildSpirit", "FireLordSpirit", "FireSlime",
-            "FireSpirit", "FireTadpole", "MagmaSpirit"),
-        new("WaterCreature", "AquaArcher", "BubbleSpirit", "WaterSlime"),
-        new("NatureCreature",
+            "FireSpirit", "MagmaSpirit"),
+        new("WorldTreeNatureCreature",
             "LeafSlime", "PveVineWitch", "SeedSpirit", "TreeGolem", "VineSpirit",
             "WillOWisp"),
-        new("LightningCreature",
-            "ElectricSlime", "LightningTadpole", "StormRider", "ThunderBird",
-            "ThunderSpirit", "ZapMouse"),
-        new("RockCreature", "DimensionToad", "RockGolem", "RockMage", "RockSlime"),
-        new("WindCreature", "CloudDragon", "WindSlime", "WindSpirit"),
-        new("OrganicBuilding",
-            "GiantVine", "LifeTree", "PveNatureSlimeNest", "PveVineColony",
-            "PveWaterSlimeNest", "SeedNest", "Vine", "VineColony"),
-        new("StoneBuilding", "Crater", "GroundCannon", "GroundTower", "RockTurret"),
-        new("ArcaneDevice",
-            "BubbleGenerator", "ElectricTower", "FireRune", "FrenzyTotem",
-            "HealingTotem", "LightningRune", "ManaWell", "NatureRune",
-            "RallyingTotem", "RockRune", "WaterRune", "WindRune", "WindTotem"),
+        new("WorldTreeLightningCreature",
+            "ElectricSlime", "StormRider", "ThunderBird", "ThunderSpirit",
+            "ZapMouse"),
+        new("WorldTreeWindCreature", "CloudDragon", "WindSlime", "WindSpirit"),
+        new("WaterSlimeCreature", "AquaArcher", "BubbleSpirit", "WaterSlime"),
+        new("RockGolemCreature", "RockGolem", "RockMage", "RockSlime"),
+        // Three independent species that carry a piece of a collapsed world, not
+        // a toad with its young: `.art/WORLD.md` says so in as many words.
+        new("DimensionWandererCreature",
+            "DimensionToad", "FireTadpole", "LightningTadpole"),
+        new("HumanInfantry", "ChickenCommando"),
+        // Heard more often than anything else, so it stays alone and plainest.
+        new("PlayerAvatar", "Player"),
+        new("BurningLegionStructure", "Crater", "FrenzyTotem"),
+        new("WorldTreeBuilding",
+            "ElectricTower", "GiantVine", "HealingTotem", "LifeTree", "ManaWell",
+            "PveNatureSlimeNest", "PveVineColony", "SeedNest", "Vine", "VineColony",
+            "WindTotem"),
+        new("WaterSlimeBuilding", "BubbleGenerator", "PveWaterSlimeNest"),
+        new("RockGolemBuilding", "RockTurret"),
+        // The one faction whose art actually contains metal, so the one profile
+        // allowed to sound like it. Non-ringing metal only.
+        new("HumanStructure", "GroundCannon", "GroundTower", "RallyingTotem"),
+        // Same shape on screen, element only. The faction spawn already says it.
+        new("ArcaneRune",
+            "FireRune", "LightningRune", "NatureRune", "RockRune", "WaterRune",
+            "WindRune"),
         // Fields and falls stay silent by concept-doc rule; only the release and
         // the impact are audible, and each is one shared sound for every element.
         new("TransientLegacy",
@@ -81,6 +122,8 @@ public static class ObjectSfxCatalogBuilder
         EnsureFolder(ProfileRoot);
 
         Dictionary<string, ObjectSfxProfile> profiles = CreateOrUpdateProfiles();
+        WarnAboutStaleProfiles(profiles.Keys);
+
         ObjectSfxCatalog catalog = AssetDatabase.LoadAssetAtPath<ObjectSfxCatalog>(CatalogPath);
         if (catalog == null)
         {
@@ -142,6 +185,7 @@ public static class ObjectSfxCatalogBuilder
 
             SerializedObject serializedProfile = new(profile);
             serializedProfile.FindProperty("profileId").stringValue = definition.Id;
+            serializedProfile.FindProperty("faction").enumValueIndex = (int)definition.Faction;
             serializedProfile.FindProperty("element").enumValueIndex = (int)definition.Element;
             serializedProfile.FindProperty("archetype").enumValueIndex = (int)definition.Archetype;
             serializedProfile.ApplyModifiedPropertiesWithoutUndo();
@@ -150,6 +194,23 @@ public static class ObjectSfxCatalogBuilder
         }
 
         return profiles;
+    }
+
+    // Renaming a profile leaves the old asset behind, still referenced by nothing.
+    // Deleting it is the author's call, so this only names them.
+    private static void WarnAboutStaleProfiles(ICollection<string> knownProfileIds)
+    {
+        foreach (string guid in AssetDatabase.FindAssets(
+                     $"t:{nameof(ObjectSfxProfile)}", new[] { ProfileRoot }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            string id = System.IO.Path.GetFileNameWithoutExtension(path);
+            if (!knownProfileIds.Contains(id))
+            {
+                Debug.LogWarning(
+                    $"Object SFX profile is no longer in the catalog and can be deleted: {path}.");
+            }
+        }
     }
 
     private static void WriteEntry(
@@ -205,15 +266,18 @@ public static class ObjectSfxCatalogBuilder
     private sealed class ProfileDefinition
     {
         public readonly string Id;
+        public readonly ObjectSfxFaction Faction;
         public readonly ObjectSfxElement Element;
         public readonly ObjectSfxArchetype Archetype;
 
         public ProfileDefinition(
             string id,
+            ObjectSfxFaction faction,
             ObjectSfxElement element,
             ObjectSfxArchetype archetype)
         {
             Id = id;
+            Faction = faction;
             Element = element;
             Archetype = archetype;
         }
