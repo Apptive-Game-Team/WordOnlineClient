@@ -78,5 +78,32 @@ namespace TutorialScene
         {
             Show("onboarding.menu.optionsProfile", menuButton != null ? menuButton.transform : null, onNext, true);
         }
+
+        // 앞선 로비 스텝들과 달리 버튼 클릭을 막지 않는다. 여기서는 설명이 아니라 플레이어가
+        // 실제로 눌러 첫 전투를 시작하는 것이 목적이다.
+        public void ShowPracticeButton(System.Action onClick)
+        {
+            Show("onboarding.hospitality.startPractice", botButton != null ? botButton.transform : null);
+            if (botButton != null)
+            {
+                botButton.OnClick += onClick;
+            }
+        }
+
+        public void HidePracticeButton(System.Action onClick)
+        {
+            if (botButton != null)
+            {
+                botButton.OnClick -= onClick;
+            }
+
+            Hide();
+        }
+
+        /// <summary>첫 전투를 마치고 로비로 돌아온 플레이어에게 보내는 마무리 안내.</summary>
+        public void ShowFirstMatchComplete(System.Action onNext)
+        {
+            Show("onboarding.hospitality.complete", (Transform)null, onNext);
+        }
     }
 }

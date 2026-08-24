@@ -316,6 +316,12 @@ namespace MagicBookScene
             previewCamera.transform.position = PreviewOrigin + Vector3.back * 10f;
         }
 
+        /// <summary>열려 있으면 닫는다. 닫혀 있으면 아무 일도 하지 않는다.</summary>
+        public void Close()
+        {
+            CloseModal();
+        }
+
         private void CloseModal()
         {
             ClearPreviewObject();
