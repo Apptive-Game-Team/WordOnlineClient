@@ -111,9 +111,9 @@ Transform 스케일 변형은 적용하지 않는다.
 한 번 재생하고 대기 프레임으로 돌아온다. 한 자세를 잠깐 들고 있는
 `AttackSpriteSwapController`와 달리, 자라나는 동작이 필요한 연출에 쓴다.
 
-번개 오브젝트(`LightningDrop.prefab`)는 그리지 않는다. 서버는 판정을 위해 계속
-소환하지만 클라이언트에서는 SpriteRenderer와 그림자를 끄고 `OnDestroySpawner`의
-폭발 프리팹도 비운다. 지면 연출은 `ElectricField`가 담당한다.
+번개 오브젝트는 없다. 서버는 먹구름이 자기 아래 기둥을 범위 판정으로 때리고
+`LightningDrop` 프리팹은 서버·클라이언트 양쪽에서 사라졌다. 지면 연출은
+`ElectricField`가 담당한다.
 
 ### 캔버스 불변식
 
