@@ -57,9 +57,16 @@ namespace GameScene
         private readonly IFrameInfoHandler<string> _frameInfoHandler = new GeneralHandler();
         private readonly FrameSilenceWatch _silence = new FrameSilenceWatch();
         private readonly ConnectAttemptSchedule _connectSchedule = new ConnectAttemptSchedule();
+        private readonly StompConnectGate _connectGate = new StompConnectGate();
 
         /// <summary>이탈 신고가 진행 중인지. 여러 이탈 경로가 동시에 터져도 한 번만 신고한다.</summary>
         private bool _reportingSessionLoss;
+
+        /// <summary>
+        /// 우리가 의도해서 끊는 중인지. 씬을 떠나며 닫는 소켓은 끊김이 아니므로
+        /// 재연결 사다리를 걸면 안 된다.
+        /// </summary>
+        private bool _intentionalDisconnect;
 
         // ─── 생명주기 ────────────────────────────────────────────────────────
 
@@ -110,6 +117,8 @@ namespace GameScene
 
         private void OnDestroy()
         {
+            // 플래그를 먼저 세운다. 닫는 과정에서 올라오는 Disconnected는 끊김이 아니다.
+            _intentionalDisconnect = true;
             _transport.Disconnect();
         }
 
@@ -127,23 +136,35 @@ namespace GameScene
 
         public void ConnectToServer()
         {
-            if (_transport.IsConnected)
+            if (_intentionalDisconnect) return;
+
+            float now = Time.unscaledTime;
+            switch (_connectGate.Decide(_transport.IsConnected, now))
             {
-                // 소켓이 열린 채 데이터만 끊긴 무음 정지가 여기로 온다. 소켓을 강제로 닫고
-                // 다시 여는 것은 두 transport 모두 종료가 비동기라 새 연결 상태를 덮어쓸 수
-                // 있어 하지 않는다. 이 경우 사다리는 그대로 소진되고 신고 경로로 넘어간다.
-                WDebug.Log("[STOMP] 소켓이 열려 있어 재연결을 건너뜁니다");
-                return;
+                case ConnectGateDecision.AlreadyConnected:
+                    // 소켓이 열린 채 데이터만 끊긴 무음 정지가 여기로 온다. 소켓을 강제로 닫고
+                    // 다시 여는 것은 두 transport 모두 종료가 비동기라 새 연결 상태를 덮어쓸 수
+                    // 있어 하지 않는다. 이 경우 사다리는 그대로 소진되고 신고 경로로 넘어간다.
+                    WDebug.Log("[STOMP] 소켓이 열려 있어 재연결을 건너뜁니다");
+                    return;
+
+                case ConnectGateDecision.HandshakeInFlight:
+                    // 여기서 다시 열면 앞선 핸드셰이크가 닫히고 처음부터 다시 시작된다.
+                    // 사다리 간격보다 느린 회선에서는 그러면 영영 연결되지 않는다.
+                    WDebug.Log("[STOMP] 핸드셰이크가 진행 중이라 재연결을 건너뜁니다");
+                    return;
             }
 
             MatchedInfoDto matchInfo = SceneContext.MatchInfo;
             if (!matchInfo.TryResolveWebSocket(StompPath, out ServerEndpoint gameServer))
             {
+                _connectGate.NoteSettled();
                 WDebug.LogError($"[STOMP] 게임 서버 URL을 해석하지 못했습니다: {matchInfo.ConnectionSource}");
                 return;
             }
 
             string url = gameServer.Query("token", SceneContext.JwtToken);
+            _connectGate.NoteHandshakeStarted(now);
             _transport.Connect(url, SceneContext.JwtToken);
         }
 
@@ -273,20 +294,40 @@ namespace GameScene
         private void HandleConnected()
         {
             WDebug.Log("[STOMP] 연결됨 – 기존 구독 복구 중");
+            _connectGate.NoteSettled();
             _reconnect.ResetRetries();
             _registry.ResubscribeAll(_transport);
         }
 
+        /// <summary>
+        /// 소켓이 닫혔다. 서버 재시작·세션 정리·유휴 타임아웃으로 서버가 정상 종료(clean close)한
+        /// 경우가 여기로 오며, 이는 에러 없이 연결이 사라지는 유일한 경로다. 사다리를 걸지 않으면
+        /// 재연결이 단 한 번도 일어나지 않는다.
+        /// </summary>
         private void HandleDisconnected(string message)
         {
-            SystemMessageUI.Instance.ShowMessage(connectionClosed);
             WDebug.Log("[STOMP] 연결 종료: " + message);
+            _connectGate.NoteSettled();
+
+            if (_intentionalDisconnect)
+            {
+                // OnDestroy에서 우리가 닫은 소켓이다. 씬을 떠나는 중에 사다리를 걸면
+                // 의도한 종료가 재연결 루프로 바뀐다.
+                return;
+            }
+
+            SystemMessageUI.Instance.ShowMessage(connectionClosed);
+            _reconnect.NotifyConnectionLost();
         }
 
         private void HandleError(string error)
         {
-            SystemMessageUI.Instance.ShowMessage(connectionDelayed);
             WDebug.LogError("[STOMP] 에러: " + error);
+            _connectGate.NoteSettled();
+
+            if (_intentionalDisconnect) return;
+
+            SystemMessageUI.Instance.ShowMessage(connectionDelayed);
             _reconnect.NotifyConnectionLost();
         }
 
