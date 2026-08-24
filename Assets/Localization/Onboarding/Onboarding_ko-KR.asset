@@ -170,6 +170,14 @@ MonoBehaviour:
     m_Localized: "봇 전투로 연습해 보세요."
     m_Metadata:
       m_Items: []
+  - m_Id: 318000000039
+    m_Localized: "이제 직접 해봐요! 봇과 연습 버튼을 눌러 첫 전투를 시작해요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000040
+    m_Localized: "첫 게임 잘 끝냈어요! 이제 하고 싶은 걸 자유롭게 해보세요."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
