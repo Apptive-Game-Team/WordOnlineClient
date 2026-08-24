@@ -76,7 +76,8 @@ namespace TutorialScene
         private void CompleteCommonState()
         {
             GlobalTutorialManager.Instance.SetProgress(OnboardingProgress.Common_Complete);
-            GlobalTutorialManager.Instance.FinishOnboarding();
+            // 안내가 끝났다고 튜토리얼이 끝나지는 않는다. 마지막으로 실제 세션을 한 판 치른다.
+            GlobalTutorialManager.Instance.CompleteTask(new HospitalityBattleState());
         }
     }
 }

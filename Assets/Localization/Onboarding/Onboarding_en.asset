@@ -170,6 +170,14 @@ MonoBehaviour:
     m_Localized: "Try a bot match to practice."
     m_Metadata:
       m_Items: []
+  - m_Id: 318000000039
+    m_Localized: "Your turn. Hit the bot match button to start your first battle."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000040
+    m_Localized: "Nicely done on your first game. Go play whatever you like now."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

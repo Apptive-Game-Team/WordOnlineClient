@@ -10,7 +10,7 @@ namespace GameScene.Card
     {
         [SerializeField] private UserMagicService userMagicService;
 
-        private List<CombinedMagicData> dataList;
+        private List<CombinedMagicData> dataList = new();
         private void Awake()
         {
             userMagicService.GetCombinedMagicData((list) =>
@@ -18,9 +18,8 @@ namespace GameScene.Card
                 if (list == null)
                 {
                     Debug.LogError("Failed to load combined magic data");
-                    return;
                 }
-                dataList = list;
+                dataList = list ?? new List<CombinedMagicData>();
             });
         }
 
@@ -35,7 +34,7 @@ namespace GameScene.Card
 
             var result = new List<CombinedMagicData>();
 
-            foreach (var data in dataList)
+            foreach (var data in dataList ?? new List<CombinedMagicData>())
             {
                 if (CanMake(data.recipe, handCount))
                     result.Add(data);
