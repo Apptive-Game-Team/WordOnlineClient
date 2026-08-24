@@ -210,9 +210,9 @@ around it. Worth one piece even though no sprite depends on it directly.
 
 ## Lightning strike — cloud and bolt on one canvas
 
-`LightningDropMagic` renders as two objects that must line up: the storm cloud
-that lives for the whole cast, and the bolt that strikes out of it. They are
-drawn as one composition so the bolt leaves the cloud's underside exactly.
+`LightningDropMagic` draws the bolt on the storm cloud itself: on every strike
+the cloud's sprite swaps through frames where the bolt grows further down out of
+its underside. Cloud and bolt therefore share one canvas.
 
 Two transparent sources, generated separately so the bolt can be revealed
 progressively without redrawing the cloud:

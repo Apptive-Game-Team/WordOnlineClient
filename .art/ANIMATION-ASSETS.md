@@ -94,48 +94,53 @@ Transform 스케일 변형은 적용하지 않는다.
 
 ## 번개 강타 프레임
 
-`LightningDropMagic`은 먹구름 오브젝트 하나와, 그 자리에서 반복 소환되는 번개
-오브젝트로 나뉜다. 둘은 같은 캔버스 구성을 공유해서 번개가 구름 밑면에서
-빠져나오는 것처럼 보이게 한다.
+`LightningDropMagic`의 먹구름은 공격할 때마다 스프라이트가 바뀐다. 번개는 별도
+오브젝트가 아니라 먹구름 스프라이트 안에서 구름 밑으로 자라는 프레임이다.
 
 | 실제 파일 | 의미 이름 | 런타임 연결 |
 |---|---|---|
 | `sprites/LightningCloud.png` | 먹구름 · 대기 | `LightningCloud.prefab` 기본 SpriteRenderer |
-| `drop/lightning_strike_frame_0.png` | 번개 강타 · 구름 밑에서 뻗기 시작 | `LightningDrop.prefab` 기본 Sprite, `SpriteFrameAnimator.frames[0]` |
-| `drop/lightning_strike_frame_1.png` | 번개 강타 · 중간까지 내려온 줄기 | `SpriteFrameAnimator.frames[1]` |
-| `drop/lightning_strike_frame_2.png` | 번개 강타 · 지면 도달, 최대 밝기 | `SpriteFrameAnimator.frames[2]` |
-| `drop/lightning_strike_frame_3.png` | 번개 강타 · 잔광 | `SpriteFrameAnimator.frames[3]` |
-| `drop/lightning_strike_frame_4.png` | 번개 강타 · 소멸 직전 | `SpriteFrameAnimator.frames[4]` |
+| `sprites/LightningCloudStrike0.png` | 강타 · 구름 밑에 번개가 돋음 | `AttackFrameSequenceController.frames[0]` |
+| `sprites/LightningCloudStrike1.png` | 강타 · 절반까지 자란 줄기 | `frames[1]` |
+| `sprites/LightningCloudStrike2.png` | 강타 · 지면 직전까지 자란 줄기 | `frames[2]` |
+| `sprites/LightningCloudStrike3.png` | 강타 · 지면 도달, 최대 밝기 | `frames[3]` |
+| `sprites/LightningCloudStrike4.png` | 강타 · 잔광 | `frames[4]` |
+| `sprites/LightningCloudStrike5.png` | 강타 · 소멸 직전 | `frames[5]` |
+
+`AttackFrameSequenceController`는 공격 이벤트에서 여섯 프레임을 0.05초 간격으로
+한 번 재생하고 대기 프레임으로 돌아온다. 한 자세를 잠깐 들고 있는
+`AttackSpriteSwapController`와 달리, 자라나는 동작이 필요한 연출에 쓴다.
+
+번개 오브젝트(`LightningDrop.prefab`)는 그리지 않는다. 서버는 판정을 위해 계속
+소환하지만 클라이언트에서는 SpriteRenderer와 그림자를 끄고 `OnDestroySpawner`의
+폭발 프리팹도 비운다. 지면 연출은 `ElectricField`가 담당한다.
 
 ### 캔버스 불변식
 
-- 여섯 파일 모두 `320x640`, PPU 160, 중앙 피벗이다. 월드로는 `2.0 x 4.0` 유닛.
-- 서버가 먹구름과 번개를 같은 좌표, 높이 `y=2`(`AERIAL_STANDARD_HEIGHT`)에
-  소환한다. 중앙 피벗이므로 스프라이트는 지면 `y=0`부터 `y=4`까지를 정확히
-  덮는다. 구름은 캔버스 최상단(월드 `y 2.8~4.0`), 번개는 구름 밑면
-  (`y≈2.95`)에서 지면까지 내려온다.
+- 일곱 파일 모두 `320x640`, PPU 160, 중앙 피벗이다. 월드로는 `2.0 x 4.0` 유닛.
+- 서버가 먹구름을 높이 `y=2`(`AERIAL_STANDARD_HEIGHT`)에 소환한다. 중앙
+  피벗이므로 스프라이트는 지면 `y=0`부터 `y=4`까지를 정확히 덮는다. 구름은
+  캔버스 최상단(월드 `y 2.8~4.0`), 번개는 구름 밑면(`y≈2.95`)에서 지면까지.
 - 먹구름 높이는 서버 소환 좌표가 아니라 캔버스 안에서의 구름 위치로 조절한다.
   강타 판정 박스는 지면부터 `y=10`까지라 그림만 움직여도 판정은 그대로다.
-- `SpriteFrameAnimator`는 `frameInterval` 0.06, `loop` 꺼짐이다. 5프레임 =
-  0.3초로, 서버 `LightningDropPrefabInitializer.STRIKE_VISUAL_DURATION`과 같은
-  값이어야 한다. 한쪽만 바꾸면 연출이 잘리거나 마지막 프레임이 멈춰 있는다.
-- `LightningDrop`과 `LightningCloud` 변형은 `Selectable`을 제거한다. 스프라이트
-  높이가 지면까지 닿으면서 선택 콜라이더가 그 아래 필드 클릭을 먹는다.
-  `LightningDrop`은 `SpawnPopInEffect`도 제거한다. 이 컴포넌트는 `Awake`에서
-  재생하므로 비활성화만으로는 막히지 않고, 번개가 작게 튀어나오며 커진다.
+- 여섯 프레임 x 0.05초 = 0.3초는 서버
+  `LightningCloud.STRIKE_VISUAL_DURATION`과 같은 값이어야 한다. 서버는 마지막
+  강타 뒤 그만큼 구름을 더 살려 두고 파괴한다. 한쪽만 바꾸면 마지막 번개가
+  중간에 잘린다.
+- `LightningCloud` 변형은 `Selectable`을 제거하고 `ServedObject._swingOnAttack`을
+  끈다. 스프라이트가 지면까지 닿아서 선택 콜라이더가 그 아래 필드 클릭을 먹고,
+  공격 연출의 30도 스윙은 캔버스 중심을 축으로 돌아 번개를 옆으로 던진다.
 
 ### 합성
 
 프레임은 생성물이 아니라 결정적 합성 결과다. 원본 두 장
-(`.art/concept/lightning-strike/`)에서 다시 만들 수 있다.
-
-검수 시트: `.art/sheets/lightning-strike-review.png` — 구름만, 그리고 다섯
-프레임을 지면선 위에 겹쳐 놓은 그림이다.
+(`.art/concept/lightning-strike/`)에서 다시 만들 수 있다. 검수 시트는
+`.art/sheets/lightning-strike-review.png`.
 
 ```bash
 .art/tools/compose-lightning-strike.py \
   --cloud .art/concept/lightning-strike/storm_cloud_source.png \
   --bolt .art/concept/lightning-strike/lightning_bolt_source.png \
-  --cloud-out Assets/Resources/Game/sprites/LightningCloud.png \
-  --frame-out 'Assets/Resources/Game/drop/lightning_strike_frame_{index}.png'
+  --idle-out Assets/Resources/Game/sprites/LightningCloud.png \
+  --frame-out 'Assets/Resources/Game/sprites/LightningCloudStrike{index}.png'
 ```

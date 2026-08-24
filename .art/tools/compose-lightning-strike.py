@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Compose the lightning cloud sprite and the strike frames on one shared canvas.
+"""Compose the lightning cloud idle sprite and its strike frames on one canvas.
 
 Canvas is 320x640 at PPU 160, so a sprite drawn with a centre pivot on an object
 standing at server height y=2 covers world y=0..4 exactly: cloud at the top,
-bolt running down to the ground.
+bolt growing out of its underside down to the ground.
 """
 
 import argparse
@@ -19,11 +19,12 @@ BOLT_MAX_WIDTH = 216
 
 # reveal fraction, alpha multiplier, white core mix
 FRAMES = [
-    (0.38, 1.00, 0.10),
-    (0.72, 1.00, 0.10),
+    (0.22, 1.00, 0.10),
+    (0.45, 1.00, 0.10),
+    (0.68, 1.00, 0.10),
     (1.00, 1.00, 0.38),
-    (1.00, 0.78, 0.12),
-    (1.00, 0.34, 0.00),
+    (1.00, 0.75, 0.12),
+    (1.00, 0.35, 0.00),
 ]
 TIP_FEATHER = 14         # px of alpha ramp at the descending tip
 
@@ -92,7 +93,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cloud", type=Path, required=True)
     parser.add_argument("--bolt", type=Path, required=True)
-    parser.add_argument("--cloud-out", type=Path, required=True)
+    parser.add_argument("--idle-out", type=Path, required=True)
     parser.add_argument("--frame-out", type=Path, required=True,
                         help="frame path pattern containing {index}")
     args = parser.parse_args()
@@ -102,9 +103,9 @@ def main():
 
     cloud_canvas = Image.new("RGBA", CANVAS, (0, 0, 0, 0))
     cloud_bottom = place_cloud(cloud_canvas, cloud_source)
-    args.cloud_out.parent.mkdir(parents=True, exist_ok=True)
-    cloud_canvas.save(args.cloud_out, optimize=True)
-    print(f"{args.cloud_out.name} {cloud_canvas.width}x{cloud_canvas.height} "
+    args.idle_out.parent.mkdir(parents=True, exist_ok=True)
+    cloud_canvas.save(args.idle_out, optimize=True)
+    print(f"{args.idle_out.name} {cloud_canvas.width}x{cloud_canvas.height} "
           f"cloud_bottom={cloud_bottom}px")
 
     bolt_top = max(0, cloud_bottom - BOLT_OVERLAP)
@@ -115,6 +116,8 @@ def main():
         canvas = Image.new("RGBA", CANVAS, (0, 0, 0, 0))
         canvas.alpha_composite(styled(reveal(bolt, fraction), alpha_scale, white_mix),
                                (bolt_x, bolt_top))
+        # the cloud draws over the bolt's top so the bolt grows out from behind it
+        canvas.alpha_composite(cloud_canvas)
         out = Path(str(args.frame_out).format(index=index))
         out.parent.mkdir(parents=True, exist_ok=True)
         canvas.save(out, optimize=True)

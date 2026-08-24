@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1088561502640704175, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      propertyPath: _swingOnAttack
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3650954007380220348, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.3575153
@@ -54,11 +58,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8896401521967180672, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
       propertyPath: m_Sprite
-      value: 
+      value:
       objectReference: {fileID: 21300000, guid: be10436ac8a6468f8d15776f824c9115, type: 3}
     m_RemovedComponents:
     - {fileID: 610906823383497306, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4391076218535157276, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7103482915566032118}
   m_SourcePrefab: {fileID: 100100000, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+--- !u!1 &6812403357719084412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4391076218535157276, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+  m_PrefabInstance: {fileID: 2245669156896450833}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6812403357719084413 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8896401521967180672, guid: 073eb5ab4f8444db8954d00ca99f9392, type: 3}
+  m_PrefabInstance: {fileID: 2245669156896450833}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7103482915566032118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812403357719084412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece687ee31c148e8b4fcddffeb3f10a6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  servedObject: {fileID: 0}
+  targetRenderer: {fileID: 6812403357719084413}
+  frames:
+  - {fileID: 21300000, guid: 0a0bf2f368d34050aa0bd35cb23d052d, type: 3}
+  - {fileID: 21300000, guid: 9f65d98d8a8b447a912aff41d9164cd7, type: 3}
+  - {fileID: 21300000, guid: 3aa8a7456eb94d95afd7ae134e175362, type: 3}
+  - {fileID: 21300000, guid: fbdd4b703aa640738bbc90daddde6fbb, type: 3}
+  - {fileID: 21300000, guid: 7a7ff255fa83429a92184814aa7b0479, type: 3}
+  - {fileID: 21300000, guid: a5c05f2c0dcf40e79bd52c2ba90e7cbf, type: 3}
+  frameInterval: 0.05

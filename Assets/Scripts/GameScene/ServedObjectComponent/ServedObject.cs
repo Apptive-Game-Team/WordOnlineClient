@@ -21,6 +21,13 @@ namespace GameScene.ServedObjectComponent
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
+
+        /// <summary>
+        /// Whether the attack event swings the object. Turn it off for objects whose sprite is a
+        /// tall effect rather than a body: the lightning cloud's canvas reaches the ground, so a
+        /// swing around the canvas centre throws the bolt sideways.
+        /// </summary>
+        [SerializeField] private bool _swingOnAttack = true;
         [SerializeField] private float _teamIndicatorVerticalOffset = 0.1f;
         [SerializeField] private float _teamIndicatorScale = 0.3f;
         [SerializeField] private float _effectScaleReferenceHeight = 1.2f;
@@ -178,7 +185,10 @@ namespace GameScene.ServedObjectComponent
         public void PlayAttackPresentation()
         {
             OnAttack?.Invoke();
-            DOTweenAction.SwingMobAttack(GetActualTransform());
+            if (_swingOnAttack)
+            {
+                DOTweenAction.SwingMobAttack(GetActualTransform());
+            }
         }
         
         public Transform GetActualTransform()
