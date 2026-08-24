@@ -129,6 +129,9 @@ Transform 스케일 변형은 적용하지 않는다.
 프레임은 생성물이 아니라 결정적 합성 결과다. 원본 두 장
 (`.art/concept/lightning-strike/`)에서 다시 만들 수 있다.
 
+검수 시트: `.art/sheets/lightning-strike-review.png` — 구름만, 그리고 다섯
+프레임을 지면선 위에 겹쳐 놓은 그림이다.
+
 ```bash
 .art/tools/compose-lightning-strike.py \
   --cloud .art/concept/lightning-strike/storm_cloud_source.png \
