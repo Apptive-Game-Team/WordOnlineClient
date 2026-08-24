@@ -25,19 +25,34 @@ namespace GameScene
         {
             _rectTransform = GetComponent<RectTransform>();
         
-            manaBarButton.onClick.AddListener(() =>
-            {
-                if (CardInputSender.Instance.IsWaitingInputResponse())
-                {
-                    return;
-                }
-
-                isActive = true;
-            });
+            manaBarButton.onClick.AddListener(() => TryOpenBar());
             fieldButton.onClick.AddListener(() =>
             {
                 isActive = false;
             });
+        }
+
+        /// <summary>
+        /// 마나 바를 올린다. 이미 올라와 있거나 지금 올릴 수 없는 상태면 아무것도 하지 않고 false.
+        /// 마나 바 버튼과 스페이스 키가 같은 경로를 타도록 여기에 모아 둔다.
+        /// </summary>
+        public bool TryOpenBar()
+        {
+            if (isActive || !CanOpenBar())
+            {
+                return false;
+            }
+
+            isActive = true;
+            return true;
+        }
+
+        /// <summary>Update가 마나 바를 도로 내리는 상태에서는 올리지 않는다.</summary>
+        private static bool CanOpenBar()
+        {
+            CardInputSender sender = CardInputSender.Instance;
+            return sender == null
+                   || (!sender.IsFieldSelectMode() && !sender.IsWaitingInputResponse());
         }
 
         private void Update()
