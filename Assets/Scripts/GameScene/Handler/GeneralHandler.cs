@@ -9,6 +9,7 @@ namespace GameScene.Handler
         private readonly ResultHandler resultHandler = new ResultHandler();
         private readonly SyncFrameHandler syncFrameHandler = new SyncFrameHandler();
         private readonly MagicValidHandler magicValidHandler = new MagicValidHandler();
+        private readonly BotThoughtHandler botThoughtHandler = new BotThoughtHandler();
         private readonly PveScriptEventHandler pveScriptEventHandler = new PveScriptEventHandler();
 
         public void Handler(string json)
@@ -32,6 +33,9 @@ namespace GameScene.Handler
                     break;
                 case ResultInfo result:
                     resultHandler.Handler(result);
+                    break;
+                case BotThoughtInfo botThought:
+                    botThoughtHandler.Handler(botThought);
                     break;
                 case PveScriptEventInfo pveScriptEvent:
                     pveScriptEventHandler.Handler(pveScriptEvent);
