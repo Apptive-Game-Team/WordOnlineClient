@@ -170,7 +170,7 @@ namespace Adventures
             {
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 canvasScaler.referenceResolution = new Vector2(1920f, 1080f);
-                canvasScaler.matchWidthOrHeight = 0.5f;
+                canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             }
         }
 
