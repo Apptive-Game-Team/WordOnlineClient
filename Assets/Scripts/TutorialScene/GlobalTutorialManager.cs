@@ -88,5 +88,22 @@ namespace TutorialScene
         {
             return Instance != null ? Instance.CurrentProgress : OnboardingProgress.None;
         }
+
+        public static bool IsDeckOnboardingActive()
+        {
+            switch (GetCurrentProgress())
+            {
+                case OnboardingProgress.Deck_EnterScene:
+                case OnboardingProgress.Deck_ExplainCard:
+                case OnboardingProgress.Deck_ExplainDeck:
+                case OnboardingProgress.Deck_SelectCreateDeck:
+                case OnboardingProgress.Deck_CreateDeck:
+                case OnboardingProgress.Deck_SaveDeck:
+                case OnboardingProgress.Deck_ReturnToLobby:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

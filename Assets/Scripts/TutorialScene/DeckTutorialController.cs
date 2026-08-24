@@ -21,8 +21,17 @@ namespace TutorialScene
         public event System.Action DeckSaved;
         public event System.Action ReturnToLobbySelected;
 
+        private bool isSubscribedToDeckManagement;
+
         private void OnEnable()
         {
+            // This controller lives in the regular deck scene, so it must stay inert
+            // unless the deck onboarding step is the one currently running.
+            if (!GlobalTutorialManager.IsDeckOnboardingActive())
+            {
+                return;
+            }
+
             if (deckManagementController == null)
             {
                 deckManagementController = GetComponent<DeckManagementController>();
@@ -41,14 +50,18 @@ namespace TutorialScene
             {
                 returnToLobbyButton.OnClick += OnReturnToLobbySelected;
             }
+
+            isSubscribedToDeckManagement = true;
         }
 
         private void OnDisable()
         {
-            if (deckManagementController == null)
+            if (!isSubscribedToDeckManagement)
             {
                 return;
             }
+
+            isSubscribedToDeckManagement = false;
 
             deckManagementController.NewDeckSelected -= OnNewDeckSelected;
             deckManagementController.DeckCardCountChanged -= NotifyDeckCardCountChanged;
@@ -109,7 +122,7 @@ namespace TutorialScene
             CreateDeckSelected?.Invoke();
         }
 
-        public void NotifyDeckCardCountChanged(int cardCount)
+        private void NotifyDeckCardCountChanged(int cardCount)
         {
             if (cardCount >= 15)
             {
