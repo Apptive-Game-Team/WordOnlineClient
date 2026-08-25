@@ -63,6 +63,19 @@ three mechanisms:
   `ServedObjectComponent/Motion` controllers start an idle tween in `Awake`.
 - **Spawned effect prefabs**, for hits, deaths and spawns.
 
+### A tween value is not always inside 0 to 1
+
+`Ease.OutBack` peaks at **1.10** and `Ease.InBack` dips to **-0.10**; the Elastic
+family is worse. That is the point of those curves, and it is harmless while the
+value drives a scale or a colour. It is not harmless when the value is
+multiplied by a distance: a 10% overshoot threw the stretching arm's hand a tenth
+of its reach past its target, and because the arm runs downhill from the shoulder
+to the enemy's body, past the target also meant into the floor.
+
+Clamp with `Mathf.Clamp01` before using a tween value as a fraction of a
+distance, and express any deliberate reach past the target in world units so it
+does not scale with how far away the target happens to be.
+
 Server `Status` arrives as a raw string and `ServedObject.HandleStatus` routes
 only `Destroyed`, `Attack` and `Damaged`. Everything else, including `Idle` and
 `Move`, falls through to `OnOtherStatus`, which only `PlayerActionController`
