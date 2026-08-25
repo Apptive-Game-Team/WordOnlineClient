@@ -68,9 +68,14 @@ namespace TutorialScene
             }
         }
 
+        // 콜백을 꺼내고 비운 뒤에 부른다. 한 스텝은 한 번만 진행해야 하는데, 진행 처리 도중에
+        // 패널이 아직 살아 있으면 두 번째 클릭이 같은 콜백을 다시 실행한다. 온보딩 마지막
+        // 스텝에서는 그 두 번째 실행이 이미 파괴된 GlobalTutorialManager를 건드렸다.
         private void OnNextClicked()
         {
-            nextAction?.Invoke();
+            System.Action action = nextAction;
+            nextAction = null;
+            action?.Invoke();
         }
 
         private void ResolveChildren()
@@ -108,5 +113,11 @@ namespace TutorialScene
         }
 
         private GameObject Root => root != null ? root : gameObject;
+
+        /// <summary>
+        /// 좌우 고정 위치가 맞지 않는 화면에서 배치를 직접 잡을 수 있게 연다.
+        /// 훈수 힌트는 화면을 가리면 안 되므로 Show 뒤에 이 값을 덮어쓴다.
+        /// </summary>
+        public RectTransform RootRectTransform => Root.transform as RectTransform;
     }
 }

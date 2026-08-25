@@ -75,6 +75,24 @@ namespace WordOnline.Tests
             Assert.AreEqual(1215, result.newLeftPlayerMmr);
         }
 
+        [Test]
+        public void BotThoughtMessageResolvesWithDecisionContract()
+        {
+            const string json = @"{""type"":""botThought"",""botSide"":""RightPlayer"",
+                ""ruleId"":""combo.mob-cluster"",""reason"":""three mobs"",
+                ""cards"" :[""Water"",""Explode""],""target"":{""x"":5.0,""y"":0.0,""z"":6.0}}";
+
+            ServerMessage message = JsonCodec.Deserialize<ServerMessage>(json);
+
+            Assert.IsInstanceOf<BotThoughtInfo>(message);
+            BotThoughtInfo thought = (BotThoughtInfo)message;
+            Assert.AreEqual("RightPlayer", thought.botSide);
+            Assert.AreEqual("combo.mob-cluster", thought.ruleId);
+            Assert.AreEqual("three mobs", thought.reason);
+            Assert.AreEqual(new[] { "Water", "Explode" }, thought.cards);
+            Assert.AreEqual(new UnityEngine.Vector3(5f, 0f, 6f), thought.target);
+        }
+
         [TestCase("pveScript")]
         [TestCase("pveScriptEvent")]
         public void BothPveScriptTypesResolveToPveScriptEventInfo(string type)

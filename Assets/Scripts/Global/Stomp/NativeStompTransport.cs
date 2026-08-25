@@ -26,6 +26,12 @@ namespace Global.Stomp
         private ClientWebSocket _ws;
         private CancellationTokenSource _cts;
 
+        /// <summary>
+        /// 우리 쪽에서 종료를 요청했는지. 요청한 종료는 <see cref="DisconnectAsync"/>가
+        /// 이미 Disconnected를 올리므로, 수신 루프가 같은 사실을 한 번 더 알리지 않게 한다.
+        /// </summary>
+        private bool _closeRequested;
+
         // 백그라운드 스레드 → 메인 스레드 디스패치 큐
         private readonly Queue<Action> _mainThreadQueue = new Queue<Action>();
         private readonly object _queueLock = new object();
@@ -74,6 +80,7 @@ namespace Global.Stomp
 
         private void OnDestroy()
         {
+            _closeRequested = true;
             _cts?.Cancel();
             _ws?.Dispose();
         }
@@ -84,16 +91,21 @@ namespace Global.Stomp
         {
             try
             {
+                _closeRequested = false;
                 _cts = new CancellationTokenSource();
-                _ws = new ClientWebSocket();
 
-                await _ws.ConnectAsync(new Uri(url), _cts.Token);
+                var socket = new ClientWebSocket();
+                _ws = socket;
+
+                await socket.ConnectAsync(new Uri(url), _cts.Token);
 
                 // STOMP CONNECT 프레임 전송
                 string connectFrame = $"CONNECT\naccept-version:1.2\nAuthorization:Bearer {token}\n\n\0";
                 await SendFrameAsync(connectFrame);
 
-                _ = ReceiveLoop();
+                // 수신 루프는 자기가 연 소켓만 담당한다. 필드를 매번 다시 읽으면 나중에
+                // 열린 소켓의 상태를 옛 루프가 읽고 새 연결에 대해 종료를 보고하게 된다.
+                _ = ReceiveLoop(socket, _cts.Token);
             }
             catch (Exception ex)
             {
@@ -102,19 +114,24 @@ namespace Global.Stomp
             }
         }
 
-        private async Task ReceiveLoop()
+        private async Task ReceiveLoop(ClientWebSocket socket, CancellationToken token)
         {
             var buffer = new ArraySegment<byte>(new byte[65536]);
             var sb = new StringBuilder();
 
-            while (_ws != null && _ws.State == WebSocketState.Open)
+            // 아무 이벤트도 없이 빠지는 경로를 없앤다. 서버가 Close 프레임을 보낸 경우와
+            // 소켓 상태가 Open을 벗어나 while 조건이 거짓이 된 경우가 정상 종료다.
+            // 예외 경로는 이미 Errored를 올렸고, 취소는 우리가 의도한 종료라 조용히 빠진다.
+            bool cleanClose = true;
+
+            while (socket.State == WebSocketState.Open)
             {
                 try
                 {
                     WebSocketReceiveResult result;
                     do
                     {
-                        result = await _ws.ReceiveAsync(buffer, _cts.Token);
+                        result = await socket.ReceiveAsync(buffer, token);
                         if (result.MessageType == WebSocketMessageType.Close) goto closed;
                         sb.Append(Encoding.UTF8.GetString(buffer.Array, 0, result.Count));
                     } while (!result.EndOfMessage);
@@ -124,18 +141,31 @@ namespace Global.Stomp
                 }
                 catch (OperationCanceledException)
                 {
+                    cleanClose = false;
                     break;
                 }
                 catch (Exception ex)
                 {
                     WDebug.LogError("[STOMP:Native] 수신 오류: " + ex.Message);
                     EnqueueMainThread(() => Errored?.Invoke(ex.Message));
+                    cleanClose = false;
                     break;
                 }
             }
 
             closed:
+            // 이 루프가 담당하던 소켓이 이미 교체됐으면 새 연결의 상태를 건드리지 않는다.
+            if (!ReferenceEquals(_ws, socket)) return;
+
             IsConnected = false;
+
+            // 우리가 요청한 종료는 DisconnectAsync가 알린다. 여기서 또 알리면 중복이다.
+            if (!cleanClose || _closeRequested) return;
+
+            string reason = socket.CloseStatusDescription;
+            string message = string.IsNullOrEmpty(reason) ? "socket closed" : reason;
+            WDebug.Log("[STOMP:Native] 서버가 소켓을 닫았습니다: " + message);
+            EnqueueMainThread(() => Disconnected?.Invoke(message));
         }
 
         private void ProcessIncomingData(string raw)
@@ -217,6 +247,7 @@ namespace Global.Stomp
 
         private async Task DisconnectAsync()
         {
+            _closeRequested = true;
             try
             {
                 if (_ws?.State == WebSocketState.Open)

@@ -8,16 +8,34 @@ namespace Data.Magic
         private List<CombinedMagicData> dataList = new();
         [SerializeField] private UserMagicService userMagicService;
 
+        /// <summary>
+        /// 보유 조합 마법 목록 로드 시도가 끝났는지. 성공이든 실패든 끝났으면 true다.
+        /// 로드 전에는 <see cref="CanResolve"/>의 false를 "일치하는 레시피 없음"으로 읽으면 안 된다.
+        /// 아직 응답을 기다리는 중이라는 뜻일 수도 있기 때문이다.
+        /// </summary>
+        public bool IsRecipeDataSettled { get; private set; }
+
         private void Awake()
         {
             userMagicService ??= FindObjectOfType<UserMagicService>();
             if (userMagicService == null)
             {
                 Debug.LogWarning("[CombinedMagicResolver] UserMagicService was not found.");
+                // 요청 자체가 나가지 않으므로 영구히 대기 상태로 두지 않는다.
+                IsRecipeDataSettled = true;
                 return;
             }
 
-            userMagicService.GetCombinedMagicData(list => dataList = list ?? new List<CombinedMagicData>());
+            userMagicService.GetCombinedMagicData(list =>
+            {
+                if (list == null)
+                {
+                    Debug.LogWarning("[CombinedMagicResolver] Failed to load combined magic data.");
+                }
+
+                dataList = list ?? new List<CombinedMagicData>();
+                IsRecipeDataSettled = true;
+            });
         }
 
         public bool CanResolve(IList<CardType> recipe)

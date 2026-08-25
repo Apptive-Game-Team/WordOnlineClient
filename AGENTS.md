@@ -62,8 +62,11 @@ For Unity Editor automation through MCP, use the project skill at
 
 `PlayerSettings.bundleVersion`, serialized as `bundleVersion` in
 `ProjectSettings/ProjectSettings.asset`, is the client's single version source.
-Update it in every runtime-behavior change: PATCH for backward-compatible fixes
-and internal changes, MINOR for backward-compatible features, and MAJOR for
-breaking server contracts or incompatible releases. Do not bump for
-documentation, tests, or agent-instruction-only changes. Do not maintain a
-second client version value.
+Do not bump it in a pull request. The monorepo `deploy` skill bumps it once per
+promotion: it commits `chore(release): WordOnlineClient vX.Y.Z` to `main`, merges
+`main` into `deploy`, then tags and releases `vX.Y.Z` on the merge commit. The
+level comes from the Conventional Commit messages promoted in that release:
+MAJOR for a `!` marker or a `BREAKING CHANGE` trailer, MINOR for `feat:`, PATCH
+otherwise, so write accurate commit types.
+
+Do not maintain a second client version value.

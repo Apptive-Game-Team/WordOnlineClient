@@ -143,6 +143,38 @@ MonoBehaviour:
     m_Key: onboarding.magicBook.chartDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 318000000033
+    m_Key: coach.fieldSelect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000034
+    m_Key: coach.combineButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000035
+    m_Key: coach.magicFailing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000036
+    m_Key: coach.magicUnused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000037
+    m_Key: coach.manaBar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000038
+    m_Key: coach.lobbyIdle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000039
+    m_Key: onboarding.hospitality.startPractice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318000000040
+    m_Key: onboarding.hospitality.complete
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

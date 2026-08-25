@@ -25,6 +25,11 @@ namespace GameScene.Card
         private const string Success = "SUCCESS";
         private const string FailInvalidMagic = "FAIL_INVALID_MAGIC";
 
+        // 훈수 시스템이 구독한다. 정적 이벤트이므로 구독자는 씬을 떠날 때 반드시 해제해야 한다.
+        public static event System.Action OnCardUsed;
+        public static event System.Action OnMagicFailed;
+        public static event System.Action OnMagicSucceeded;
+
         private readonly Dictionary<int, PendingInputRequest> inputRequestDict = new Dictionary<int, PendingInputRequest>();
         private readonly List<string> _currentCardNameList = new List<string>();
         private readonly List<CardUI> _currentCardList = new List<CardUI>();
@@ -123,20 +128,47 @@ namespace GameScene.Card
                 return;
             }
 
-            if (CanSelectField)
+            if (!CanSelectField)
             {
-                if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
-                {
-                    WDebug.Log("Cannot resolve the current recipe.");
-                    PlayerFeedbackController.Instance.UseMagicFeedback();
-                    SendInput(Vector2.zero);
-                    return;
-                }
-            
-                isFieldSelectMode = true;
+                return;
             }
+
+            // 아직 응답을 기다리는 중이면 CanResolve의 false가 "잘못된 조합"인지
+            // "목록이 아직 안 왔음"인지 구분되지 않는다. 그 상태로 아래로 흘려보내면
+            // 유효한 조합이 잘못된 조합으로 소모되므로 여기서 멈춘다.
+            // 카드는 선택된 채 남으므로 목록이 도착한 뒤 다시 확정하면 된다.
+            if (!IsRecipeDataSettled())
+            {
+                WDebug.Log("[CardInputSender] Combined magic data has not arrived yet. Confirm skipped; cards kept.");
+                return;
+            }
+
+            if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
+            {
+                WDebug.Log("Cannot resolve the current recipe.");
+                PlayerFeedbackController.Instance.UseMagicFeedback();
+                OnMagicFailed?.Invoke();
+                SendInput(GameConfig.FIELD_CENTER);
+                return;
+            }
+
+            isFieldSelectMode = true;
         }
-    
+
+        /// <summary>
+        /// 레시피 판정을 신뢰할 수 있는 상태인지 확인한다. 로드 시도가 끝났으면(성공이든 실패든)
+        /// CanResolve의 false를 "잘못된 조합"으로 읽어도 된다.
+        /// Awake 시점에 리졸버가 아직 없었을 수 있으므로 여기서 한 번 더 찾는다.
+        /// </summary>
+        private bool IsRecipeDataSettled()
+        {
+            if (combinedMagicResolver == null)
+            {
+                combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
+            }
+
+            return combinedMagicResolver != null && combinedMagicResolver.IsRecipeDataSettled;
+        }
 
         public string GetMagicName()
         {
@@ -184,6 +216,7 @@ namespace GameScene.Card
             }
 
             AddCardList(cardObj);
+            OnCardUsed?.Invoke();
         }
 
         public void SendInput(Vector3 pos) //whenFieldSelect
@@ -258,12 +291,24 @@ namespace GameScene.Card
                 }
 
                 isWaitingInputResponse = false;
+
+                // FAIL_INVALID_MAGIC도 카드를 소비하므로 이 분기에 들어온다. 카드가 사라졌다고
+                // 시전에 성공한 것은 아니라서 결과 코드로 다시 갈라야 한다.
+                if (IsSuccess(magicValid))
+                {
+                    OnMagicSucceeded?.Invoke();
+                }
+                else
+                {
+                    OnMagicFailed?.Invoke();
+                }
             }
             else
             {
                 RestorePendingSelection(pendingInputRequest.cards);
                 SystemMessageUI.Instance.ShowMessage(magicValid.message);
                 WDebug.Log("[Magic Valid]" + magicValid.message);
+                OnMagicFailed?.Invoke();
             }
 
             inputRequestDict.Remove(magicValid.id);
@@ -298,6 +343,16 @@ namespace GameScene.Card
 
             isFieldSelectMode = CanSelectField;
             SetExpectedMagicUI();
+        }
+
+        private static bool IsSuccess(MagicValidInfo magicValid)
+        {
+            if (string.IsNullOrEmpty(magicValid.resultCode))
+            {
+                return magicValid.valid;
+            }
+
+            return string.Equals(magicValid.resultCode, Success, System.StringComparison.Ordinal);
         }
 
         private static bool ShouldConsumeCards(MagicValidInfo magicValid)
@@ -345,6 +400,11 @@ namespace GameScene.Card
         }
         public void SetExpectedMagicUI()
         {
+            if (GameSceneUIController.Instance == null)
+            {
+                return;
+            }
+
             GameSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
         }
     }
