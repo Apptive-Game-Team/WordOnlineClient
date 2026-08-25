@@ -61,8 +61,12 @@ namespace GameScene.Object.Projectile
         // with a harder acceleration and a bigger yank back off the impact.
         private static readonly Motion PunchMotion =
             new Motion(0.55f, 0.08f, 0.20f, 0.10f, Ease.InQuart, Ease.OutQuad, Ease.InCubic);
+        // OutExpo, not OutBack: Back overshoots its target by 10%, which on an arm means the hand
+        // is thrown a tenth of its reach past the enemy. The line runs downhill from the shoulder
+        // to the enemy's body, so that extra length also drives the hand toward the floor. OutExpo
+        // gives the same burst-and-settle read without ever exceeding the aim point.
         private static readonly Motion GrabMotion =
-            new Motion(0.22f, 0f, 0.15f, 0f, Ease.OutBack, Ease.OutQuad, Ease.InCubic);
+            new Motion(0.22f, 0f, 0.15f, 0f, Ease.OutExpo, Ease.OutQuad, Ease.InCubic);
         private static readonly Motion FireFistMotion =
             new Motion(0.45f, 0.10f, 0.20f, 0.14f, Ease.InExpo, Ease.OutQuad, Ease.InBack);
 
@@ -175,12 +179,16 @@ namespace GameScene.Object.Projectile
 
             transform.position = from;
             transform.rotation = ProjectileUtil.GetRotation(from, to);
-            length = ProjectileUtil.GetCameraPlaneLength(from, to) + overshoot;
+            length = Mathf.Max(0f, ProjectileUtil.GetCameraPlaneLength(from, to) + overshoot);
         }
 
         private void ApplyProgress(float value)
         {
-            float drawn = Mathf.Max(0f, length * value);
+            // Clamped, not just floored: several DOTween eases leave [0,1] by design — Back
+            // overshoots above 1 and undershoots below 0 — and anything above 1 throws the hand
+            // past the enemy and down toward the floor. Reach past the target is the `overshoot`
+            // field's job, in world units, where it does not scale with the length of the arm.
+            float drawn = Mathf.Clamp01(value) * length;
 
             if (armRenderer != null)
             {
