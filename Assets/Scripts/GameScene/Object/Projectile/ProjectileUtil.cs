@@ -49,6 +49,18 @@ namespace GameScene.Object.Projectile
             return Vector3.Distance(start, reachable);
         }
 
+        /// <summary>
+        /// Screen-up expressed in world space. Sprites are billboarded to the tilted 2.5D camera,
+        /// so a height read off a sprite is a distance along this, not along world up: world up is
+        /// foreshortened by the tilt and carries the point away in depth as well.
+        /// Mirrors ServedObject.GetAnchorUpDirection, which places speech bubbles the same way.
+        /// </summary>
+        public static Vector3 GetScreenUp()
+        {
+            Camera camera = Camera.main;
+            return camera != null ? camera.transform.up : Vector3.up;
+        }
+
         public static Vector3 GetPosition(ProjectileTarget target)
         {
             switch (target)

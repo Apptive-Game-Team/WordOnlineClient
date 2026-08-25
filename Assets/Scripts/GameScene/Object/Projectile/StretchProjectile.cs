@@ -82,11 +82,15 @@ namespace GameScene.Object.Projectile
         /// </summary>
         [SerializeField] private float shoulderHeight = 1.55f;
 
-        /// <summary>Height on the victim the arm aims at, so it strikes the body, not the feet.</summary>
+        /// <summary>
+        /// Fallback aim height, used only when the victim has no sprite to measure. Normally the
+        /// arm aims at the middle of the victim's sprite, which suits a slime and a golem alike.
+        /// </summary>
         [SerializeField] private float aimHeight = 0.6f;
 
         private Transform startFollow;
         private Transform endFollow;
+        private ServedObject endObject;
         private Vector3 origin;
         private Vector3 destination;
         private float length;
@@ -95,7 +99,8 @@ namespace GameScene.Object.Projectile
         public void Init(ProjectileDto projectileDto)
         {
             startFollow = Follow(projectileDto.start);
-            endFollow = Follow(projectileDto.end);
+            endObject = Resolve(projectileDto.end);
+            endFollow = endObject != null ? endObject.transform : Follow(projectileDto.end);
             origin = ProjectileUtil.GetPosition(projectileDto.start);
             destination = ProjectileUtil.GetPosition(projectileDto.end);
 
@@ -155,8 +160,18 @@ namespace GameScene.Object.Projectile
 
             // Both ends arrive as ground positions. Lift them before aiming, so the arm leaves the
             // shoulder and lands on the target's body rather than crawling along the floor.
-            Vector3 from = origin + Vector3.up * shoulderHeight;
-            Vector3 to = destination + Vector3.up * aimHeight;
+            // The lift runs along screen-up, not world up: the sprites these heights were measured
+            // off are billboarded to the tilted camera, so world up would raise the point by only
+            // its cosine on screen and push the rest into depth, dropping the arm toward the floor.
+            Vector3 screenUp = ProjectileUtil.GetScreenUp();
+            Vector3 from = origin + screenUp * shoulderHeight;
+
+            // Aim at the middle of the victim's sprite rather than a fixed height, so the arm
+            // strikes a slime and a golem in the body instead of the feet or the head. Passing an
+            // edge bias of zero returns the sprite centre, measured in the renderer's own space.
+            Vector3 to = endObject != null
+                ? endObject.GetEdgeWorldPositionTowards(from, 0f)
+                : destination + screenUp * aimHeight;
 
             transform.position = from;
             transform.rotation = ProjectileUtil.GetRotation(from, to);
@@ -198,13 +213,18 @@ namespace GameScene.Object.Projectile
 
         private static Transform Follow(ProjectileTarget target)
         {
+            ServedObject servedObject = Resolve(target);
+            return servedObject != null ? servedObject.transform : null;
+        }
+
+        private static ServedObject Resolve(ProjectileTarget target)
+        {
             if (!(target is ReferenceProjectileTarget reference))
             {
                 return null;
             }
 
-            ServedObject servedObject = ObjectContainer.Instance.FindById(reference.id);
-            return servedObject != null ? servedObject.transform : null;
+            return ObjectContainer.Instance.FindById(reference.id);
         }
     }
 }
