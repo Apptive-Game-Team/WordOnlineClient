@@ -21,6 +21,8 @@ For visual styling, layout, colors, shapes, and typography guidelines, follow th
 
 Follow [scene-space.md](.agents/docs/scene-space.md) before writing gameplay code that positions anything in the world or animates a `ServedObject`. The camera is tilted and sprites are billboarded to it, so `Vector3.up` and `Vector3.Distance` are the wrong tools for offsets and lengths measured off a sprite. That file also records that this project has no `Animator`.
 
+Follow [localization.md](.agents/docs/localization.md) before adding or editing anything under `Assets/Localization`. The same magic is keyed by three different spellings of its server name, so adding one of them and stopping leaves another screen showing a raw key. The string tables are hand-edited YAML here because the Editor cannot run in this environment.
+
 ## Testing Guidelines
 `com.unity.test-framework` is installed, but there are no dedicated `Tests` assemblies in the current tree. For new automated tests, create Edit Mode or Play Mode test assemblies under `Assets/Tests` and name files `*Tests.cs`. At minimum, validate scene flow and WebGL-specific behavior manually in the Editor before opening a PR.
 

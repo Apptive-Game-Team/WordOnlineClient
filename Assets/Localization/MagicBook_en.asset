@@ -273,6 +273,11 @@ MonoBehaviour:
     m_Localized: Card Count
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507528
+    m_Localized: Summons an Evil Ent that punches from range and periodically drags
+      in a light enemy to burn it.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
