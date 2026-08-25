@@ -51,6 +51,8 @@ MonoBehaviour:
   tipTransform: {fileID: 7100000000000000022}
   style: 1
   overshoot: 0
+  shoulderHeight: 1.55
+  aimHeight: 0.6
 --- !u!1 &7100000000000000011
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,6 +74,17 @@ namespace GameScene.Object.Projectile
         /// <summary>Extra reach past the target, in world units, so the tip bites in.</summary>
         [SerializeField] private float overshoot;
 
+        /// <summary>
+        /// Height above the caster's own position where the arm leaves the body, in world units.
+        /// A ServedObject sits on the ground, so without this the arm would sprout from the feet.
+        /// Measured off EvilEnt's sprite: the body is 2.56 units tall on a bottom-centre pivot and
+        /// the shoulders sit a little above the middle.
+        /// </summary>
+        [SerializeField] private float shoulderHeight = 1.55f;
+
+        /// <summary>Height on the victim the arm aims at, so it strikes the body, not the feet.</summary>
+        [SerializeField] private float aimHeight = 0.6f;
+
         private Transform startFollow;
         private Transform endFollow;
         private Vector3 origin;
@@ -142,9 +153,14 @@ namespace GameScene.Object.Projectile
                 destination = endFollow.position;
             }
 
-            transform.position = origin;
-            transform.rotation = ProjectileUtil.GetRotation(origin, destination);
-            length = ProjectileUtil.GetCameraPlaneLength(origin, destination) + overshoot;
+            // Both ends arrive as ground positions. Lift them before aiming, so the arm leaves the
+            // shoulder and lands on the target's body rather than crawling along the floor.
+            Vector3 from = origin + Vector3.up * shoulderHeight;
+            Vector3 to = destination + Vector3.up * aimHeight;
+
+            transform.position = from;
+            transform.rotation = ProjectileUtil.GetRotation(from, to);
+            length = ProjectileUtil.GetCameraPlaneLength(from, to) + overshoot;
         }
 
         private void ApplyProgress(float value)
