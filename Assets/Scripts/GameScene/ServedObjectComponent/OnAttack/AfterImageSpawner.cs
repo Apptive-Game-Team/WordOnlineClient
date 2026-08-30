@@ -20,6 +20,21 @@ namespace GameScene.ServedObjectComponent.OnAttack
 
         private void Start()
         {
+            if (sourceRenderer == null)
+            {
+                Transform parent = transform.parent;
+                if (parent != null)
+                {
+                    foreach (SpriteRenderer candidate in parent.GetComponentsInChildren<SpriteRenderer>())
+                    {
+                        if (!candidate.transform.IsChildOf(transform))
+                        {
+                            sourceRenderer = candidate;
+                            break;
+                        }
+                    }
+                }
+            }
             CreatePoolRoot();
             PreloadPool();
             spawnDelay = new WaitForSeconds(Mathf.Max(0.01f, spawnInterval));
