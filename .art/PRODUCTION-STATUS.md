@@ -16,8 +16,10 @@
   `main`에 있는
   `public/concept-art/`와 `public/game-assets/`다. 웹사이트 파일은 표시용 WebP이고,
   실제 런타임 정본은 `Assets/Resources/Game/sprites/` 아래 PNG다.
-- 최초 목록은 웹사이트 커밋 `ffc2c7e8`을 기준으로 대조했다. 이후에는 최신
-  `main`을 다시 확인해 새로 추가된 파일을 반영한다.
+- 최초 목록은 웹사이트 커밋 `860526f`을 기준으로 대조했다. 2026-08-31의
+  후속 동기화는 웹사이트 PR
+  [`#29`](https://github.com/Apptive-Game-Team/theevilent/pull/29)에 기록했다.
+  이후에는 최신 `main`을 다시 확인해 새로 추가된 파일을 반영한다.
 
 ## 완료
 
@@ -26,18 +28,34 @@
 | `AquaArcher.png` | `concept-art/aqua-archer-drawn.webp` | 물의 궁수 기본 프레임 |
 | `AquaArcherAttack.png` | `concept-art/aqua-archer-release.webp` | 화살을 놓은 공격 프레임 |
 | `ChickenCommando.png` | `concept-art/chicken-commando.webp`, `game-assets/chicken-commando.webp` | 인간 공수 특공대 방향 적용 |
+| `DimensionToad.png` | `concept-art/dimension-toad.webp`, `game-assets/dimension-toad.webp` | 차원 유랑종 경계 운반자 방향 적용 |
 | `EmberSpiritSwarm.png` | `concept-art/ember-spirit-swarm.webp` | 지옥불 악마병 무리로 교체 |
+| `EvilEnt.png` | 웹사이트 PR #29 `game-assets/evil-ent-idle.webp` | 사악한 나무 골렘 기본 자세 |
+| `EvilEnt2.png` | 웹사이트 PR #29 `game-assets/evil-ent-attack.webp` | 팔을 뻗은 공격 자세 |
 | `FireChildSpirit.png` | `concept-art/fire-child-spirit.webp` | 하급 악마 방향 적용 |
 | `FireLordSpirit.png` | `concept-art/fire-lord-spirit.webp` | 지옥불 군단 지휘관으로 교체 완료 |
 | `FireSpirit.png` | `concept-art/fire-spirit.webp` | 하급 뿔 악마 방향 적용 |
 | `FireTadpole.png` | `concept-art/fire-tadpole.webp` | 차원 유랑종 화산편 방향 적용 |
+| `RockGolem.png` | `concept-art/rock-golem.webp` | 이끼바위 골렘 기본 자세 |
+| `RockGolem2.png` | `game-assets/rock-golem-attack.webp` | 이끼바위 골렘 공격 자세 |
+| `RockRemnant.png` | `game-assets/rock-remnant.webp` | 사망 후 이동 방해 잔해 |
 | `LightningTadpole.png` | `concept-art/lightning-tadpole.webp` | 차원 유랑종 폭풍편 방향 적용 |
 | `MagmaSpirit.png` | `concept-art/magma-spirit-idle.webp` | 기본 자세 |
 | `MagmaSpiritAttacking.png` | `concept-art/magma-spirit-attack.webp` | 공격 자세 |
 | `MagmaSpiritSpawn.png` | `concept-art/magma-spirit-spawn.webp` | 소환 자세 |
+| `WaterSlimeSwarm.png` | `concept-art/water-slime.webp` | 물방울 생존자 무리 기본 자세 |
+| `WaterSlimeAttackSpit.png` | `game-assets/water-slime-attack.webp` | 물 뱉기 공격 프레임 |
 | `cloud.png` | `game-assets/cloud-dragon-water-aura.webp` | 운룡 전용 구형 물 아우라 |
 | `fire_aura.png` | `game-assets/fire-aura.webp` | 지옥불 공용 오라 |
-| `ChainLightning.png` | 클라이언트 PR #557 검수 시트 | 256x76 RGBA, 64px 실루엣 검수 완료 |
+| `LightningCloud.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-idle.webp` | 번개 구름 대기 프레임 |
+| `LightningCloudStrike0.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-0.webp` | 강타 1 프레임 |
+| `LightningCloudStrike1.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-1.webp` | 강타 2 프레임 |
+| `LightningCloudStrike2.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-2.webp` | 강타 3 프레임 |
+| `LightningCloudStrike3.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-3.webp` | 강타 4 프레임 |
+| `LightningCloudStrike4.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-4.webp` | 강타 5 프레임 |
+| `LightningCloudStrike5.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-5.webp` | 강타 6 프레임 |
+| `LightningDrop.png` | 웹사이트 PR #29 `game-assets/lightning-drop.webp` | 번개 투하 인게임 스프라이트 |
+| `ChainLightning.png` | 클라이언트 PR #557, 웹사이트 PR #29 | 256x76 RGBA, 64px 실루엣 검수 완료 |
 
 ## 다음 교체 후보
 
