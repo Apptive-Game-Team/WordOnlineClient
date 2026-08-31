@@ -19,6 +19,12 @@ Read these before generating or editing art:
 3. `.art/ANCHORS.md` — frozen production anchors and exclusions.
 4. `.art/CONCEPT-BRIEF.md` — active explorations and comparison Site.
 5. `.art/ANIMATION-ASSETS.md` — semantic frame names, pivot invariants, and aura behavior.
+6. `.art/PRODUCTION-STATUS.md` — completed replacements and the next eligible targets.
+
+Check `PRODUCTION-STATUS.md` before proposing a target. Do not propose an asset
+marked complete unless the user explicitly asks to revisit it or a concrete defect
+first changes its status to `재작업 필요`. Update the status in the same change that
+ships a replacement.
 
 Precedence:
 
