@@ -89,3 +89,7 @@ crashlytics-build.properties
 
 # Claude Code local (per-user) settings
 .claude/settings.local.json
+
+# Python bytecode from the .art tooling (generate-magic-pages.py)
+__pycache__/
+*.pyc

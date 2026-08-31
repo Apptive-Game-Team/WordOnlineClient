@@ -379,6 +379,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 78335600000000000
+    m_Localized: "\uC0AC\uC545\uD55C \uB098\uBB34 \uACE8\uB818"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78335700000000000
     m_Localized: "\uCC9C\uB465 \uC0AC\uC2B4"
     m_Metadata:
       m_Items: []

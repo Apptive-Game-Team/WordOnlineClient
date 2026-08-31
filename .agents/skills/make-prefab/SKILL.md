@@ -45,6 +45,35 @@ If the request also needs `LocalCombinedMagicData` or localization updates, use 
 - If a prefab already exists, validate it instead of recreating it.
 - For explode-family magic, follow the `Assets/Resources/Prefabs/Abstract/AbstractExplode.prefab` pattern by duplicating an existing concrete variant such as `LeafExplode.prefab`.
 - Prefer the smallest possible override set when duplicating an existing prefab.
+- Pick the abstract base by the child it exposes, not by the unit's melee or
+  ranged role. `AbstractRangeMob` names its visual child `actualObject`, which is
+  what `ServedObject.GetActualTransform()` looks up with `transform.Find`.
+  `AbstractMeleeMob` names it `actual`, so that lookup silently falls through to
+  the sprite renderer's own transform. Prefer `AbstractRangeMob` unless a melee
+  base is genuinely needed, and never rename that child.
+- Do not copy `VineSpirit.prefab`'s `m_RemovedComponents` block. It points at a
+  `fileID` that does not exist in its base. Copy the overrides you actually want.
+
+## Hand-authoring Prefabs
+
+The Unity Editor cannot open this checkout from WSL, so prefabs and `.meta`
+files are frequently written by hand. When that happens:
+
+- Copy an existing `.meta` and replace only the `guid` with a fresh 32-character
+  lowercase hex string. Confirm it is unique with
+  `grep -rc "guid: <g>" Assets`. Sharing one `spriteID` across sprite metas is
+  normal here.
+- Write LF line endings; `.gitattributes` sets `* text=auto eol=lf`.
+- Keep `fileID` anchors unique within the file. They are arbitrary int64s.
+- **Do not hand-write an enum ordinal for a type that lives in a DLL.** DOTween's
+  `Ease` is the trap: it is not in the source tree, so its serialized integer
+  cannot be checked, and a wrong guess is silent. Keep such values in C# — a
+  small enum you own, serialized as the selector, with the real curves in a table
+  in the script — and leave only floats, object references and your own enums in
+  the YAML.
+- A serialized field missing from the YAML deserializes to zero, not to the C#
+  field initializer. Write every field you rely on.
+- Say in the pull request that the Editor still has to open the prefab once.
 
 ## Asset Rules
 

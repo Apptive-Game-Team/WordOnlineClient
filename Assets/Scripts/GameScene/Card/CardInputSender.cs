@@ -41,6 +41,7 @@ namespace GameScene.Card
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
         private bool isWaitingInputResponse = false;
+        private BarController barController;
         
         private CombinedMagicResolver combinedMagicResolver;
 
@@ -85,13 +86,31 @@ namespace GameScene.Card
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Confirm();
+                // 마나 바가 내려가 있으면 손패가 보이지 않는다. 이때의 스페이스는 확정이 아니라
+                // 마나 바를 올리는 입력으로 쓰고, 올라와 있을 때만 수정구를 누른 것으로 다룬다.
+                if (!TryOpenManaBar())
+                {
+                    Confirm();
+                }
             }
 
             if (CardHotkey.TryGetPressedSlotIndex(out int slotIndex))
             {
                 ToggleCardBySlot(slotIndex);
             }
+        }
+
+        /// <summary>
+        /// 내려가 있는 마나 바를 올린다. 올릴 것이 없으면 false를 돌려 호출자가 확정으로 넘어가게 한다.
+        /// </summary>
+        private bool TryOpenManaBar()
+        {
+            if (barController == null)
+            {
+                barController = FindObjectOfType<BarController>();
+            }
+
+            return barController != null && barController.TryOpenBar();
         }
 
         private void ToggleCardBySlot(int slotIndex)
@@ -236,6 +255,13 @@ namespace GameScene.Card
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
+
+            // 카드가 손을 떠났으니 마나 바에 남은 예상 소모량을 지운다. 응답이 실패로 오면
+            // RestorePendingSelection이 선택을 되살리면서 다시 그린다.
+            if (GameSceneUIController.Instance != null)
+            {
+                GameSceneUIController.Instance.SetExpectedManaCost(0);
+            }
 
             StopCoroutine(nameof(WaitInputResponseTimeout));
             StartCoroutine(nameof(WaitInputResponseTimeout));
@@ -405,7 +431,9 @@ namespace GameScene.Card
                 return;
             }
 
-            GameSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
+            List<CardType> recipe = GetCurrentRecipeTypes();
+            GameSceneUIController.Instance.TrySetExpectedMagicUI(recipe);
+            GameSceneUIController.Instance.SetExpectedManaCost(CardManaCost.SumOf(recipe));
         }
     }
 }

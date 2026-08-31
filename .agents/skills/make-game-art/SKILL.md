@@ -107,6 +107,15 @@ unless it is explicitly the selected master-style key.
   be an attack frame wired to `OnAttackSpriteSwapper`.
 - Paired frames must share PPU, Bottom Center pivot, body scale, ground contact,
   camera, and facing. Name them by meaning in docs: base pose / attack pose.
+  Finalize a pair with **one shared crop box and one shared scale factor**, taken
+  from the union of both frames' alpha bounding boxes, so ground contact matches
+  by construction. Trimming each frame on its own is what left `TreeGolem` and
+  `TreeGolem2` at different PPU. Confirm afterwards that both files report the
+  same canvas size and the same gap between the subject's bottom and the canvas
+  bottom.
+- Ask a generator for the attack frame in a **separate** call, with the approved
+  base frame attached and an instruction to move only the named limb. Asking for
+  both frames at once returns two unrelated poses.
 - Generate idle/attack aura as separate transparent assets. Do not bake aura
   into the creature sprite.
 - Treat `CloudDragon`'s spherical `cloud.png` as a dedicated water aura. Do not
@@ -126,9 +135,37 @@ magick identify output.png
 - Reject visible changes in renderer, camera, eye style, edge softness,
   highlight shape, shadow shape, or detail density.
 - Run `./.art/make-sheets.sh`.
-- Verify dimensions, alpha, trim, filename, and Unity path.
+- Verify dimensions, trim, filename, and Unity path.
+- Verify the cutout as described below. Generators hand back a painted
+  background often enough that this is not optional.
 - Keep rejected generations out of `.art/anchors/master-v2/` and `Assets/`.
 - Record any approved style change before generating dependent assets.
+
+### Verifying the cutout
+
+`alpha.getextrema()[0] == 0` does **not** prove a sprite is cut out. One
+transparent pixel anywhere passes it, so a subject sitting on a painted white
+rectangle, or a canvas filled with a painted grey-and-white checkerboard, sails
+through. Both have shipped that way. Check three things instead:
+
+- **All four corner pixels have alpha 0.** A painted background usually reaches
+  the corners.
+- **A sane share of the canvas is transparent.** Roughly a fifth or more around a
+  single subject. A tiling strip is different: it must bleed off its left and
+  right edges, so expect clear space only above and below.
+- **No large block of bright desaturated pixels.** The palettes in `STYLE.md` are
+  greens, browns, stone and hot orange. Nothing in this art is both bright and
+  near-grey, so a big share of such pixels is a background that was drawn rather
+  than cut. Over about 5% of the opaque pixels is a reject.
+
+Then look at it. Composite the sprite over magenta and view it — a painted
+background is instantly obvious and no numeric test replaces the glance.
+
+When the check fails, regenerate with the transparent-background option. Do not
+chroma-key the background away: keying leaves a pale fringe, and it hides the
+fact that the generator is ignoring the instruction. Post-processing is a
+last resort when regeneration is genuinely unavailable, and it must be called out
+in the pull request as art to be redone.
 
 ## Boundaries
 

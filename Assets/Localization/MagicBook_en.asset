@@ -19,230 +19,223 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1000000
-    m_Localized: Summons a swarm of small water slimes.
+    m_Localized: "Summons a swarm of surviving water slimes that leave a water field in their wake."
     m_Metadata:
       m_Items: []
   - m_Id: 1000001
-    m_Localized: Fires a flaming projectile.
+    m_Localized: "Fires a hellfire projectile in the target direction."
     m_Metadata:
       m_Items: []
   - m_Id: 1000002
-    m_Localized: Summons a geyser that deals damage and launches enemies into the
-      air.
+    m_Localized: "Erupts a geyser that damages enemies and launches them into the air."
     m_Metadata:
       m_Items: []
   - m_Id: 1000003
-    m_Localized: Builds a cannon that attacks ground units.
+    m_Localized: "Builds a cannon of the human magic civilization that shells ground units."
     m_Metadata:
       m_Items: []
   - m_Id: 1000004
-    m_Localized: Builds a tower that deals area damage to flying units.
+    m_Localized: "Builds a human anti-air arcane tower that deals area damage to flying units."
     m_Metadata:
       m_Items: []
   - m_Id: 1000005
-    m_Localized: Builds a well that restores mana.
+    m_Localized: "Opens a well pooled with World Tree mana that restores your mana."
     m_Metadata:
       m_Items: []
   - m_Id: 1000006
-    m_Localized: Summons an archer that attacks ground and flying units from range.
+    m_Localized: "Summons an equipment-wielding water slime archer that attacks ground and flying units from range."
     m_Metadata:
       m_Items: []
   - m_Id: 1000007
-    m_Localized: Summons a large, sturdy rock golem.
+    m_Localized: "Summons a mossy warrior of the rock golem tribe that attacks ground enemies up close."
     m_Metadata:
       m_Items: []
   - m_Id: 1000008
-    m_Localized: Summons a storm rider that prioritizes attacking the player.
+    m_Localized: "Summons a World Tree wind spirit rider that prioritizes attacking the player."
     m_Metadata:
       m_Items: []
   - m_Id: 1000009
-    m_Localized: Summons a fast thunder spirit that flies through the air.
+    m_Localized: "Summons a lightning spirit born at the World Tree that flies fast and attacks enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000010
-    m_Localized: Summons a fire spirit that burns nearby enemies.
+    m_Localized: "Summons a lesser demon of the Hellfire Legion that burns nearby enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000011
-    m_Localized: Calls down lightning to attack enemies.
+    m_Localized: "Calls down a lightning spirit's thunderbolt onto the target area."
     m_Metadata:
       m_Items: []
   - m_Id: 1000012
-    m_Localized: Summons a magma spirit that burns enemies.
+    m_Localized: "Summons a magma-crusted demon of the Hellfire Legion that burns enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000013
-    m_Localized: Places a totem that heals allies.
+    m_Localized: "Places a World Tree healing totem that restores allies in range."
     m_Metadata:
       m_Items: []
   - m_Id: 1000014
-    m_Localized: Creates a sandstorm that attacks enemies.
+    m_Localized: "Whips up a wind spirit's dust storm that batters enemies in the area."
     m_Metadata:
       m_Items: []
   - m_Id: 1000015
-    m_Localized: Sweeps enemies away with a tornado.
+    m_Localized: "Sends a wind spirit turned tornado sweeping across the field."
     m_Metadata:
       m_Items: []
   - m_Id: 1000016
-    m_Localized: Drops meteors over a wide area.
+    m_Localized: "Rains hellfire meteors over a wide area."
     m_Metadata:
       m_Items: []
   - m_Id: 1000017
-    m_Localized: Summons a cloud dragon that dampens the area around it.
+    m_Localized: "Summons a cloud-scaled wind spirit dragon that dampens the area and attacks enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000018
-    m_Localized: Summons a flock of thunderbirds that charge at enemies.
+    m_Localized: "Summons a flock of World Tree thunderbirds that charge at enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000019
-    m_Localized: Summons a large but somewhat slow tree golem.
+    m_Localized: "Summons a slow but sturdy World Tree ancient guardian that fights ground enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000020
-    m_Localized: Summons a spirit with the power of vines.
+    m_Localized: "Summons a World Tree nature spirit woven from vines that chases down enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000021
-    m_Localized: Plants a vine colony that fends off enemies.
+    m_Localized: "Plants a vine colony that keeps sending out vines to fend off enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000022
-    m_Localized: Summons a mage that strikes enemies with two rocks.
+    m_Localized: "Summons a rune-stone shaman of the rock golem tribe that strikes enemies with two rocks."
     m_Metadata:
       m_Items: []
   - m_Id: 1000023
-    m_Localized: Summons a swarm of small seed spirits.
+    m_Localized: "Summons a swarm of small seed spirits fallen from the World Tree."
     m_Metadata:
       m_Items: []
   - m_Id: 1000024
-    m_Localized: Summons a swarm of small ember spirits.
+    m_Localized: "Summons a swarm of small ember demons of the Hellfire Legion."
     m_Metadata:
       m_Items: []
   - m_Id: 1000025
-    m_Localized: Summons a pair of small rock twins.
+    m_Localized: "Summons a pair of MiniRock twins of the rock golem tribe."
     m_Metadata:
       m_Items: []
   - m_Id: 1000026
-    m_Localized: Summons a wind spirit that rushes toward enemies and explodes.
+    m_Localized: "Summons a gale wind spirit that rushes at enemies and bursts."
     m_Metadata:
       m_Items: []
   - m_Id: 1000027
-    m_Localized: Triggers a scorching magma explosion.
+    m_Localized: "Tears open a hellfire magma rift that scorches the area."
     m_Metadata:
       m_Items: []
   - m_Id: 1000028
-    m_Localized: Places a wind totem that blows enemies in a fixed direction.
+    m_Localized: "Places a wind spirit's tailwind totem that blows enemies in a fixed direction."
     m_Metadata:
       m_Items: []
   - m_Id: 1000029
-    m_Localized: Builds a small turret that fires rocks.
+    m_Localized: "Builds a small human siege turret that hurls rocks."
     m_Metadata:
       m_Items: []
   - m_Id: 1000030
-    m_Localized: Plants a life tree that heals nearby allies.
+    m_Localized: "Plants a World Tree sapling that keeps healing nearby allies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000031
-    m_Localized: Launches a sharp wind blade that pierces through enemies.
+    m_Localized: "Launches a crescent wind blade that pierces through enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000032
-    m_Localized: Summons a line of vines to attack enemies.
+    m_Localized: "Erupts a line of World Tree vines that strike enemies in sequence."
     m_Metadata:
       m_Items: []
   - m_Id: 1000033
-    m_Localized: Calls a surging tide that damages and pushes enemies back.
+    m_Localized: "Calls a water slime tide that pushes enemies back and leaves a water trail."
     m_Metadata:
       m_Items: []
   - m_Id: 1000034
-    m_Localized: Launches a rolling rock that bounces off enemies and walls.
+    m_Localized: "Rolls a rock golem tribe boulder that bounces off enemies and walls."
     m_Metadata:
       m_Items: []
   - m_Id: 1000035
-    m_Localized: Fires lightning that bounces between enemies.
+    m_Localized: "Arcs a lightning spirit's bolt that chains between enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000036
-    m_Localized: Creates a cloud that rains over the area.
+    m_Localized: "Summons a cloud that rains over the battlefield."
     m_Metadata:
       m_Items: []
   - m_Id: 1000037
-    m_Localized: Fires a mysterious will-o'-wisp that takes control of enemies.
+    m_Localized: "Fires a will-o'-wisp of World Tree mana that seizes control of an enemy."
     m_Metadata:
       m_Items: []
   - m_Id: 1000038
-    m_Localized: Drops a totem that drives enemies into a frenzy.
+    m_Localized: "Drops a Hellfire Legion frenzy totem that makes units in range attack anything, allies included."
     m_Metadata:
       m_Items: []
   - m_Id: 1000039
-    m_Localized: Sends repairing leaves that heal allied buildings and extend their
-      duration.
+    m_Localized: "Sends down leaf fairies that repair allied buildings and extend their duration."
     m_Metadata:
       m_Items: []
   - m_Id: 1000040
-    m_Localized: Drops a rock from the sky.
+    m_Localized: "Drops a rock golem tribe boulder from the sky."
     m_Metadata:
       m_Items: []
   - m_Id: 1000041
-    m_Localized: Deploys an arcane paratrooper from the air.
+    m_Localized: "Deploys a paratrooper of the human magic civilization that lands and fights ground enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000042
-    m_Localized: Triggers overgrowth to grow small lifeforms.
+    m_Localized: "Triggers a World Tree overgrowth that grows small lifeforms larger."
     m_Metadata:
       m_Items: []
   - m_Id: 1000043
-    m_Localized: Creates a crater that spits fireballs around it.
+    m_Localized: "Leaves a Hellfire Legion ember crater that spits fireballs around it."
     m_Metadata:
       m_Items: []
   - m_Id: 1000044
-    m_Localized: Summons a cowardly electric mouse that loves buildings.
+    m_Localized: "Summons a cowardly lightning spirit mouse that loves buildings."
     m_Metadata:
       m_Items: []
   - m_Id: 1000045
-    m_Localized: Builds a totem that rallies nearby allies and directs them to attack
-      enemies around it.
+    m_Localized: "Builds a human rally beacon that gathers nearby allies and sends them at enemies around it."
     m_Metadata:
       m_Items: []
   - m_Id: 1000046
-    m_Localized: Strikes nearby enemies with an electric explosion.
+    m_Localized: "Detonates a lightning spirit's charge that shocks nearby enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000047
-    m_Localized: Summons a razor gale that continuously damages enemies.
+    m_Localized: "Spins up a wind spirit's razor gale that keeps cutting enemies in the area."
     m_Metadata:
       m_Items: []
   - m_Id: 1000048
-    m_Localized: Builds a bubble generator that protects allies.
+    m_Localized: "Builds a water slime bubble generator that shields allies."
     m_Metadata:
       m_Items: []
   - m_Id: 1000049
-    m_Localized: Builds an electric tower that fires bouncing lightning.
+    m_Localized: "Builds a human arcane lightning tower that fires bouncing bolts."
     m_Metadata:
       m_Items: []
   - m_Id: 1864653363056640
-    m_Localized: Summons a Boundary Carrier that periodically calls Cinder Shards
-      and Storm Shards.
+    m_Localized: "Summons a Boundary Carrier of the dimensional wanderers that alternately opens gates for Cinder Shards and Storm Shards."
     m_Metadata:
       m_Items: []
   - m_Id: 1864718152470528
-    m_Localized: Summons a Flame Lord Spirit that periodically summons Baby Flame
-      Spirits to attack enemies.
+    m_Localized: "Summons a Hellfire Legion commander that keeps sending out lesser demons to attack enemies."
     m_Metadata:
       m_Items: []
   - m_Id: 1864733830778880
-    m_Localized: Summons a Bubble Spirit that attacks flying units with explosive
-      bubbles.
+    m_Localized: "Summons a bubble-wielding water slime that attacks flying units with bursting bubbles."
     m_Metadata:
       m_Items: []
   - m_Id: 1864741510549504
-    m_Localized: Creates a powerful shock within the area and triggers an explosion
-      that is especially effective against flying units.
+    m_Localized: "Overloads a lightning spirit's charge into a heavy shock and an anti-air blast."
     m_Metadata:
       m_Items: []
   - m_Id: 1864750230507520
-    m_Localized: Summons a Mini Rock Spirit carrying a anti-air tower on its back.
+    m_Localized: "Summons a MiniRock strapped with a human-made anti-air tower that attacks flying units."
     m_Metadata:
       m_Items: []
   - m_Id: 1864750230507521
@@ -274,6 +267,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1864750230507528
+    m_Localized: Summons an Evil Ent that punches from range and periodically drags
+      in a light enemy to burn it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1864750230507529
     m_Localized: Summons a thunder stag that charges and attacks enemies.
     m_Metadata:
       m_Items: []

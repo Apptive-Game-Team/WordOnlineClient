@@ -17,7 +17,7 @@ namespace Data.Magic
             new MagicData("Rock",10,6, 0.5f,"type"),
             new MagicData("Wind",10,6, 0.5f,"type"),
             
-            new MagicData("Drop",10,18, 0.5f,"magic"),
+            new MagicData("Drop",10,14, 0.5f,"magic"),
         };
 
         public static MagicData GetMagicData(string name)

@@ -397,3 +397,7 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 54e67cfea3ea3664c9abdd3895c28fa5, type: 2}
     intentionalSilent: 0
     serverAlias: 0
+  - runtimeType: EvilEnt
+    profile: {fileID: 11400000, guid: ba6a7647975b34a46972cc354ba119d6, type: 2}
+    intentionalSilent: 0
+    serverAlias: 0
