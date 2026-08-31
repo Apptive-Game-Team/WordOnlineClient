@@ -91,3 +91,56 @@ Transform 스케일 변형은 적용하지 않는다.
 두 프레임은 `220x156`, PPU 100, Bottom Center 피벗과 본체 배치를 공유한다.
 공격 이벤트가 발생하면 `CloudDragonAttacking.png`를 0.1초간 표시한 뒤 기본 자세로 복원한다.
 구형 물 아우라 `cloud.png`는 두 본체 프레임과 계속 분리해서 렌더링한다.
+
+## 번개 강타 프레임
+
+`LightningDropMagic`의 먹구름은 공격할 때마다 스프라이트가 바뀐다. 번개는 별도
+오브젝트가 아니라 먹구름 스프라이트 안에서 구름 밑으로 자라는 프레임이다.
+
+| 실제 파일 | 의미 이름 | 런타임 연결 |
+|---|---|---|
+| `sprites/LightningCloud.png` | 먹구름 · 대기 | `LightningCloud.prefab` 기본 SpriteRenderer |
+| `sprites/LightningCloudStrike0.png` | 강타 · 구름 밑에 번개가 돋음 | `AttackFrameSequenceController.frames[0]` |
+| `sprites/LightningCloudStrike1.png` | 강타 · 절반까지 자란 줄기 | `frames[1]` |
+| `sprites/LightningCloudStrike2.png` | 강타 · 지면 직전까지 자란 줄기 | `frames[2]` |
+| `sprites/LightningCloudStrike3.png` | 강타 · 지면 도달, 최대 밝기 | `frames[3]` |
+| `sprites/LightningCloudStrike4.png` | 강타 · 잔광 | `frames[4]` |
+| `sprites/LightningCloudStrike5.png` | 강타 · 소멸 직전 | `frames[5]` |
+
+`AttackFrameSequenceController`는 공격 이벤트에서 여섯 프레임을 0.05초 간격으로
+한 번 재생하고 대기 프레임으로 돌아온다. 한 자세를 잠깐 들고 있는
+`AttackSpriteSwapController`와 달리, 자라나는 동작이 필요한 연출에 쓴다.
+
+번개 오브젝트는 없다. 서버는 먹구름이 자기 아래 기둥을 범위 판정으로 때리고
+`LightningDrop` 프리팹은 서버·클라이언트 양쪽에서 사라졌다. 지면 연출은
+`ElectricField`가 담당한다.
+
+### 캔버스 불변식
+
+- 일곱 파일 모두 `320x640`, PPU 160, 중앙 피벗이다. 월드로는 `2.0 x 4.0` 유닛.
+- 서버가 먹구름을 높이 `y=2`(`AERIAL_STANDARD_HEIGHT`)에 소환한다. 중앙
+  피벗이므로 스프라이트는 지면 `y=0`부터 `y=4`까지를 정확히 덮는다. 구름은
+  캔버스 최상단(월드 `y 2.8~4.0`), 번개는 구름 밑면(`y≈2.95`)에서 지면까지.
+- 먹구름 높이는 서버 소환 좌표가 아니라 캔버스 안에서의 구름 위치로 조절한다.
+  강타 판정 박스는 지면부터 `y=10`까지라 그림만 움직여도 판정은 그대로다.
+- 여섯 프레임 x 0.05초 = 0.3초는 서버
+  `LightningCloud.STRIKE_VISUAL_DURATION`과 같은 값이어야 한다. 서버는 마지막
+  강타 뒤 그만큼 구름을 더 살려 두고 파괴한다. 한쪽만 바꾸면 마지막 번개가
+  중간에 잘린다.
+- `LightningCloud` 변형은 `Selectable`을 제거하고 `ServedObject._swingOnAttack`을
+  끈다. 스프라이트가 지면까지 닿아서 선택 콜라이더가 그 아래 필드 클릭을 먹고,
+  공격 연출의 30도 스윙은 캔버스 중심을 축으로 돌아 번개를 옆으로 던진다.
+
+### 합성
+
+프레임은 생성물이 아니라 결정적 합성 결과다. 원본 두 장
+(`.art/concept/lightning-strike/`)에서 다시 만들 수 있다. 검수 시트는
+`.art/sheets/lightning-strike-review.png`.
+
+```bash
+.art/tools/compose-lightning-strike.py \
+  --cloud .art/concept/lightning-strike/storm_cloud_source.png \
+  --bolt .art/concept/lightning-strike/lightning_bolt_source.png \
+  --idle-out Assets/Resources/Game/sprites/LightningCloud.png \
+  --frame-out 'Assets/Resources/Game/sprites/LightningCloudStrike{index}.png'
+```
