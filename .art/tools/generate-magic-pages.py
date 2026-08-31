@@ -28,6 +28,7 @@ KOREAN_NAMES = {
     "dimension_toad": "차원 두꺼비",
     "electric_tower": "전기 타워",
     "ember_spirit_swarm": "불씨 정령 무리",
+    "evil_ent": "사악한 나무 골렘",
     "fire_drop": "화염 투하",
     "fire_lord_spirit": "불 대왕 정령",
     "fire_shot": "화염탄",
@@ -98,6 +99,7 @@ DISPLAY_NAMES = {
     "dimension_toad": "균열두꺼비",
     "electric_tower": "뇌전 마도탑",
     "ember_spirit_swarm": "잿불 악마 무리",
+    "evil_ent": "사악한 고목",
     "fire_drop": "지옥불 강하",
     "fire_lord_spirit": "지옥불 군단장",
     "fire_shot": "악마의 화염탄",
@@ -223,6 +225,11 @@ SPECIAL_BEHAVIOR = {
         "직접 공격하지 않고 지상 위협에서 거리를 벌린다.",
         "`FireTadpole`과 `LightningTadpole`을 10초마다 번갈아가며 제한 없이 소환한다.",
     ],
+    "evil_ent": [
+        "사거리 안의 지상 대상에게 나무 팔을 뻗어 기본 공격한다.",
+        "별도 재사용 대기시간마다 두 번째 팔을 던져 대상을 걸고 자기 쪽으로 끌어당긴다.",
+        "끌려온 대상에게 세 번째 팔인 불타는 주먹을 내질러 추가 피해를 준다.",
+    ],
     "fire_lord_spirit": [
         "`FireChildSpirit`를 5초마다 1마리씩, 최대 5마리 소환한다.",
         "소환된 비행 악마는 지상·공중 대상을 향해 `FireShot`으로 원거리 공격한다.",
@@ -254,6 +261,9 @@ TACTICAL_OVERRIDES = {
         "targeting": "지상 위협 감지",
         "attack_shape": "10초 간격 교대 소환",
         "special_movement": "위협에서 도주·두 종류 하위 개체 무제한 생성",
+    },
+    "evil_ent": {
+        "special_movement": "두 번째 팔로 대상을 끌어당긴 뒤 세 번째 팔인 불타는 주먹으로 마무리하는 연계 공격",
     },
     "fire_lord_spirit": {
         "combat_role": "하위 비행 악마 소환",
@@ -294,14 +304,14 @@ FIXED_COMPONENTS = {
 }
 MOVING_COMPONENTS = {
     "AttackMob", "BehaviorMob", "BubbleSpiritMob", "ChickenCommandoMob",
-    "KeepDistanceMob", "MeleeAttackMob", "NonAttackingCowardMob",
+    "EvilEntMob", "KeepDistanceMob", "MeleeAttackMob", "NonAttackingCowardMob",
     "ProjectileRangeAttackMob", "RangeAttackMob", "SelfDestructMob",
     "SprayingAttacker", "SummonerMob", "ThunderBirdMob",
 }
 RANGED_COMPONENTS = {
-    "BubbleSpiritMob", "Cannon", "KeepDistanceMob", "LightningTowerMob",
-    "ProjectileRangeAttackMob", "RangeAttackMob", "SprayingAttacker",
-    "ThunderBirdMob", "Tower", "Turret",
+    "BubbleSpiritMob", "Cannon", "EvilEntMob", "KeepDistanceMob",
+    "LightningTowerMob", "ProjectileRangeAttackMob", "RangeAttackMob",
+    "SprayingAttacker", "ThunderBirdMob", "Tower", "Turret",
 }
 SUPPORT_COMPONENTS = {
     "FrenzyTotem", "ManaWellMob", "RallyingTorch", "SelfHealer", "Totem",
@@ -341,6 +351,8 @@ def faction_for(bean: str) -> tuple[str, str]:
         return "인간 마법 문명", "따뜻한 꼬마돌 몸체와 차가운 인간제 지대공 타워를 명확히 분리한다. 가죽끈·금속 고정구로 강제 결속된 흔적을 보여준다."
     if bean == "rallying_torch":
         return "인간 마법 문명", "인간 부대가 사용하는 신호 장치. 청동 프레임과 절제된 마법 불빛으로 표현한다."
+    if bean == "evil_ent":
+        return "타락한 정령", "세계수 풀 정령의 컷페이퍼 골격은 유지하되 수분이 빠진 숯빛 목질로 바꾼다. 갈라진 틈으로만 지옥불이 비치게 하고, 불꽃 자체를 몸 밖에 흩뿌리지 않는다."
     if any(x in bean for x in ("fire", "magma", "ember", "meteor", "frenzy", "crater", "rallying")):
         return "지옥불 군단", "검붉은 종이 갑각과 내부 용암광. 불꽃 정령이 아니라 악마 군단의 마법으로 표현한다."
     if any(x in bean for x in ("water", "aqua", "bubble", "tide")):

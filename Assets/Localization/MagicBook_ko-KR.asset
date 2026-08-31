@@ -313,6 +313,13 @@ MonoBehaviour:
     m_Localized: "\uCE74\uB4DC \uC218"
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507528
+    m_Localized: "\uC6D0\uAC70\uB9AC\uC5D0\uC11C \uC801\uC744 \uB54C\uB9AC\uACE0
+      \uC8FC\uAE30\uC801\uC73C\uB85C \uAC00\uBCBC\uC6B4 \uC801\uC744 \uB04C\uC5B4\uB2F9\uACA8
+      \uBD88\uD0DC\uC6B0\uB294 \uC0AC\uC545\uD55C \uB098\uBB34 \uACE8\uB818\uC744
+      \uC18C\uD658\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
