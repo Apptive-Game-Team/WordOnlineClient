@@ -378,6 +378,10 @@ MonoBehaviour:
     m_Localized: Lightning Cloud
     m_Metadata:
       m_Items: []
+  - m_Id: 78335600000000000
+    m_Localized: Storm Stag
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
