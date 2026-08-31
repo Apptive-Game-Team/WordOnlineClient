@@ -267,6 +267,10 @@ MonoBehaviour:
     m_Key: evil_ent
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507529
+    m_Key: storm_stag
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

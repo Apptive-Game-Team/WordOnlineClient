@@ -39,7 +39,7 @@ public static class ObjectSfxCatalogBuilder
             "LeafSlime", "PveVineWitch", "SeedSpirit", "TreeGolem", "VineSpirit",
             "WillOWisp"),
         new("LightningCreature",
-            "ElectricSlime", "LightningTadpole", "StormRider", "ThunderBird",
+            "ElectricSlime", "LightningTadpole", "StormRider", "StormStag", "ThunderBird",
             "ThunderSpirit", "ZapMouse"),
         new("RockCreature", "DimensionToad", "RockGolem", "RockMage", "RockSlime"),
         new("WindCreature", "CloudDragon", "WindSlime", "WindSpirit"),

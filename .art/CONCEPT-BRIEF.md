@@ -164,6 +164,20 @@ per faction, backgrounds allowed here since these are never fed back in.
 Factions: spirits (lightning/nature/wind), water slimes, rock golems, humans,
 hellfire legion.
 
+### World Tree lightning spirit — Storm Stag
+
+Approved on 2026-08-30 for Unity production:
+
+- `.art/concept/storm-stag/StormStag-approved-256.png` — a friendly,
+  right-facing storm stag rebuilt in the canonical master-v2 2.5D cut-paper
+  technique. The compact body, large readable antlers, lightning-spirit yellow
+  palette, and restrained cyan paper accents remain legible at 64px without a
+  baked aura.
+
+Production mapping: `Assets/Resources/Game/sprites/StormStag.png`, big
+`256x256` tier. The existing Unity `.meta` GUID and prefab reference are
+preserved.
+
 Generated on 2026-07-28:
 
 - `.art/concept/world-tree-spirits-lineup.png`
