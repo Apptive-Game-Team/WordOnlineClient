@@ -18,6 +18,9 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 | `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
 | `RockTurretAttacking.png` | 인간제 투석 포탑 · 발사 직후 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
+| `SeaSerpent.png` | 수룡 · 수면 아래 잠수 이동 자세 | `SeaSerpent.prefab` 기본 SpriteRenderer |
+| `SeaSerpentAttacking.png` | 수룡 · 목을 세운 물대포 발사 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.35초 표시 |
+| `SeaSerpentHydroPump.png` | 수룡 · 직선 관통 물대포 | `SeaSerpentHydroPump.prefab`에서 서버 시작점과 끝점 사이로 확장 |
 
 실제 파일명과 `.meta` GUID는 런타임 참조 때문에 유지한다. 문서와 홈페이지에서는
 숫자 접미사 대신 의미 이름을 표시한다.
@@ -39,6 +42,11 @@ Transform 스케일 변형은 적용하지 않는다.
 `RockTurret`은 공용 `AbstractBuild`의 `AttackSpriteSwapController`를 사용한다.
 다른 건물 프리팹은 `swapSprite`가 비어 있어 공격 이벤트를 구독하지 않으며,
 `RockTurret`만 발사 직후 프레임을 0.1초 표시한다.
+
+`SeaSerpent`는 평상시 긴 몸통 대부분이 물결 아래에 머무는 낮은 실루엣을 사용한다.
+공격 이벤트에서는 같은 꼬리·물결 기준선을 유지한 채 앞목만 솟구치는 프레임으로
+0.35초 교체한다. 물대포는 본체 프레임에 합성하지 않고 별도 발사체 프리팹에서
+서버가 보낸 선분 전체 길이로 늘린다.
 
 - 동일 PPU
 - 동일 `Bottom Center` 피벗

@@ -379,6 +379,10 @@ MonoBehaviour:
     m_Key: lightningCloud
     m_Metadata:
       m_Items: []
+  - m_Id: 88601000000000000
+    m_Key: seaSerpent
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -150,6 +150,19 @@ Generated on 2026-08-03, pending user approval for Unity production:
 
 - None in the current batch.
 
+Approved on 2026-08-31 for Unity production:
+
+- `.art/concept/sea-serpent/candidates/SeaSerpent-submerged-source.png` — 수면 아래를
+  이동하는 낮고 긴 기본 실루엣. 눈, 등지느러미, 꼬리만 물 위로 드러난다.
+- `.art/concept/sea-serpent/candidates/SeaSerpent-attack-source.png` — 같은 꼬리와
+  물결 기준선을 유지하면서 앞목을 세우고 입을 연 공격 프레임.
+- `.art/concept/sea-serpent/candidates/SeaSerpent-hydro-pump-source.png` — 본체에서
+  분리된 굵은 직선 관통 물대포 VFX.
+
+Production mapping: `SeaSerpent.png` and `SeaSerpentAttacking.png` at the big
+256px tier with PPU 80 and Bottom Center pivots; `SeaSerpentHydroPump.png` as a
+512x192 line effect stretched between the server-provided endpoints.
+
 ---
 
 ## Priority 3 — Faction lineup boards
