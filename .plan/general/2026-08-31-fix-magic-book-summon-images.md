@@ -2,7 +2,7 @@
 
 - Date: 2026-08-31
 - GitHub Issue: None
-- Status: In Progress
+- Status: Complete
 
 ## Goal
 
@@ -23,7 +23,7 @@
 - [x] **Step 0: Recon** (도감 이미지 로딩과 서버 이름 변환 경로 확인)
 - [x] **Step 1: Implementation** (`ToPascalCase`가 camel/PascalCase 단어 경계를 보존하도록 수정)
 - [x] **Step 2: Tests** (snake/camel/Pascal 입력에서 동일한 리소스 이름이 생성되는지 검증)
-- [ ] **Step 3: Rollout / Rollback** (두 기능 PR 브랜치에 동일한 수정 반영)
+- [x] **Step 3: Rollout / Rollback** (두 기능 PR 브랜치에 동일한 수정 반영)
 
 ## Validation
 - **Commands to run:** 관련 Edit Mode 테스트 또는 프로젝트 컴파일, 리소스 경로 정적 검사
