@@ -20,6 +20,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 | `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
 | `RockTurretAttacking.png` | 인간제 투석 포탑 · 발사 직후 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
+| `WaterSlime.png` | 물 슬라임 · 한 개체 기본 자세 | `WaterSlime.prefab` 기본 SpriteRenderer |
+| `WaterSlimeAttackSpit.png` | 물 슬라임 · 물 뱉기 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.15초 표시 |
 
 실제 파일명과 `.meta` GUID는 런타임 참조 때문에 유지한다. 문서와 홈페이지에서는
 숫자 접미사 대신 의미 이름을 표시한다.
@@ -48,6 +50,12 @@ Transform 스케일 변형은 적용하지 않는다.
 그대로 쓴다. 이 컨트롤러도 Transform은 건드리지 않고 `SpriteRenderer.sprite`만
 바꾸므로 아래 조건이 그대로 적용된다.
 
+`WaterSlimeSwarm.png`은 소환 마법의 무리 표시용 이미지이고 개별 소환수의 기본
+프레임이 아니다. `WaterSlimeSwarmMagic`이 여러 `WaterSlime` 프리팹을 만들더라도
+각 프리팹은 `WaterSlime.png` 한 개체를 표시한다. 파일명의 `Swarm`만 보고 그
+이미지를 프리팹에도 연결하면 소환 수만큼 무리 그림이 중복되어 실제 개체 수가
+잘못 보인다.
+
 - 동일 PPU
 - 동일 `Bottom Center` 피벗
 - 동일 캐릭터 몸 배율
@@ -66,6 +74,10 @@ Transform 스케일 변형은 적용하지 않는다.
 내보냈기 때문에, 지면 접점 픽셀이 사후 대조가 아니라 제작 방식으로 이미 동일하다.
 `TreeGolem` 쌍이 어긋난 원인이 프레임별 개별 크롭·개별 배율이므로, 새 공격
 프레임은 이 방식으로 만든다. 캔버스 크기가 같아지는 것은 결과이지 목표가 아니다.
+
+`WaterSlime`과 `WaterSlimeAttackSpit`은 320x224, PPU 200, Bottom Center로
+일치한다. 두 프레임은 하나의 공유 소스 픽셀 배율과 하단 기준선을 사용하며,
+공격 프레임 오른쪽의 추가 폭은 물 투사체를 위한 투명 캔버스다.
 
 ## 오라 의미
 
