@@ -154,7 +154,9 @@ namespace TutorialScene
             _currentCardNameList.Clear();
             _currentCardList.Clear();
             isFieldSelectMode = false;
-            
+
+            // 카드가 손을 떠났으니 마나 바에 남은 예상 소모량을 지운다.
+            TutorialSceneUIController.Instance.SetExpectedManaCost(0);
         }
 
         private static void AttachPopupBookPresenter(GameObject target)
@@ -210,7 +212,9 @@ namespace TutorialScene
 
         public void SetExpectedMagicUI()
         {
-            TutorialSceneUIController.Instance.TrySetExpectedMagicUI(GetCurrentRecipeTypes());
+            List<CardType> recipe = GetCurrentRecipeTypes();
+            TutorialSceneUIController.Instance.TrySetExpectedMagicUI(recipe);
+            TutorialSceneUIController.Instance.SetExpectedManaCost(CardManaCost.SumOf(recipe));
         }
     }
 }
