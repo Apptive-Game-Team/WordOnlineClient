@@ -95,13 +95,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7dde252d492433089a0faeda100eab4, type: 3}
+  m_Script: {fileID: 11500000, guid: c1b14b5aeb924a819a67709e32149fc1, type: 3}
   m_Name:
   m_EditorClassIdentifier:
   spriteRenderer: {fileID: 21200000}
-  contractScale: 0.86
-  burstScale: 1.35
-  duration: 0.3
+  pulseScale: 1.08
+  squashScale: 0.94
+  cycleDuration: 1.2
+  rotationAngle: 3
+  minAlphaMultiplier: 0.7
 --- !u!114 &11400001
 MonoBehaviour:
   m_ObjectHideFlags: 0
