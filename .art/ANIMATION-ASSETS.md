@@ -12,6 +12,7 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `MagmaSpiritSpawn.png` | 용암 갑각 악마 · 지면 돌파 소환 자세 | 생성 시 0.28초 표시 |
 | `MagmaExplosion.png` | 마그마 폭발 · 기본/초기 갑각 자세 | `MagmaExplosion.prefab` 기본 SpriteRenderer |
 | `MagmaExplosionStrike1.png`–`MagmaExplosionStrike4.png` | 마그마 폭발 · 균열 시작 → 개방 → 피크 → 냉각 | `SpriteFrameAnimator`, 0.1초 간격, 비반복 |
+| `FireShot.png` | 지옥불 · 갑각 용암 투사체 | `FireShot.prefab` 기본 SpriteRenderer |
 | `RockGolem.png` | 이끼바위 골렘 · 기본 자세 | `RockGolem.prefab` 기본 SpriteRenderer |
 | `RockGolem2.png` | 이끼바위 골렘 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `TreeGolem.png` | 고목 수호자 · 기본 자세 | `TreeGolem.prefab` 기본 SpriteRenderer |
