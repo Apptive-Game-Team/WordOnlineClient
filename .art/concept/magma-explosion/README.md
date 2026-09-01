@@ -14,7 +14,10 @@ to preserve the subject identity and footprint.
 `source.png` is the generated working source. `finalize.py` crops its alpha and
 contains it on the existing 217x256 canvas without changing the Unity `.meta`,
 GUID, pivot, or 100 PPU contract. `magenta-review.png` exposes pale fringes or
-painted backgrounds; `MagmaExplosion-64.png` is the thumbnail check.
+painted backgrounds; `MagmaExplosion-64.png` is the thumbnail check. The four
+sequence sources are `frame-01-source.png` through `frame-04-source.png`; their
+217x256 exports are connected by `SpriteFrameAnimator` at 0.1 seconds per frame
+with looping disabled.
 
 Validation:
 

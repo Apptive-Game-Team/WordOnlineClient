@@ -2,8 +2,36 @@
 """Export MagmaExplosion at its existing 217x256 Unity canvas."""
 
 import argparse
+from collections import deque
 from pathlib import Path
 from PIL import Image
+
+def remove_painted_checker(image: Image.Image) -> Image.Image:
+    pixels = image.load()
+    width, height = image.size
+    visited = bytearray(width * height)
+    queue = deque()
+
+    def is_background(x: int, y: int) -> bool:
+        red, green, blue, _ = pixels[x, y]
+        return min(red, green, blue) >= 225 and max(red, green, blue) - min(red, green, blue) <= 14
+
+    for x in range(width):
+        queue.extend(((x, 0), (x, height - 1)))
+    for y in range(height):
+        queue.extend(((0, y), (width - 1, y)))
+    while queue:
+        x, y = queue.popleft()
+        index = y * width + x
+        if visited[index] or not is_background(x, y):
+            continue
+        visited[index] = 1
+        pixels[x, y] = (0, 0, 0, 0)
+        if x: queue.append((x - 1, y))
+        if x + 1 < width: queue.append((x + 1, y))
+        if y: queue.append((x, y - 1))
+        if y + 1 < height: queue.append((x, y + 1))
+    return image
 
 
 def main() -> None:
@@ -13,7 +41,7 @@ def main() -> None:
     parser.add_argument("review", type=Path)
     args = parser.parse_args()
 
-    image = Image.open(args.source).convert("RGBA")
+    image = remove_painted_checker(Image.open(args.source).convert("RGBA"))
     bounds = image.getchannel("A").getbbox()
     if bounds is None:
         raise SystemExit("source is fully transparent")
