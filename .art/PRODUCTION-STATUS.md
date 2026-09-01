@@ -56,6 +56,7 @@
 | `LightningCloudStrike5.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-strike-5.webp` | 강타 6 프레임 |
 | `LightningDrop.png` | 웹사이트 PR #29 `game-assets/lightning-drop.webp` | 번개 투하 인게임 스프라이트 |
 | `ChainLightning.png` | 클라이언트 PR #557, 웹사이트 PR #29 | 256x76 RGBA, 64px 실루엣 검수 완료 |
+| `MagmaExplosion.png` | 클라이언트 PR #565 | 217x256 RGBA, 갑각 파편 우선 실루엣과 64px 검수 완료 |
 
 ## 다음 교체 후보
 
