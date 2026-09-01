@@ -58,6 +58,7 @@
 | `ChainLightning.png` | 클라이언트 PR #557, 웹사이트 PR #29 | 256x76 RGBA, 64px 실루엣 검수 완료 |
 | `MagmaExplosion.png`, `MagmaExplosionStrike1.png`–`MagmaExplosionStrike4.png` | 클라이언트 PR #565 | 217x256 RGBA, 갑각 파편 우선 실루엣과 4프레임(균열→개방→피크→냉각) 검수 완료 |
 | `FireShot.png` | 클라이언트 stacked PR #567 | 256x88 RGBA, 갑각 용암 투사체와 64px 검수 완료 |
+| `Crater.png` | 클라이언트 stacked PR #569 | 256x169 RGBA, 검은 현무암 갑각과 내부 용암 코어, 64px 및 마젠타 컷아웃 검수 완료 |
 
 ## 다음 교체 후보
 
