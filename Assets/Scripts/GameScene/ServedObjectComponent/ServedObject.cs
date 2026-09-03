@@ -37,6 +37,9 @@ namespace GameScene.ServedObjectComponent
         public int id;
         
         public List<Gauge> gauges = new List<Gauge>();
+        private readonly HashSet<string> activeEffects = new HashSet<string>(StringComparer.Ordinal);
+
+        public IReadOnlyCollection<string> ActiveEffects => activeEffects;
         
         private string master;
         private Transform _teamIndicatorTransform;
@@ -140,8 +143,32 @@ namespace GameScene.ServedObjectComponent
             HandleGaugeUpdate(updatedObjectDto.gauges);
 
             HandleStatus(updatedObjectDto.status);
+            UpdateActiveEffects(updatedObjectDto.effects);
             EnsureEffectRenderer();
             _effectRenderer.SetEffects(updatedObjectDto.effects);
+        }
+
+        private void UpdateActiveEffects(List<string> effects)
+        {
+            activeEffects.Clear();
+            if (effects == null)
+            {
+                return;
+            }
+
+            foreach (string effect in effects)
+            {
+                if (string.IsNullOrWhiteSpace(effect))
+                {
+                    continue;
+                }
+
+                string normalizedEffect = effect.Trim();
+                if (!string.Equals(normalizedEffect, "None", StringComparison.Ordinal))
+                {
+                    activeEffects.Add(normalizedEffect);
+                }
+            }
         }
 
         public void SetGizmos(List<Gizmo> gizmos)

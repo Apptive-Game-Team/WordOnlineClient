@@ -63,6 +63,27 @@ three mechanisms:
   `ServedObjectComponent/Motion` controllers start an idle tween in `Awake`.
 - **Spawned effect prefabs**, for hits, deaths and spawns.
 
+### Replacing a hit visual may also require suppressing a projectile
+
+Do not assume that changing `HitEffectController` replaces every visual attached
+to an attack. The server can emit a `HitEvent` and a projectile DTO for the same
+impact. Storm Stag tier 3/4 charges do exactly this: the hit event selects the
+dedicated impact prefab, while the accompanying `ElectricShot` must be suppressed
+for that charged source in `ProjectileSpawner`. If only the hit effect is changed,
+the old projectile remains visible on top of the new impact.
+
+When replacing an attack visual, inspect the full frame payload path and verify
+both `events` and `objects.projectile`. Preserve projectiles with the same type
+from unrelated sources; identify the source through a
+`ReferenceProjectileTarget` and its active effects before suppressing anything.
+
+`Player.prefab` has no `HitEffectController`. Any hit visual that must also work
+against a player must be selected before the controller lookup and spawned from
+the target `ServedObject` position (prefer
+`GetEdgeWorldPositionTowards`). If the handler returns when the controller is
+missing, the effect will work against creatures but silently disappear against
+players; this is how the Storm Stag impact regression presented.
+
 ### A tween value is not always inside 0 to 1
 
 `Ease.OutBack` peaks at **1.10** and `Ease.InBack` dips to **-0.10**; the Elastic

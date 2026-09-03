@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameScene.Dto;
 using GameScene.Dto.Event;
 using GameScene.Object;
 using GameScene.ServedObjectComponent;
@@ -12,6 +13,8 @@ namespace GameScene.Handler
     /// </summary>
     public class GameEventHandler : IFrameInfoHandler<List<GameEvent>>
     {
+        private const float ImpactEdgeBias = 0.6f;
+
         public void Handler(List<GameEvent> events)
         {
             if (events == null)
@@ -36,13 +39,23 @@ namespace GameScene.Handler
                 return;
             }
 
+            ServedObject actor = ObjectContainer.Instance.FindById(hit.actorId);
+            if (actor != null && StormStagChargeImpactRules.ShouldPlay(actor.ActiveEffects))
+            {
+                DamagedObjectEffect.SetSelfDestroyEffect(
+                    StormStagChargeImpactRules.EffectResourceName,
+                    target.GetEdgeWorldPositionTowards(
+                        actor.GetActualTransform().position,
+                        ImpactEdgeBias));
+                return;
+            }
+
             HitEffectController hitEffect = target.GetComponentInChildren<HitEffectController>();
             if (hitEffect == null)
             {
                 return;
             }
 
-            ServedObject actor = ObjectContainer.Instance.FindById(hit.actorId);
             if (actor == null)
             {
                 hitEffect.PlayHit();
