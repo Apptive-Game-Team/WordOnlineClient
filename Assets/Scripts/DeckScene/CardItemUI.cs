@@ -49,8 +49,7 @@ namespace DeckScene
 
             var bg = GetComponent<Image>();
 
-            // TODO(#580): 카드 이름 번역표가 Magic 표로 합쳐지면 표 이름을 "Magic" 으로 옮긴다.
-            cardNameText.text = await LocaleUtils.GetStringAsync("Card", magic?.localizationKey ?? cName);
+            cardNameText.text = await LocaleUtils.GetStringAsync("Magic", magic?.localizationKey ?? cName);
 
             if (unlocked)
             {

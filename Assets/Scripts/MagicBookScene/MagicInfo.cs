@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data;
 using Data.GameConfig;
 using Data.Localization;
 using Data.Magic;
-using Data.Util;
 using GameScene.Card;
 using TMPro;
 using UnityEngine;
@@ -54,58 +52,22 @@ namespace MagicBookScene
             }
         }
 
+        /// <summary>
+        /// 도감 설명. MagicBook 표는 마법의 snake_case 이름 하나로만 키를 잡는다.
+        /// 모든 마법이 설명을 갖는 것은 아니므로 없으면 빈 문자열이다.
+        /// </summary>
         private static async Task<string> GetMagicBookDescriptionAsync(CombinedMagicData data)
         {
-            foreach (string key in GetMagicBookKeyCandidates(data))
+            string key = data.textLocalizationKey;
+            if (string.IsNullOrWhiteSpace(key))
             {
-                string description = await LocaleUtils.GetStringAsync("MagicBook", key);
-                if (!string.IsNullOrWhiteSpace(description) && description != key)
-                {
-                    return description;
-                }
+                return string.Empty;
             }
 
-            return string.Empty;
-        }
-
-        private static IEnumerable<string> GetMagicBookKeyCandidates(CombinedMagicData data)
-        {
-            var yielded = new HashSet<string>();
-            TryYield(data.textLocalizationKey, yielded, out string textLocalizationKey);
-            if (textLocalizationKey != null)
-            {
-                yield return textLocalizationKey;
-            }
-
-            TryYield(data.serverName, yielded, out string serverName);
-            if (serverName != null)
-            {
-                yield return serverName;
-            }
-
-            TryYield(StringUtils.ToSnakeCase(data.localizationKey), yielded, out string snakeLocalizationKey);
-            if (snakeLocalizationKey != null)
-            {
-                yield return snakeLocalizationKey;
-            }
-
-            TryYield(data.localizationKey, yielded, out string localizationKey);
-            if (localizationKey != null)
-            {
-                yield return localizationKey;
-            }
-        }
-
-        private static bool TryYield(string value, ISet<string> yielded, out string result)
-        {
-            result = null;
-            if (string.IsNullOrWhiteSpace(value) || !yielded.Add(value))
-            {
-                return false;
-            }
-
-            result = value;
-            return true;
+            string description = await LocaleUtils.GetStringAsync("MagicBook", key);
+            return !string.IsNullOrWhiteSpace(description) && description != key
+                ? description
+                : string.Empty;
         }
 
         private static string AppendText(string currentText, string additionalText)

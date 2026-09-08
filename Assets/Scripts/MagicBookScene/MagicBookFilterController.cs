@@ -14,7 +14,7 @@ namespace MagicBookScene
     public class MagicBookFilterController : MonoBehaviour
     {
         private const string MagicBookTable = "MagicBook";
-        private const string ElementTable = "Card";
+        private const string ElementTable = "Element";
 
         [SerializeField] private MagicInfoFactory magicInfoFactory;
         [SerializeField] private TMP_Text sortLabel;
@@ -386,7 +386,6 @@ namespace MagicBookScene
         private static async System.Threading.Tasks.Task<string> GetElementText(ElementType element)
         {
             string key = element.ToString();
-            // TODO(#580): 원소 이름 키가 Element 표로 옮겨지면 표 이름을 바꾼다.
             string text = await LocaleUtils.GetStringAsync(ElementTable, key);
             return IsMissingLocalization(text, key) ? key : text;
         }
