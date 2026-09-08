@@ -405,9 +405,10 @@ namespace GameScene
             return true;
         }
 
+        // 조준선 모양은 마법마다 서버가 준 aim_shape 하나로 정해진다.
         private static bool IsLineMagic(CombinedMagicData magicData)
         {
-            return magicData.castType == CardType.Shoot;
+            return magicData.IsLineAim;
         }
 
         private void UpdateSkillIndicator(

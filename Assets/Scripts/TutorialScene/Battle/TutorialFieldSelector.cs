@@ -1,4 +1,4 @@
-using Data;
+using Data.GameConfig;
 using Data.Magic;
 using GameScene;
 using UnityEngine;
@@ -10,6 +10,9 @@ namespace TutorialScene
         private const int RangeIndicatorSortingOrder = 5;
         private const int AimIndicatorSortingOrder = 16;
         private const float AimIndicatorRadius = 0.18f;
+
+        // 옛 내장 표의 Shoot 사거리. parameters 가 도착하기 전에만 쓴다.
+        private const float DefaultRange = 18f;
 
         TutorialCardSender cardInputSender;
         private GameObject currentAimObj;
@@ -45,12 +48,29 @@ namespace TutorialScene
             currentRangeObj.SetActive(true);
 
 
-            var md = LocalMagicData.GetMagicData(cardInputSender.GetMagicName());
+            // TODO(#579): 내장 마나·사거리 표가 없어졌다. 사거리는 서버 parameters 에서 마법 이름으로 읽고,
+            // parameters 가 아직 안 왔으면 옛 표의 Shoot 사거리와 같은 기본값으로 그린다.
+            CombinedMagicData magic = cardInputSender.GetCurrentMagic();
+            if (magic == null)
+            {
+                currentAimObj.SetActive(false);
+                currentRangeObj.SetActive(false);
+                if (currentSkillIndicator != null) currentSkillIndicator.SetActive(false);
+                return;
+            }
+
+            if (!GameParameterResolver.TryGetMagicParameter(magic, "range", out float magicRange))
+            {
+                magicRange = DefaultRange;
+            }
+
+            GameParameterResolver.TryGetMagicParameter(magic, "radius", out float magicRadius);
+
             Vector3 casterPosition = new Vector3(1f, 0f, 5f);
-            SetCircleWorldRadius(currentRangeObj, casterPosition, md.range);
+            SetCircleWorldRadius(currentRangeObj, casterPosition, magicRange);
 
 
-            bool wantLine = md.name == "Shoot";
+            bool wantLine = magic.IsLineAim;
 
 
             if (currentSkillIndicator == null || currentSkillIndicatorIsLine != wantLine)
@@ -68,10 +88,10 @@ namespace TutorialScene
                 return;
             }
 
-            Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, md.range);
+            Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, magicRange);
             currentAimObj.transform.position = previewPosition;
 
-            UpdateSkillIndicator(wantLine, casterPosition, previewPosition, md.range, md.radius);
+            UpdateSkillIndicator(wantLine, casterPosition, previewPosition, magicRange, magicRadius);
 
 
             if (PointerInputUtility.IsPointerOverUi()) return;

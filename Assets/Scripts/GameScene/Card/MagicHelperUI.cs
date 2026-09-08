@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Data;
 using Data.Magic;
 using UnityEngine;
 
@@ -34,13 +33,7 @@ namespace GameScene.Card
                 return false;
             }
 
-            var handTypes = new List<CardType>();
-            foreach (var card in handRoot.GetComponentsInChildren<CardUI>())
-            {
-                handTypes.Add(card.CardType);
-            }
-
-            var candidates = magicSuggestion.PickTopN(handTypes, 1);
+            var candidates = magicSuggestion.PickTopN(GetHandMagics(), 1);
             if (candidates.Count == 0)
             {
                 return false;
@@ -61,14 +54,7 @@ namespace GameScene.Card
 
         public void RefreshSuggestions()
         {
-            var handCards = handRoot.GetComponentsInChildren<CardUI>();
-            var handTypes = new List<CardType>(handCards.Length);
-            foreach (var card in handCards)
-            {
-                handTypes.Add(card.CardType);
-            }
-            
-            var candidates = magicSuggestion.PickTopN(handTypes, 3);
+            var candidates = magicSuggestion.PickTopN(GetHandMagics(), 3);
             
             foreach (var item in _spawnedItems)
             {
@@ -85,6 +71,7 @@ namespace GameScene.Card
             }
         }
         
+        /// <summary>권한 마법과 같은 카드 한 장만 손패에서 강조한다.</summary>
         public void OnSuggestionClicked(CombinedMagicData data)
         {
             var handCards = handRoot.GetComponentsInChildren<CardUI>();
@@ -92,33 +79,36 @@ namespace GameScene.Card
             foreach (var card in handCards)
             {
                 card.SetHighlighted(false);
-                Debug.Log("OFF : " + card.CardName);
             }
-                
-            var need = new Dictionary<CardType, int>();
-            foreach (var t in data.recipe)
+
+            if (data == null)
             {
-                if (!need.TryAdd(t, 1))
-                    need[t]++;
+                return;
             }
-            
-            var used = new Dictionary<CardType, int>();
-            
+
             foreach (var card in handCards)
             {
-                var type = card.CardType;
-
-                if (!need.TryGetValue(type, out var needCount))
-                    continue;
-
-                used.TryGetValue(type, out var usedCount);
-                if (usedCount >= needCount)
-                    continue;
-
-                card.SetHighlighted(true);
-                Debug.Log("ON : " + card.CardName);
-                used[type] = usedCount + 1;
+                if (card.Magic != null && card.Magic.id == data.id)
+                {
+                    card.SetHighlighted(true);
+                    return;
+                }
             }
+        }
+
+        private List<CombinedMagicData> GetHandMagics()
+        {
+            var handCards = handRoot.GetComponentsInChildren<CardUI>();
+            var magics = new List<CombinedMagicData>(handCards.Length);
+            foreach (var card in handCards)
+            {
+                if (card.Magic != null)
+                {
+                    magics.Add(card.Magic);
+                }
+            }
+
+            return magics;
         }
     }
 }

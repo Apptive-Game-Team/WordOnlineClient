@@ -31,12 +31,15 @@ namespace MagicBookScene
             {
                 Destroy(child.gameObject);
             }
-            foreach (CardType cardType in data.recipe)
+            // 조합이 없어졌으므로 재료 카드 줄 대신 마법의 원소 아이콘 하나를 그린다.
+            // TODO(#578): 도감 화면이 정리되면 원소·마나·사거리 표시를 다시 설계한다.
+            Sprite elementSprite = mapper != null ? mapper.GetElementImage(data.element) : null;
+            if (elementSprite != null)
             {
-                var cardObj = new GameObject(cardType.ToString());
+                var cardObj = new GameObject(data.element.ToString());
                 var img = cardObj.AddComponent<Image>();
                 img.preserveAspect = true;
-                img.sprite = mapper.GetCardImage(cardType);
+                img.sprite = elementSprite;
                 img.rectTransform.sizeDelta = new Vector2(50, 50);
                 cardObj.transform.SetParent(cardsParent, false);
             }

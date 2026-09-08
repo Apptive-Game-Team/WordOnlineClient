@@ -4,7 +4,6 @@ using Data.Magic;
 using GameScene.Dto;
 using GameScene.ServedObjectComponent;
 using Global;
-using Global.Util;
 using UnityEngine;
 using Global.Serialization;
 
@@ -34,22 +33,10 @@ namespace GameScene.Card
         private readonly List<string> _currentCardNameList = new List<string>();
         private readonly List<CardUI> _currentCardList = new List<CardUI>();
 
-        // FieldSelector가 매 프레임 호출하는 조회 전용 경로에서 쓰는 재사용 버퍼.
-        // 호출자가 리스트를 보관하지 않는 경우에만 쓴다.
-        private readonly List<CardType> _recipeQueryBuffer = new List<CardType>();
-    
         public bool CanSelectField => _currentCardList.Count >= 1;
         private bool isFieldSelectMode = false;
         private bool isWaitingInputResponse = false;
         private BarController barController;
-        
-        private CombinedMagicResolver combinedMagicResolver;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
-        }
 
         public bool IsFieldSelectMode()
         {
@@ -73,7 +60,10 @@ namespace GameScene.Card
             {
                 _currentCardNameList.Remove(cardObj.CardName);
                 _currentCardList.Remove(cardObj);
-                SendCardSelectionInput(new CardUnselectRequestDto(cardObj.CardType));
+                if (cardObj.Magic != null)
+                {
+                    SendCardSelectionInput(new CardUnselectRequestDto(cardObj.Magic.id));
+                }
             }
         }
 
@@ -152,64 +142,29 @@ namespace GameScene.Card
                 return;
             }
 
-            // 아직 응답을 기다리는 중이면 CanResolve의 false가 "잘못된 조합"인지
-            // "목록이 아직 안 왔음"인지 구분되지 않는다. 그 상태로 아래로 흘려보내면
-            // 유효한 조합이 잘못된 조합으로 소모되므로 여기서 멈춘다.
-            // 카드는 선택된 채 남으므로 목록이 도착한 뒤 다시 확정하면 된다.
-            if (!IsRecipeDataSettled())
+            // 카드 한 장이 마법 하나이므로 조합을 맞춰볼 것이 없다. 고른 카드가 곧 시전할 마법이다.
+            if (!TryGetCurrentMagicData(out _))
             {
-                WDebug.Log("[CardInputSender] Combined magic data has not arrived yet. Confirm skipped; cards kept.");
-                return;
-            }
-
-            if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
-            {
-                WDebug.Log("Cannot resolve the current recipe.");
-                PlayerFeedbackController.Instance.UseMagicFeedback();
-                OnMagicFailed?.Invoke();
-                SendInput(GameConfig.FIELD_CENTER);
+                WDebug.Log("[CardInputSender] Selected card has no magic data yet. Confirm skipped; cards kept.");
                 return;
             }
 
             isFieldSelectMode = true;
         }
 
-        /// <summary>
-        /// 레시피 판정을 신뢰할 수 있는 상태인지 확인한다. 로드 시도가 끝났으면(성공이든 실패든)
-        /// CanResolve의 false를 "잘못된 조합"으로 읽어도 된다.
-        /// Awake 시점에 리졸버가 아직 없었을 수 있으므로 여기서 한 번 더 찾는다.
-        /// </summary>
-        private bool IsRecipeDataSettled()
-        {
-            if (combinedMagicResolver == null)
-            {
-                combinedMagicResolver = FindObjectOfType<CombinedMagicResolver>();
-            }
-
-            return combinedMagicResolver != null && combinedMagicResolver.IsRecipeDataSettled;
-        }
-
         public string GetMagicName()
         {
-            string result =
-                _currentCardNameList.Find(c => c.Contains("Build")) ??
-                _currentCardNameList.Find(c => c.Contains("Spawn")) ??
-                _currentCardNameList.Find(c => c.Contains("Explode")) ??
-                _currentCardNameList.Find(c => c.Contains("Drop")) ??
-                _currentCardNameList.Find(c => c.Contains("Shoot"));
-            return result;
+            return _currentCardNameList.Count > 0 ? _currentCardNameList[0] : null;
         }
 
+        /// <summary>
+        /// 지금 고른 카드의 마법. 손패에서 한 번에 한 장만 고르므로 목록의 첫 장을 본다.
+        /// TODO(#576): 손패와 시전 흐름이 한 장 선택으로 정리되면 목록 자체가 카드 한 장으로 바뀐다.
+        /// </summary>
         public bool TryGetCurrentMagicData(out CombinedMagicData data)
         {
-            if (combinedMagicResolver == null)
-            {
-                data = null;
-                return false;
-            }
-
-            // TryResolve는 recipe를 읽기만 하므로 프레임마다 새 리스트를 만들 필요가 없다.
-            return combinedMagicResolver.TryResolve(FillRecipeTypes(_recipeQueryBuffer), out data);
+            data = _currentCardList.Count > 0 ? _currentCardList[0].Magic : null;
+            return data != null;
         }
     
         private void CancelAll()
@@ -218,7 +173,10 @@ namespace GameScene.Card
             foreach (var card in _currentCardList)
             {
                 card.SetCardActive(false);
-                SendCardSelectionInput(new CardUnselectRequestDto(card.CardType));
+                if (card.Magic != null)
+                {
+                    SendCardSelectionInput(new CardUnselectRequestDto(card.Magic.id));
+                }
             }
             _currentCardList.Clear();
             _currentCardNameList.Clear();
@@ -245,7 +203,13 @@ namespace GameScene.Card
                 return;
             }
 
-            var input = new CardUseInput(new List<string>(_currentCardNameList), pos);
+            if (!TryGetCurrentMagicData(out CombinedMagicData magic))
+            {
+                WDebug.LogWarning("[CardInputSender] No magic to cast. Input dropped.");
+                return;
+            }
+
+            var input = new CardUseInput(magic.id, pos);
             string json = JsonCodec.Serialize(input);
         
             string destination = $"/app/game/input/{SceneContext.MatchInfo.sessionId}/{SceneContext.UserID}";
@@ -397,7 +361,10 @@ namespace GameScene.Card
             WDebug.Log("AddCardList: " + card.CardName);
             _currentCardNameList.Add(card.CardName);
             _currentCardList.Add(card);
-            SendCardSelectionInput(new CardSelectRequestDto(card.CardType));
+            if (card.Magic != null)
+            {
+                SendCardSelectionInput(new CardSelectRequestDto(card.Magic.id));
+            }
         }
 
         private static void SendCardSelectionInput(object input)
@@ -407,23 +374,6 @@ namespace GameScene.Card
             StompConnector.Instance.SendMessageToServer(destination, json);
         }
 
-        private List<CardType> GetCurrentRecipeTypes()
-        {
-            return FillRecipeTypes(new List<CardType>(_currentCardList.Count));
-        }
-
-        private List<CardType> FillRecipeTypes(List<CardType> buffer)
-        {
-            buffer.Clear();
-            foreach (var c in _currentCardList)
-            {
-                if (CardNameMapper.TryMapToCardType(c.CardName, out var t))
-                    buffer.Add(t);
-                else
-                    WDebug.LogWarning($"[CardInputSender] Unknown CardName → CardType map: {c.CardName}");
-            }
-            return buffer;
-        }
         public void SetExpectedMagicUI()
         {
             if (GameSceneUIController.Instance == null)
@@ -431,9 +381,9 @@ namespace GameScene.Card
                 return;
             }
 
-            List<CardType> recipe = GetCurrentRecipeTypes();
-            GameSceneUIController.Instance.TrySetExpectedMagicUI(recipe);
-            GameSceneUIController.Instance.SetExpectedManaCost(CardManaCost.SumOf(recipe));
+            TryGetCurrentMagicData(out CombinedMagicData magic);
+            GameSceneUIController.Instance.TrySetExpectedMagicUI(magic, _currentCardList.Count);
+            GameSceneUIController.Instance.SetExpectedManaCost(CardManaCost.Of(magic));
         }
     }
 }

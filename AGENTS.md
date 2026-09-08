@@ -23,6 +23,8 @@ Follow [scene-space.md](.agents/docs/scene-space.md) before writing gameplay cod
 
 Follow [localization.md](.agents/docs/localization.md) before adding or editing anything under `Assets/Localization`. The same magic is keyed by three different spellings of its server name, so adding one of them and stopping leaves another screen showing a raw key. The string tables are hand-edited YAML here because the Editor cannot run in this environment.
 
+Follow [hand-edited-assets.md](.agents/docs/hand-edited-assets.md) before changing a serialized type, renaming a serialized field, or deleting a `MonoBehaviour`. The Editor cannot run here, so `.asset`, `.prefab`, `.unity` and `.meta` files are edited as YAML by hand. A serialized enum stores its integer, so reordering one silently remaps every stored row, and deleting a script takes three edits across the script, its prefab and every scene that instances it.
+
 ## Testing Guidelines
 `com.unity.test-framework` is installed, but there are no dedicated `Tests` assemblies in the current tree. For new automated tests, create Edit Mode or Play Mode test assemblies under `Assets/Tests` and name files `*Tests.cs`. At minimum, validate scene flow and WebGL-specific behavior manually in the Editor before opening a PR.
 

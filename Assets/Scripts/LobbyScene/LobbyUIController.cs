@@ -26,7 +26,6 @@ namespace LobbyScene
         [SerializeField] private TMP_Dropdown deckDropdown;
         [SerializeField] private UnityEngine.UI.Button arrowButton;
         [SerializeField] private GameObject rewardUiPrefab;
-        [SerializeField] private CardImageMapper cardImageMapper;
         private static DeckResponseDto[] userDecks;
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace LobbyScene
             }
         
             lobbyUserNameUI.SetUserName(SceneContext.User.name);
-            yield return QuestRewardTracker.CheckAndShowRewards(rewardUiPrefab, cardImageMapper);
+            yield return QuestRewardTracker.CheckAndShowRewards(rewardUiPrefab);
             yield return FetchDecks();
         }
 
@@ -188,25 +187,8 @@ namespace LobbyScene
         private const string RewardTypeDecoration = "DECORATION";
         private const string RewardTypeMagic = "MAGIC";
 
-        // Matching server CardType order: 1=Shoot,2=Build,3=Spawn,4=Explode,5=Drop,6=Fire...
-        private static readonly Dictionary<long, string> ServerCardIdToName = new()
-        {
-            { 1, "Shoot" },
-            { 2, "Build" },
-            { 3, "Spawn" },
-            { 4, "Explode" },
-            { 5, "Drop" },
-            { 6, "Fire" },
-            { 7, "Water" },
-            { 8, "Lightning" },
-            { 9, "Rock" },
-            { 10, "Nature" },
-            { 11, "Wind" }
-        };
-
 #if UNITY_EDITOR
         private const string RewardUiPrefabEditorPath = "Assets/Prefabs/UI/RewardUI.prefab";
-        private const string CardImageMapperEditorPath = "Assets/Art/Images/UI/Card/CardImageMapper.asset";
         private const string DecorationDbEditorPath = "Assets/Scripts/CustomizeScene/New Decoration Database.asset";
 #endif
 
@@ -246,9 +228,7 @@ namespace LobbyScene
             public QuestRewardDto[] rewards;
         }
 
-        public static IEnumerator CheckAndShowRewards(
-            GameObject rewardUiPrefab,
-            CardImageMapper cardImageMapper)
+        public static IEnumerator CheckAndShowRewards(GameObject rewardUiPrefab)
         {
             QuestRewardDto[] rewards = Array.Empty<QuestRewardDto>();
             yield return CheckRewards(result => rewards = result ?? Array.Empty<QuestRewardDto>());
@@ -258,7 +238,7 @@ namespace LobbyScene
                 yield break;
             }
 
-            if (!TryShowRewardUI(rewards, rewardUiPrefab, cardImageMapper))
+            if (!TryShowRewardUI(rewards, rewardUiPrefab))
             {
                 ShowRewardMessage(rewards);
             }
@@ -322,11 +302,8 @@ namespace LobbyScene
 
         private static bool TryShowRewardUI(
             QuestRewardDto[] rewards,
-            GameObject rewardUiPrefab,
-            CardImageMapper cardImageMapper)
+            GameObject rewardUiPrefab)
         {
-            var resolvedCardImageMapper = ResolveCardImageMapper(cardImageMapper);
-
             var visuals = new List<RewardVisual>();
             foreach (var reward in rewards)
             {
@@ -334,7 +311,7 @@ namespace LobbyScene
                 var rewardId = GetRewardId(reward);
                 var amount = Mathf.Max(1, GetAmount(reward));
 
-                if (TryResolveSprite(rewardType, rewardId, resolvedCardImageMapper, out var sprite))
+                if (TryResolveSprite(rewardType, rewardId, out var sprite))
                 {
                     visuals.Add(new RewardVisual(rewardType, rewardId, amount, sprite));
                 }
@@ -361,49 +338,19 @@ namespace LobbyScene
         private static bool TryResolveSprite(
             string rewardType,
             long rewardId,
-            CardImageMapper cardImageMapper,
             out Sprite sprite)
         {
             sprite = null;
 
+            // 카드 한 장이 마법 하나이므로 CARD 와 MAGIC 은 둘 다 magics.id 를 가리킨다.
             switch (rewardType)
             {
                 case RewardTypeCard:
-                    return TryResolveCardSprite(rewardId, cardImageMapper, out sprite);
                 case RewardTypeMagic:
                     return TryResolveMagicSprite(rewardId, out sprite);
                 default:
                     return false;
             }
-        }
-
-        private static bool TryResolveCardSprite(long rewardId, CardImageMapper cardImageMapper, out Sprite sprite)
-        {
-            sprite = null;
-            if (cardImageMapper == null)
-            {
-                return false;
-            }
-
-            if (ServerCardIdToName.TryGetValue(rewardId, out var cardName))
-            {
-                sprite = cardImageMapper.GetCardImage(cardName);
-                if (sprite != null)
-                {
-                    return true;
-                }
-            }
-
-            if (Enum.IsDefined(typeof(CardType), (int)rewardId))
-            {
-                var cardType = (CardType)(int)rewardId;
-                if (cardType != CardType.Dummy)
-                {
-                    sprite = cardImageMapper.GetCardImage(cardType);
-                }
-            }
-
-            return sprite != null;
         }
 
         private static bool TryResolveMagicSprite(long rewardId, out Sprite sprite)
@@ -412,26 +359,6 @@ namespace LobbyScene
                 .FirstOrDefault(magicData => magicData.id == rewardId)
                 ?.GetSprite();
             return sprite != null;
-        }
-
-        private static CardImageMapper ResolveCardImageMapper(CardImageMapper cardImageMapper)
-        {
-            if (cardImageMapper != null)
-            {
-                return cardImageMapper;
-            }
-
-            cardImageMapper = Resources.FindObjectsOfTypeAll<CardImageMapper>().FirstOrDefault();
-            if (cardImageMapper != null)
-            {
-                return cardImageMapper;
-            }
-
-#if UNITY_EDITOR
-            return UnityEditor.AssetDatabase.LoadAssetAtPath<CardImageMapper>(CardImageMapperEditorPath);
-#else
-            return null;
-#endif
         }
 
         private static GameObject ResolveRewardUIInstance(GameObject rewardUiPrefab)

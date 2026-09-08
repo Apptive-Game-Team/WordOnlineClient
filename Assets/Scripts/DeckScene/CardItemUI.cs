@@ -39,14 +39,18 @@ namespace DeckScene
             if (cardArtImage == null)
                 cardArtImage = transform.GetChild(2).GetComponent<Image>();
 
-            cardArtImage.sprite = cardImageMapper.GetCardImage(cName);
+            CombinedMagicData magic = LocalCombinedMagicData.GetCombinedMagicData(cName);
 
-            MagicData magicData = LocalMagicData.GetMagicData(cName);
-            cardManaText.text = magicData.mana.ToString();
+            // 카드 앞면은 마법마다 다른 아트다. cardImageMapper 에는 원소 아이콘만 남아 있다.
+            // TODO(#577): 카드에 원소 아이콘을 함께 붙이려면 cardImageMapper.GetElementImage 를 쓴다.
+            cardArtImage.sprite = magic != null ? magic.GetSprite() : null;
+
+            cardManaText.text = CardManaCost.Of(magic).ToString();
 
             var bg = GetComponent<Image>();
 
-            cardNameText.text = await LocaleUtils.GetStringAsync("Card", cName);
+            // TODO(#580): 카드 이름 번역표가 Magic 표로 합쳐지면 표 이름을 "Magic" 으로 옮긴다.
+            cardNameText.text = await LocaleUtils.GetStringAsync("Card", magic?.localizationKey ?? cName);
 
             if (unlocked)
             {

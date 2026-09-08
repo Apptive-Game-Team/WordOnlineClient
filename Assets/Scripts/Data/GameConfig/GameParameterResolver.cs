@@ -153,48 +153,14 @@ namespace Data.GameConfig
             CombinedMagicData magic,
             string paramName)
         {
-            var result = new List<string>();
-            if (IsSameName(paramName, "range") && TryGetMagicFamilyObjectName(magic, out var familyObjectName))
-            {
-                result.Add(familyObjectName);
-            }
-
-            result.AddRange(GetObjectNamesForMagic(parameters, magic));
+            // 시전 종류 축이 없어졌으므로 range 도 마법 이름으로만 찾는다.
+            // game_objects.name 이 magics.name 과 같아서 아래 후보만으로 닿는다.
+            var result = new List<string>(GetObjectNamesForMagic(parameters, magic));
             return result
                 .Where(name => !string.IsNullOrWhiteSpace(name))
                 .Where(name => parameters.Any(parameter => IsSameName(parameter.gameObjectName, name)))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
-        }
-
-        private static bool TryGetMagicFamilyObjectName(CombinedMagicData magic, out string objectName)
-        {
-            objectName = null;
-            if (magic == null)
-            {
-                return false;
-            }
-
-            switch (magic.castType)
-            {
-                case CardType.Spawn:
-                    objectName = "spawn";
-                    return true;
-                case CardType.Drop:
-                    objectName = "drop";
-                    return true;
-                case CardType.Explode:
-                    objectName = "explode";
-                    return true;
-                case CardType.Build:
-                    objectName = "build";
-                    return true;
-                case CardType.Shoot:
-                    objectName = "shoot";
-                    return true;
-                default:
-                    return false;
-            }
         }
 
         private static List<string> GetObjectNamesForMagic(
@@ -285,7 +251,6 @@ namespace Data.GameConfig
         private readonly struct MagicParameterKey : IEquatable<MagicParameterKey>
         {
             private readonly long magicId;
-            private readonly CardType castType;
             private readonly string serverName;
             private readonly string resourceName;
             private readonly string localizationKey;
@@ -294,7 +259,6 @@ namespace Data.GameConfig
             public MagicParameterKey(CombinedMagicData magic, string paramName)
             {
                 magicId = magic.id;
-                castType = magic.castType;
                 serverName = magic.serverName;
                 resourceName = magic.resourceName;
                 localizationKey = magic.localizationKey;
@@ -304,7 +268,6 @@ namespace Data.GameConfig
             public bool Equals(MagicParameterKey other)
             {
                 return magicId == other.magicId &&
-                       castType == other.castType &&
                        string.Equals(serverName, other.serverName, StringComparison.Ordinal) &&
                        string.Equals(resourceName, other.resourceName, StringComparison.Ordinal) &&
                        string.Equals(localizationKey, other.localizationKey, StringComparison.Ordinal) &&
@@ -318,7 +281,6 @@ namespace Data.GameConfig
                 unchecked
                 {
                     int hash = magicId.GetHashCode();
-                    hash = hash * 397 ^ (int)castType;
                     hash = hash * 397 ^ (serverName?.GetHashCode() ?? 0);
                     hash = hash * 397 ^ (resourceName?.GetHashCode() ?? 0);
                     hash = hash * 397 ^ (localizationKey?.GetHashCode() ?? 0);

@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Data;
+using Data.Magic;
 using Global;
 using TMPro;
 using UnityEngine;
@@ -137,44 +137,41 @@ namespace TutorialScene
             _usedAnyCard = true;
         }
 
-        private void OnMagicUsed(System.Collections.Generic.IReadOnlyList<CardType> types)
+        // TODO(#579): 튜토리얼 대본이 아직 옛 조합(Shoot+Fire, Spawn+Shoot+Water)을 가리킨다.
+        // 그 조합의 결과 마법 이름은 각각 fireShot 과 aquaArcher 였으므로 이름으로 바꿔 두었다.
+        // 튜토리얼을 새 모델로 다시 쓸 때 이 두 이름과 아래 마나 숫자를 함께 손본다.
+        private const string ShotFireMagicName = "fire_shot";
+        private const string WaterArcherMagicName = "aqua_archer";
+
+        private void OnMagicUsed(System.Collections.Generic.IReadOnlyList<CombinedMagicData> magics)
         {
-            if (IsExact(types, CardType.Shoot, CardType.Fire))
+            if (UsedMagic(magics, ShotFireMagicName))
             {
                 _usedShotFire = true;
                 _manaMocker.UseMana(25);
             }
-                
-            if (IsExact(types, CardType.Spawn, CardType.Shoot, CardType.Water))
+
+            if (UsedMagic(magics, WaterArcherMagicName))
             {
                 _usedWaterArcher = true;
-            _manaMocker.UseMana(45);
+                _manaMocker.UseMana(45);
             }
-            
         }
 
-        private bool IsExact(System.Collections.Generic.IReadOnlyList<CardType> types, params CardType[] expected)
+        private static bool UsedMagic(
+            System.Collections.Generic.IReadOnlyList<CombinedMagicData> magics,
+            string serverName)
         {
-            if (types.Count != expected.Length)
-                return false;
-
-            for (int i = 0; i < expected.Length; i++)
+            for (int i = 0; i < magics.Count; i++)
             {
-                bool found = false;
-                for (int j = 0; j < types.Count; j++)
+                if (magics[i] != null &&
+                    string.Equals(magics[i].serverName, serverName, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (types[j] == expected[i])
-                    {
-                        found = true;
-                        break;
-                    }
+                    return true;
                 }
-
-                if (!found)
-                    return false;
             }
 
-            return true;
+            return false;
         }
 
         void GiveCard(string name)
