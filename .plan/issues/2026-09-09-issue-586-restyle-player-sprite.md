@@ -2,7 +2,7 @@
 
 - Date: 2026-09-09
 - GitHub Issue: #586
-- Status: 시안 생성 완료, 방향 선택 대기
+- Status: D안 채택, 두 프레임과 오라 적용 완료, Unity Editor 검수 대기
 
 ## Goal
 
@@ -37,10 +37,12 @@
 - [x] **Step 0: Recon** — 런타임 참조, 커스터마이즈 사용 여부, 캔버스 기준값 확인
 - [x] **Step 1: 기획** — 시안 다섯 갈래와 프롬프트를 `.art/CONCEPT-BRIEF.md` 에 기록
 - [x] **Step 2: 생성** — codex `image_gen` 으로 갈래별 생성, 34장을 `.art/concept/player-restyle/` 에 보관
-- [ ] **Step 3: 선택** — 방향 하나를 고르고 이유를 `.art/STYLE.md` 에 기록
-- [ ] **Step 4: 투명 배경 확보** — 고른 갈래를 alpha 가 실제로 들어온 파일로 다시 생성
-- [ ] **Step 5: 마감** — 2048x2048 캔버스에 몸통 높이 1140px, 발끝 y=1679, 가로 중심 x=1117 로 합성해 교체
-- [ ] **Step 6: 상태 기록** — `.art/PRODUCTION-STATUS.md` 갱신
+- [x] **Step 3: 선택** — D 긴 머리 수습생 채택, 이유를 `.art/STYLE.md` 에 기록
+- [x] **Step 4: 투명 배경 확보** — 기본 프레임, 공격 프레임, 오라 모두 alpha 가 들어온 원본으로 확보
+- [x] **Step 5: 마감** — `.art/tools/finalize-player-frames.py` 로 두 프레임을 한 배율·한 기준점에 합성
+- [x] **Step 6: 애니메이션** — 공격 프레임 교체와 지팡이 끝 오라 이동을 프리팹에 배선
+- [x] **Step 7: 상태 기록** — `.art/PRODUCTION-STATUS.md` 갱신
+- [ ] **Step 8: Editor 검수** — Unity 로 한 번 열어 프리팹 배선과 스프라이트 import 확인
 
 ## Validation
 
@@ -57,7 +59,29 @@
   `--background transparent`)를 쓴다.
 - **Rollback steps:** `Assets/` 는 아직 손대지 않았다. 되돌릴 것은 `.art/` 아래 파일뿐이다.
 
+## 애니메이션
+
+사용자 요청: 몸을 뒤로 젖히는 대신 지팡이를 위로 세우고 그 끝에 오라가 모여 있다가,
+공격할 때 지팡이를 앞으로 뻗는다.
+
+- 기본 프레임은 지팡이를 세운 자세, 공격 프레임은 앞으로 뻗은 자세다. 결정 주변은
+  비워 두고 오라는 별도 에셋으로 그 위에 얹는다.
+- `AttackSpriteSwapController` 가 공격 이벤트에서 0.18초 동안 프레임을 바꾼다.
+- `PlayerStaffAuraController` 가 같은 0.18초 동안 `StaffAura` 앵커를 세운 지팡이
+  끝 `(-1.58, 7)` 에서 뻗은 지팡이 끝 `(6.14, 0.6)` 으로 옮긴다. 두 좌표는 마감한
+  스프라이트에서 파란 결정 덩어리를 찾아 잰 값이다.
+- 맥동은 앵커가 아니라 자식 `StaffAuraSprite` 의 `IdleAuraEffect` 가 맡는다.
+- `PlayerActionController` 의 `SwingMobAttack` 호출을 지우는 것만으로는 부족했다.
+  `ServedObject.PlayAttackPresentation()` 이 `_swingOnAttack` 기본값 `true` 로 같은
+  스윙을 한 번 더 돌리고 있었고, Player 프리팹에 이 필드가 직렬화되어 있지 않았다.
+  프리팹에 `_swingOnAttack: 0` 을 넣어 껐다.
+- 마법 실패 연기 효과는 옛 스프라이트의 얼굴 위치 `(1.15, 0.75)` 에 맞춰져 있었다.
+  새 캐릭터의 얼굴 위치 `(0.7, 3)` 으로 옮겼다.
+
 ## Open Questions
 
-- 어느 갈래로 갈 것인가. 시안 비교판에서 고른다.
-- 캐릭터 정체성을 지금의 갈색 긴 머리로 이을 것인가(D), 앵커의 소년으로 갈 것인가(A·B·C·E).
+- Unity Editor 로 한 번 열어야 한다. 이 기계에서는 열 수 없어 `.meta` 와 프리팹
+  배선을 전부 손으로 썼다.
+- codex `image_gen` 의 투명 배경 성공률이 낮아 공격 프레임 하나에 25번을 썼다.
+  `OPENAI_API_KEY` 를 넣으면 imagegen 의 CLI 경로(`gpt-image-1.5`,
+  `--background transparent`)로 이 낭비를 없앨 수 있다.

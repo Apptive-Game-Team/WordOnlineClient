@@ -59,6 +59,7 @@
 | `LightningDrop.png` | 웹사이트 PR #29 `game-assets/lightning-drop.webp` | 번개 투하 인게임 스프라이트 |
 | `ChainLightning.png` | 클라이언트 PR #557, 웹사이트 PR #29 | 256x76 RGBA, 64px 실루엣 검수 완료 |
 | `MagmaExplosion.png`, `MagmaExplosionStrike1.png`–`MagmaExplosionStrike4.png` | 클라이언트 PR #565 | 217x256 RGBA, 갑각 파편 우선 실루엣과 4프레임(균열→개방→피크→냉각) 검수 완료 |
+| `PlayerCharacterBase.png`, `PlayerCharacterAttack.png`, `arcane_aura.png` | 클라이언트 PR (이슈 #586) | 플레이어 수습 마법생 D안. 2048x2048 RGBA, 캐릭터 키 1140px, 발끝 y=1679 로 두 프레임 정렬. Unity Editor 검수는 남아 있다 |
 
 ## 다음 교체 후보
 

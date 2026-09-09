@@ -18,6 +18,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `TreeGolem2.png` | 고목 수호자 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `EvilEnt.png` | 사악한 고목 · 기본 자세 | `EvilEnt.prefab` 기본 SpriteRenderer |
 | `EvilEnt2.png` | 사악한 고목 · 팔을 뻗은 공격 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
+| `PlayerCharacterBase.png` | 수습 마법생 · 지팡이를 세운 기본 자세 | `Player.prefab` 의 `PlayerImage` SpriteRenderer |
+| `PlayerCharacterAttack.png` | 수습 마법생 · 지팡이를 앞으로 뻗은 공격 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.18초 표시 |
 | `AquaArcher.png` | 물결 궁수 · 활시위를 당긴 기본 자세 | `AquaArcherAttackPresenter` 기본 Sprite |
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 | `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
@@ -92,6 +94,7 @@ Transform 스케일 변형은 적용하지 않는다.
 | `rock_aura.png` | 바위 · 대기 오라 / 공격 파동 | `RockIdleAura`, `RockAttackAura` |
 | `water_aura.png` | 물 · 대기 오라 / 공격 파동 | `WaterIdleAura`, `WaterAttackAura` |
 | `cloud.png` | 운룡 · 구형 물 아우라 | `CloudDragon.prefab` 전용 자식 SpriteRenderer |
+| `arcane_aura.png` | 수습 마법생 · 지팡이 끝에 모이는 비전 오라 | `Player.prefab` 의 `StaffAuraSprite` 자식 SpriteRenderer, `IdleAuraEffect` |
 
 오라는 본체에 합성하지 않는다. 공용 투명 Sprite로 별도 생성한다.
 
@@ -102,6 +105,29 @@ Transform 스케일 변형은 적용하지 않는다.
 - 불·운룡처럼 오라가 정체성에 필요한 개체도 본체와 오라를 독립 검증
 - 운룡의 `cloud.png`는 바람 오라가 아니라 몸 전체를 감싸는 구형 물 아우라다.
   중앙은 본체가 읽히도록 저밀도로 유지하고, 공용 `wind_aura.png`와 혼용하지 않는다.
+
+## 플레이어 프레임과 오라
+
+플레이어는 다른 유닛과 두 가지가 다르다.
+
+- pivot 이 Bottom Center 가 아니라 Center 다. 캔버스가 2048x2048 로 고정되어 있고
+  몸통이 그 안 같은 자리에 놓이므로, 두 프레임은 캔버스와 몸통 위치를 함께 맞춘다.
+  몸통 높이 1140px, 발끝 y=1679, 가로 중심 x=1117.
+- 오라가 몸 전체를 감싸지 않고 지팡이 끝 한 점에 모인다. 그래서 오라는 본체와 같은
+  캔버스에 그리지 않고, 작게 그린 뒤 `StaffAura` 앵커의 localPosition 으로 지팡이
+  끝에 놓는다.
+
+공격 프레임에서 지팡이 끝이 움직이므로 오라도 따라가야 한다.
+`PlayerStaffAuraController` 가 공격 이벤트에 맞춰 `StaffAura` 앵커를 기본 위치에서
+공격 위치로 옮기고 0.18초 뒤 되돌린다. 맥동은 앵커가 아니라 그 자식
+`StaffAuraSprite` 의 `IdleAuraEffect` 가 담당한다. 둘을 한 transform 에 두면
+서로의 scale 을 덮어쓴다.
+
+상대편 플레이어는 같은 스프라이트를 `flipX` 로 뒤집어 쓴다. 앵커도 x 를 뒤집어야
+지팡이 끝에 남는다.
+
+공격할 때 몸 전체를 뒤로 기울이던 `DOTweenAction.SwingMobAttack` 은 이 프레임
+교체로 대체했다. 다른 오브젝트는 그대로 쓴다.
 
 ## 홈페이지 표시
 
