@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GameScene.ServedObjectComponent.OnAttack;
 using Sound;
@@ -9,11 +10,13 @@ namespace GameScene.ServedObjectComponent.Sound
     public class ServedObjectSfxController : MonoBehaviour
     {
         private static readonly HashSet<string> WarnedRuntimeTypes = new();
+        private static readonly ObjectSfxEventSlot DisabledSlot = new();
         private static ObjectSfxCatalog catalog;
         private static bool catalogLoadAttempted;
 
         private ServedObject servedObject;
         private ObjectSfxProfile profile;
+        private ObjectSfxProfile signature;
         private float nextMovementTime;
         private bool deathPlayed;
         private bool ownsAttack;
@@ -32,21 +35,26 @@ namespace GameScene.ServedObjectComponent.Sound
 
         public static void Attach(ServedObject target, string runtimeType, bool playSpawn)
         {
-            if (!TryResolveProfile(runtimeType, out ObjectSfxProfile resolvedProfile))
+            if (!TryResolveProfile(
+                    runtimeType,
+                    out ObjectSfxProfile resolvedProfile,
+                    out ObjectSfxProfile resolvedSignature))
             {
                 return;
             }
 
             ServedObjectSfxController controller =
                 target.gameObject.AddComponent<ServedObjectSfxController>();
-            controller.Initialize(target, resolvedProfile, playSpawn);
+            controller.Initialize(target, resolvedProfile, resolvedSignature, playSpawn);
         }
 
         private static bool TryResolveProfile(
             string runtimeType,
-            out ObjectSfxProfile resolvedProfile)
+            out ObjectSfxProfile resolvedProfile,
+            out ObjectSfxProfile resolvedSignature)
         {
             resolvedProfile = null;
+            resolvedSignature = null;
             if (!catalogLoadAttempted)
             {
                 catalog = Resources.Load<ObjectSfxCatalog>(ObjectSfxCatalog.ResourcesPath);
@@ -62,7 +70,7 @@ namespace GameScene.ServedObjectComponent.Sound
                 return false;
             }
 
-            if (!catalog.TryResolve(runtimeType, out resolvedProfile))
+            if (!catalog.TryResolve(runtimeType, out resolvedProfile, out resolvedSignature))
             {
                 WarnOnce(
                     runtimeType,
@@ -71,7 +79,9 @@ namespace GameScene.ServedObjectComponent.Sound
                 return false;
             }
 
-            return resolvedProfile != null;
+            // A signature can carry an object's lifecycle SFX on its own, so a
+            // missing profile is not by itself a reason to skip attaching.
+            return resolvedProfile != null || resolvedSignature != null;
         }
 
         private static void WarnOnce(string key, string message)
@@ -86,38 +96,41 @@ namespace GameScene.ServedObjectComponent.Sound
         private void Initialize(
             ServedObject target,
             ObjectSfxProfile resolvedProfile,
+            ObjectSfxProfile resolvedSignature,
             bool playSpawn)
         {
             servedObject = target;
             profile = resolvedProfile;
+            signature = resolvedSignature;
             deathPlayed = false;
             nextMovementTime = 0f;
 
-            ownsMovement = profile.Movement.Enabled;
+            ownsMovement = Resolve(p => p.Movement).Enabled;
             if (ownsMovement)
             {
                 servedObject.OnMoved += PlayMovement;
             }
 
-            ownsHit = profile.Hit.Enabled;
+            ownsHit = Resolve(p => p.Hit).Enabled;
             if (ownsHit)
             {
                 servedObject.OnHpDecreased += PlayHit;
             }
 
-            ownsHeal = profile.Heal.Enabled;
+            ownsHeal = Resolve(p => p.Heal).Enabled;
             if (ownsHeal)
             {
                 servedObject.OnHpIncreased += PlayHeal;
             }
 
-            ownsDeath = profile.Death.Enabled;
+            ownsDeath = Resolve(p => p.Death).Enabled;
             if (ownsDeath)
             {
                 servedObject.OnDestroyed += PlayDeath;
             }
 
-            ownsAttack = profile.Attack.Enabled && profile.Attack.Clip != null;
+            ObjectSfxEventSlot attackSlot = Resolve(p => p.Attack);
+            ownsAttack = attackSlot.Enabled && attackSlot.Clip != null;
             if (ownsAttack)
             {
                 DisableLegacyAttackOwners();
@@ -127,10 +140,28 @@ namespace GameScene.ServedObjectComponent.Sound
             if (playSpawn)
             {
                 PlaySlot(
-                    profile.Spawn,
+                    Resolve(p => p.Spawn),
                     GameSfxCategory.SpawnDeath,
                     GameSfxPriority.Spawn);
             }
+        }
+
+        // Signature is a per-slot replacement, not an overlay: when its slot for this
+        // event is enabled it fully takes over, otherwise the profile's slot plays.
+        // Profile-level values (MovementCooldown, IsStatic, IsProjectileOrTransient)
+        // are untouched by this and always come from `profile`.
+        private ObjectSfxEventSlot Resolve(Func<ObjectSfxProfile, ObjectSfxEventSlot> pick)
+        {
+            if (signature != null)
+            {
+                ObjectSfxEventSlot signatureSlot = pick(signature);
+                if (signatureSlot.Enabled)
+                {
+                    return signatureSlot;
+                }
+            }
+
+            return profile != null ? pick(profile) : DisabledSlot;
         }
 
         private void DisableLegacyAttackOwners()
@@ -149,21 +180,35 @@ namespace GameScene.ServedObjectComponent.Sound
                 return;
             }
 
-            nextMovementTime = Time.unscaledTime + profile.MovementCooldown;
+            nextMovementTime = Time.unscaledTime + MovementCooldown();
             PlaySlot(
-                profile.Movement,
+                Resolve(p => p.Movement),
                 GameSfxCategory.Movement,
                 GameSfxPriority.Movement);
         }
 
+        // Falling back to zero here would let a signature-only object play a step
+        // sound on every position update, which is the throttling the ownership
+        // matrix exists to prevent. Signature is itself a profile, so it carries
+        // the same cooldown field and can answer when no base profile is set.
+        private float MovementCooldown()
+        {
+            if (profile != null)
+            {
+                return profile.MovementCooldown;
+            }
+
+            return signature != null ? signature.MovementCooldown : 0f;
+        }
+
         private void PlayAttack() =>
-            PlaySlot(profile.Attack, GameSfxCategory.Attack, GameSfxPriority.Attack);
+            PlaySlot(Resolve(p => p.Attack), GameSfxCategory.Attack, GameSfxPriority.Attack);
 
         private void PlayHeal() =>
-            PlaySlot(profile.Heal, GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
+            PlaySlot(Resolve(p => p.Heal), GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
 
         private void PlayHit() =>
-            PlaySlot(profile.Hit, GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
+            PlaySlot(Resolve(p => p.Hit), GameSfxCategory.HitHeal, GameSfxPriority.HitHeal);
 
         private void PlayDeath()
         {
@@ -174,7 +219,7 @@ namespace GameScene.ServedObjectComponent.Sound
 
             deathPlayed = true;
             PlaySlot(
-                profile.Death,
+                Resolve(p => p.Death),
                 GameSfxCategory.SpawnDeath,
                 GameSfxPriority.Death);
         }
@@ -194,7 +239,9 @@ namespace GameScene.ServedObjectComponent.Sound
 
         private void OnDestroy()
         {
-            if (servedObject == null || profile == null)
+            // profile can legitimately be null for a signature-only object, so only
+            // servedObject (set once, in Initialize) gates whether we ever subscribed.
+            if (servedObject == null)
             {
                 return;
             }

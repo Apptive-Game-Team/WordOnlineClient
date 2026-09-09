@@ -1,0 +1,932 @@
+{
+ "generated": "2026-09-09",
+ "issue": 584,
+ "note": "Approved masters are peak -3 dBFS; volume carries the target level so the approved hash never changes.",
+ "verdicts": [
+  "2026-08-10-page1",
+  "2026-08-10-page2",
+  "2026-08-10-page3"
+ ],
+ "entries": [
+  {
+   "event": "building_spawn_hellfire",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/building_spawn_hellfire",
+   "clipPath": "Assets/Resources/Sound/Game/Build/building_spawn_hellfire.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "BurningLegionStructure",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "bd_hell",
+    "candidate": "02"
+   },
+   "durationSeconds": 0.9,
+   "sha256": "d6e52566feb261c65421d253dd9bfe63da65638627a0b633da38c3ef0dd0b600"
+  },
+  {
+   "event": "building_spawn_worldtree",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/building_spawn_worldtree",
+   "clipPath": "Assets/Resources/Sound/Game/Build/building_spawn_worldtree.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "WorldTreeBuilding",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "bd_worldtree",
+    "candidate": "04"
+   },
+   "durationSeconds": 0.57,
+   "sha256": "e7138849cf766f4342b996f4c2d664781d00c79251feb465cede3e863776581b"
+  },
+  {
+   "event": "u2_bubble_generator",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_bubble_generator",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_bubble_generator.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "BubbleGenerator",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_bubble_generator",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "782575f372c9cb8bf616455fc2e240af99e7650613f3bae5dcde688ef21f5ad2"
+  },
+  {
+   "event": "u2_electric_tower",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_electric_tower",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_electric_tower.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "ElectricTower",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_electric_tower",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "782e3368098dfc1064fe11c0b7d8360d27a1ed21e12fe373d6cea27d713632e3"
+  },
+  {
+   "event": "u2_frenzy_totem",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_frenzy_totem",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_frenzy_totem.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "FrenzyTotem",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_frenzy_totem",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "765b79ef526004f418c9ed3d3ec6b740c90b4a83120e70ed0b99db67ed1acdda"
+  },
+  {
+   "event": "u2_healing_totem",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_healing_totem",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_healing_totem.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "HealingTotem",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_healing_totem",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "6832d24720ac1f83e6a2e1ae362a47c0ae14bb0dffe73654b13b9f8ec84b9661"
+  },
+  {
+   "event": "u2_mana_well",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_mana_well",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_mana_well.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "ManaWell",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_mana_well",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "319b1ae7e7ae567d51b1e17f0a2f3cf5968ded8e3ef678a614afdd215c16193a"
+  },
+  {
+   "event": "u2_nature_nest",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_nature_nest",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_nature_nest.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "PveNatureSlimeNest",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_nature_nest",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "323980526cc04e7d79a5af2c6f55990a4eaca43d8abe6db89b1e678a04f0555d"
+  },
+  {
+   "event": "u2_seed_nest",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_seed_nest",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_seed_nest.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "SeedNest",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_seed_nest",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "e092d326e533366e5a1d0c2e396ae4ae331950ddc36235f69e97594a39c69729"
+  },
+  {
+   "event": "u2_vine_colony",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_vine_colony",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_vine_colony.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "VineColony",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_vine_colony",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "31df47b1db7032655084f83e929cbde2756e8116c126b604b5c606c5465076ea"
+  },
+  {
+   "event": "u2_water_nest",
+   "kind": "설치",
+   "clip": "Sound/Game/Build/u2_water_nest",
+   "clipPath": "Assets/Resources/Sound/Game/Build/u2_water_nest.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "PveWaterSlimeNest",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_water_nest",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "e36d4ba65f565982b842d49320d9ebb2968d092de3689e7f898aa64bacde98df"
+  },
+  {
+   "event": "signature_bubble_spirit_spawn",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/signature_bubble_spirit_spawn",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/signature_bubble_spirit_spawn.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "BubbleSpirit",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "v2_bubble_spawn",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.0,
+   "sha256": "e296d0b172469e31a9dc0fe14848a1c7cb368e1c89f4698f70956e4b0fca2267"
+  },
+  {
+   "event": "signature_will_o_wisp_spawn",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/signature_will_o_wisp_spawn",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/signature_will_o_wisp_spawn.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "WillOWisp",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "v2_wisp_spawn",
+    "candidate": "04"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "3d8d4230e27208e20787b33e1aed30f16f9e45107f3357c458bcff3cfaf8929c"
+  },
+  {
+   "event": "spawn_arcane_rune",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_arcane_rune",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_arcane_rune.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "ArcaneRune",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_rune",
+    "candidate": "01"
+   },
+   "durationSeconds": 0.5,
+   "sha256": "4747989f3d2b993b5a094d7aece49d60e1b792c95229a1ca281162eb2b41025c"
+  },
+  {
+   "event": "spawn_dimension_wanderer",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_dimension_wanderer",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_dimension_wanderer.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "DimensionWandererCreature",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_dim",
+    "candidate": "01"
+   },
+   "durationSeconds": 0.9,
+   "sha256": "7d43a5677ce74041188ba378be8e2e062f06182875da33fe9114a9ce4c692e8d"
+  },
+  {
+   "event": "spawn_human_infantry",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_human_infantry",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_human_infantry.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "HumanInfantry",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_human",
+    "candidate": "03"
+   },
+   "durationSeconds": 0.7,
+   "sha256": "4aeaa697bcf6d851157cf6f9b4fed2bfb01c4289f012e684882b94298a29499b"
+  },
+  {
+   "event": "spawn_rock_golem",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_rock_golem",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_rock_golem.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "RockGolemCreature",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_rock",
+    "candidate": "03"
+   },
+   "durationSeconds": 0.62,
+   "sha256": "550f0f9a4b0cc3deed22dc71529acbe8f9c6fd6a049f561db9853804acf8d6cc"
+  },
+  {
+   "event": "spawn_worldtree_lightning",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_worldtree_lightning",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_worldtree_lightning.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "WorldTreeLightningCreature",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_light",
+    "candidate": "04"
+   },
+   "durationSeconds": 0.87,
+   "sha256": "31fe4c739b570274051fb2da7556772de35b78dc942a4581bc8a62fb4c16837b"
+  },
+  {
+   "event": "spawn_worldtree_wind",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/spawn_worldtree_wind",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/spawn_worldtree_wind.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "profile",
+    "profile": "WorldTreeWindCreature",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "sp_wind",
+    "candidate": "05"
+   },
+   "durationSeconds": 0.75,
+   "sha256": "7f67afd907c9f8482f6112147fdb9d9cbdb00062e30cb6085bc0b7a770ae669a"
+  },
+  {
+   "event": "u2_crater_ember",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u2_crater_ember",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u2_crater_ember.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "CraterEmber",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_crater_ember",
+    "candidate": "07"
+   },
+   "durationSeconds": 1.0,
+   "sha256": "90e3212917a853d50f64378c288d4495de651d22778ba61ae278da88ad3d55d6"
+  },
+  {
+   "event": "u2_giant_vine",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u2_giant_vine",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u2_giant_vine.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "GiantVine",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u2_giant_vine",
+    "candidate": "04"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "b20a27f2eb801dc9583fcc87e7c40ec1997e80efbdb5691a79f331b65d8b81ba"
+  },
+  {
+   "event": "u_aqua_archer",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_aqua_archer",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_aqua_archer.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "AquaArcher",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_aqua_archer",
+    "candidate": "03"
+   },
+   "durationSeconds": 1.2,
+   "sha256": "b1a1277cecc567a482ce8bcde7e7c5b8ddd7b01bb21e0e8f604d09bf497c5758"
+  },
+  {
+   "event": "u_cloud_dragon",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_cloud_dragon",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_cloud_dragon.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "CloudDragon",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_cloud_dragon",
+    "candidate": "05"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "04cfa3d7ee33751b4dd483a92a2924a9bae67f05d3af328a4583e21a212d13db"
+  },
+  {
+   "event": "u_ember_spirit",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_ember_spirit",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_ember_spirit.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "EmberSpirit",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_ember_spirit",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "e6f40dee02f5c11711ca6c88094d8533b2818cd5d46e88cf261cb5ef18473081"
+  },
+  {
+   "event": "u_fire_slime",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_fire_slime",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_fire_slime.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "FireSlime",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_fire_slime",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "c5ef7f87417801f9400b4c9cf24de6bd4e4a63e76c7203b6f75e111aa2c12b92"
+  },
+  {
+   "event": "u_fire_spirit",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_fire_spirit",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_fire_spirit.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "FireSpirit",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_fire_spirit",
+    "candidate": "08"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "ab98e6fbcc25e96bc206e5ce3dbfa08a40edb8d8353edd55baac480b4520b3b8"
+  },
+  {
+   "event": "u_fire_tadpole",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_fire_tadpole",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_fire_tadpole.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "FireTadpole",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_fire_tadpole",
+    "candidate": "06"
+   },
+   "durationSeconds": 1.2,
+   "sha256": "65bd8cf74c4f5404c4c6ba371c82ee77446569d0a6da9de820001cca58c6e266"
+  },
+  {
+   "event": "u_ground_cannon",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_ground_cannon",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_ground_cannon.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "GroundCannon",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_ground_cannon",
+    "candidate": "03"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "df9e61bb9fdcab7cb1a57133678c840ba6d594ad5b18322e56ebd09896d14154"
+  },
+  {
+   "event": "u_leaf_slime",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_leaf_slime",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_leaf_slime.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "LeafSlime",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_leaf_slime",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "ff2818d2ae977d12e934f4af3597adbf68dfd22239c25afeb683f95b33343eea"
+  },
+  {
+   "event": "u_lightning_tadpole",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_lightning_tadpole",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_lightning_tadpole.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "LightningTadpole",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_lightning_tadpole",
+    "candidate": "04"
+   },
+   "durationSeconds": 1.2,
+   "sha256": "8509ad35e5394bb19df8fde1788f102f9b66715261188131d8e3b957c9c0e3b3"
+  },
+  {
+   "event": "u_mini_rock",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_mini_rock",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_mini_rock.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "MiniRock",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_mini_rock",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "684233e73a52d54e61b695080eb4bc36544fe2f54d429fe654ed9b13648968bd"
+  },
+  {
+   "event": "u_rock_golem",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_rock_golem",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_rock_golem.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "RockGolem",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_rock_golem",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "2aaf770b6d95fb04d9756635289565173db86aeeebfffa5216bff8022c301bfb"
+  },
+  {
+   "event": "u_rock_mage",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_rock_mage",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_rock_mage.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "RockMage",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_rock_mage",
+    "candidate": "04"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "8d68ebc58889057ee015097008a531221c31e65e9538859f669065d524dcb5c4"
+  },
+  {
+   "event": "u_rock_turret",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_rock_turret",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_rock_turret.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "RockTurret",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_rock_turret",
+    "candidate": "03"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "d871eb1c3a8926de84c356e978174729e229a221dc8ddce7b0679890b83cf9a0"
+  },
+  {
+   "event": "u_seed_spirit",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_seed_spirit",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_seed_spirit.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "SeedSpirit",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_seed_spirit",
+    "candidate": "05"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "f6c098bf43c32d3a4622ddf2a4fe9338573bb9ea88f88d296b691cac783ec4c7"
+  },
+  {
+   "event": "u_storm_rider",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_storm_rider",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_storm_rider.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "StormRider",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_storm_rider",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "2a11bfa9f7d80da627597c985a792f9fe967a61f36950b52fcea3c04d6ae79ae"
+  },
+  {
+   "event": "u_thunder_bird",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_thunder_bird",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_thunder_bird.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "ThunderBird",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_thunder_bird",
+    "candidate": "05"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "6daa15f4c4ae0f9c4cb2dd7da9cdabfb3440b6f37380ee0dcb03e70f788dd5db"
+  },
+  {
+   "event": "u_tree_golem",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_tree_golem",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_tree_golem.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "TreeGolem",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_tree_golem",
+    "candidate": "05"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "1c63e0be6b1c8c764b16cebe4bc06d66e2e4ea97c5481293c069904c8e06ba17"
+  },
+  {
+   "event": "u_vine_spirit",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_vine_spirit",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_vine_spirit.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "VineSpirit",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_vine_spirit",
+    "candidate": "03"
+   },
+   "durationSeconds": 1.4,
+   "sha256": "a5fe49acc260f2ccbbd81f73da78bfa193d7fd5cad3f4858a8ea1fc1a8bc0cca"
+  },
+  {
+   "event": "u_vine_witch",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_vine_witch",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_vine_witch.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "PveVineWitch",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_vine_witch",
+    "candidate": "02"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "d4bf014e7c23fae0666b149cfc5d06f04b729548a75fa8bbf8b6f40e9788dd06"
+  },
+  {
+   "event": "u_water_slime",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_water_slime",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_water_slime.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "WaterSlime",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_water_slime",
+    "candidate": "07"
+   },
+   "durationSeconds": 1.0,
+   "sha256": "94feaaf27861b98eca63b61da1a27bf5bcb5a4716e68b532e1fc65452ba44f7c"
+  },
+  {
+   "event": "u_wind_slime",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_wind_slime",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_wind_slime.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "WindSlime",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_wind_slime",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.0,
+   "sha256": "ffec7f7008241872247f9b3f7efa86e70dcbdd69816c2c4f457e6c4fc11ce7ee"
+  },
+  {
+   "event": "u_zap_mouse",
+   "kind": "소환",
+   "clip": "Sound/Game/Spawn/u_zap_mouse",
+   "clipPath": "Assets/Resources/Sound/Game/Spawn/u_zap_mouse.wav",
+   "targetDb": -10.0,
+   "volume": 0.447,
+   "target": {
+    "type": "signature",
+    "runtimeType": "ZapMouse",
+    "slot": "spawn"
+   },
+   "source": {
+    "slot": "u_zap_mouse",
+    "candidate": "02"
+   },
+   "durationSeconds": 0.9,
+   "sha256": "7a88cd38719c133ff3cf93532b4a3b6a32994e23434a02385d71dbb43899c120"
+  },
+  {
+   "event": "shared_building_death",
+   "kind": "죽음",
+   "clip": "Sound/Game/Death/shared_building_death",
+   "clipPath": "Assets/Resources/Sound/Game/Death/shared_building_death.wav",
+   "targetDb": -8.0,
+   "volume": 0.562,
+   "target": {
+    "type": "buildingDeath"
+   },
+   "source": {
+    "slot": "base_bdeath",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.15,
+   "sha256": "ca43e927b0efa74a42ca462137e2d5f32dba433f3100663c075eb8b7a71683c1"
+  },
+  {
+   "event": "signature_tree_golem_death",
+   "kind": "죽음",
+   "clip": "Sound/Game/Death/signature_tree_golem_death",
+   "clipPath": "Assets/Resources/Sound/Game/Death/signature_tree_golem_death.wav",
+   "targetDb": -8.0,
+   "volume": 0.562,
+   "target": {
+    "type": "signature",
+    "runtimeType": "TreeGolem",
+    "slot": "death"
+   },
+   "source": {
+    "slot": "v2_treegolem_death",
+    "candidate": "04"
+   },
+   "durationSeconds": 2.6,
+   "sha256": "eacbe67e16069da00d8268bc91c2049616708be9fbb02662e7207d580b368fad"
+  },
+  {
+   "event": "u4_cloud_dragon",
+   "kind": "죽음",
+   "clip": "Sound/Game/Death/u4_cloud_dragon",
+   "clipPath": "Assets/Resources/Sound/Game/Death/u4_cloud_dragon.wav",
+   "targetDb": -8.0,
+   "volume": 0.562,
+   "target": {
+    "type": "signature",
+    "runtimeType": "CloudDragon",
+    "slot": "death"
+   },
+   "source": {
+    "slot": "u4_cloud_dragon",
+    "candidate": "03"
+   },
+   "durationSeconds": 1.8,
+   "sha256": "ec0a3be2d6b2cd59867278a963967e3888a44fb94575e0cdeb5e960148e3cadb"
+  },
+  {
+   "event": "u4_mini_rock",
+   "kind": "죽음",
+   "clip": "Sound/Game/Death/u4_mini_rock",
+   "clipPath": "Assets/Resources/Sound/Game/Death/u4_mini_rock.wav",
+   "targetDb": -8.0,
+   "volume": 0.562,
+   "target": {
+    "type": "signature",
+    "runtimeType": "MiniRock",
+    "slot": "death"
+   },
+   "source": {
+    "slot": "u4_mini_rock",
+    "candidate": "04"
+   },
+   "durationSeconds": 1.1,
+   "sha256": "9f1966501d06e7be6a2685281ee34c730b6c1eaa236861965d138603da3da77a"
+  },
+  {
+   "event": "u4_vine_witch",
+   "kind": "죽음",
+   "clip": "Sound/Game/Death/u4_vine_witch",
+   "clipPath": "Assets/Resources/Sound/Game/Death/u4_vine_witch.wav",
+   "targetDb": -8.0,
+   "volume": 0.562,
+   "target": {
+    "type": "signature",
+    "runtimeType": "PveVineWitch",
+    "slot": "death"
+   },
+   "source": {
+    "slot": "u4_vine_witch",
+    "candidate": "01"
+   },
+   "durationSeconds": 1.6,
+   "sha256": "aa7483651d8668495628e1eb8647e7a6965a84b736652802e882982b09c311dc"
+  }
+ ],
+ "excludedPendingDecision": [
+  {
+   "event": "u2_towerback_spawn",
+   "source": {
+    "slot": "u2_towerback_spawn",
+    "candidate": "01"
+   },
+   "reason": "Towerback is intentionalSilent in the catalog. Un-silencing it is open question C in the issue #475 plan and is not approved yet."
+  }
+ ]
+}

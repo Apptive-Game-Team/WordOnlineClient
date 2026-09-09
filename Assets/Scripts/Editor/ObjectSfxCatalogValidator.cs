@@ -84,6 +84,11 @@ public static class ObjectSfxCatalogValidator
             errors.Add($"Catalog row has no top-level prefab and is not a server alias: {entry.RuntimeType}.");
         }
 
+        if (entry.Signature != null)
+        {
+            ValidateSignature(entry.Signature, entry.RuntimeType, errors);
+        }
+
         if (entry.IntentionalSilent)
         {
             if (entry.Profile != null)
@@ -130,6 +135,38 @@ public static class ObjectSfxCatalogValidator
         {
             errors.Add(
                 $"Projectile/transient profile '{profile.ProfileId}' enables lifecycle events for {runtimeType}.");
+        }
+    }
+
+    // A signature replaces a base slot rather than layering on top of it, so a profile and its
+    // signature enabling the same event is expected, not a conflict.
+    private static void ValidateSignature(
+        ObjectSfxProfile signature,
+        string runtimeType,
+        ICollection<string> errors)
+    {
+        ValidateSlot(signature.Spawn, "spawn", signature.ProfileId, runtimeType, errors);
+        ValidateSlot(signature.Movement, "movement", signature.ProfileId, runtimeType, errors);
+        ValidateSlot(signature.Attack, "attack", signature.ProfileId, runtimeType, errors);
+        ValidateSlot(signature.Hit, "hit", signature.ProfileId, runtimeType, errors);
+        ValidateSlot(signature.Heal, "heal", signature.ProfileId, runtimeType, errors);
+        ValidateSlot(signature.Death, "death", signature.ProfileId, runtimeType, errors);
+
+        // Attack, hit and movement fire many times a second; a signature there would be noise,
+        // not identity, so the shared base owns those slots exclusively.
+        if (signature.Attack.Enabled || signature.Hit.Enabled || signature.Movement.Enabled)
+        {
+            errors.Add(
+                $"Signature '{signature.ProfileId}' enables a shared high-frequency slot " +
+                $"(attack, hit or movement) for {runtimeType}.");
+        }
+
+        bool anySlotEnabled =
+            signature.Spawn.Enabled || signature.Movement.Enabled || signature.Attack.Enabled ||
+            signature.Hit.Enabled || signature.Heal.Enabled || signature.Death.Enabled;
+        if (!anySlotEnabled)
+        {
+            errors.Add($"Signature '{signature.ProfileId}' has no slot enabled for {runtimeType}.");
         }
     }
 
