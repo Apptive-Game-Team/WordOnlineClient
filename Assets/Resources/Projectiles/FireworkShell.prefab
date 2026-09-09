@@ -56,22 +56,36 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5312e3fae6ccc4d5dbb61e1d59f52233, type: 3}
-    - target: {fileID: 6170484188252552760, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
-      propertyPath: arcHeight
-      value: 2.5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6170484188252552760, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 468314681180972983, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8134756293028471560}
   m_SourcePrefab: {fileID: 100100000, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
 --- !u!1 &2542175023201213803 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3538530097640421217, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 468314681180972983, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
   m_PrefabInstance: {fileID: 2564270690463313399}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &7587812022452533542 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5424013223348296819, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
+--- !u!4 &7587812022452533542 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2629006942901466498, guid: 028e07145d38fe040b3dfbc548dae77a, type: 3}
   m_PrefabInstance: {fileID: 2564270690463313399}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8134756293028471560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2542175023201213803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdeebbf344e4aba8293b70d27193123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actualObject: {fileID: 7587812022452533542}
+  arcHeight: 2.5
