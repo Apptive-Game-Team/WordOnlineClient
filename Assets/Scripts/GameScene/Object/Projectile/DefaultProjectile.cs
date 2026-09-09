@@ -9,12 +9,15 @@ namespace GameScene.Object.Projectile
     {
 
         [SerializeField] private Transform actualObject;
-        
+        [SerializeField] private float arcHeight = 0f;
+
         public void Init(ProjectileDto projectileDto)
         {
             actualObject.rotation = ProjectileUtil.GetRotation(projectileDto);
             transform.position = ProjectileUtil.GetPosition(projectileDto.start);
-            
+
+            // The root, not actualObject, carries the horizontal move, so Shadow (parented to the root)
+            // keeps tracking the landing point on the ground while actualObject rises above it.
             switch (projectileDto.end)
             {
                 case PositionProjectileTarget position:
@@ -31,6 +34,26 @@ namespace GameScene.Object.Projectile
                     MoveTo(targetObject.transform, projectileDto.duration);
                     break;
             }
+
+            if (arcHeight > 0f && actualObject != null)
+            {
+                AnimateArc(projectileDto.duration);
+            }
+        }
+
+        // Same parabola the server's CraterEmber uses: height = 4 * arcHeight * progress * (1 - progress).
+        private void AnimateArc(float duration)
+        {
+            float baseLocalY = actualObject.localPosition.y;
+
+            DOTween.To(() => 0f, progress =>
+                {
+                    Vector3 localPosition = actualObject.localPosition;
+                    localPosition.y = baseLocalY + 4f * arcHeight * progress * (1f - progress);
+                    actualObject.localPosition = localPosition;
+                }, 1f, duration)
+                .SetEase(Ease.Linear)
+                .SetLink(gameObject);
         }
 
         private void MoveTo(Transform target, float duration)
