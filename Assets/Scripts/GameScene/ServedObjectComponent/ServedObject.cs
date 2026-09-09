@@ -21,6 +21,12 @@ namespace GameScene.ServedObjectComponent
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
+        /// <summary>
+        /// Where aura and status effects are parented. Leave empty and they sit on the
+        /// object itself, which is what every mob wants. The player points it at the staff
+        /// tip anchor so the element auras gather there and follow the attack frame.
+        /// </summary>
+        [SerializeField] private Transform _effectAnchor = null;
 
         /// <summary>
         /// Whether the attack event swings the object. Turn it off for objects whose sprite is a
@@ -218,6 +224,11 @@ namespace GameScene.ServedObjectComponent
             }
         }
         
+        private Transform GetEffectParent()
+        {
+            return _effectAnchor != null ? _effectAnchor : GetActualTransform();
+        }
+
         public Transform GetActualTransform()
         {
             if (_actualTransform != null)
@@ -322,7 +333,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             _effectRenderer = new ServedObjectEffectRenderer(
-                GetActualTransform,
+                GetEffectParent,
                 GetSpriteWorldHeight,
                 _effectScaleReferenceHeight,
                 _effectScaleMultiplier,

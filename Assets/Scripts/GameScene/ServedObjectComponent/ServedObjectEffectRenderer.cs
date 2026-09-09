@@ -11,7 +11,7 @@ namespace GameScene.ServedObjectComponent
         private const string NoEffect = "None";
         private const float StackedEffectAlpha = 0.65f;
 
-        private readonly Func<Transform> actualTransformProvider;
+        private readonly Func<Transform> effectParentProvider;
         private readonly Func<float> objectSizeProvider;
         private readonly float scaleReferenceHeight;
         private readonly float scaleMultiplier;
@@ -21,14 +21,14 @@ namespace GameScene.ServedObjectComponent
         private readonly List<string> activeEffects = new List<string>();
 
         public ServedObjectEffectRenderer(
-            Func<Transform> actualTransformProvider,
+            Func<Transform> effectParentProvider,
             Func<float> objectSizeProvider,
             float scaleReferenceHeight,
             float scaleMultiplier,
             float scaleMin,
             float scaleMax)
         {
-            this.actualTransformProvider = actualTransformProvider;
+            this.effectParentProvider = effectParentProvider;
             this.objectSizeProvider = objectSizeProvider;
             this.scaleReferenceHeight = scaleReferenceHeight;
             this.scaleMultiplier = scaleMultiplier;
@@ -47,8 +47,8 @@ namespace GameScene.ServedObjectComponent
             ClearEffects();
             activeEffects.AddRange(normalizedEffects);
 
-            Transform actualTransform = actualTransformProvider?.Invoke();
-            if (actualTransform == null)
+            Transform effectParent = effectParentProvider?.Invoke();
+            if (effectParent == null)
             {
                 return;
             }
@@ -59,12 +59,12 @@ namespace GameScene.ServedObjectComponent
                 string resourceName = effect;
                 if (spawnedResourceNames.Add(resourceName))
                 {
-                    SpawnEffect(effect, resourceName, actualTransform);
+                    SpawnEffect(effect, resourceName, effectParent);
                 }
             }
         }
 
-        private void SpawnEffect(string effect, string resourceName, Transform actualTransform)
+        private void SpawnEffect(string effect, string resourceName, Transform effectParent)
         {
             GameObject effectPrefab = Resources.Load<GameObject>($"Prefabs/Effects/{resourceName}");
             if (effectPrefab == null)
@@ -73,7 +73,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            GameObject effectInstance = UnityEngine.Object.Instantiate(effectPrefab, actualTransform);
+            GameObject effectInstance = UnityEngine.Object.Instantiate(effectPrefab, effectParent);
             effectInstance.transform.localPosition = Vector3.zero;
             effectInstance.transform.localRotation = Quaternion.identity;
             ApplyEffectScale(effectInstance.transform);

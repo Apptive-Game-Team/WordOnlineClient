@@ -67,10 +67,18 @@
 - 기본 프레임은 지팡이를 세운 자세, 공격 프레임은 앞으로 뻗은 자세다. 결정 주변은
   비워 두고 오라는 별도 에셋으로 그 위에 얹는다.
 - `AttackSpriteSwapController` 가 공격 이벤트에서 0.18초 동안 프레임을 바꾼다.
-- `PlayerStaffAuraController` 가 같은 0.18초 동안 `StaffAura` 앵커를 세운 지팡이
+- `PlayerStaffAuraController` 가 같은 0.3초 동안 `StaffAura` 앵커를 세운 지팡이
   끝 `(-1.58, 7)` 에서 뻗은 지팡이 끝 `(6.14, 0.6)` 으로 옮긴다. 두 좌표는 마감한
   스프라이트에서 파란 결정 덩어리를 찾아 잰 값이다.
-- 맥동은 앵커가 아니라 자식 `StaffAuraSprite` 의 `IdleAuraEffect` 가 맡는다.
+- 지팡이 끝 오라는 새 에셋이 아니라 원래 있던 원소 오라다. 서버가 카드 선택에 맞춰
+  `FireIdleAura` 같은 effect 를 플레이어에 붙이고 여러 원소를 겹친다. 시전 성공 시
+  `FireAttackAura` 계열이 0.3초 뜬다. `ServedObject._effectAnchor` 를 새로 두어
+  플레이어만 이 effect 들의 부모를 `StaffAura` 앵커로 바꿨다. 다른 오브젝트는 필드가
+  비어 있어 지금까지와 같다.
+- 0.18초로 잡았던 프레임 교체와 앵커 이동을 서버의 공격 오라 지속 시간 0.3초에
+  맞췄다.
+- 처음에는 `arcane_aura.png` 를 새로 그려 넣었으나, 원소 오라와 겹치고 중복이라
+  지웠다. 원본은 `.art/concept/player-restyle/anim/` 에 남아 있다.
 - `PlayerActionController` 의 `SwingMobAttack` 호출을 지우는 것만으로는 부족했다.
   `ServedObject.PlayAttackPresentation()` 이 `_swingOnAttack` 기본값 `true` 로 같은
   스윙을 한 번 더 돌리고 있었고, Player 프리팹에 이 필드가 직렬화되어 있지 않았다.
