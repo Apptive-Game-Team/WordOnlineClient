@@ -24,6 +24,8 @@ namespace GameScene.Object.Projectile
         private LineRenderer natureStrand;
         private LineRenderer lightningStrand;
         private Material beamMaterial;
+        private Vector3 lastStartPosition;
+        private Vector3 lastEndPosition;
         private float startedAt;
 
         public void Init(ProjectileDto projectileDto)
@@ -31,6 +33,8 @@ namespace GameScene.Object.Projectile
             startTarget = projectileDto.start;
             endTarget = projectileDto.end;
             startedAt = Time.time;
+            TryUpdatePosition(startTarget, ref lastStartPosition);
+            TryUpdatePosition(endTarget, ref lastEndPosition);
 
             Shader shader = Shader.Find("Sprites/Default");
             beamMaterial = new Material(shader);
@@ -69,7 +73,7 @@ namespace GameScene.Object.Projectile
             strand.numCapVertices = 3;
             strand.numCornerVertices = 2;
             strand.textureMode = LineTextureMode.Stretch;
-            strand.material = beamMaterial;
+            strand.sharedMaterial = beamMaterial;
             strand.startColor = color;
             strand.endColor = new Color(color.r, color.g, color.b, 0.45f);
             strand.sortingLayerName = "Default";
@@ -79,8 +83,9 @@ namespace GameScene.Object.Projectile
 
         private void UpdateStrands()
         {
-            Vector3 start = ProjectileUtil.GetPosition(startTarget);
-            Vector3 end = ProjectileUtil.GetPosition(endTarget);
+            TryUpdatePosition(startTarget, ref lastStartPosition);
+            TryUpdatePosition(endTarget, ref lastEndPosition);
+
             Vector3 screenUp = ProjectileUtil.GetScreenUp();
             float animatedPhase = (Time.time - startedAt) * Mathf.PI * 4f;
 
@@ -90,10 +95,27 @@ namespace GameScene.Object.Projectile
                 float taper = Mathf.Sin(progress * Mathf.PI);
                 float phase = progress * Mathf.PI * 2f * CoilCount - animatedPhase;
                 Vector3 offset = screenUp * (Mathf.Sin(phase) * CoilRadius * taper);
-                Vector3 center = Vector3.Lerp(start, end, progress);
+                Vector3 center = Vector3.Lerp(lastStartPosition, lastEndPosition, progress);
 
                 natureStrand.SetPosition(index, center + offset);
                 lightningStrand.SetPosition(index, center - offset);
+            }
+        }
+
+        private static void TryUpdatePosition(ProjectileTarget target, ref Vector3 lastPosition)
+        {
+            switch (target)
+            {
+                case PositionProjectileTarget position:
+                    lastPosition = position.ToVector3();
+                    break;
+                case ReferenceProjectileTarget reference:
+                    var servedObject = ObjectContainer.Instance.FindById(reference.id);
+                    if (servedObject != null)
+                    {
+                        lastPosition = servedObject.transform.position;
+                    }
+                    break;
             }
         }
     }
