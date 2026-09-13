@@ -9,7 +9,10 @@ namespace GameScene.Object
 {
     public class ProjectileSpawner : LocalSingletonObject<ProjectileSpawner>
     {
-        
+        private const string ShockOverloadSecondaryType = "ShockOverloadSecondary";
+        private const string ShockOverloadPrefabPath = "Prefabs/ShockOverload";
+        private const float ShockOverloadSecondaryScale = 0.6f;
+
         public void Spawn(ProjectileDto dto)
         {
             WDebug.Log("ProjectileSpawner Spawn called for type: " + dto.type);
@@ -17,6 +20,11 @@ namespace GameScene.Object
             if (ShouldSuppressStormStagImpactProjectile(dto))
             {
                 WDebug.Log("Suppressed ElectricShot visual for Storm Stag charge impact.");
+                return;
+            }
+
+            if (TrySpawnShockOverloadSecondary(dto))
+            {
                 return;
             }
 
@@ -31,6 +39,32 @@ namespace GameScene.Object
             Destroy(projectileObject, dto.duration);
             
             projectile.Init(dto);
+        }
+
+        private bool TrySpawnShockOverloadSecondary(ProjectileDto dto)
+        {
+            if (!string.Equals(dto.type, ShockOverloadSecondaryType, System.StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            GameObject prefab = Resources.Load<GameObject>(ShockOverloadPrefabPath);
+            if (prefab == null)
+            {
+                Debug.LogError($"Projectile prefab not found: {dto.type}");
+                return true;
+            }
+
+            Vector3 position = ProjectileUtil.GetPosition(dto.start);
+            GameObject effect = Instantiate(prefab, position, prefab.transform.rotation);
+            SpriteRenderer renderer = effect.GetComponentInChildren<SpriteRenderer>();
+            if (renderer != null)
+            {
+                renderer.transform.localScale *= ShockOverloadSecondaryScale;
+            }
+
+            Destroy(effect, dto.duration);
+            return true;
         }
 
         private static bool ShouldSuppressStormStagImpactProjectile(ProjectileDto dto)
