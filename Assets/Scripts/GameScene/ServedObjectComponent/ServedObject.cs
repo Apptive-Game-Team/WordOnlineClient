@@ -21,6 +21,20 @@ namespace GameScene.ServedObjectComponent
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
+        /// <summary>
+        /// Where aura and status effects are parented. Leave empty and they sit on the
+        /// object itself, which is what every mob wants. The player points it at the staff
+        /// tip anchor so the element auras gather there and follow the attack frame.
+        /// </summary>
+        [SerializeField] private Transform _effectAnchor = null;
+        /// <summary>
+        /// Names the effects that hang on <see cref="_effectAnchor"/>; every other effect stays on
+        /// the object. This is why the player's <c>Burn</c>, <c>Panic</c>, <c>Snared</c> and other
+        /// status effects do not fly up to the staff tip along with the element auras. An empty or
+        /// null list means nothing is anchored, so an object that never set this behaves exactly as
+        /// if <see cref="_effectAnchor"/> did not exist.
+        /// </summary>
+        [SerializeField] private string[] _effectAnchorEffects = null;
 
         /// <summary>
         /// Whether the attack event swings the object. Turn it off for objects whose sprite is a
@@ -38,6 +52,7 @@ namespace GameScene.ServedObjectComponent
         
         public List<Gauge> gauges = new List<Gauge>();
         private readonly HashSet<string> activeEffects = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> pendingEffects = new HashSet<string>(StringComparer.Ordinal);
 
         public IReadOnlyCollection<string> ActiveEffects => activeEffects;
         
@@ -58,6 +73,13 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDestroyed;
         public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
+
+        /// <summary>
+        /// Raised after <see cref="UpdateActiveEffects"/> rebuilds <see cref="ActiveEffects"/> and
+        /// the resulting set differs from the previous frame's. Not raised on every frame, since
+        /// this update runs for every object every frame and most frames carry no effect change.
+        /// </summary>
+        public event Action OnEffectsChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
@@ -150,25 +172,39 @@ namespace GameScene.ServedObjectComponent
 
         private void UpdateActiveEffects(List<string> effects)
         {
-            activeEffects.Clear();
-            if (effects == null)
+            pendingEffects.Clear();
+            if (effects != null)
+            {
+                foreach (string effect in effects)
+                {
+                    if (string.IsNullOrWhiteSpace(effect))
+                    {
+                        continue;
+                    }
+
+                    string normalizedEffect = effect.Trim();
+                    if (!string.Equals(normalizedEffect, "None", StringComparison.Ordinal))
+                    {
+                        pendingEffects.Add(normalizedEffect);
+                    }
+                }
+            }
+
+            // Compare before writing: this runs for every object every frame, and most frames
+            // carry no effect change, so activeEffects must not be torn down and rebuilt (and
+            // OnEffectsChanged must not fire) unless the set actually differs.
+            if (activeEffects.SetEquals(pendingEffects))
             {
                 return;
             }
 
-            foreach (string effect in effects)
+            activeEffects.Clear();
+            foreach (string effect in pendingEffects)
             {
-                if (string.IsNullOrWhiteSpace(effect))
-                {
-                    continue;
-                }
-
-                string normalizedEffect = effect.Trim();
-                if (!string.Equals(normalizedEffect, "None", StringComparison.Ordinal))
-                {
-                    activeEffects.Add(normalizedEffect);
-                }
+                activeEffects.Add(effect);
             }
+
+            OnEffectsChanged?.Invoke();
         }
 
         public void SetGizmos(List<Gizmo> gizmos)
@@ -218,6 +254,40 @@ namespace GameScene.ServedObjectComponent
             }
         }
         
+        /// <summary>
+        /// Parent for a spawned effect instance named <paramref name="effectName"/>. Only the
+        /// names listed in <see cref="_effectAnchorEffects"/> go to <see cref="_effectAnchor"/>;
+        /// every other effect, including player status effects such as <c>Burn</c>, stays on the
+        /// object itself.
+        /// </summary>
+        private Transform GetEffectParent(string effectName)
+        {
+            if (_effectAnchor != null && IsEffectAnchorEffect(effectName))
+            {
+                return _effectAnchor;
+            }
+
+            return GetActualTransform();
+        }
+
+        private bool IsEffectAnchorEffect(string effectName)
+        {
+            if (_effectAnchorEffects == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < _effectAnchorEffects.Length; i++)
+            {
+                if (string.Equals(_effectAnchorEffects[i], effectName, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public Transform GetActualTransform()
         {
             if (_actualTransform != null)
@@ -322,7 +392,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             _effectRenderer = new ServedObjectEffectRenderer(
-                GetActualTransform,
+                GetEffectParent,
                 GetSpriteWorldHeight,
                 _effectScaleReferenceHeight,
                 _effectScaleMultiplier,

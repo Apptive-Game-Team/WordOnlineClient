@@ -11,7 +11,7 @@ namespace GameScene.ServedObjectComponent
         private const string NoEffect = "None";
         private const float StackedEffectAlpha = 0.65f;
 
-        private readonly Func<Transform> actualTransformProvider;
+        private readonly Func<string, Transform> effectParentProvider;
         private readonly Func<float> objectSizeProvider;
         private readonly float scaleReferenceHeight;
         private readonly float scaleMultiplier;
@@ -21,14 +21,14 @@ namespace GameScene.ServedObjectComponent
         private readonly List<string> activeEffects = new List<string>();
 
         public ServedObjectEffectRenderer(
-            Func<Transform> actualTransformProvider,
+            Func<string, Transform> effectParentProvider,
             Func<float> objectSizeProvider,
             float scaleReferenceHeight,
             float scaleMultiplier,
             float scaleMin,
             float scaleMax)
         {
-            this.actualTransformProvider = actualTransformProvider;
+            this.effectParentProvider = effectParentProvider;
             this.objectSizeProvider = objectSizeProvider;
             this.scaleReferenceHeight = scaleReferenceHeight;
             this.scaleMultiplier = scaleMultiplier;
@@ -47,25 +47,28 @@ namespace GameScene.ServedObjectComponent
             ClearEffects();
             activeEffects.AddRange(normalizedEffects);
 
-            Transform actualTransform = actualTransformProvider?.Invoke();
-            if (actualTransform == null)
-            {
-                return;
-            }
-
             HashSet<string> spawnedResourceNames = new HashSet<string>(StringComparer.Ordinal);
             foreach (string effect in activeEffects)
             {
                 string resourceName = effect;
                 if (spawnedResourceNames.Add(resourceName))
                 {
-                    SpawnEffect(effect, resourceName, actualTransform);
+                    SpawnEffect(effect, resourceName);
                 }
             }
         }
 
-        private void SpawnEffect(string effect, string resourceName, Transform actualTransform)
+        private void SpawnEffect(string effect, string resourceName)
         {
+            // Resolved per effect, not once for the whole list: only the names the object anchors
+            // (the element auras on the player) go to the anchor, everything else stays on the
+            // object, and a missing parent skips just this one effect instead of the whole list.
+            Transform effectParent = effectParentProvider?.Invoke(effect);
+            if (effectParent == null)
+            {
+                return;
+            }
+
             GameObject effectPrefab = Resources.Load<GameObject>($"Prefabs/Effects/{resourceName}");
             if (effectPrefab == null)
             {
@@ -73,7 +76,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            GameObject effectInstance = UnityEngine.Object.Instantiate(effectPrefab, actualTransform);
+            GameObject effectInstance = UnityEngine.Object.Instantiate(effectPrefab, effectParent);
             effectInstance.transform.localPosition = Vector3.zero;
             effectInstance.transform.localRotation = Quaternion.identity;
             ApplyEffectScale(effectInstance.transform);

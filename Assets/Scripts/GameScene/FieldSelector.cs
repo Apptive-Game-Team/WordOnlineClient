@@ -165,7 +165,6 @@ namespace GameScene
             }
 
             interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
-            PlayerFeedbackController.Instance.UseMagicFeedback();
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
             currentSkillIndicator.SetActive(false);

@@ -18,6 +18,8 @@ Unity 런타임에서 하나의 소환수 외형을 구성하는 기본 프레�
 | `TreeGolem2.png` | 고목 수호자 · 공격 자세 | `OnAttackSpriteSwapper.onAttackSprite` |
 | `EvilEnt.png` | 사악한 고목 · 기본 자세 | `EvilEnt.prefab` 기본 SpriteRenderer |
 | `EvilEnt2.png` | 사악한 고목 · 팔을 뻗은 공격 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.1초 표시 |
+| `PlayerCharacterBase.png` | 수습 마법생 · 지팡이를 세운 기본 자세 | `Player.prefab` 의 `PlayerImage` SpriteRenderer |
+| `PlayerCharacterAttack.png` | 수습 마법생 · 지팡이를 앞으로 뻗은 공격 자세 | `AttackSpriteSwapController.swapSprite`, 공격 이벤트에서 0.3초 표시 |
 | `AquaArcher.png` | 물결 궁수 · 활시위를 당긴 기본 자세 | `AquaArcherAttackPresenter` 기본 Sprite |
 | `AquaArcherAttack.png` | 물결 궁수 · 시위를 놓은 공격 자세 | 공격 이벤트에서 0.08초 표시 |
 | `RockTurret.png` | 인간제 투석 포탑 · 장전 자세 | `RockTurret.prefab` 기본 SpriteRenderer |
@@ -102,6 +104,163 @@ Transform 스케일 변형은 적용하지 않는다.
 - 불·운룡처럼 오라가 정체성에 필요한 개체도 본체와 오라를 독립 검증
 - 운룡의 `cloud.png`는 바람 오라가 아니라 몸 전체를 감싸는 구형 물 아우라다.
   중앙은 본체가 읽히도록 저밀도로 유지하고, 공용 `wind_aura.png`와 혼용하지 않는다.
+
+## 플레이어 프레임과 오라
+
+플레이어는 다른 유닛과 세 가지가 다르다.
+
+- 프레임이 세 장이다. 기본은 지팡이를 내린 자세고, 카드를 한 장 이상 고르면 세운
+  자세, 시전이 성공하면 0.3초 동안 앞으로 뻗은 자세다.
+
+  | 파일 | 자세 |
+  |---|---|
+  | `Customize/PlayerCharacterBase.png` | 지팡이를 땅에 짚고 내린 기본 자세 |
+  | `Customize/PlayerCharacterStaffRaised.png` | 지팡이를 세운 자세 |
+  | `Customize/PlayerCharacterAttack.png` | 지팡이를 앞으로 뻗은 자세 |
+
+- pivot 이 Bottom Center 도 Center 도 아닌 custom 이다. 캔버스 981x1245, PPU 566,
+  pivot `(0.3751, 0.0072)`. 발끝이 pivot 위에 서고, 서 있을 때의 가로 중심이
+  pivot x 다. 세 프레임은 같은 캔버스에 같은 배율로, 발끝 행과 그 가로 중심을
+  맞춰 올린다. 몸통 높이는 940px = 1.66 units 로, 그 자리에 있던
+  `Assets/Resources/Game/player.png` 의 166px @ 100 PPU 와 같은 크기다. 맞춰 올린
+  뒤 세 프레임의 눈 위치는 가로 27px, 세로 10px 안에 들어온다.
+- 오라가 몸 전체를 감싸지 않고 지팡이 끝 한 점에 모인다. 그래서 오라는 본체와 같은
+  캔버스에 그리지 않고, 작게 그린 뒤 `StaffAura` 앵커의 localPosition 으로 지팡이
+  끝에 놓는다.
+
+지팡이 끝에 뜨는 오라는 새 에셋이 아니라 원래 있던 원소 오라 그대로다. 서버는
+플레이어가 카드를 고르면 그 원소의 `FireIdleAura` 같은 effect 를 플레이어
+오브젝트에 붙이고, 여러 원소를 고르면 겹쳐서 붙는다. 시전이 성공하면 대기 오라가
+끝나고 `FireAttackAura` 계열이 0.3초 동안 뜬다.
+
+`ServedObject._effectAnchor` 가 이 effect 들의 부모를 정한다. 비워 두면 지금까지처럼
+오브젝트 자신에게 붙고, 플레이어만 `StaffAura` 앵커를 가리켜서 지팡이 끝에 모인다.
+`PlayerStaffAuraController` 가 공격 이벤트에 맞춰 그 앵커를 세운 지팡이 끝에서 뻗은
+지팡이 끝으로 옮기고 0.3초 뒤 되돌린다. 0.3초는 서버의 공격 오라 지속 시간과 맞춘
+값이다.
+
+**앵커에 올라갈 effect 는 이름으로 고른다.** `_effectAnchor` 를 모든 effect 에
+쓰면 `Burn`·`Panic`·`Snared` 같은 상태 effect 까지 지팡이 끝으로 날아간다. 불이
+얼굴 위가 아니라 지팡이 끝에서 타는 것이 화면에서 바로 보인다. `ServedObject`
+의 `_effectAnchorEffects` 에 적힌 이름만 앵커로 가고 나머지는 몸에 붙는다.
+프리팹에는 원소 오라 열두 개(`FireIdleAura`·`FireAttackAura` … `RockAttackAura`)
+가 들어 있다. 목록이 비면 앵커는 아무 데도 안 쓰이므로, 앵커를 지정하지 않은 다른
+오브젝트의 동작은 그대로다.
+
+카드를 고르지 않았으면 지팡이는 내려가 있고 그 끝에 아무것도 없다.
+
+`PlayerStaffPoseController` 가 세 프레임 사이를 고른다. 이 컴포넌트 하나가
+`SpriteRenderer.sprite` 를 독점해야 한다. `AttackSpriteSwapController` 를 같이
+붙이면 공격 중에 자세가 바뀔 때 뻗은 프레임이 덮이거나, 그쪽의 복원이 이미 지난
+자세를 되돌려 놓는다. 그래서 플레이어 프리팹에서는 `AttackSpriteSwapController`
+를 떼고 이것으로 바꿨다. 다른 오브젝트는 그대로 쓴다.
+
+"카드를 골랐다"는 신호는 서버가 보내는 effect 다. 클라이언트의 카드 UI 상태를
+쓰면 상대편 플레이어는 영영 지팡이를 들지 않는다. 어떤 effect 가 지팡이를 들게
+하는지는 프리팹의 `raisingEffects` 에 있다.
+
+거기 `CardSelected` 가 있다. 게임 서버가 카드 종류를 가리지 않고 한 장이라도
+골려 있으면 붙이는 effect 다. 원소 오라로는 부족하다 — `CardSelectVisualizer` 가
+`Fire`·`Water`·`Nature`·`Lightning`·`Rock`·`Wind` 여섯 장만 오라로 바꾸고
+`Shoot`·`Drop`·`Build`·`Spawn`·`Explode` 는 흘려보내므로, Shoot 카드를 골라도
+effect 가 하나도 안 실린다.
+
+원소 대기 오라 여섯 개도 `raisingEffects` 에 그대로 두었다. `CardSelected` 와
+겹치지만, 클라이언트가 서버보다 먼저 배포되면 그 여섯 개가 지금까지의 동작을
+유지해 준다.
+
+`CardSelected` 는 보이는 것이 없다. effect 하나에 프리팹 하나라는 규칙은 그대로
+지켜서 `Assets/Resources/Prefabs/Effects/CardSelected.prefab` 을 Transform 만 있는
+빈 오브젝트로 두었다. 빼면 `ServedObjectEffectRenderer` 가 프리팹을 못 찾았다고
+경고를 남기는데, 그 경고는 오타를 잡아 주는 것이라 죽이지 않는다.
+
+상대편 플레이어는 같은 스프라이트를 `flipX` 로 뒤집어 쓴다. 앵커도 x 를 뒤집어야
+지팡이 끝에 남는다.
+
+공격할 때 몸 전체를 뒤로 기울이던 `DOTweenAction.SwingMobAttack` 은 이 프레임
+교체로 대체했다. 다른 오브젝트는 그대로 쓴다. 카드를 고를 때 몸을 25도 젖히던
+회전도 같이 뺐다. 남은 것은 squash-and-stretch bounce 하나다.
+
+### 인게임 플레이어가 쓰는 sprite 는 `Customize` 폴더에 없었다
+
+`Assets/Resources/Prefabs/Player.prefab` 의 `PlayerImage` SpriteRenderer 가
+가리키던 것은 `Assets/Art/Images/Customize/PlayerCharacterBase.png` 가 아니라
+`Assets/Resources/Game/player.png` 다. 이름만 보고 Customize 쪽 파일을 갈아
+끼우면 화면은 하나도 안 바뀐다. 공격 frame 만 새 그림으로 0.3초 떴다가 사라지고,
+그 frame 이 2048x2048 @ 100 PPU 면 옛 sprite 의 열 배 크기로 뜬다.
+
+sprite 를 갈아 끼울 때는 파일 이름이 아니라 prefab 과 scene 의 `m_Sprite` guid
+로 고른다. 플레이어 캐릭터가 나오는 곳은 네 군데다.
+
+| 쓰는 곳 | 무엇 |
+|---|---|
+| `Assets/Resources/Prefabs/Player.prefab` | 인게임 플레이어 |
+| `Assets/Scenes/InteractiveTutorialScene.unity` | `LeftPlayer`/`RightPlayer` 의 `PlayerSprite` |
+| `Assets/ScriptableObject/Adventures/Stage1.asset` | 시나리오 네 개의 `leftImage` |
+| `Assets/Scenes/TEST_DOTween/DOTweenTestScene.unity` | tween 실험용 `player` 오브젝트 |
+
+네 곳 모두 새 sprite 를 쓴다. `Assets/Resources/Game/player.png` 은 참조가 하나도
+남지 않아 지웠다. 크기 기준으로 쓰던 192x170 @ 100 PPU, bottom-center pivot,
+몸통 166px 은 `.art/tools/finalize-player-frames.py` 안에 상수로 남아 있다.
+
+모험 초상화는 `AdventureStoryOverlayUI` 가 420x640 Image 에 `preserveAspect` 로
+넣는다. 새 sprite 는 981x1245 라 세로가 아니라 가로에 맞춰 420x533 으로 들어가고
+몸통이 402px 로 뜬다. 옛 `player.png` 는 192x170 이라 420x372 에 몸통 363px
+이었으니 초상화가 조금 커진다.
+
+`Assets/Art/Images/Customize/` 의 모자·망토 여덟 장(`ancient_*`, `leaf_*`)은 아직
+참조가 하나도 없고 `Assets/Scripts/CustomizeScene` 도 없다. 커스터마이즈 기능을
+살릴지 정해지지 않아 그대로 두었다.
+
+튜토리얼은 SpriteRenderer 라 배율을 건드릴 것이 없다. 몸통이 두 sprite 모두
+1.66 units 이고 발이 pivot 위에 서기 때문이다. `RightPlayer` 는 `m_LocalScale.x`
+가 -1 인데, 이 반전도 pivot 기준이라 몸통이 제자리에서 뒤집힌다.
+
+### 생성된 두 프레임은 그대로는 안 맞는다
+
+`player-D-base-raised-v3.png` 와 `player-D-attack-thrust-v7.png` 는 같은
+1145x1374 캔버스로 나왔지만 발끝 행이 1317 과 1279 로 38px, 서 있는 가로 중심이
+618.5 와 520.5 로 98px 어긋나 있다. 그대로 올리면 공격할 때 캐릭터가 떠오르면서
+옆으로 미끄러진다. `.art/tools/finalize-player-frames.py` 가 둘을 맞춰 올리고
+PPU·pivot·앵커 좌표를 같이 출력한다.
+
+그 script 는 base frame 의 머리 꼭대기 행을 인자로 받는다. 세운 지팡이가 머리
+위에 있어서 alpha 채널만으로는 찾을 수 없고, 폭 비율 규칙도 폭 급변 규칙도 둘
+다 틀린 행을 고른다. 측정해서 넘긴다.
+
+### `image_gen` 이 투명 배경을 안 준다. 단색 키로 받아서 깎는다
+
+이 기계의 `image_gen` 은 투명 배경을 요청하면 **격자무늬를 픽셀로 그려 넣는다.**
+그린 격자무늬는 투명이 아니라 불투명 배경이고, 두 색이 섞여 있어 깎아내기도
+어렵다. 지팡이 내린 프레임을 받으려고 10번을 돌려 alpha 가 들어온 것이 0번이었다.
+
+대신 **평평한 단색을 그려 달라고 하면 된다.** 순수 초록 `#00FF00` 으로 받고
+`.art/tools/key-out-background.py` 로 깎는다. 초록인 이유는 이 캐릭터 팔레트에
+초록이 한 점도 없어서다 — 갈색 머리, 파란 클록, 회색 로브, 피부, 금색이 전부
+빨강 아니면 파랑 우세다. 자홍색은 이 프로젝트가 결과를 눈으로 확인할 때 까는
+색이라 키 색으로 쓰지 않는다.
+
+깎는 방식은 임계값이 아니다. `C = a·F + (1-a)·K` 로 보고 키 채널이 나머지 두
+채널 중 큰 쪽을 넘어선 만큼을 배경 기여분으로 읽어 픽셀마다 alpha 를 구하고,
+경계 픽셀에서는 키 색을 도로 나눠 뺀다. 그래서 초록 테두리가 남지 않는다.
+
+두 가지를 여기 적어 둔다.
+
+- **테두리에서 연결된 것만 지우면 안 된다.** 지팡이와 팔과 몸 사이의 빈 틈은
+  캐릭터에 둘러싸여 있어서 초록 덩어리로 남는다. 처음 짰을 때 5,189픽셀이 그렇게
+  남았다. 캐릭터에 키 색이 없다는 전제로 전부 지우고, 대신 테두리에서 떨어진 채
+  지워진 픽셀 수를 출력한다. 키 색이 캐릭터에 묻으면 구멍 대신 숫자로 드러난다.
+- **키 fill 이 bit 단위로 정확하지 않다.** 맨 바깥 행이 coverage 0.07 쯤으로
+  들어와서, 배경 판정선이 0.06 이면 1픽셀짜리 불투명 테두리가 남고 그 뒤의 모든
+  측정이 그것을 내용으로 읽는다. 판정선을 0.10 에 둔다.
+
+검증은 왕복으로 한다. alpha 가 이미 제대로 들어 있는 프레임을 초록 위에 합성한
+뒤 다시 깎아 원본과 비교하면, alpha 차이는 평균 0.69/255, 크게 틀린 픽셀은 157만
+중 29개, 캐릭터 안쪽 색 변화는 평균 0.95 였다.
+
+`.plan/issues/2026-09-09-issue-586-restyle-player-sprite.md` 의 "생성된 배경을
+스크립트로 지워서 투명하게 만들지 않는다"는 원래 격자무늬와 사진 같은 배경을
+두고 쓴 규칙이다. 요청해서 받은 단색 키는 그 규칙의 대상이 아니다.
 
 ## 홈페이지 표시
 
