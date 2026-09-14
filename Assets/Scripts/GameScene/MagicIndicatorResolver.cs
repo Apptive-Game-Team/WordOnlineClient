@@ -323,8 +323,23 @@ namespace GameScene
 
             if (layer.End == MagicIndicatorLaneEnd.Target)
             {
-                // 이 변경 전의 직선 조준과 같다. 조준점 쪽을 향하고 길이는 마법의 cast range 다.
-                shape = ResolvedIndicatorShape.Lane(origin, targetPosition, range, halfWidth);
+                // length 가 없으면 이 변경 전의 직선 조준과 같다 — 조준점 쪽을 향하고 길이는 cast range 다.
+                // 적혀 있으면 그 길이로 자른다. vine_toss 처럼 사거리가 cast range 도, 커서까지 거리도
+                // 아닌 고정 값인 마법이 있다.
+                if (!TryResolveOptionalValue(magic, layer.length, out float targetLength))
+                {
+                    return false;
+                }
+
+                shape = ResolvedIndicatorShape.Lane(
+                    origin, targetPosition, layer.length.IsPresent ? targetLength : range, halfWidth);
+                return true;
+            }
+
+            if (layer.End == MagicIndicatorLaneEnd.Aim)
+            {
+                shape = ResolvedIndicatorShape.Lane(
+                    origin, targetPosition, GetGroundDistance(origin, targetPosition), halfWidth);
                 return true;
             }
 
@@ -335,6 +350,19 @@ namespace GameScene
 
             shape = ResolvedIndicatorShape.Lane(origin, origin + forward, length, halfWidth);
             return true;
+        }
+
+        /// <summary>
+        /// 지면에 눕는 도형의 길이라 높이는 빼고 잰다. <see cref="FieldSelector"/> 가 조준점을 cast range
+        /// 로 자를 때 쓰는 거리와 같은 값이어야, <c>end: "aim"</c> lane 이 잘린 조준점에서 정확히 끝난다.
+        /// 카메라 평면 거리(<c>ProjectileUtil.GetCameraPlaneLength</c>)는 sprite 를 늘릴 때 쓰는 것이고
+        /// 여기서는 틀린다.
+        /// </summary>
+        private static float GetGroundDistance(Vector3 from, Vector3 to)
+        {
+            Vector3 offset = to - from;
+            offset.y = 0f;
+            return offset.magnitude;
         }
 
         /// <summary>
