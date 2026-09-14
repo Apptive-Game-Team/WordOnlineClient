@@ -2,14 +2,14 @@
 
 game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 문서다.
 
-- 생성 페이지: 78개
+- 생성 페이지: 83개
 - 생성기: `../tools/generate-magic-pages.py`
 - 서버 수치: 미포함. 런타임 DB 파라미터 키만 기록
 - 재생성: `python3 .art/tools/generate-magic-pages.py`
 
 ## 진영별 수
 
-- 귀속 미정: 4개
+- 귀속 미정: 9개
 - 돌 골렘 부족: 7개
 - 물 슬라임: 8개
 - 세계수 바람 정령: 12개
@@ -20,7 +20,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 - 차원 유랑종: 1개
 - 타락한 정령: 1개
 
-## 설치 (25)
+## 설치 (26)
 
 | 이름 | 서버 키 | 진영 | 주 프리팹 |
 |---|---|---|---|
@@ -44,6 +44,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [돌 포탑](pages/rock_turret.md) | `rock_turret` | 돌 골렘 부족 | `RockTurret` |
 | [씨앗 둥지](pages/seed_nest.md) | `seed_nest` | 세계수 풀 정령 | `SeedNest` |
 | [감전 함정](pages/shock_trap.md) | `shock_trap` | 세계수 전기 정령 | `ShockTrap` |
+| [거신의 잔해](pages/titan_remnant.md) | `titan_remnant` | 귀속 미정 | `TitanRemnant` |
 | [타워](pages/tower.md) | `tower` | 인간 마법 문명 | `GroundTower` |
 | [포탑등이](pages/towerback.md) | `towerback` | 인간 마법 문명 | `Towerback` |
 | [덩굴 군집](pages/vine_colony.md) | `vine_colony` | 세계수 풀 정령 | `VineColony` |
@@ -78,14 +79,17 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [간헐천 폭발](pages/water_explosion.md) | `water_explosion` | 물 슬라임 | `WaterExplosion` |
 | [돌풍](pages/wind_explosion.md) | `wind_explosion` | 세계수 바람 정령 | `WindExplode` |
 
-## 투사체 (10)
+## 투사체 (13)
 
 | 이름 | 서버 키 | 진영 | 주 프리팹 |
 |---|---|---|---|
+| [바위 강타](pages/boulder_strike.md) | `boulder_strike` | 귀속 미정 | `BoulderStrike` |
 | [연쇄 번개](pages/chain_lightning.md) | `chain_lightning` | 세계수 전기 정령 | `ChainLightning` |
 | [화염탄](pages/fire_shot.md) | `fire_shot` | 지옥불 군단 | `FireShot` |
 | [전격탄](pages/lightning_shot.md) | `lightning_shot` | 세계수 전기 정령 | `ElectricShot` |
 | [돌 굴리기](pages/rock_rolling.md) | `rock_rolling` | 돌 골렘 부족 | `RockRolling` |
+| [정령 폭탄](pages/spirit_bomb.md) | `spirit_bomb` | 귀속 미정 | `Player` |
+| [해일 탄두](pages/tidal_warhead.md) | `tidal_warhead` | 귀속 미정 | `TidalWarhead` |
 | [파도 소환](pages/tide_call.md) | `tide_call` | 물 슬라임 | `TideCall` |
 | [덩굴 부채](pages/vine_fan.md) | `vine_fan` | 세계수 풀 정령 | `-` |
 | [덩굴 투척](pages/vine_toss.md) | `vine_toss` | 세계수 풀 정령 | `Vine` |
@@ -93,11 +97,12 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [도깨비불](pages/will_o_wisp.md) | `will_o_wisp` | 세계수 풀 정령 | `WillOWisp` |
 | [바람 칼날](pages/wind_blade.md) | `wind_blade` | 세계수 바람 정령 | `WindBlade` |
 
-## 소환 (25)
+## 소환 (26)
 
 | 이름 | 서버 키 | 진영 | 주 프리팹 |
 |---|---|---|---|
 | [물의 궁수](pages/aqua_archer.md) | `aqua_archer` | 물 슬라임 | `AquaArcher` |
+| [폭탄 정령](pages/bomb_sprite.md) | `bomb_sprite` | 귀속 미정 | `BombSprite` |
 | [거품 정령](pages/bubble_spirit.md) | `bubble_spirit` | 물 슬라임 | `BubbleSpirit` |
 | [운룡](pages/cloud_dragon.md) | `cloud_dragon` | 세계수 바람 정령 | `CloudDragon` |
 | [차원 두꺼비](pages/dimension_toad.md) | `dimension_toad` | 차원 유랑종 | `DimensionToad` |
