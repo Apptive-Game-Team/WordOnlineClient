@@ -19,7 +19,7 @@ TOTEM_WIDTH, TOTEM_HEIGHT = 99 / 133.333333, 235 / 133.333333
 GROUND = (203, 255, 234, 255)
 INK = (30, 60, 45, 255)
 
-ring = Image.open("Assets/Art/Images/Effect/Aura/nature_aura.png").convert("RGBA")
+ring = Image.open("Assets/Art/Images/Effect/AreaOfEffect/RepairAura.png").convert("RGBA")
 totem = Image.open("Assets/Resources/Game/sprites/RepairTotem.png").convert("RGBA")
 
 

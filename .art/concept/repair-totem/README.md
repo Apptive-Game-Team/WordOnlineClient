@@ -150,14 +150,13 @@ reached. The radius is on the wire already — `RepairAura.start` calls
 `gameObject.drawCircle(Vector3.ZERO, radius, GizmoCategory.AreaOfEffect)` — but
 `ServedObjectGizmoRenderer` is inside `#if UNITY_EDITOR`, so a player never sees it.
 
-`RepairTotem.prefab` therefore carries a `RepairAura` child: the existing
-`nature_aura.png` ring at alpha 0.5 and sorting order 6, so it sits above the shadow
-(5) and under every body sprite (10), driven by the existing `IdleAuraEffect` for a
-slow breathing pulse, and sized by the new `AuraRadiusScaler`. That component reads
-`repair_totem.radius` out of the parameter table `ParametersDataSource` caches — the
-same table the server reads — so the drawn circle follows the migration value instead
-of a number copied into the prefab. It falls back to 4.0 with a warning when the table
-has not been fetched.
+`RepairTotem.prefab` therefore carries a `RepairAura` child: a ring sprite at alpha
+0.5 and sorting order 6, so it sits above the shadow (5) and under every body sprite
+(10), driven by the existing `IdleAuraEffect` for a slow breathing pulse, and sized by
+the new `AuraRadiusScaler`. That component reads `repair_totem.radius` out of the
+parameter table `ParametersDataSource` caches — the same table the server reads — so
+the drawn circle follows the migration value instead of a number copied into the
+prefab. It falls back to 4.0 with a warning when the table has not been fetched.
 
 The ring is a sprite standing in the world XY plane while the aura it stands for is a
 circle lying on the ground XZ plane. Those project to the same on-screen ellipse only
@@ -165,10 +164,74 @@ because this camera is tilted exactly 45 degrees, where sine and cosine are equa
 reasoning and what breaks if the camera ever moves are written up in
 `.agents/docs/scene-space.md`.
 
-`preview-aura.py` renders `aura-preview.png` by applying that projection by hand: the
-pulse at both ends of its alpha tween, and the same aura placed on the full 18 x 10
-field with a 2-unit grid, so the radius can be counted off the grid. The ring spans
-x 2..10 and z 1..9 around a totem at (6, 5), which is radius 4.
+### The first attempt reused `nature_aura.png`, and that was wrong
+
+The first version of this scaled the existing `Assets/Art/Images/Effect/Aura/nature_aura.png`
+to 6.25x. It was reverted for two separate reasons, both worth keeping written down:
+
+- **Technique.** `nature_aura.png` is legacy art with a heavy dark outer contour on
+  every leaf. `STYLE.md` says "No outer contour line. Forms separate by value, not by
+  stroke." Blowing it up to 8 world units made that forbidden contour roughly six times
+  heavier than any other line on screen. This PR had already been careful not to use the
+  legacy `HealingTotem`/`RallyingTotem`/`FrenzyTotem` sprites as rendering references,
+  and then put a legacy ring on top of the master-v2 sprite anyway.
+- **Meaning.** `ANIMATION-ASSETS.md`'s 오라 의미 table binds `nature_aura.png` to
+  `NatureIdleAura` and `NatureAttackAura`. Those are *status* auras: what element state
+  a unit is under. An area-of-effect radius is a different statement, and sharing one
+  image makes the same wreath mean two things. `ANIMATION-ASSETS.md` now has a
+  범위 표시 오라 section drawing that line, and area markers live under their own
+  `Assets/Art/Images/Effect/AreaOfEffect/` folder.
+
+### Candidates
+
+Three directions were generated, each one `image_gen` call with
+`MasterStyleKey.png` and `WorldTreeSpirit.png` attached, prompts in
+`prompts/aura-shared-prefix.txt` plus `prompts/aura-variant-*.txt`. The shared prefix
+leads with the transparency requirement rather than trailing it, and raises "no outer
+contour line" to the most important rule for this asset, since an outline is exactly
+what was being removed. `aura-candidates.png` compares all three at the size they are
+actually drawn — radius 4 on a 2-unit grid with the totem in the middle — plus a 64px
+readability chip.
+
+- **`RepairAura-v1-leaf-facets-source.png`** (chosen) — twelve large flat leaf kites
+  laid around the circle, each two facet planes split by one hard crease, alternating
+  light and dark nature greens, with transparent gaps between them. Band measures 10.2%
+  of the diameter, which is what the brief asked for, and it is the quietest of the
+  three behind gameplay.
+- **`RepairAura-v2-grass-blades-source.png`** (alternate, not used) — low grass tufts
+  standing around the circle. A clean real-alpha generation and a good look, but it is
+  built from 12 to 14 tufts of several blades each, so at 8 units the parts get small
+  and the ring starts to read as scatter rather than as one boundary. Kept in case a
+  future pass wants the more organic reading.
+- **v3, a woven root band** (prompt kept, image not committed) — a closed pale-wood
+  rope hoop with four leaf clusters. Its first `image_gen` call came back opaque and the
+  generating agent then ran a connected-component script to manufacture an alpha channel,
+  which is the chroma-keying `make-game-art/SKILL.md` forbids; that output was discarded
+  rather than accepted, and a second call produced genuine alpha. The clean version was
+  still not used: an unbroken brown band is the heaviest of the three, and its wood tone
+  competes with the totem's own bark instead of reading as an aura.
+
+### Finalizing
+
+`finalize-aura.py` differs from `finalize.py` in one way that matters: it pads the
+shorter axis to a square before resizing, instead of trimming tight. `AuraRadiusScaler`
+scales each axis by half the sprite rect on that axis, so a square canvas is what makes
+the drawn circle round in world units and keeps the prefab's `localScale` uniform at
+6.25. The chosen source cropped to 1230x1207 (aspect 1.019), so squaring it moved almost
+nothing. The finished sprite is 512x512 RGBA at PPU 400, 83.9% fully transparent, band
+10.3% of the diameter, all four corners alpha 0, no bright-desaturated block and no
+stray saturated pixels.
+
+`preview-aura.py` renders `aura-preview.png` by applying the camera's 45° projection by
+hand: the pulse at both ends of its alpha tween, and the same aura placed on the full
+18 x 10 field with a 2-unit grid, so the radius can be counted off the grid. The ring
+spans x 2..10 and z 1..9 around a totem at (6, 5), which is radius 4.
+
+### Known limit
+
+A `SpriteRenderer` is not clipped to the field. `SkillIndicatorShapeRenderer` clips its
+polygon to X 0..18 and Z 0..10; this ring does not, so a totem placed near a board edge
+draws leaves past it. Moving the visual to a mesh is the fix if that ever matters.
 
 ## Not run
 

@@ -1,0 +1,20 @@
+Return the image as a true RGBA cutout with a fully transparent background: every pixel that is not the subject itself must be real alpha transparency. Do not paint a background of any kind — no grey-and-white checkerboard pattern, no white, no grey, no color fill, no ground plane, no cast shadow on a surface, no vignette. A painted checkerboard is a failure, not a transparent background.
+
+Game effect sprite for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build every shape from flat polygonal facet planes, like cut and folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradient across a plane, no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush, no glow, no bloom.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of each form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line and no ink outline anywhere. Shapes separate from each other only by flat color value. This is the most important rule for this asset: the existing aura art being replaced is outlined, and those outlines are exactly what must go.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and composition, required exactly:
+- Square canvas. One single closed ring, centered, seen from straight above so the ring is a true circle and not an ellipse.
+- The ring is thin: the band is about one tenth of the overall diameter. The whole middle of the circle is empty and fully transparent — this ring surrounds a building in play, and anything drawn in the middle would cover it.
+- Low detail density. A handful of large simple facet shapes spaced around the ring, not a dense wreath of many small parts. It has to stay quiet behind gameplay and must not compete with the characters standing inside it.
+- The ring must stay readable as a ring when the whole image is shrunk to 64 pixels wide.
+- No text, no frame, no card border, no watermark, no logo, no character, no creature, no building, no runes, no glyphs, no magic-circle lettering.
+
+Subject identity, shared across all variants: this is the visible edge of `repair_totem`'s aura — a NATURE-element area of ground, planted by the World Tree grass spirits (세계수 풀 정령), that stops nearby allied buildings from decaying. It does not attack, it does not heal creatures, it keeps structures from aging. It is drawn as a ring lying flat on the ground marking how far that area reaches, about 8 metres across in play, so it is a large calm boundary rather than a tight effect wrapped around a body. Use the nature palette #B8CE59, #9DA74D, #768738, #384823 with the same material language as the attached WorldTreeSpirit reference: warm pale wood and layered flat leaf-green facets. It must read as growth holding a boundary, never as fire, never as a technological ring.
