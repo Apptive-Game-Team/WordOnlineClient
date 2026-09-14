@@ -1,11 +1,22 @@
 # 2026-07-27 — issue #377 크리처 사운드 컨셉
 
 - Date: 2026-07-27
+- Revised: 2026-08-10 (issue #475) — 진영 재분할, 불 계열 컨셉 정정
 - GitHub Issue: #377
 - Status: Draft — 생성 전 합의용
 - Parent plan: `.plan/2026-07-20-issue-377-sfx-redesign.md`
 - Style authority: `.plan/issues/2026-07-21-issue-377-sfx-style-guide.md`
 - Worklist: `.plan/issues/2026-07-23-issue-377-sound-replacement-worklist.md`
+- 후속: `.plan/issues/2026-08-10-issue-475-faction-repartition-and-signature-tier.md`
+
+## 2026-08-10 개정 요약
+
+프로필 분할이 **원소**에서 **진영**으로 바뀌었다. `.art/WORLD.md`가 정의하는
+정체성 단위가 진영이고, 둘이 어긋나는 지점이 일곱 군데 있었다. 아래 §4의 계열
+구분은 그 결과를 반영해 갱신했다. 소환음 개수는 7 → 8이 된다.
+
+이 문서의 §1·§2·§3(나대지 않기 규칙, 공격음 3분류, 이벤트 표)은 **바뀌지
+않았다.** 저빈도 이벤트에만 개성을 허용하는 시그니처 계층은 후속 문서에 있다.
 
 ## 왜 이 문서가 필요한가
 
@@ -59,7 +70,7 @@
 
 | 이벤트 | 개수 | 공유 범위 | 현재 상태 |
 |---|---:|---|---|
-| 소환 | 7 | 원소별 (유일하게 원소를 남기는 자리) | 재생성 필요 |
+| 소환 | 8 | 진영별 (유일하게 정체성을 남기는 자리) | 재생성 필요 |
 | 근거리 공격 | 1 | 전 크리처 공유 | 신규 |
 | 원거리 공격 | 1 | 전 크리처·건물 공유 | **승인됨** (`transient_release_02`) |
 | 폭발 | 1 | 전 투사체·주문 공유 | 신규 |
@@ -73,26 +84,36 @@
 ## 4. 크리처별 컨셉
 
 프로필 배정은 `Assets/Resources/Sound/Config/ObjectSfxCatalog.asset` 기준
-(91행 전체). 소환음 하나를 계열이 공유하므로, 컨셉은 **계열 단위**로 잡고
-개별 유닛은 그 안에서 설명된다.
+(96행 = 94 + 의도적 무음 2). 소환음 하나를 계열이 공유하므로, 컨셉은
+**계열 단위**로 잡고 개별 유닛은 그 안에서 설명된다.
 
-### FireCreature (7)
+계열 구분은 2026-08-10에 원소에서 **진영**으로 바뀌었다. 근거와 전체 매핑은
+`.plan/issues/2026-08-10-issue-475-faction-repartition-and-signature-tier.md`에
+있다.
+
+### BurningLegionCreature (6) — 불타는 군단
 `EmberSpirit` · `FireChildSpirit` · `FireLordSpirit` · `FireSlime` ·
-`FireSpirit` · `FireTadpole` · `MagmaSpirit`
+`FireSpirit` · `MagmaSpirit`
 
-- **컨셉**: 종이 디오라마 위에 놓인 작은 불씨. 화염이 아니라 **불이 붙는 순간**.
-- **소환음**: 성냥 머리가 긁혀 붙는 짧은 점화 + 잔불 두세 번. 화르륵 금지.
+- **컨셉**: **불의 정령이 아니라 악마다.** 검붉은 종이 갑각과 내부 용암광.
+  불이 붙는 순간이 아니라 **갑각이 갈라지는 순간**.
+- **소환음**: 두꺼운 종이 갑각이 갈라지고 그 틈으로 잔불이 새어 나옴.
+  점화 금지, 화르륵 금지.
 - **주의**: 이 계열이 가장 나대기 쉽다. 불은 넓은 대역을 먹어서 다른 소리를
   덮는다. 고역을 눌러 잔불만 남긴다.
+- **개정 사유(2026-08-10)**: 이전 판은 "성냥 머리가 긁혀 붙는 짧은 점화"였다.
+  아트 문서가 모든 불 계열에 대해 "불꽃 정령이 아니라 악마 군단의 마법으로
+  표현한다"를 명시하므로 성냥은 정령 해석이다. `FireTadpole`은 차원 유랑종이라
+  이 계열에서 빠졌다.
 
-### WaterCreature (3)
+### WaterSlimeCreature (3) — 물 슬라임
 `AquaArcher` · `BubbleSpirit` · `WaterSlime`
 
 - **컨셉**: 컵 안의 물 한 모금 분량. 바다도 비도 아니다.
 - **소환음**: 손끝에서 물방울 하나가 떨어져 얕게 퍼짐.
 - **주의**: 물은 유리로 미끄러지기 쉽다. 맑은 고역을 넣는 순간 "챙"이 된다.
 
-### NatureCreature (6)
+### WorldTreeNatureCreature (6) — 세계수의 정령 · 풀
 `LeafSlime` · `PveVineWitch` · `SeedSpirit` · `TreeGolem` · `VineSpirit` ·
 `WillOWisp`
 
@@ -101,62 +122,113 @@
 - **주의**: 인게임 앰비언스가 이미 숲이다. 같은 재질이라 묻히기 쉬우니
   앰비언스에 없는 "톡" 하는 접촉을 앞세운다.
 
-### RockCreature (4)
-`DimensionToad` · `RockGolem` · `RockMage` · `RockSlime`
+### RockGolemCreature (3) — 돌 골렘 부족
+`RockGolem` · `RockMage` · `RockSlime`
 
-- **컨셉**: 조약돌 한 줌. 바위산이 아니다.
+- **컨셉**: **따뜻한** 석재와 이끼. 조약돌 한 줌이지 바위산이 아니다.
+  이끼 낀 젖은 돌은 마른 돌보다 둔하다.
 - **소환음**: 돌 하나를 상 위에 내려놓는 둔탁한 접촉 + 잔자갈 몇 알.
 - **주의**: 저역이 가장 두꺼운 계열. 서브베이스는 금지, 겹쳤을 때 뭉치는지
-  반드시 3중 재생으로 확인.
+  반드시 3중 재생으로 확인. 아트가 "인간제 회색 기계와 구분"을 요구하므로
+  **금속 0%**.
+- **개정 사유(2026-08-10)**: `DimensionToad`가 차원 유랑종이라 빠졌다.
 
-### LightningCreature (6)
-`ElectricSlime` · `LightningTadpole` · `StormRider` · `ThunderBird` ·
-`ThunderSpirit` · `ZapMouse`
+### DimensionWandererCreature (3) — 차원 유랑종
+`DimensionToad` · `FireTadpole` · `LightningTadpole`
+
+- **컨셉**: 몸 안에 무너진 세계의 조각을 품고 다닌다. 어두운 보라 각면 갑각.
+- **소환음**: 각면 갑각이 판에 닿는 둔탁한 접촉 + **그 접촉이 0.1초 뒤 한 번
+  더**, 아주 약간 낮고 얇게. 반향이 아니라 다른 공간에서 일어난 복제다.
+- **주의**: 스타일 가이드가 긴 리버브를 금지한다. 제약을 안 깨면서 차원 이동을
+  표현할 수 있는 방법은 이 복제뿐이다.
+- **신설 사유(2026-08-10)**: `.art/WORLD.md`가 "세 개체는 서로 다른 독립 종이다.
+  부모·자식, 두꺼비·올챙이 관계가 아니다"를 명시한다. 원소 프로필에 흩어져
+  있으면 이 사실이 소리에서 사라진다.
+
+### WorldTreeLightningCreature (5) — 세계수의 정령 · 전기
+`ElectricSlime` · `StormRider` · `ThunderBird` · `ThunderSpirit` · `ZapMouse`
 
 - **컨셉**: 천에 손을 문질렀을 때의 정전기. 번개가 아니라 **정전기**.
 - **소환음**: 마른 천 위 짧은 탁 + 아주 짧은 전기 잔여.
 - **주의**: 디지털 틱과 레이저로 가장 잘 미끄러지는 계열. 2차에서 프롬프트의
   "static crack/snap"을 "static thud"로 바꾼 게 이 이유다.
 
-### WindCreature (3)
+### WorldTreeWindCreature (3) — 세계수의 정령 · 바람
 `CloudDragon` · `WindSlime` · `WindSpirit`
 
 - **컨셉**: 천 한 번 스치는 공기 이동. 폭풍 아님.
 - **소환음**: 천이 한 번 펄럭이고 멎음.
 - **주의**: 꼬리가 길면 즉시 나댄다. 이 계열은 꼬리를 거의 0으로.
 
-### NeutralCreature (2)
-`ChickenCommando` · `Player`
+### PlayerAvatar (1) — 중립
+`Player`
 
 - **컨셉**: 원소가 없는 나무 소품. 펠트로 죽인 나무 접촉.
-- **주의**: `Player`가 여기 있다는 건 플레이어 본체도 소리를 낸다는 뜻이다.
-  가장 자주 들릴 수 있으므로 가장 밋밋해야 한다.
+- **주의**: 플레이어 본체도 소리를 낸다. 가장 자주 들릴 수 있으므로 가장
+  밋밋해야 하고, 그래서 혼자 둔다.
 
-### StoneBuilding (4)
-`Crater` · `GroundCannon` · `GroundTower` · `RockTurret`
+### HumanInfantry (1) — 인간 마법 문명
+`ChickenCommando`
+
+- **컨셉**: 낙하산으로 투입되는 인간 공수 특공대. 가죽 장구 · 천 · 나무.
+- **주의**: 인간 진영이지만 **보병 장구에 금속은 없다.** 금속은 구조물에만.
+- **신설 사유(2026-08-10)**: 이전에는 `Player`와 함께 "원소가 없는 나무 소품"에
+  묶여 있었다. 아트는 낙하산 전개 상태와 지상 전투 상태 두 프레임을 가진
+  인간 공수대원으로 정의한다.
+
+### HumanStructure (3) — 인간 마법 문명
+`GroundCannon` · `GroundTower` · `RallyingTotem`
+
+- **컨셉**: 차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물.
+- **주의**: **금속을 쓰는 유일한 진영이다.** 단 울리지 않는 금속만 — 청동이
+  조여지는 소리이지 종소리가 아니다. `audio_probe.py`의 금속성 필터는 그대로
+  통과해야 한다. 스타일 가이드의 예외 조항을 참조할 것.
+
+### BurningLegionStructure (2) — 불타는 군단
+`Crater` · `FrenzyTotem`
+
+- **컨셉**: 지면이 갈라지고 그 아래 것이 드러남. 설치가 아니라 **개방**이다.
+
+### RockGolemBuilding (1) — 돌 골렘 부족
+`RockTurret`
 
 - **컨셉**: 돌 조각을 판 위에 앉히는 설치음. 이동음 없음.
 - **소환음**: **승인됨** (`stone-building_spawn_candidate_04`)
 
-### OrganicBuilding (6)
-`LifeTree` · `PveNatureSlimeNest` · `PveVineColony` · `PveWaterSlimeNest` ·
-`Vine` · `VineColony`
+### WorldTreeBuilding (11) — 세계수의 정령
+`ElectricTower` · `GiantVine` · `HealingTotem` · `LifeTree` · `ManaWell` ·
+`PveNatureSlimeNest` · `PveVineColony` · `SeedNest` · `Vine` · `VineColony` ·
+`WindTotem`
 
 - **컨셉**: 엮은 나무·덩굴 둥지가 자리를 잡음. 자라는 소리가 아니라 앉는 소리.
+- **미해결**: 회복 계열(`HealingTotem` · `ManaWell` · `WindTotem` · `LifeTree`)이
+  회복 피드백을 가질지 자체가 부모 계획의 열린 질문이다. 이 문서에서도 미정.
 
-### ArcaneDevice (13)
-`BubbleGenerator` · `ElectricTower` · `FireRune` · `FrenzyTotem` ·
-`HealingTotem` · `LightningRune` · `ManaWell` · `NatureRune` ·
-`RallyingTorch` · `RockRune` · `WaterRune` · `WindRune` · `WindTotem`
+### WaterSlimeBuilding (2) — 물 슬라임
+`BubbleGenerator` · `PveWaterSlimeNest`
+
+- **컨셉**: 얕은 물이 고여 자리를 잡음. 크리처와 같은 재질, 더 낮고 넓게.
+
+### ArcaneRune (6) — 중립
+`FireRune` · `LightningRune` · `NatureRune` · `RockRune` · `WaterRune` ·
+`WindRune`
 
 - **컨셉**: 펠트로 죽인 나무 룬 조각. **세라믹·유리 금지** — 1·2차에서 챙
   소리의 출처가 여기였다.
 - **소환음**: **승인됨** (`arcane-device_spawn_candidate_01`)
-- **미해결**: 회복 계열(`HealingTotem` · `ManaWell` · `WindTotem` · `LifeTree`)이
-  회복 피드백을 가질지 자체가 부모 계획의 열린 질문이다. 이 문서에서도 미정.
+- **주의**: 여섯 개가 화면에 같은 형태이고 원소만 다르다. 하나를 공유한다.
 
-### TransientLegacy (37)
+### 개정 사유 — 구 `StoneBuilding` · `ArcaneDevice` 해체(2026-08-10)
+
+`StoneBuilding` 4종은 서로 다른 세 진영이었다(`Crater` 지옥불 군단,
+`GroundCannon`·`GroundTower` 인간 마법 문명, `RockTurret` 돌 골렘 부족).
+한 설치음으로 묶으면 분화구가 인간 포탑과 같은 소리로 놓인다.
+`ArcaneDevice` 13종도 룬·토템·타워·생성기가 네 진영에 걸쳐 있었다.
+
+### Transient 3종 (38) — 중립
 투사체·폭발·장판 전부. 위의 **원거리 / 폭발** 두 소리로 덮는다.
+PR #445에서 `TransientShot`(8) · `TransientExplode`(9) · `TransientLegacy`(21)로
+갈렸고, 앞의 둘은 이미 배선됐다.
 
 - 발사 계열 (`*Shot`, `WindBlade`, `MagmaFist`, `ChainLightning`, `TideCall`) → 원거리
 - 폭발 계열 (`*Explode`, `*Explosion`, `ShockOverload`) → 폭발
