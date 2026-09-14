@@ -97,6 +97,13 @@ namespace GameScene
         /// <summary>indicator document 가 없을 때 위협 범위의 크기로 쓰는 parameter 이름.</summary>
         private const string FallbackAttackRangeParameter = "attack_range";
 
+        /// <summary>
+        /// <c>attack_range</c> 가 없거나 0 일 때 위협 범위 크기로 대신 읽는 parameter 이름.
+        /// grass_generator, repair_totem, shock_trap 은 attack_range 행이 없고 대신 이 값으로
+        /// 효과 범위를 알린다 (issue #667).
+        /// </summary>
+        private const string FallbackEffectRadiusParameter = "effect_radius";
+
         /// <summary>indicator document 가 없을 때 위협 범위 원을 전방으로 밀어내는 parameter 이름.</summary>
         private const string FallbackAttackOffsetParameter = "attack_offset";
 
@@ -218,7 +225,8 @@ namespace GameScene
         }
 
         /// <summary>
-        /// 설치 지점과 별개인 위협 범위. <c>attack_range</c> 를 넘기지 않는 마법에는 아무것도 붙지 않는다.
+        /// 설치 지점과 별개인 위협 범위. <c>attack_range</c> 가 없거나 0 이면 <c>effect_radius</c> 로
+        /// 대신 그린다. 둘 다 없거나 0 이면 아무것도 붙지 않는다.
         /// </summary>
         private static void AppendFallbackAttackShape(
             CombinedMagicData magic,
@@ -229,7 +237,11 @@ namespace GameScene
             if (!GameParameterResolver.TryGetMagicParameter(magic, FallbackAttackRangeParameter, out float attackRange) ||
                 attackRange <= 0f)
             {
-                return;
+                if (!GameParameterResolver.TryGetMagicParameter(magic, FallbackEffectRadiusParameter, out attackRange) ||
+                    attackRange <= 0f)
+                {
+                    return;
+                }
             }
 
             if (string.Equals(magic.serverName, FallbackLaneAttackMagicServerName, StringComparison.OrdinalIgnoreCase))
