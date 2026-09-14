@@ -70,7 +70,7 @@ namespace TutorialScene
             SetCircleWorldRadius(currentRangeObj, casterPosition, magicRange);
 
 
-            bool wantLine = magic.IsLineAim;
+            bool wantLine = MagicIndicatorResolver.IsLaneAim(magic);
 
 
             if (currentSkillIndicator == null || currentSkillIndicatorIsLine != wantLine)

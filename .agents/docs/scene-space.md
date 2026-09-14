@@ -15,6 +15,18 @@ swap anywhere in the client.
 Sprites are then **billboarded to that tilted camera**. A sprite's own up axis is
 the camera's up axis, not world up.
 
+### The two players face each other along X
+
+The field spans world `X ∈ [0, 18]` and `Z ∈ [0, 10]` — those are the bounds
+`SkillIndicatorShapeRenderer` clips its shapes to. `InteractiveTutorialScene.unity`
+places `LeftPlayer` at `x = 1` and `RightPlayer` at `x = 17`, so **`LeftPlayer`
+faces `+X` and `RightPlayer` faces `-X`**, and `Z` is the width of the field, not
+a heading. `SceneContext.Me` is the string that says which side you are.
+
+`MagicIndicatorResolver.GetForwardDirection()` is that convention written down;
+use it rather than hard-coding `Vector3.right`. Code that forgets the right side
+looks correct in every left-side test and points backwards in half of all matches.
+
 ### Offsets measured off a sprite use screen-up, never `Vector3.up`
 
 A height read off a sprite — a shoulder, a muzzle, an anchor point — is a

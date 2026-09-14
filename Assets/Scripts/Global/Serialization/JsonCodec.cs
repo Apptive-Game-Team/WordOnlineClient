@@ -99,6 +99,7 @@ namespace Global.Serialization
                 Converters =
                 {
                     new Vector3JsonConverter(),
+                    new MagicIndicatorValueJsonConverter(),
                     new StringEnumConverter()
                 }
             };
