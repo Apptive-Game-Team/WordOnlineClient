@@ -71,6 +71,9 @@
 | `water_aura.png` | 클라이언트 PR (이슈 #680) | 512x463 RGBA. `fire_aura.png` 기법으로 재작업한 물 공용 오라. `cloud.png`(운룡 전용 구형 오라)와는 별개. 64px 실루엣 검수 완료 |
 | `wind_aura.png` | 클라이언트 PR (이슈 #680) | 512x269 RGBA. `fire_aura.png` 기법으로 재작업한 바람 공용 오라. 64px 실루엣 검수 완료 |
 | `BombSprite.png`, `BombSpriteBomb.png` | 클라이언트 PR (이슈 #679) | 222x256 / 231x256 RGBA. 채색 그림체에서 master-v2 로 재작업. 도화선 불꽃을 양쪽 다 금색으로 맞췄다 |
+| `explode.png` | 클라이언트 PR (이슈 #682) | 841x769 RGBA. 마법 폭발/실패 표시. 남색-보라 결정 파편 다발, 가운데 비움, 원본의 분홍·보라 정체성은 파편 두 개에 악센트로 남김. green 키 제거, 네 모서리 alpha 0 |
+| `heal_effect.png` | 클라이언트 PR (이슈 #682) | 826x818 RGBA. 치유 표시, 다면체 십자가. magenta 키 제거, 네 모서리 alpha 0 |
+| `hit_effect.png` | 클라이언트 PR (이슈 #682) | 771x700 RGBA. 피격 표시, 8방향 쐐기 방사형 파편, 가운데 비움. magenta 키 제거, 네 모서리 alpha 0 |
 
 ## 다음 교체 후보
 
