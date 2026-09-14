@@ -7,19 +7,21 @@ the feet on the same row and the standing width around the same column. The
 source drawings never come back that way, so one anchor is derived here and
 applied to all of them.
 
-The canvas is sized so the player occupies the screen space the shipped
-`Assets/Resources/Game/player.png` occupies: that sprite is 192x170 at 100 pixels
-per unit with `alignment: 7` (bottom centre), its character is 166px tall, and
-its feet sit on the sprite origin. So the output keeps the character 1.66 units
-tall and puts the feet on the pivot, and the pixels-per-unit value is picked to
-reach that with no resampling of the scale-reference frame.
+The canvas is sized so the player occupies the screen space the sprite it
+replaced occupied: `Assets/Resources/Game/player.png` was 192x170 at 100 pixels
+per unit with `alignment: 7` (bottom centre), its character was 166px tall, and
+its feet sat on the sprite origin. That file is deleted now and the constants
+below are what is left of it, so the output keeps the character 1.66 units tall
+and puts the feet on the pivot, and the pixels-per-unit value is picked to reach
+that with no resampling of the scale-reference frame.
 
 Two traps this script exists to avoid:
 
 * `Assets/Art/Images/Customize/PlayerCharacterBase.png` was NOT what the game
-  drew. `Assets/Resources/Prefabs/Player.prefab` pointed its `PlayerImage`
-  renderer at `Assets/Resources/Game/player.png`. Check the `m_Sprite` guid in
-  the prefab before believing a file name.
+  drew — `Assets/Resources/Prefabs/Player.prefab` pointed its `PlayerImage`
+  renderer at `Assets/Resources/Game/player.png` instead, so replacing the
+  Customize file changed nothing on screen. Check the `m_Sprite` guid in the
+  prefab before believing a file name.
 * A head top cannot be found automatically on every frame. The raised frame
   holds a staff above the head, so both a width-share rule and a width-jump rule
   pick the wrong row there. Pass the measured row with `--head-top`.

@@ -182,15 +182,20 @@ sprite 를 갈아 끼울 때는 파일 이름이 아니라 prefab 과 scene 의 
 | `Assets/Resources/Prefabs/Player.prefab` | 인게임 플레이어 |
 | `Assets/Scenes/InteractiveTutorialScene.unity` | `LeftPlayer`/`RightPlayer` 의 `PlayerSprite` |
 | `Assets/ScriptableObject/Adventures/Stage1.asset` | 시나리오 네 개의 `leftImage` |
-| `Assets/Scenes/TEST_DOTween/DOTweenTestScene.unity` | tween 실험용 |
+| `Assets/Scenes/TEST_DOTween/DOTweenTestScene.unity` | tween 실험용 `player` 오브젝트 |
 
-앞의 셋은 새 sprite 를 쓴다. `DOTweenTestScene` 만 `player.png` 를 그대로 쓰므로
-그 파일은 지우면 안 된다.
+네 곳 모두 새 sprite 를 쓴다. `Assets/Resources/Game/player.png` 은 참조가 하나도
+남지 않아 지웠다. 크기 기준으로 쓰던 192x170 @ 100 PPU, bottom-center pivot,
+몸통 166px 은 `.art/tools/finalize-player-frames.py` 안에 상수로 남아 있다.
 
 모험 초상화는 `AdventureStoryOverlayUI` 가 420x640 Image 에 `preserveAspect` 로
 넣는다. 새 sprite 는 981x1245 라 세로가 아니라 가로에 맞춰 420x533 으로 들어가고
 몸통이 402px 로 뜬다. 옛 `player.png` 는 192x170 이라 420x372 에 몸통 363px
 이었으니 초상화가 조금 커진다.
+
+`Assets/Art/Images/Customize/` 의 모자·망토 여덟 장(`ancient_*`, `leaf_*`)은 아직
+참조가 하나도 없고 `Assets/Scripts/CustomizeScene` 도 없다. 커스터마이즈 기능을
+살릴지 정해지지 않아 그대로 두었다.
 
 튜토리얼은 SpriteRenderer 라 배율을 건드릴 것이 없다. 몸통이 두 sprite 모두
 1.66 units 이고 발이 pivot 위에 서기 때문이다. `RightPlayer` 는 `m_LocalScale.x`
