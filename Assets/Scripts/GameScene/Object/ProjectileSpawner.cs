@@ -20,6 +20,12 @@ namespace GameScene.Object
                 return;
             }
 
+            if (dto.type == "SpiritBombBeam")
+            {
+                SpawnSpiritBombBeam(dto);
+                return;
+            }
+
             if (ShouldSuppressStormStagImpactProjectile(dto))
             {
                 WDebug.Log("Suppressed ElectricShot visual for Storm Stag charge impact.");
@@ -54,6 +60,14 @@ namespace GameScene.Object
                 impactPrefab.transform.rotation);
             impact.transform.localScale *= 0.65f;
             Destroy(impact, dto.duration);
+        }
+
+        private static void SpawnSpiritBombBeam(ProjectileDto dto)
+        {
+            GameObject projectileObject = new GameObject("SpiritBombBeam");
+            SpiritBombBeamProjectile projectile = projectileObject.AddComponent<SpiritBombBeamProjectile>();
+            Destroy(projectileObject, dto.duration);
+            projectile.Init(dto);
         }
 
         private static bool ShouldSuppressStormStagImpactProjectile(ProjectileDto dto)
