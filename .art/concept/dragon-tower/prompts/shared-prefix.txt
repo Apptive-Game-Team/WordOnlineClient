@@ -1,0 +1,23 @@
+Game building sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered, standing upright on its own base (no ground plane, no platform, no scenery under it).
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- Static defensive building/turret, viewed from the same three-quarter camera as the references, facing slightly right.
+- Chunky, blocky proportions: a tapered stone/rock mass roughly twice as tall as it is wide, in three stacked tiers (wide base, waisted mid body, narrower crown), the same overall archetype as a fantasy siege tower or turret, not a creature and not a flat prop.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: "Dragon Tower", a Hellfire-legion defense tower built from the same dark charred material as the legion's demons, not human masonry. It must share the attached HellfireDemon reference's material language exactly: dark charred basalt-crust shell (base colors #2A1512 and #5A291E), angular spiked plates and curved horn shapes echoing the demon's horns, and bright glowing orange cracks and seams running through the dark crust where inner heat shows through (#9B3014 and #E65E08), ash accents #6D4A39. Mass reads as dark charred rock first, fire glow second, exactly like the HellfireDemon reference — never a smooth flame or lava shape.
+
+It is a siege weapon that launches fireballs at both ground and flying targets, so it must have one clear aperture, muzzle, or open maw near the top that reads as where a shot launches from, aimed forward/upward. It must read unmistakably as a stationary tower/turret structure, never as a standing creature, a totem pole, or a decorative statue.
