@@ -262,6 +262,35 @@ PPU·pivot·앵커 좌표를 같이 출력한다.
 스크립트로 지워서 투명하게 만들지 않는다"는 원래 격자무늬와 사진 같은 배경을
 두고 쓴 규칙이다. 요청해서 받은 단색 키는 그 규칙의 대상이 아니다.
 
+## 범위 표시 오라
+
+위 오라 의미 표의 element 오라 6종은 **상태 표시**다. 서버가 보낸 effect 이름을
+`ServedObjectEffectRenderer`가 `Prefabs/Effects/<이름>`으로 올리는 것이고, 그 개체가
+무슨 속성 상태인지를 말한다. 범위 표시는 다른 것이다. 서버 component 의 반지름이
+어디까지 닿는지를 말한다. 둘은 별도 에셋으로 유지하고 섞어 쓰지 않는다. 같은 그림을
+쓰면 같은 고리가 한쪽에서는 "자연 속성 상태", 다른 쪽에서는 "repair 반경"을 뜻하게
+된다.
+
+| 실제 파일 | 의미 이름 | 사용 방식 |
+|---|---|---|
+| `Effect/AreaOfEffect/RepairAura.png` | repair_totem · 수리 범위 경계 | `RepairTotem.prefab` 자식 SpriteRenderer, `AuraRadiusScaler`가 크기 결정 |
+
+- **상태 오라를 키워서 범위 표시로 쓰지 않는다.** element 오라 6종은 전부 가로
+  1.28 world unit 로 그려져 있고 실제 최대 사용처가 `FireSpirit`의 2.8배, 즉 3.58
+  unit 이다. 범위 표시는 8 unit 을 넘는다. 2026-09-14 에 `nature_aura.png`를 6.25배로
+  늘려 붙였다가 되돌렸다. legacy 오라 그림은 잎마다 외곽선을 두르는데 `STYLE.md`는
+  "No outer contour line"이라 그 외곽선이 화면의 다른 어떤 선보다 6배 굵어졌다.
+- 범위 표시는 그려질 크기를 정해놓고 그 크기에 맞춰 새로 뽑는다. 띠 두께는 지름의
+  10% 안팎, 가운데는 완전히 비운다. 안에 선 유닛을 가리면 안 된다.
+- 정사각 canvas 로 내보낸다. `AuraRadiusScaler`가 sprite rect 의 가로·세로 절반으로
+  각 축 배율을 따로 내므로, 정사각이어야 world 에서 원이 되고 prefab 의 localScale 도
+  균일해진다.
+- 반지름은 prefab 에 적지 않고 `ParametersDataSource`가 캐시한 parameter 표에서
+  읽는다. 서버가 읽는 그 표다.
+- **sprite 는 필드 경계로 잘리지 않는다.** `SkillIndicatorShapeRenderer`는 X 0..18,
+  Z 0..10 으로 polygon 을 잘라내지만 SpriteRenderer 에는 그런 장치가 없다. 가장자리에
+  세우면 그림이 판 밖으로 나간다. 잘림이 꼭 필요해지면 mesh 쪽으로 옮겨야 한다.
+
 ## 홈페이지 표시
 
 - 기본·공격 프레임이 실제로 다른 포즈면 둘 다 표시한다.
