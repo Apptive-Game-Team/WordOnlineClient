@@ -338,8 +338,9 @@ namespace GameScene
         }
 
         /// <summary>
-        /// 숫자면 그대로, parameter 이름이면 parameter 표에서 읽는다.
-        /// 표에 없고 fallback 도 없으면 풀지 못한 것이다.
+        /// 숫자면 그대로, parameter 이름이면 parameter 표에서 읽는다. object 이름이 함께 있으면
+        /// 마법 자신의 game object 가 아니라 그 이름의 game object 에서 읽는다.
+        /// 못 찾고 fallback 도 없으면 풀지 못한 것이다.
         /// </summary>
         private static bool TryResolveValue(CombinedMagicData magic, in MagicIndicatorValue value, out float resolved)
         {
@@ -355,7 +356,11 @@ namespace GameScene
                 return true;
             }
 
-            if (GameParameterResolver.TryGetMagicParameter(magic, value.ParameterName, out resolved))
+            bool found = value.HasObject
+                ? GameParameterResolver.TryGetObjectParameter(value.ObjectName, value.ParameterName, out resolved)
+                : GameParameterResolver.TryGetMagicParameter(magic, value.ParameterName, out resolved);
+
+            if (found)
             {
                 return true;
             }
