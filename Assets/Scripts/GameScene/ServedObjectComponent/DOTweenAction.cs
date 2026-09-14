@@ -90,13 +90,6 @@ namespace GameScene.ServedObjectComponent
             duration  = 2f
         };
 
-        private static readonly SwingParameters _playerCardUseParam = new()
-        {
-
-            angle = 25f,
-            duration = 0.5f
-        };
-
         private static readonly HoverParameters _mobHoverParam = new()
         {
             zDistance = 0.5f,
@@ -280,18 +273,9 @@ namespace GameScene.ServedObjectComponent
             StumbleStorm(tr, _stormIdleParam.angle, _stormIdleParam.duration);
         }
     
-        public static void RotatePlayerUseCard(Transform tr)
+        public static void BouncePlayerUseCard(Transform tr)
         {
             Bounce(tr, _mobBounceParam.originScale, _mobBounceParam.squashScale,_mobBounceParam.bounceScale, _mobBounceParam.duration);
-            Rotate(tr, _playerCardUseParam.angle, _playerCardUseParam.duration, RotateMode.LocalAxisAdd);
-        }
-        public static void RotatePlayerCancelCard(Transform tr)
-        {
-            Rotate(tr, -_playerCardUseParam.angle, _playerCardUseParam.duration, RotateMode.LocalAxisAdd);
-        }
-        public static void RotatePlayerUseMagic(Transform tr)
-        {
-            Rotate(tr, 0, _playerCardUseParam.duration);
         }
     }
 }
