@@ -63,9 +63,9 @@ public static class ObjectSfxCatalogBuilder
             "ChainLightning", "ElectricShot", "FireShot", "LeafShot", "MagmaFist",
             "TideCall", "WaterShot", "WindBlade"),
         new("TransientExplode",
-            "ElectricExplode", "FireExplode", "LeafExplode", "MagmaExplosion",
-            "RockExplode", "ShockOverload", "WaterExplode", "WaterExplosion",
-            "WindExplode")
+            "ElectricExplode", "FireExplode", "FireworkShell", "LeafExplode",
+            "MagmaExplosion", "RockExplode", "ShockOverload", "WaterExplode",
+            "WaterExplosion", "WindExplode")
     };
 
     private static readonly string[] IntentionalSilentRuntimeTypes =
