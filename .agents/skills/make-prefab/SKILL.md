@@ -16,7 +16,15 @@ This skill covers the client-side asset minimum:
 - keep prefab naming aligned with the object type the server will spawn
 - keep sprite asset paths aligned with the `spritePath` used by client display metadata
 
-If the request also needs `LocalCombinedMagicData` or localization updates, use `make-magic` alongside this skill.
+**A new magic is not finished until its localization rows exist.** When this
+skill adds the first prefab for a magic the client did not have before, run
+`make-magic` in the same change and add the name and magic-book description
+rows. A prefab without those rows puts a raw key such as `wallGolem` on screen
+in the magic book and the deck popup. Prefab-only is correct in one case: a
+magic whose rows already exist, such as validating or restyling a shipped
+prefab. Read the tables before deciding you are in that case.
+
+Use `make-magic` alongside this skill for `LocalCombinedMagicData` work too.
 
 ## Workflow
 
@@ -27,7 +35,8 @@ If the request also needs `LocalCombinedMagicData` or localization updates, use 
 5. Confirm the prefab filename and root object name match what the server-created object type will load through `Resources.Load<GameObject>($"Prefabs/{createdObjectDto.type}")`.
 6. Add or validate the icon sprite at the path expected by client metadata, for example `Assets/Resources/Game/<family>/<icon_name>.png`.
 7. When a prefab sprite or other asset reference is swapped, verify the referenced asset and `.meta` file both exist.
-8. Ignore unrelated working-tree changes unless the user explicitly asks to include them.
+8. If this is the magic's first prefab, add its localization rows through `make-magic` in the same change.
+9. Ignore unrelated working-tree changes unless the user explicitly asks to include them.
 
 ## File Patterns
 
@@ -85,6 +94,9 @@ files are frequently written by hand. When that happens:
 
 - Check that the prefab file and `.meta` file both exist.
 - Check that the sprite file and `.meta` file both exist.
+- For a magic's first prefab, check that its name and magic-book description
+  rows exist. Reading the tables is the only way to know; nothing fails loudly
+  when they are absent.
 - Confirm the prefab and sprite names match the paired `make-magic` metadata when both skills are used together.
 
 ## Example
