@@ -143,6 +143,33 @@ extrema (0, 255)) and passed the same transparent-share and bright-desaturated
 checks, but was not finalized to a production canvas since it was not the
 chosen direction.
 
+## Making the aura visible
+
+`RepairAura` is the whole point of the object and nothing on screen said where it
+reached. The radius is on the wire already — `RepairAura.start` calls
+`gameObject.drawCircle(Vector3.ZERO, radius, GizmoCategory.AreaOfEffect)` — but
+`ServedObjectGizmoRenderer` is inside `#if UNITY_EDITOR`, so a player never sees it.
+
+`RepairTotem.prefab` therefore carries a `RepairAura` child: the existing
+`nature_aura.png` ring at alpha 0.5 and sorting order 6, so it sits above the shadow
+(5) and under every body sprite (10), driven by the existing `IdleAuraEffect` for a
+slow breathing pulse, and sized by the new `AuraRadiusScaler`. That component reads
+`repair_totem.radius` out of the parameter table `ParametersDataSource` caches — the
+same table the server reads — so the drawn circle follows the migration value instead
+of a number copied into the prefab. It falls back to 4.0 with a warning when the table
+has not been fetched.
+
+The ring is a sprite standing in the world XY plane while the aura it stands for is a
+circle lying on the ground XZ plane. Those project to the same on-screen ellipse only
+because this camera is tilted exactly 45 degrees, where sine and cosine are equal; the
+reasoning and what breaks if the camera ever moves are written up in
+`.agents/docs/scene-space.md`.
+
+`preview-aura.py` renders `aura-preview.png` by applying that projection by hand: the
+pulse at both ends of its alpha tween, and the same aura placed on the full 18 x 10
+field with a 2-unit grid, so the radius can be counted off the grid. The ring spans
+x 2..10 and z 1..9 around a totem at (6, 5), which is radius 4.
+
 ## Not run
 
 - `./.art/make-sheets.sh` was not run — `magick` (ImageMagick) is not
