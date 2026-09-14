@@ -25,6 +25,24 @@ namespace GameScene
         private const int AimIndicatorSortingOrder = 16;
         private const float AimIndicatorRadius = 0.18f;
 
+        /// <summary>attack_range 원형 indicator의 테두리 굵기. 설치 지점 원(테두리 없음)과 구분하는 용도다.</summary>
+        private const float AttackRangeIndicatorEdgeWidth = 0.08f;
+
+        /// <summary>
+        /// dragon_tower의 공격 lane 절반 폭. 실제 폭발 범위는 서버의 dragon_flame.radius이고
+        /// 클라이언트는 그 값을 읽을 수 없다. 이 값은 lane이 어디로 향하는지 보여 주는
+        /// 시각적 힌트일 뿐, 투사체의 실제 폭발 반경이 아니다 (issue #581).
+        /// </summary>
+        private const float DragonTowerLaneHalfWidth = 0.4f;
+
+        /// <summary>
+        /// 지금 이 이름을 가진 build 마법만 공격 범위를 lane으로 그린다. attack_range/attack_offset
+        /// 파라미터 계약에는 도형 종류를 담은 값이 없어서, 이 구분은 마법 식별자로만 할 수 있다.
+        /// electric_tower, crater, rock_turret, cannon처럼 나중에 attack_range만 받는 다른 build
+        /// 마법은 전부 원으로 그려진다 (issue #581).
+        /// </summary>
+        private const string LaneAttackMagicServerName = "dragon_tower";
+
         /// <summary>참조를 찾지 못했을 때 씬 전체 스캔을 매 프레임 되풀이하지 않기 위한 재시도 간격.</summary>
         private const float MissingReferenceRetryInterval = 0.5f;
 
@@ -39,6 +57,12 @@ namespace GameScene
         private SkillIndicatorShapeRenderer rangeShapeRenderer;
         private CircleSkillIndicator currentCircleIndicator;
         private LineSkillIndicator currentLineIndicator;
+
+        // 설치 지점과 별개로 위협 범위를 보여 주는 indicator. attack_range를 넘기는 마법만 켠다.
+        private GameObject currentAttackRangeIndicator;
+        private CircleSkillIndicator attackRangeCircleIndicator;
+        private GameObject currentAttackLaneIndicator;
+        private LineSkillIndicator attackLaneIndicator;
 
         // 매 프레임 다시 구할 필요가 없는 참조/결과 캐시.
         private Camera cachedCamera;
@@ -85,6 +109,14 @@ namespace GameScene
             currentLineIndicator = null;
             currentSkillIndicatorIsLine = false;
             currentSkillIndicator.SetActive(false);
+
+            currentAttackRangeIndicator = CreateCircleSkillIndicator(out attackRangeCircleIndicator);
+            currentAttackRangeIndicator.name = "AttackRangeIndicator";
+            currentAttackRangeIndicator.SetActive(false);
+
+            currentAttackLaneIndicator = CreateLineSkillIndicator(out attackLaneIndicator);
+            currentAttackLaneIndicator.name = "AttackLaneIndicator";
+            currentAttackLaneIndicator.SetActive(false);
         }
 
         void Update()
@@ -97,6 +129,7 @@ namespace GameScene
                 {
                     currentSkillIndicator.SetActive(false);
                 }
+                DisableAttackIndicators();
 
                 return;
             }
@@ -112,6 +145,7 @@ namespace GameScene
                 {
                     currentSkillIndicator.SetActive(false);
                 }
+                DisableAttackIndicators();
                 return;
             }
             LogMagicParametersIfChanged(magicData, range, radius);
@@ -150,6 +184,7 @@ namespace GameScene
             Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
             aimShapeRenderer.SetCircle(previewPosition, AimIndicatorRadius, true, AimIndicatorSortingOrder, 0f);
             UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
+            UpdateAttackIndicator(magicData, previewPosition);
 
             // UI 레이캐스트는 클릭을 걸러내는 용도뿐이므로, 실제로 버튼을 뗀 프레임에만 수행한다.
             if (!Input.GetMouseButtonUp(0))
@@ -167,6 +202,7 @@ namespace GameScene
             interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
+            DisableAttackIndicators();
             currentSkillIndicator.SetActive(false);
             CardInputSender.Instance.SetExpectedMagicUI();
         }
@@ -407,6 +443,68 @@ namespace GameScene
         private static bool IsLineMagic(CombinedMagicData magicData)
         {
             return magicData.castType == CardType.Shoot;
+        }
+
+        /// <summary>
+        /// 서버 WindPushComponent와 같은 규칙: SceneContext.Me가 LeftPlayer면 전방은 +X, 아니면 -X다.
+        /// </summary>
+        private static Vector3 GetForwardDirection()
+        {
+            bool isLeft = SceneContext.Me == "LeftPlayer";
+            return isLeft ? Vector3.right : Vector3.left;
+        }
+
+        private static bool IsLaneAttackMagic(CombinedMagicData magicData)
+        {
+            return string.Equals(magicData.serverName, LaneAttackMagicServerName, System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// 설치 지점과 별개인 위협 범위를 그린다. attack_range가 없거나 0이면 아무것도 켜지 않는다 —
+        /// 이 파라미터를 넘기지 않는 기존 마법의 동작은 그대로 유지된다.
+        /// dragon_tower(<see cref="IsLaneAttackMagic"/>)만 lane으로, 나머지는 원으로 그린다.
+        /// </summary>
+        private void UpdateAttackIndicator(CombinedMagicData magicData, Vector3 previewPosition)
+        {
+            if (!GameParameterResolver.TryGetMagicParameter(magicData, "attack_range", out float attackRange) ||
+                attackRange <= 0f)
+            {
+                DisableAttackIndicators();
+                return;
+            }
+
+            Vector3 forward = GetForwardDirection();
+
+            if (IsLaneAttackMagic(magicData))
+            {
+                if (currentAttackRangeIndicator.activeSelf) currentAttackRangeIndicator.SetActive(false);
+                if (!currentAttackLaneIndicator.activeSelf) currentAttackLaneIndicator.SetActive(true);
+
+                Vector3 laneEnd = previewPosition + forward * attackRange;
+                attackLaneIndicator.SetIndicator(previewPosition, laneEnd, attackRange, DragonTowerLaneHalfWidth);
+                return;
+            }
+
+            if (currentAttackLaneIndicator.activeSelf) currentAttackLaneIndicator.SetActive(false);
+            if (!currentAttackRangeIndicator.activeSelf) currentAttackRangeIndicator.SetActive(true);
+
+            // attack_offset이 없으면 0으로 보고 설치 지점 중심에 그린다.
+            GameParameterResolver.TryGetMagicParameter(magicData, "attack_offset", out float attackOffset);
+            Vector3 circleCenter = previewPosition + forward * attackOffset;
+            attackRangeCircleIndicator.SetIndicator(circleCenter, attackRange, AttackRangeIndicatorEdgeWidth);
+        }
+
+        private void DisableAttackIndicators()
+        {
+            if (currentAttackRangeIndicator != null && currentAttackRangeIndicator.activeSelf)
+            {
+                currentAttackRangeIndicator.SetActive(false);
+            }
+
+            if (currentAttackLaneIndicator != null && currentAttackLaneIndicator.activeSelf)
+            {
+                currentAttackLaneIndicator.SetActive(false);
+            }
         }
 
         private void UpdateSkillIndicator(
