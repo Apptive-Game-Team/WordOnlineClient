@@ -73,6 +73,10 @@
 | `BombSprite.png`, `BombSpriteBomb.png` | 클라이언트 PR (이슈 #679) | 222x256 / 231x256 RGBA. 채색 그림체에서 master-v2 로 재작업. 도화선 불꽃을 양쪽 다 금색으로 맞췄다 |
 | `explode.png` | 클라이언트 PR (이슈 #682) | 841x769 RGBA. 마법 폭발/실패 표시. 남색-보라 결정 파편 다발, 가운데 비움, 원본의 분홍·보라 정체성은 파편 두 개에 악센트로 남김. green 키 제거, 네 모서리 alpha 0 |
 | `hit_effect.png` | 클라이언트 PR (이슈 #682) | 771x700 RGBA. 피격 표시, 8방향 쐐기 방사형 파편, 가운데 비움. magenta 키 제거, 네 모서리 alpha 0 |
+| `heal_effect.png` | 클라이언트 PR (이슈 #682) | 826x818 RGBA. 치유 표시, 다면체 십자가. 대각선 세 면(하이라이트·베이스·그림자)으로만 분할, 두께·챔퍼 없음 — 1차 시도는 입체 블록으로 읽혀 revert 후 재시도. magenta 키 제거, 네 모서리 alpha 0 |
+| `Burn.png`, `Burn2.png` | 클라이언트 PR (이슈 #682) | 238x256 RGBA 두 장. 화상 상태 표시, 불꽃 여섯 덩이. 두 프레임 alpha content bbox 완전 일치(겹쳐서 확인). magenta 키 제거, 네 모서리 alpha 0 |
+| `Overcharge.png`, `Overcharge2.png` | 클라이언트 PR (이슈 #682) | 512x512 RGBA 두 장. 전기 과충전 표시, 번개 조각 여섯 개. 두 프레임 겹침 확인, 끝부분 미세한 흔들림만 차이. magenta 키 제거, 네 모서리 alpha 0 |
+| `Bubble.png` | 클라이언트 PR (이슈 #682) | 119x119 RGBA. 물방울 표시, 저폴리 보석형 단일 도형. magenta 키 제거, 네 모서리 alpha 0 |
 
 ## 다음 교체 후보
 
