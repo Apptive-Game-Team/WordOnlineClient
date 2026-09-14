@@ -251,6 +251,7 @@ MonoBehaviour:
   staffThrustSprite: {fileID: 21300000, guid: a691e9e5e6e841d7a4e74603b302c52d, type: 3}
   thrustDuration: 0.3
   raisingEffects:
+  - CardSelected
   - FireIdleAura
   - WaterIdleAura
   - WindIdleAura

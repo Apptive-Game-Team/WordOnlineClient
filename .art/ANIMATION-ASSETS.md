@@ -155,9 +155,24 @@ Transform 스케일 변형은 적용하지 않는다.
 자세를 되돌려 놓는다. 그래서 플레이어 프리팹에서는 `AttackSpriteSwapController`
 를 떼고 이것으로 바꿨다. 다른 오브젝트는 그대로 쓴다.
 
-"카드를 골랐다"는 신호는 서버가 보내는 원소 오라 effect 다. 클라이언트의 카드 UI
-상태를 쓰면 상대편 플레이어는 영영 지팡이를 들지 않는다. 어떤 effect 가 지팡이를
-들게 하는지는 프리팹의 `raisingEffects` 에 있고, 대기 오라 여섯 개만 들어 있다.
+"카드를 골랐다"는 신호는 서버가 보내는 effect 다. 클라이언트의 카드 UI 상태를
+쓰면 상대편 플레이어는 영영 지팡이를 들지 않는다. 어떤 effect 가 지팡이를 들게
+하는지는 프리팹의 `raisingEffects` 에 있다.
+
+거기 `CardSelected` 가 있다. 게임 서버가 카드 종류를 가리지 않고 한 장이라도
+골려 있으면 붙이는 effect 다. 원소 오라로는 부족하다 — `CardSelectVisualizer` 가
+`Fire`·`Water`·`Nature`·`Lightning`·`Rock`·`Wind` 여섯 장만 오라로 바꾸고
+`Shoot`·`Drop`·`Build`·`Spawn`·`Explode` 는 흘려보내므로, Shoot 카드를 골라도
+effect 가 하나도 안 실린다.
+
+원소 대기 오라 여섯 개도 `raisingEffects` 에 그대로 두었다. `CardSelected` 와
+겹치지만, 클라이언트가 서버보다 먼저 배포되면 그 여섯 개가 지금까지의 동작을
+유지해 준다.
+
+`CardSelected` 는 보이는 것이 없다. effect 하나에 프리팹 하나라는 규칙은 그대로
+지켜서 `Assets/Resources/Prefabs/Effects/CardSelected.prefab` 을 Transform 만 있는
+빈 오브젝트로 두었다. 빼면 `ServedObjectEffectRenderer` 가 프리팹을 못 찾았다고
+경고를 남기는데, 그 경고는 오타를 잡아 주는 것이라 죽이지 않는다.
 
 상대편 플레이어는 같은 스프라이트를 `flipX` 로 뒤집어 쓴다. 앵커도 x 를 뒤집어야
 지팡이 끝에 남는다.
