@@ -8003,8 +8003,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimObject: {fileID: 0}
   rangeObject: {fileID: 0}
-  lineSkillIndicator: {fileID: 0}
-  circleSkillIndicator: {fileID: 0}
   groundCollider: {fileID: 0}
   groundObjectName: PopupBookGround
 --- !u!4 &1442642835

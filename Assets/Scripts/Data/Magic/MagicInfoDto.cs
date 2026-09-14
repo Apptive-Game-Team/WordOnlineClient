@@ -17,7 +17,10 @@ namespace Data.Magic
 
         public int manaCost;
 
-        /// <summary>1이면 직선 조준, 0이면 원 조준.</summary>
-        public int aimShape;
+        /// <summary>
+        /// 조준 표시를 적은 jsonb document. 서버가 항목 안에 그대로 실어 보낸다.
+        /// 옛 서버나 이 필드가 없는 마법에서는 null 이다.
+        /// </summary>
+        public MagicIndicatorDocument indicator;
     }
 }

@@ -4,16 +4,10 @@ namespace Data.Magic
 {
     /// <summary>
     /// 마법 카드 한 장. 카드 한 장이 곧 마법 하나이므로 조합(recipe)도 시전 종류(castType)도 없다.
-    /// 마나 비용과 조준 모양은 서버가 <c>/api/data/magics</c> 로 준 값을 그대로 담는다.
+    /// 마나 비용과 조준 표시는 서버가 <c>/api/data/magics</c> 로 준 값을 그대로 담는다.
     /// </summary>
     public class CombinedMagicData
     {
-        /// <summary>조준선을 직선으로 그리는 <see cref="aimShape"/> 값.</summary>
-        public const int AimShapeLine = 1;
-
-        /// <summary>조준선을 원으로 그리는 <see cref="aimShape"/> 값.</summary>
-        public const int AimShapeCircle = 0;
-
         public long id;
         public string serverName;
         public string localizationKey;
@@ -22,10 +16,8 @@ namespace Data.Magic
         public ElementType element;
         public int manaCost;
 
-        /// <summary>조준 표시 모양. 1이면 직선, 0이면 원.</summary>
-        public int aimShape;
-
-        public bool IsLineAim => aimShape == AimShapeLine;
+        /// <summary>조준 표시를 적은 document. 서버가 주지 않았으면 null 이다.</summary>
+        public MagicIndicatorDocument indicator;
 
         private const string SpriteResourceRoot = "Game/sprites";
 

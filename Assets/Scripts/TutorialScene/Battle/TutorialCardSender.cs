@@ -143,7 +143,7 @@ namespace TutorialScene
             // 그 카드가 없어졌으므로 마법의 조준 모양으로 갈라 둔다. 튜토리얼 대본을 새 마법으로
             // 다시 쓸 때 이 분기 전체를 다시 설계한다.
             CombinedMagicData magic = magics.Count > 0 ? magics[0] : null;
-            if (magic != null && magic.IsLineAim)
+            if (magic != null && GameScene.MagicIndicatorResolver.IsLaneAim(magic))
             {
                 AttachPopupBookPresenter(Instantiate(shotPrefab, CasterPosition, quaternion.identity));
             }
