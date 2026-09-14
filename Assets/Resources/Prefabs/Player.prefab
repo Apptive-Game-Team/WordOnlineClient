@@ -168,6 +168,19 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1271433976255676604}
   _actualTransform: {fileID: 720095057222124764}
   _effectAnchor: {fileID: 2358728696626565719}
+  _effectAnchorEffects:
+  - FireIdleAura
+  - FireAttackAura
+  - WaterIdleAura
+  - WaterAttackAura
+  - WindIdleAura
+  - WindAttackAura
+  - LightningIdleAura
+  - LightningAttackAura
+  - NatureIdleAura
+  - NatureAttackAura
+  - RockIdleAura
+  - RockAttackAura
   _swingOnAttack: 0
   _teamIndicatorVerticalOffset: 0.1
   _teamIndicatorScale: 0.3
@@ -228,13 +241,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1600271713453120150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16be94cbed504f2fbb2acaf552cd2c4c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b9a93c19590462b8ec55bbc3f52520d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   servedObject: {fileID: 0}
   targetRenderer: {fileID: 1271433976255676604}
-  swapSprite: {fileID: 21300000, guid: a691e9e5e6e841d7a4e74603b302c52d, type: 3}
-  duration: 0.3
+  staffLoweredSprite: {fileID: 21300000, guid: 3a37400d762fc47368ff61782aa71941, type: 3}
+  staffRaisedSprite: {fileID: 21300000, guid: 006b29725c4f4217a1ce014d2dbcb491, type: 3}
+  staffThrustSprite: {fileID: 21300000, guid: a691e9e5e6e841d7a4e74603b302c52d, type: 3}
+  thrustDuration: 0.3
+  raisingEffects:
+  - FireIdleAura
+  - WaterIdleAura
+  - WindIdleAura
+  - LightningIdleAura
+  - NatureIdleAura
+  - RockIdleAura
 --- !u!114 &5546332115853614978
 MonoBehaviour:
   m_ObjectHideFlags: 0
