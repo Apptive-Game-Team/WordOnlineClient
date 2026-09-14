@@ -147,9 +147,26 @@ Transform 스케일 변형은 적용하지 않는다.
 그 frame 이 2048x2048 @ 100 PPU 면 옛 sprite 의 열 배 크기로 뜬다.
 
 sprite 를 갈아 끼울 때는 파일 이름이 아니라 prefab 과 scene 의 `m_Sprite` guid
-로 고른다. `player.png` 는 `InteractiveTutorialScene`, `DOTweenTestScene`,
-`ScriptableObject/Adventures/Stage1.asset` 이 아직 쓰므로 지우면 안 된다. 인게임
-플레이어만 새 그림으로 바꾸면 튜토리얼과 모험 초상화는 옛 캐릭터로 남는다.
+로 고른다. 플레이어 캐릭터가 나오는 곳은 네 군데다.
+
+| 쓰는 곳 | 무엇 |
+|---|---|
+| `Assets/Resources/Prefabs/Player.prefab` | 인게임 플레이어 |
+| `Assets/Scenes/InteractiveTutorialScene.unity` | `LeftPlayer`/`RightPlayer` 의 `PlayerSprite` |
+| `Assets/ScriptableObject/Adventures/Stage1.asset` | 시나리오 네 개의 `leftImage` |
+| `Assets/Scenes/TEST_DOTween/DOTweenTestScene.unity` | tween 실험용 |
+
+앞의 셋은 새 sprite 를 쓴다. `DOTweenTestScene` 만 `player.png` 를 그대로 쓰므로
+그 파일은 지우면 안 된다.
+
+모험 초상화는 `AdventureStoryOverlayUI` 가 420x640 Image 에 `preserveAspect` 로
+넣는다. 새 sprite 는 981x1245 라 세로가 아니라 가로에 맞춰 420x533 으로 들어가고
+몸통이 402px 로 뜬다. 옛 `player.png` 는 192x170 이라 420x372 에 몸통 363px
+이었으니 초상화가 조금 커진다.
+
+튜토리얼은 SpriteRenderer 라 배율을 건드릴 것이 없다. 몸통이 두 sprite 모두
+1.66 units 이고 발이 pivot 위에 서기 때문이다. `RightPlayer` 는 `m_LocalScale.x`
+가 -1 인데, 이 반전도 pivot 기준이라 몸통이 제자리에서 뒤집힌다.
 
 ### 생성된 두 프레임은 그대로는 안 맞는다
 
