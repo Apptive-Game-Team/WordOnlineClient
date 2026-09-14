@@ -50,6 +50,26 @@ def key_alpha(rgb, key_channel):
     return coverage.astype(np.float32)
 
 
+def magenta_alpha(rgb):
+    """Per-pixel coverage for a magenta key, where red and blue are both the key.
+
+    The single-channel form cannot express magenta, because either of red or blue
+    alone is ordinary subject colour. What magenta has and no palette colour here
+    has is red AND blue together above green, so the weaker of red and blue is what
+    must overshoot green for a pixel to be background.
+
+    This is what the magic book icons needed. A green key would have eaten
+    boulder_strike's moss and spirit_bomb's leaves, and a blue key would have bitten
+    into boulder_strike's pale crescents; nothing in those palettes is magenta.
+    """
+    weakest_key = np.minimum(rgb[:, :, 0], rgb[:, :, 2])
+    green = rgb[:, :, 1]
+    excess = weakest_key.astype(np.int16) - green.astype(np.int16)
+    headroom = np.maximum(255 - green.astype(np.int16), 1)
+    coverage = 1.0 - np.clip(excess / headroom, 0.0, 1.0)
+    return coverage.astype(np.float32)
+
+
 def reachable_from_border(is_key):
     """Key-coloured pixels connected to the border, four-way. Reported, not enforced."""
     height, width = is_key.shape
@@ -81,13 +101,12 @@ def main():
     parser.add_argument("--key", choices=("green", "magenta", "blue"), default="green")
     args = parser.parse_args()
 
-    key_channel = {"green": 1, "magenta": 0, "blue": 2}[args.key]
-    if args.key == "magenta":
-        raise SystemExit("magenta keys two channels at once; use green or blue")
-
     image = Image.open(args.source).convert("RGB")
     rgb = np.asarray(image)
-    coverage = key_alpha(rgb, key_channel)
+    if args.key == "magenta":
+        coverage = magenta_alpha(rgb)
+    else:
+        coverage = key_alpha(rgb, {"green": 1, "blue": 2}[args.key])
 
     background = coverage < SUBJECT_ALPHA
     alpha = np.ones(coverage.shape, dtype=np.float32)
@@ -97,7 +116,10 @@ def main():
     # Divide the key colour back out of the boundary pixels, where the drawn
     # edge is a blend of the subject and the background.
     key_colour = np.zeros(3, dtype=np.float32)
-    key_colour[key_channel] = 255.0
+    if args.key == "magenta":
+        key_colour[0] = key_colour[2] = 255.0
+    else:
+        key_colour[{"green": 1, "blue": 2}[args.key]] = 255.0
     boundary = background & (alpha > 0.0)
     out = rgb.astype(np.float32)
     if boundary.any():

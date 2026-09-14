@@ -1,0 +1,22 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no water surface, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Game creature sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like cut and folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradient across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no scale texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush, no glow, no bloom.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of each form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line and no ink outline anywhere. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and composition, required exactly:
+- Single subject, centered on a square canvas, seen from the same three-quarter camera as the references, facing right.
+- Chunky and heavy throughout. No thin ribbons, no wispy tail, no hairline fins, no fragments floating free of the body. Every part of the creature is one connected mass.
+- The eyes are the same grammar as the references: a dark oval with one tiny highlight. Friendly and calm, not menacing. No fangs, no snarl, no slit pupils.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+- No text, no frame, no card border, no watermark, no logo, no water splash, no spray, no bubbles, no droplets.
+
+Subject identity, shared across all variants: `sea_serpent`, a large WATER-element serpent the player summons onto the battlefield. It is the biggest water unit in the game: slow, heavy, high health, and it attacks at range by firing one straight jet of water from its mouth rather than by biting. It is a summoned living creature with a health bar, not a projectile and not a spell effect. Its material language is the same layered translucent-looking flat water color as the attached water references, in the water palette: pale #E8F7EE, light #98DEEB, mid #6FCCF4, deep #53B2EB, darkest #2D92E4. Give it a pale belly, a blunt rounded snout, and a row of short angular fin plates along its spine.
+
+It must read unmistakably as one large serpent creature. Never a slime, never a fish, never a shark, never a dragon with wings or legs, never a spell effect, never a wave of water.
