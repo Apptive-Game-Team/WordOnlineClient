@@ -140,3 +140,7 @@ MonoBehaviour:
   markerWorldWidth: 1.3
   markerSpacing: 1.9
   fallbackRadius: 3
+  armedColor: {r: 1, g: 0.85, b: 0.45, a: 1}
+  armedScale: 1.2
+  armingDuration: 0.22
+  relaxDuration: 0.45

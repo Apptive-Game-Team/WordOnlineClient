@@ -55,6 +55,12 @@ namespace GameScene.ServedObjectComponent
         private readonly HashSet<string> pendingEffects = new HashSet<string>(StringComparer.Ordinal);
 
         public IReadOnlyCollection<string> ActiveEffects => activeEffects;
+
+        /// <summary>서버가 이번 frame에 보낸 effect 목록에 주어진 이름이 있는지 본다.</summary>
+        public bool HasEffect(string effect)
+        {
+            return !string.IsNullOrEmpty(effect) && activeEffects.Contains(effect);
+        }
         
         private string master;
         private Transform _teamIndicatorTransform;
