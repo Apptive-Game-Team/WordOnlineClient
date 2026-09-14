@@ -441,6 +441,50 @@
     "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/nature/SeedNestPrefabInitializer.java"
   },
   {
+    "bean": "titan_remnant",
+    "korean": "거인의 잔해",
+    "concept_name": "무너진 거인의 주먹",
+    "family": "build",
+    "class_name": "TitanRemnantMagic",
+    "parent": "AbstractSummonMagic",
+    "primary": "TitanRemnant",
+    "components": [
+      "RigidBody",
+      "CircleCollider",
+      "TitanRemnantMob",
+      "TimedSelfDestroyer",
+      "BuildingEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE",
+      "DURATION"
+    ],
+    "object_keys": [
+      "TITAN_REMNANT"
+    ],
+    "behavior": [
+      "목표 지점에 지속 개체를 설치한다. 세부 행동은 프리팹 상속 구조와 런타임 파라미터에 의존한다."
+    ],
+    "faction": "귀속 미정",
+    "art_rule": "기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "concept": "귀속 미정의 전장에 남아 지속적으로 영향력을 만드는 무너진 거인의 주먹.",
+    "concept_description": "무너진 거인의 주먹은 귀속 미정의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 설치물 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "mobility": "고정형",
+    "mobility_evidence": "이동 AI 없이 설치 위치에서 행동한다.",
+    "combat_role": "설치물",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "제한시간 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/TitanRemnantMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/TitanRemnantPrefabInitializer.java"
+  },
+  {
     "bean": "tower",
     "korean": "타워",
     "concept_name": "대공 마도탑",
@@ -1742,6 +1786,46 @@
     "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/explode/WindExplodePrefabInitializer.java"
   },
   {
+    "bean": "boulder_strike",
+    "korean": "바위 강타",
+    "concept_name": "질풍 낙석탄",
+    "family": "shoot",
+    "class_name": "BoulderStrikeMagic",
+    "parent": "AbstractShotMagic",
+    "primary": "BoulderStrike",
+    "components": [
+      "CircleCollider",
+      "BoulderStrikeShot"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "RADIUS",
+      "DAMAGE",
+      "SPEED",
+      "SUB_DAMAGE",
+      "PUSH_FORCE"
+    ],
+    "object_keys": [
+      "BOULDER_STRIKE"
+    ],
+    "behavior": [
+      "시전자 위치에서 목표 방향으로 투사체 또는 연속 개체를 보낸다."
+    ],
+    "faction": "귀속 미정",
+    "art_rule": "기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "concept": "귀속 미정의 방향성과 궤적이 핵심인 질풍 낙석탄.",
+    "concept_description": "질풍 낙석탄은 귀속 미정의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/BoulderStrikeMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/rock/BoulderStrikePrefabInitializer.java"
+  },
+  {
     "bean": "chain_lightning",
     "korean": "연쇄 번개",
     "concept_name": "뇌광 사슬",
@@ -1898,6 +1982,75 @@
     "special_movement": "추가 특수 이동 없음",
     "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/RockRollingMagic.java",
     "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/rock/RockRollingPrefabInitializer.java"
+  },
+  {
+    "bean": "spirit_bomb",
+    "korean": "정령 폭탄",
+    "concept_name": "정령력 집속포",
+    "family": "shoot",
+    "class_name": "SpiritBombMagic",
+    "parent": "Magic",
+    "primary": "Player",
+    "components": [
+      "CircleCollider",
+      "PlayerHealthComponent",
+      "PlayerStatusSetter",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "HP"
+    ],
+    "object_keys": [
+      "PLAYER"
+    ],
+    "behavior": [
+      "시전자 위치에서 목표 방향으로 투사체 또는 연속 개체를 보낸다."
+    ],
+    "faction": "귀속 미정",
+    "art_rule": "기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "concept": "귀속 미정의 방향성과 궤적이 핵심인 정령력 집속포.",
+    "concept_description": "정령력 집속포은 귀속 미정의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/SpiritBombMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/PlayerPrefabInitializer.java"
+  },
+  {
+    "bean": "tidal_warhead",
+    "korean": "해일 탄두",
+    "concept_name": "심해 유도탄",
+    "family": "shoot",
+    "class_name": "TidalWarheadMagic",
+    "parent": "Magic",
+    "primary": "TidalWarhead",
+    "components": [],
+    "secondary_prefabs": [
+      "GroundTidalWarhead"
+    ],
+    "parameter_keys": [],
+    "object_keys": [],
+    "behavior": [
+      "시전자 위치에서 목표 방향으로 투사체 또는 연속 개체를 보낸다."
+    ],
+    "faction": "귀속 미정",
+    "art_rule": "기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "concept": "귀속 미정의 방향성과 궤적이 핵심인 심해 유도탄.",
+    "concept_description": "심해 유도탄은 귀속 미정의 투사체 마법이다. 시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다. 전투에서는 직접 공격 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 방향성 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "mobility": "투사체·전파형",
+    "mobility_evidence": "시전자에서 목표 방향으로 투사체 또는 연속 개체를 보낸다.",
+    "combat_role": "직접 공격",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "방향성",
+    "lifecycle": "효과 완료 후 소멸",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/shoot/TidalWarheadMagic.java",
+    "initializer_source": null
   },
   {
     "bean": "tide_call",
@@ -2181,6 +2334,50 @@
     "special_movement": "추가 특수 이동 없음",
     "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/AquaArcherMagic.java",
     "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/AquaArcherPrefabInitializer.java"
+  },
+  {
+    "bean": "bomb_sprite",
+    "korean": "폭탄 정령",
+    "concept_name": "공습 폭탄요정",
+    "family": "spawn",
+    "class_name": "BombSpriteMagic",
+    "parent": "AbstractSpawnMagic",
+    "primary": "BombSprite",
+    "components": [
+      "RigidBody",
+      "ZPhysics",
+      "CircleCollider",
+      "BombSpriteMob",
+      "CommonEffectReceiver"
+    ],
+    "secondary_prefabs": [],
+    "parameter_keys": [
+      "MASS",
+      "RADIUS",
+      "HP",
+      "SPEED",
+      "ATTACK_INTERVAL",
+      "ATTACK_RANGE"
+    ],
+    "object_keys": [
+      "BOMB_SPRITE"
+    ],
+    "behavior": [
+      "목표 지점에 아군 개체를 소환한다."
+    ],
+    "faction": "귀속 미정",
+    "art_rule": "기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "concept": "귀속 미정의 독립 개체로 전장에 합류하는 공습 폭탄요정.",
+    "concept_description": "공습 폭탄요정은 귀속 미정의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 기존 세계관만으로 귀속을 확정할 수 없다. 시각 제작 전 설정 결정이 필요하다.",
+    "mobility": "공중 부유형",
+    "mobility_evidence": "`ZPhysics(gameObject, hoverY)`로 고도를 유지한다.",
+    "combat_role": "전투 개체",
+    "targeting": "대상 제한을 이 파일에서 직접 확인하지 못함",
+    "attack_shape": "직접 공격 없음 또는 별도 효과",
+    "lifecycle": "소스에서 시간 제한을 직접 확인하지 못함",
+    "special_movement": "추가 특수 이동 없음",
+    "magic_source": "game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/BombSpriteMagic.java",
+    "initializer_source": "game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/wind/BombSpritePrefabInitializer.java"
   },
   {
     "bean": "bubble_spirit",
