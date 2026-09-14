@@ -26,14 +26,16 @@ namespace GameScene
         private const int AimIndicatorSortingOrder = 16;
         private const float AimIndicatorRadius = 0.18f;
 
-        /// <summary>첫 번째 indicator layer 의 sorting order.</summary>
-        private const int SkillIndicatorSortingOrder = 14;
-
         /// <summary>
         /// layer 하나가 먹는 sorting order 폭. <see cref="SkillIndicatorShapeRenderer"/> 가
         /// 테두리를 채움보다 1 위에 두므로 2 씩 띄워야 layer 끼리 섞이지 않는다.
         /// </summary>
         private const int SkillIndicatorSortingStep = 2;
+
+        /// <summary>
+        /// indicator layer 가 쓸 수 있는 가장 낮은 sorting order. 사거리 원이 5 라 그 위여야 한다.
+        /// </summary>
+        private const int LowestSkillIndicatorSortingOrder = 6;
 
         /// <summary>참조를 찾지 못했을 때 씬 전체 스캔을 매 프레임 되풀이하지 않기 위한 재시도 간격.</summary>
         private const float MissingReferenceRetryInterval = 0.5f;
@@ -406,7 +408,7 @@ namespace GameScene
                 if (!layerObject.activeSelf) layerObject.SetActive(true);
 
                 ResolvedIndicatorShape shape = shapes[i];
-                int sortingOrder = SkillIndicatorSortingOrder + i * SkillIndicatorSortingStep;
+                int sortingOrder = GetLayerSortingOrder(i, shapes.Count);
                 if (shape.kind == ResolvedIndicatorShape.Kind.Circle)
                 {
                     // edgeWidth 가 0 보다 크면 그 두께의 테두리만 남기고 속은 비운다.
@@ -422,6 +424,19 @@ namespace GameScene
             }
 
             HideSkillIndicatorLayersFrom(shapes.Count);
+        }
+
+        /// <summary>
+        /// layer 무더기를 조준점(<see cref="AimIndicatorSortingOrder"/>) 바로 아래에 붙인다. 마지막 layer 가
+        /// 가장 위에 오고, 나머지는 아래로 <see cref="SkillIndicatorSortingStep"/> 씩 내려간다.
+        /// layer 가 하나뿐이면 14 가 되어 이 변경 전과 같은 자리다.
+        /// 위에서부터 쌓는 이유는 layer 개수가 마법마다 다르기 때문이다. 아래에서부터 쌓으면 layer 가
+        /// 둘 이상인 마법에서 위쪽 layer 가 조준점과 <see cref="SelectionGroundIndicator"/>(17) 를 덮는다.
+        /// </summary>
+        private static int GetLayerSortingOrder(int index, int layerCount)
+        {
+            int order = AimIndicatorSortingOrder - (layerCount - index) * SkillIndicatorSortingStep;
+            return order < LowestSkillIndicatorSortingOrder ? LowestSkillIndicatorSortingOrder : order;
         }
 
         private SkillIndicatorShapeRenderer GetOrCreateSkillIndicatorLayer(int index)
