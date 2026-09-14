@@ -14,6 +14,12 @@ namespace GameScene.Object
         {
             WDebug.Log("ProjectileSpawner Spawn called for type: " + dto.type);
 
+            if (dto.type == "BoulderStrikeImpact")
+            {
+                SpawnBoulderStrikeImpact(dto);
+                return;
+            }
+
             if (dto.type == "SpiritBombBeam")
             {
                 SpawnSpiritBombBeam(dto);
@@ -37,6 +43,23 @@ namespace GameScene.Object
             Destroy(projectileObject, dto.duration);
             
             projectile.Init(dto);
+        }
+
+        private static void SpawnBoulderStrikeImpact(ProjectileDto dto)
+        {
+            GameObject impactPrefab = Resources.Load<GameObject>("Prefabs/RockExplode");
+            if (impactPrefab == null)
+            {
+                Debug.LogError("RockExplode prefab not found for BoulderStrikeImpact.");
+                return;
+            }
+
+            GameObject impact = Instantiate(
+                impactPrefab,
+                ProjectileUtil.GetPosition(dto.start),
+                impactPrefab.transform.rotation);
+            impact.transform.localScale *= 0.65f;
+            Destroy(impact, dto.duration);
         }
 
         private static void SpawnSpiritBombBeam(ProjectileDto dto)
