@@ -386,6 +386,10 @@ MonoBehaviour:
     m_Localized: Storm Stag
     m_Metadata:
       m_Items: []
+  - m_Id: 78335800000000000
+    m_Localized: Titan Remnant
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

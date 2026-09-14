@@ -39,6 +39,8 @@
 | `RockGolem.png` | `concept-art/rock-golem.webp` | 이끼바위 골렘 기본 자세 |
 | `RockGolem2.png` | `game-assets/rock-golem-attack.webp` | 이끼바위 골렘 공격 자세 |
 | `RockRemnant.png` | `game-assets/rock-remnant.webp` | 사망 후 이동 방해 잔해 |
+| `TitanRemnant.png` | 클라이언트 이슈 #593 재작업 검수 | 거신의 잔해 본체 |
+| `TitanFist.png` | 클라이언트 이슈 #593 재작업 검수 | 주변 적 위치에서 솟구치는 거대한 돌주먹 |
 | `LightningTadpole.png` | `concept-art/lightning-tadpole.webp` | 차원 유랑종 폭풍편 방향 적용 |
 | `MagmaSpirit.png` | `concept-art/magma-spirit-idle.webp` | 기본 자세 |
 | `MagmaSpiritAttacking.png` | `concept-art/magma-spirit-attack.webp` | 공격 자세 |
