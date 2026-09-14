@@ -45,8 +45,8 @@ MonoBehaviour:
     - Locale-ko-KR
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6343a3a798db94b08952b6421e1f4878
-    m_Address: Card_ko-KR
+  - m_GUID: 2d6e83b15fa74c09ae3b90d47c581e62
+    m_Address: Element_ko-KR
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-ko-KR

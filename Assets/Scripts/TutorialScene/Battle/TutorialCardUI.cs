@@ -44,8 +44,7 @@ namespace TutorialScene
             CardName = magicName;
             Magic = LocalCombinedMagicData.GetCombinedMagicData(magicName);
             cardManaText.text = CardManaCost.Of(Magic).ToString();
-            // TODO(#580): 카드 이름 번역표가 Magic 표로 합쳐지면 표 이름을 "Magic" 으로 옮긴다.
-            cardNameText.text = await LocaleUtils.GetStringAsync("Card", Magic?.localizationKey ?? magicName);
+            cardNameText.text = await LocaleUtils.GetStringAsync("Magic", Magic?.localizationKey ?? magicName);
         }
 
         public void SetCardActive(bool isActive)

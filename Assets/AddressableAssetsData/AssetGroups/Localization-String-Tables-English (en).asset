@@ -45,8 +45,8 @@ MonoBehaviour:
     - Locale-en
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0a1142b34f9014c53973d1b41964af03
-    m_Address: Card_en
+  - m_GUID: 7b41f0c6d29e4a53b8175ec0392da6f4
+    m_Address: Element_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
