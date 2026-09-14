@@ -14,6 +14,12 @@ namespace GameScene.Object
         {
             WDebug.Log("ProjectileSpawner Spawn called for type: " + dto.type);
 
+            if (dto.type == "SpiritBombBeam")
+            {
+                SpawnSpiritBombBeam(dto);
+                return;
+            }
+
             if (ShouldSuppressStormStagImpactProjectile(dto))
             {
                 WDebug.Log("Suppressed ElectricShot visual for Storm Stag charge impact.");
@@ -30,6 +36,14 @@ namespace GameScene.Object
             
             Destroy(projectileObject, dto.duration);
             
+            projectile.Init(dto);
+        }
+
+        private static void SpawnSpiritBombBeam(ProjectileDto dto)
+        {
+            GameObject projectileObject = new GameObject("SpiritBombBeam");
+            SpiritBombBeamProjectile projectile = projectileObject.AddComponent<SpiritBombBeamProjectile>();
+            Destroy(projectileObject, dto.duration);
             projectile.Init(dto);
         }
 

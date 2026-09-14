@@ -122,6 +122,17 @@ Transform 스케일 변형은 적용하지 않는다.
 유지해 한 개체의 부속 공격으로 읽혀야 한다. 주먹은 `TitanFistPresenter`가 아래에서
 위로 솟구치는 위치 연출을 담당하므로 스프라이트 자체에는 이동 잔상이나 지면
 그림자를 합성하지 않는다.
+## 해일 탄두 변형
+
+| 실제 파일 | 의미 이름 | 런타임 연결 |
+|---|---|---|
+| `TidalWarhead.png` | 해일 탄두 · 공중 표적 · 어두운 눈 | `TidalWarhead.prefab` 기본 SpriteRenderer |
+| `GroundTidalWarhead.png` | 해일 탄두 · 지상 표적 · 밝은 눈 | `GroundTidalWarhead.prefab` 기본 SpriteRenderer |
+
+두 파일은 애니메이션 프레임이 아니라 표적 종류에 따라 선택되는 별도 프리팹이다.
+그래도 같은 투사체로 읽혀야 하므로 `256x256`, PPU 100, 중앙 피벗, 실루엣,
+배율과 캔버스 배치를 공유한다. 지상형은 눈 내부 색만 밝게 바꾸며 몸, 지느러미,
+꼬리, 입과 알파는 공중형과 픽셀 단위로 동일하게 유지한다.
 
 ## Cloud Dragon 프레임
 
