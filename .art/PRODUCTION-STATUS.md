@@ -65,6 +65,11 @@
 | `SeaSerpent.png` | 클라이언트 PR (이슈 #672) | 201x256 RGBA. magic book 이 빈 칸이던 신규 아이콘. 물 소환수 문법, 곧추선 몸통에 두 겹 똬리. Unity Editor 검수는 남아 있다 |
 | `BoulderStrike.png` | 클라이언트 PR (이슈 #672) | 256x146 RGBA. 밀려 나가는 바위와 뒤따르는 초승달. 전투 화면 투사체는 여전히 `RockRolling.png` 를 빌려 쓴다 |
 | `SpiritBomb.png` | 클라이언트 PR (이슈 #672) | 256x183 RGBA. 필드 오브젝트가 없는 마법이라 책 아이콘 전용. LIGHTNING 과 NATURE 두 원소를 금색과 풀색으로 같이 쓴다 |
+| `ligtning_aura.png` | 클라이언트 PR (이슈 #680) | 512x469 RGBA. `fire_aura.png` 기법으로 재작업한 전기 공용 오라. 64px 실루엣 검수 완료 |
+| `nature_aura.png` | 클라이언트 PR (이슈 #680) | 512x484 RGBA. `fire_aura.png` 기법으로 재작업한 자연 공용 오라. 64px 실루엣 검수 완료 |
+| `rock_aura.png` | 클라이언트 PR (이슈 #680) | 506x512 RGBA. `fire_aura.png` 기법으로 재작업한 바위 공용 오라. 64px 실루엣 검수 완료 |
+| `water_aura.png` | 클라이언트 PR (이슈 #680) | 512x463 RGBA. `fire_aura.png` 기법으로 재작업한 물 공용 오라. `cloud.png`(운룡 전용 구형 오라)와는 별개. 64px 실루엣 검수 완료 |
+| `wind_aura.png` | 클라이언트 PR (이슈 #680) | 512x269 RGBA. `fire_aura.png` 기법으로 재작업한 바람 공용 오라. 64px 실루엣 검수 완료 |
 | `BombSprite.png`, `BombSpriteBomb.png` | 클라이언트 PR (이슈 #679) | 222x256 / 231x256 RGBA. 채색 그림체에서 master-v2 로 재작업. 도화선 불꽃을 양쪽 다 금색으로 맞췄다 |
 
 ## 다음 교체 후보
