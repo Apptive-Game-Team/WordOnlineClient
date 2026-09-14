@@ -94,7 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8600000000000001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fffea78d645343b9945c136fc92c0ff8, type: 3}
+  m_Script: {fileID: 11500000, guid: 05e3f05c7a654a28baf829adc9c2b4f0, type: 3}
   m_Name:
   m_EditorClassIdentifier:
-  duration: 0.25
+  spriteRenderer: {fileID: 8600000000000003}
+  startScaleRatio: 0.45
+  growDuration: 0.1
+  fadeDuration: 0.16
