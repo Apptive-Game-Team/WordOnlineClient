@@ -70,6 +70,7 @@
 | `rock_aura.png` | 클라이언트 PR (이슈 #680) | 506x512 RGBA. `fire_aura.png` 기법으로 재작업한 바위 공용 오라. 64px 실루엣 검수 완료 |
 | `water_aura.png` | 클라이언트 PR (이슈 #680) | 512x463 RGBA. `fire_aura.png` 기법으로 재작업한 물 공용 오라. `cloud.png`(운룡 전용 구형 오라)와는 별개. 64px 실루엣 검수 완료 |
 | `wind_aura.png` | 클라이언트 PR (이슈 #680) | 512x269 RGBA. `fire_aura.png` 기법으로 재작업한 바람 공용 오라. 64px 실루엣 검수 완료 |
+| `BombSprite.png`, `BombSpriteBomb.png` | 클라이언트 PR (이슈 #679) | 222x256 / 231x256 RGBA. 채색 그림체에서 master-v2 로 재작업. 도화선 불꽃을 양쪽 다 금색으로 맞췄다 |
 
 ## 다음 교체 후보
 
@@ -83,6 +84,7 @@
 | `Crater.png` | 현재 개념을 유지하고 마스터 렌더링 기법으로 통일 |
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
+| 정령 계열 live sprite 10개 | `WindSpirit`, `ThunderSpirit`, `ZapMouse`, `SeedSpiritSwarm`, `VineSpirit`, `CloudDragon`, `WillOWisp`, `Leafair`, `StormRider`, `BubbleSpirit` 이 아직 legacy 채색 그림체다. #679 에서 `BombSprite` 를 고치다 확인했다 |
 
 ## 갱신 규칙
 
