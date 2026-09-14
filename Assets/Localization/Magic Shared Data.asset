@@ -387,6 +387,10 @@ MonoBehaviour:
     m_Key: stormStag
     m_Metadata:
       m_Items: []
+  - m_Id: 78335800000000000
+    m_Key: titanRemnant
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

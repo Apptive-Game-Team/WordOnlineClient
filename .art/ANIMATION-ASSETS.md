@@ -110,6 +110,19 @@ Transform 스케일 변형은 적용하지 않는다.
 - 오라는 소환수 상세의 `부속 에셋`으로 표시한다.
 - 마법 상세와 소환수 상세은 양방향 링크를 제공한다.
 
+## 거신의 잔해 부속 공격
+
+| 실제 파일 | 의미 이름 | 런타임 연결 |
+|---|---|---|
+| `TitanRemnant.png` | 거신의 잔해 · 고정 본체 | `TitanRemnant.prefab` 기본 SpriteRenderer |
+| `TitanFist.png` | 거신의 잔해 · 솟구치는 돌주먹 | `TitanFist.prefab` 기본 SpriteRenderer |
+
+`TitanFist`는 본체의 공격 프레임이 아니라 적 위치에 별도 생성되는 ServedObject다.
+따라서 본체와 공유 캔버스를 쓰지 않지만, 같은 석재 크기·팔레트·카메라·광원을
+유지해 한 개체의 부속 공격으로 읽혀야 한다. 주먹은 `TitanFistPresenter`가 아래에서
+위로 솟구치는 위치 연출을 담당하므로 스프라이트 자체에는 이동 잔상이나 지면
+그림자를 합성하지 않는다.
+
 ## Cloud Dragon 프레임
 
 | 실제 파일 | 의미 이름 | 프리팹 연결 |
