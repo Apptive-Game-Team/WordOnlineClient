@@ -390,6 +390,30 @@ MonoBehaviour:
     m_Localized: Titan Remnant
     m_Metadata:
       m_Items: []
+  - m_Id: 78335900000000000
+    m_Localized: Wall Golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336000000000000
+    m_Localized: Shock Trap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336100000000000
+    m_Localized: Repair Totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336200000000000
+    m_Localized: Firework Tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336300000000000
+    m_Localized: Grass Generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336400000000000
+    m_Localized: Dragon Tower
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
