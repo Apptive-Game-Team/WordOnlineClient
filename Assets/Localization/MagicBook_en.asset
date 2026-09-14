@@ -280,6 +280,30 @@ MonoBehaviour:
       periodically erupting a giant stone fist beneath nearby enemies.
     m_Metadata:
       m_Items: []
+  - m_Id: 1000050
+    m_Localized: Summons a large, sturdy rock golem that fights only ground enemies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000051
+    m_Localized: Places a trap that arms when an enemy steps in, then stuns the area.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000052
+    m_Localized: Places a totem that stops nearby allied buildings from decaying.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000053
+    m_Localized: Builds a tower that lobs shells and blows up where they land.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000054
+    m_Localized: Builds a structure that keeps spreading leaf fields around it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000055
+    m_Localized: Builds a tower that fires flame shots at both ground and air targets.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -275,6 +275,30 @@ MonoBehaviour:
     m_Key: titan_remnant
     m_Metadata:
       m_Items: []
+  - m_Id: 1000050
+    m_Key: wall_golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000051
+    m_Key: shock_trap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000052
+    m_Key: repair_totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000053
+    m_Key: firework_tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000054
+    m_Key: grass_generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000055
+    m_Key: dragon_tower
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
