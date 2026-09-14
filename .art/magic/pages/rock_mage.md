@@ -41,10 +41,10 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `RockMageMagic` |
-| 상위 클래스 | `AbstractSingleSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `RockMage` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `DoubleTargetMob`, `CommonEffectReceiver` |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `DoubleTargetMob`, `RockDeathRemnant`, `CommonEffectReceiver` |
 | 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
 | 오브젝트 파라미터 | `ROCK_MAGE` |
 

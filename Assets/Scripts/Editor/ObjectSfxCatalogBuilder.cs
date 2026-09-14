@@ -46,7 +46,8 @@ public static class ObjectSfxCatalogBuilder
         new("OrganicBuilding",
             "GiantVine", "LifeTree", "PveNatureSlimeNest", "PveVineColony",
             "PveWaterSlimeNest", "SeedNest", "Vine", "VineColony"),
-        new("StoneBuilding", "Crater", "GroundCannon", "GroundTower", "RockTurret"),
+        new("StoneBuilding",
+            "Crater", "FireworkTower", "GroundCannon", "GroundTower", "RockTurret"),
         new("ArcaneDevice",
             "BubbleGenerator", "ElectricTower", "FireRune", "FrenzyTotem",
             "HealingTotem", "LightningRune", "ManaWell", "NatureRune",
@@ -63,9 +64,9 @@ public static class ObjectSfxCatalogBuilder
             "ChainLightning", "ElectricShot", "FireShot", "LeafShot", "MagmaFist",
             "TideCall", "WaterShot", "WindBlade"),
         new("TransientExplode",
-            "ElectricExplode", "FireExplode", "LeafExplode", "MagmaExplosion",
-            "RockExplode", "ShockOverload", "WaterExplode", "WaterExplosion",
-            "WindExplode")
+            "ElectricExplode", "FireExplode", "FireworkShell", "LeafExplode",
+            "MagmaExplosion", "RockExplode", "ShockOverload", "WaterExplode",
+            "WaterExplosion", "WindExplode")
     };
 
     private static readonly string[] IntentionalSilentRuntimeTypes =

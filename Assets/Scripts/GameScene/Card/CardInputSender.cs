@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Data;
 using Data.Magic;
 using GameScene.Dto;
-using GameScene.ServedObjectComponent;
 using Global;
 using Global.Util;
 using UnityEngine;
@@ -165,7 +164,6 @@ namespace GameScene.Card
             if (!combinedMagicResolver.CanResolve(GetCurrentRecipeTypes()))
             {
                 WDebug.Log("Cannot resolve the current recipe.");
-                PlayerFeedbackController.Instance.UseMagicFeedback();
                 OnMagicFailed?.Invoke();
                 SendInput(GameConfig.FIELD_CENTER);
                 return;
@@ -222,7 +220,6 @@ namespace GameScene.Card
             }
             _currentCardList.Clear();
             _currentCardNameList.Clear();
-            PlayerFeedbackController.Instance.UseMagicFeedback();
             SetExpectedMagicUI();
             isFieldSelectMode = false;
         }

@@ -23,7 +23,7 @@
 
 ## 동작
 
-1. 번개 타격을 적용한다.
+1. 상공에서 목표 지점으로 개체를 투하한다.
 
 ## 전투 프로필
 
@@ -34,7 +34,7 @@
 | 공격 형태 | 직접 공격 없음 또는 별도 효과 | 공격 컴포넌트와 시전 계열 기준 |
 | 표적 | 대상 제한을 이 파일에서 직접 확인하지 못함 | `TargetMask` 기준 |
 | 특수 이동·행동 | 추가 특수 이동 없음 | 부착 컴포넌트 기준 |
-| 생명주기 | 제한시간 후 소멸 | 파괴·시간제한 컴포넌트 기준 |
+| 생명주기 | 효과 완료 후 소멸 | 파괴·시간제한 컴포넌트 기준 |
 
 ## 서버 구조
 
@@ -42,11 +42,11 @@
 |---|---|
 | 구현 클래스 | `LightningDropMagic` |
 | 상위 클래스 | `AbstractDropMagic` |
-| 주 프리팹 | `LightningDrop` |
+| 주 프리팹 | `LightningCloud` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `CircleCollider`, `LightningStrike`, `TimedSelfDestroyer` |
-| 파라미터 키 | `RADIUS`, `DAMAGE` |
-| 오브젝트 파라미터 | `LIGHTNING_DROP` |
+| 부착 컴포넌트 | `LightningCloud` |
+| 파라미터 키 | `ATTACK_INTERVAL`, `QUANTITY`, `DAMAGE`, `RADIUS` |
+| 오브젝트 파라미터 | `LIGHTNING_CLOUD`, `LIGHTNING_DROP` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.
 
@@ -65,4 +65,4 @@
 ## 근거
 
 - Magic: `game/src/main/java/com/wordonline/server/game/domain/magic/implement/drop/LightningDropMagic.java`
-- Prefab initializer: `game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/drop/LightningDropPrefabInitializer.java`
+- Prefab initializer: `game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/lightning/LightningCloudPrefabInitializer.java`

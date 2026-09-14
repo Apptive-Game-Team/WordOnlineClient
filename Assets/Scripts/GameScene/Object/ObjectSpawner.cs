@@ -24,6 +24,11 @@ namespace GameScene.Object
 
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
 
+            if (createdObjectDto.type == "TitanFist")
+            {
+                TitanFistPresenter.Attach(spawnedObject);
+            }
+
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
 
@@ -33,12 +38,13 @@ namespace GameScene.Object
             servedObject.SetMaster(createdObjectDto.master);
             servedObject.id = createdObjectDto.id;
 
+            // Gizmos carry server-side shapes such as the detection radius, so they must land
+            // before BindListeners: a listener like DetectionRangeMarker reads the radius on bind.
+            servedObject.SetGizmos(createdObjectDto.gizmos);
+
             // Bind once the object is fully configured. Per-creature presentation lives on the
             // prefabs as ServedObjectBehaviour components, so nothing here keys off the object type.
             servedObject.BindListeners();
-#if UNITY_EDITOR
-            servedObject.SetGizmos(createdObjectDto.gizmos);
-#endif
 
             WDebug.Log($"Spawned object: {spawnedObject}, master set to: {createdObjectDto.master}, id set to: {createdObjectDto.id}");
             try

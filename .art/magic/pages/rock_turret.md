@@ -44,8 +44,8 @@
 | 상위 클래스 | `AbstractSummonMagic` |
 | 주 프리팹 | `RockTurret` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `Turret`, `TimedSelfDestroyer`, `CommonEffectReceiver` |
-| 파라미터 키 | `HP`, `MASS`, `RADIUS`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
+| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `Turret`, `TimedSelfDestroyer`, `RockDeathRemnant`, `CommonEffectReceiver` |
+| 파라미터 키 | `HP`, `MASS`, `RADIUS`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE`, `DURATION` |
 | 오브젝트 파라미터 | `ROCK_TURRET` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.

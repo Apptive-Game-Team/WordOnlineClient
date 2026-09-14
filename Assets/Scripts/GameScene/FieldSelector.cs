@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data;
 using Data.GameConfig;
 using Data.Magic;
@@ -25,20 +26,37 @@ namespace GameScene
         private const int AimIndicatorSortingOrder = 16;
         private const float AimIndicatorRadius = 0.18f;
 
+        /// <summary>
+        /// layer 하나가 먹는 sorting order 폭. <see cref="SkillIndicatorShapeRenderer"/> 가
+        /// 테두리를 채움보다 1 위에 두므로 2 씩 띄워야 layer 끼리 섞이지 않는다.
+        /// </summary>
+        private const int SkillIndicatorSortingStep = 2;
+
+        /// <summary>
+        /// indicator layer 가 쓸 수 있는 가장 낮은 sorting order. 사거리 원이 5 라 그 위여야 한다.
+        /// </summary>
+        private const int LowestSkillIndicatorSortingOrder = 6;
+
         /// <summary>참조를 찾지 못했을 때 씬 전체 스캔을 매 프레임 되풀이하지 않기 위한 재시도 간격.</summary>
         private const float MissingReferenceRetryInterval = 0.5f;
 
         CardInputSender cardInputSender;
         private GameObject currentAimObj;
         private GameObject currentRangeObj;
-        private GameObject currentSkillIndicator;
-        private bool currentSkillIndicatorIsLine;
 
         // 인디케이터 컴포넌트는 생성 시점에 잡아 둔다. 매 프레임 GetComponent를 부를 이유가 없다.
         private SkillIndicatorShapeRenderer aimShapeRenderer;
         private SkillIndicatorShapeRenderer rangeShapeRenderer;
-        private CircleSkillIndicator currentCircleIndicator;
-        private LineSkillIndicator currentLineIndicator;
+
+        // indicator document 는 layer 를 여러 개 담을 수 있다. layer 마다 GameObject 를 하나씩 쓰되,
+        // 프레임마다 만들고 부수지 않고 pool 에 남겨 두었다가 남는 것은 비활성화만 한다.
+        // 도형이 바뀌어도 SkillIndicatorShapeRenderer 가 같은 mesh 버퍼를 다시 채우므로 재사용해도 된다.
+        private readonly List<GameObject> skillIndicatorLayers = new List<GameObject>(4);
+        private readonly List<SkillIndicatorShapeRenderer> skillIndicatorLayerRenderers =
+            new List<SkillIndicatorShapeRenderer>(4);
+
+        // Resolve 가 매 프레임 여기에 결과를 담는다. list 를 새로 만들지 않아야 GC 가 생기지 않는다.
+        private readonly List<ResolvedIndicatorShape> resolvedShapes = new List<ResolvedIndicatorShape>(4);
 
         // 매 프레임 다시 구할 필요가 없는 참조/결과 캐시.
         private Camera cachedCamera;
@@ -61,8 +79,6 @@ namespace GameScene
 
         [SerializeField] private GameObject aimObject;
         [SerializeField] private GameObject rangeObject;
-        [SerializeField] private GameObject lineSkillIndicator;
-        [SerializeField] private GameObject circleSkillIndicator;
         [SerializeField] private Collider groundCollider;
         [SerializeField] private string groundObjectName = "PopupBookGround";
         private AudioSource interactionAudioSource;
@@ -80,11 +96,6 @@ namespace GameScene
             currentRangeObj = CreateRangeIndicator(out rangeShapeRenderer);
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
-
-            currentSkillIndicator = CreateCircleSkillIndicator(out currentCircleIndicator);
-            currentLineIndicator = null;
-            currentSkillIndicatorIsLine = false;
-            currentSkillIndicator.SetActive(false);
         }
 
         void Update()
@@ -93,10 +104,7 @@ namespace GameScene
             {
                 if (currentAimObj.activeSelf) currentAimObj.SetActive(false);
                 if (currentRangeObj.activeSelf) currentRangeObj.SetActive(false);
-                if (currentSkillIndicator != null && currentSkillIndicator.activeSelf)
-                {
-                    currentSkillIndicator.SetActive(false);
-                }
+                HideSkillIndicatorLayersFrom(0);
 
                 return;
             }
@@ -108,39 +116,13 @@ namespace GameScene
             if (!TryGetCurrentMagicParameters(out CombinedMagicData magicData, out float range, out float radius))
             {
                 if (currentRangeObj.activeSelf) currentRangeObj.SetActive(false);
-                if (currentSkillIndicator != null && currentSkillIndicator.activeSelf)
-                {
-                    currentSkillIndicator.SetActive(false);
-                }
+                HideSkillIndicatorLayersFrom(0);
                 return;
             }
             LogMagicParametersIfChanged(magicData, range, radius);
 
             Vector3 casterPosition = GetCasterPosition();
             rangeShapeRenderer.SetCircle(casterPosition, range, true, RangeIndicatorSortingOrder, 0f);
-
-
-            bool wantLine = IsLineMagic(magicData);
-
-
-            if (currentSkillIndicator == null || currentSkillIndicatorIsLine != wantLine)
-            {
-                if (currentSkillIndicator != null) Destroy(currentSkillIndicator);
-                if (wantLine)
-                {
-                    currentSkillIndicator = CreateLineSkillIndicator(out currentLineIndicator);
-                    currentCircleIndicator = null;
-                }
-                else
-                {
-                    currentSkillIndicator = CreateCircleSkillIndicator(out currentCircleIndicator);
-                    currentLineIndicator = null;
-                }
-                currentSkillIndicatorIsLine = wantLine;
-            }
-
-
-            if (!currentSkillIndicator.activeSelf) currentSkillIndicator.SetActive(true);
 
             if (!TryGetGroundPosition(Input.mousePosition, out Vector3 mouseWorldPos))
             {
@@ -149,7 +131,15 @@ namespace GameScene
 
             Vector3 previewPosition = ClampToRange(mouseWorldPos, casterPosition, range);
             aimShapeRenderer.SetCircle(previewPosition, AimIndicatorRadius, true, AimIndicatorSortingOrder, 0f);
-            UpdateSkillIndicator(wantLine, casterPosition, previewPosition, range, radius);
+
+            MagicIndicatorResolver.Resolve(
+                magicData,
+                casterPosition,
+                previewPosition,
+                MagicIndicatorResolver.GetForwardDirection(),
+                range,
+                resolvedShapes);
+            DrawSkillIndicatorLayers(resolvedShapes);
 
             // UI 레이캐스트는 클릭을 걸러내는 용도뿐이므로, 실제로 버튼을 뗀 프레임에만 수행한다.
             if (!Input.GetMouseButtonUp(0))
@@ -165,10 +155,9 @@ namespace GameScene
             }
 
             interactionAudioSource.PlayOneShot(SoundAssets.FieldConfirm);
-            PlayerFeedbackController.Instance.UseMagicFeedback();
             currentAimObj.SetActive(false);
             currentRangeObj.SetActive(false);
-            currentSkillIndicator.SetActive(false);
+            HideSkillIndicatorLayersFrom(0);
             CardInputSender.Instance.SetExpectedMagicUI();
         }
 
@@ -405,30 +394,74 @@ namespace GameScene
             return true;
         }
 
-        private static bool IsLineMagic(CombinedMagicData magicData)
+        /// <summary>
+        /// 푼 도형을 순서대로 그린다. pool 이 모자라면 그때만 GameObject 를 만들고, 남으면 비활성화만 한다.
+        /// 여기서는 list 도 문자열도 새로 만들지 않으므로 프레임마다 GC 가 생기지 않는다.
+        /// </summary>
+        private void DrawSkillIndicatorLayers(List<ResolvedIndicatorShape> shapes)
         {
-            return magicData.castType == CardType.Shoot;
-        }
-
-        private void UpdateSkillIndicator(
-            bool isLine,
-            Vector3 casterPosition,
-            Vector3 previewPosition,
-            float range,
-            float radius)
-        {
-            if (isLine)
+            for (int i = 0; i < shapes.Count; i++)
             {
-                if (currentLineIndicator != null)
+                SkillIndicatorShapeRenderer layerRenderer = GetOrCreateSkillIndicatorLayer(i);
+                GameObject layerObject = skillIndicatorLayers[i];
+                if (!layerObject.activeSelf) layerObject.SetActive(true);
+
+                ResolvedIndicatorShape shape = shapes[i];
+                int sortingOrder = GetLayerSortingOrder(i, shapes.Count);
+                if (shape.kind == ResolvedIndicatorShape.Kind.Circle)
                 {
-                    currentLineIndicator.SetIndicator(casterPosition, previewPosition, range, radius);
+                    // document layer 는 edgeWidth 가 0 보다 크면 링이고, fallback 의 attack_range 원만
+                    // 속을 채운 채 테두리를 두른다. 그 구분을 도형이 들고 온다.
+                    layerRenderer.SetCircle(
+                        shape.origin, shape.radius, shape.fill, sortingOrder, shape.edgeWidth);
                 }
-                return;
+                else
+                {
+                    // SetLine 의 width 는 전체 폭이라 다시 반으로 나눈다.
+                    layerRenderer.SetLine(
+                        shape.origin, shape.target, shape.length, sortingOrder, shape.halfWidth * 2f);
+                }
             }
 
-            if (currentCircleIndicator != null)
+            HideSkillIndicatorLayersFrom(shapes.Count);
+        }
+
+        /// <summary>
+        /// layer 무더기를 조준점(<see cref="AimIndicatorSortingOrder"/>) 바로 아래에 붙인다. 마지막 layer 가
+        /// 가장 위에 오고, 나머지는 아래로 <see cref="SkillIndicatorSortingStep"/> 씩 내려간다.
+        /// layer 가 하나뿐이면 14 가 되어 이 변경 전 <see cref="CircleSkillIndicator"/> 와 같은 자리다.
+        /// 위에서부터 쌓는 이유는 layer 개수가 마법마다 다르기 때문이다. 아래에서부터 쌓으면 layer 가
+        /// 둘 이상인 마법에서 위쪽 layer 가 조준점(16)과 <c>SelectionGroundIndicator</c>(17) 를 덮는다.
+        /// </summary>
+        private static int GetLayerSortingOrder(int index, int layerCount)
+        {
+            int order = AimIndicatorSortingOrder - (layerCount - index) * SkillIndicatorSortingStep;
+            return order < LowestSkillIndicatorSortingOrder ? LowestSkillIndicatorSortingOrder : order;
+        }
+
+        private SkillIndicatorShapeRenderer GetOrCreateSkillIndicatorLayer(int index)
+        {
+            // pool 이 커지는 것은 layer 가 지금까지보다 많은 마법을 처음 겨눌 때뿐이다.
+            while (skillIndicatorLayers.Count <= index)
             {
-                currentCircleIndicator.SetIndicator(previewPosition, radius);
+                // 도형은 월드 좌표로 그려지고 필드 경계 클리핑도 월드 기준이므로 부모를 두지 않는다.
+                GameObject layerObject = new GameObject($"SkillIndicatorLayer{skillIndicatorLayers.Count}");
+                skillIndicatorLayers.Add(layerObject);
+                skillIndicatorLayerRenderers.Add(layerObject.AddComponent<SkillIndicatorShapeRenderer>());
+            }
+
+            return skillIndicatorLayerRenderers[index];
+        }
+
+        private void HideSkillIndicatorLayersFrom(int firstUnusedIndex)
+        {
+            for (int i = firstUnusedIndex; i < skillIndicatorLayers.Count; i++)
+            {
+                GameObject layerObject = skillIndicatorLayers[i];
+                if (layerObject != null && layerObject.activeSelf)
+                {
+                    layerObject.SetActive(false);
+                }
             }
         }
 
@@ -444,20 +477,6 @@ namespace GameScene
         {
             GameObject indicator = new GameObject("RangeIndicator");
             shapeRenderer = indicator.AddComponent<SkillIndicatorShapeRenderer>();
-            return indicator;
-        }
-
-        private static GameObject CreateLineSkillIndicator(out LineSkillIndicator lineIndicator)
-        {
-            GameObject indicator = new GameObject("LineSkillIndicator");
-            lineIndicator = indicator.AddComponent<LineSkillIndicator>();
-            return indicator;
-        }
-
-        private static GameObject CreateCircleSkillIndicator(out CircleSkillIndicator circleIndicator)
-        {
-            GameObject indicator = new GameObject("CircleSkillIndicator");
-            circleIndicator = indicator.AddComponent<CircleSkillIndicator>();
             return indicator;
         }
 

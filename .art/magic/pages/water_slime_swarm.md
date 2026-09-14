@@ -41,12 +41,12 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `WaterSlimeSwarmMagic` |
-| 상위 클래스 | `AbstractSwarmSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `WaterSlime` |
 | 부가 프리팹 | `WaterField` |
-| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `Slime`, `PathSpawner`, `CommonEffectReceiver` |
-| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL` |
-| 오브젝트 파라미터 | `WATER_SLIME` |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `WaterSlimeRangeAttackMob`, `PathSpawner`, `CommonEffectReceiver` |
+| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
+| 오브젝트 파라미터 | `WATER_SLIME`, `AQUA_ARCHER` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.
 

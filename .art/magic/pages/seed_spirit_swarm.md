@@ -41,7 +41,7 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `SeedSpiritSwarmMagic` |
-| 상위 클래스 | `AbstractSwarmSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `SeedSpirit` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
 | 부착 컴포넌트 | 없음 또는 소스에서 직접 확인되지 않음 |

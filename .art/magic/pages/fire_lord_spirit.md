@@ -42,7 +42,7 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `FireLordSpiritMagic` |
-| 상위 클래스 | `AbstractSingleSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `FireLordSpirit` |
 | 부가 프리팹 | `FireChildSpirit` |
 | 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `KeepDistanceMob`, `LimitedSequenceSpawner`, `CommonEffectReceiver` |
