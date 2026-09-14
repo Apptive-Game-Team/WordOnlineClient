@@ -1,0 +1,21 @@
+Game prop sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered.
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- The object is a stationary building sitting on the ground, viewed from the same soft three-quarter camera as the references. It is rooted in place, not flying or floating.
+- No face, no eyes, no mouth. This is a plant structure, not a creature.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: `grass_generator`, a NATURE-element World Tree building that the grass spirits grow on the battlefield. Once it takes root it continuously buds off and scatters small leaf-field patches in a ring around itself for as long as it stands (do not draw the leaf fields themselves, only the generator). It is a stationary structure with hit points, like a small tree stump or nest, not a mobile creature and not a humanoid spirit. Use the attached `WorldTreeSpirit` reference for leaf-cluster and bark material only (faceted leaf whorls, warm woody bark, pale cream highlights). Nature palette: leaf greens #B8CE59, #9DA74D, #768738, #384823; warm woody bark brown for stems and roots; a pale warm cream for any exposed core, echoing the way `LifeTree`'s trunk carries a glowing knot and `SeedNest` carries a woven hollow at its center (subject identity only — do not copy their rendering technique, which predates the current master style).
