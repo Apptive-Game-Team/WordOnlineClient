@@ -415,6 +415,26 @@ MonoBehaviour:
     m_Key: dragonTower
     m_Metadata:
       m_Items: []
+  - m_Id: 78336500000000000
+    m_Key: seaSerpent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336600000000000
+    m_Key: spiritBomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336700000000000
+    m_Key: tidalWarhead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336800000000000
+    m_Key: boulderStrike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336900000000000
+    m_Key: bombSprite
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
