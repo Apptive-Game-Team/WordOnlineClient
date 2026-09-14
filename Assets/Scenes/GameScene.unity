@@ -338,17 +338,6 @@ MonoBehaviour:
   isActive: 1
   manaBarButton: {fileID: 2078343155}
   fieldButton: {fileID: 1054381334}
---- !u!114 &47010099 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 260973228263790789, guid: dcc7711198ef74cc8a35a7bd5c05f3f2, type: 3}
-  m_PrefabInstance: {fileID: 6047380083849384164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fdbb74f79dc4d38935551a59c0253b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &65021188
 GameObject:
   m_ObjectHideFlags: 0
@@ -6035,7 +6024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08aa0394380fbc840b10175adb4f8445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combinedMagicResolver: {fileID: 47010099}
   manaText: {fileID: 1989999954}
   manaSlider: {fileID: 1254746380}
   cardUIPrefab: {fileID: 892263666564006026, guid: 95f1db2819f38d2488ceb29a0e1253d6, type: 3}

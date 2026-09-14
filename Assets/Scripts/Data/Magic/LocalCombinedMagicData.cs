@@ -1,16 +1,15 @@
+using System;
 using System.Collections.Generic;
 using Data.Util;
 
 namespace Data.Magic
 {
+    /// <summary>
+    /// 서버가 준 마법 목록을 클라이언트가 쓰는 <see cref="CombinedMagicData"/> 로 바꿔서 돌려준다.
+    /// 목록이 아직 도착하지 않았으면 빈 목록을 돌려준다. 내장 fallback 표는 없다.
+    /// </summary>
     public static class LocalCombinedMagicData
     {
-        /// <summary>
-        /// Returns the effective recipe list.
-        /// When a versioned server payload is available, recipes come from the server
-        /// (authoritative) and server name is used for both localization and sprite resource lookup.
-        /// When the payload is unavailable, returns an empty list instead of using local recipe fallbacks.
-        /// </summary>
         public static List<CombinedMagicData> GetEffectiveDataList()
         {
             var versionedMagics = MagicInfoDataSource.GetCachedMagics();
@@ -22,113 +21,99 @@ namespace Data.Magic
             return emptyDataList;
         }
 
+        /// <summary>이름으로 마법 카드를 찾는다. 못 찾으면 null.</summary>
         public static CombinedMagicData GetCombinedMagicData(string name)
         {
-            return GetEffectiveDataList().Find(x => x.localizationKey == name);
+            TryGetByName(name, out CombinedMagicData match);
+            return match;
         }
 
-        public static bool TryGetByRecipe(IList<CardType> recipe, out CombinedMagicData match)
+        /// <summary>
+        /// 이름으로 마법 카드를 찾는다. 같은 마법이 서버 이름(<c>evil_ent</c>), 번역 키(<c>evilEnt</c>),
+        /// 리소스 이름(<c>EvilEnt</c>) 세 철자로 돌아다니므로 셋 다 받는다.
+        /// </summary>
+        public static bool TryGetByName(string name, out CombinedMagicData match)
         {
-            if (recipe == null)
+            match = null;
+            if (string.IsNullOrWhiteSpace(name))
             {
-                match = null;
                 return false;
             }
 
-            foreach (var data in GetEffectiveDataList())
+            foreach (CombinedMagicData data in GetEffectiveDataList())
             {
-                if (AreSameMultiset(data.recipe, recipe))
+                if (IsSameName(data.serverName, name) ||
+                    IsSameName(data.localizationKey, name) ||
+                    IsSameName(data.resourceName, name))
                 {
                     match = data;
                     return true;
                 }
             }
 
-            match = null;
             return false;
         }
 
-        private static List<CombinedMagicData> BuildCombinedMagicData<T>(IReadOnlyList<T> source)
-            where T : IMagicRecipeSource
+        public static bool TryGetById(long id, out CombinedMagicData match)
+        {
+            match = null;
+            foreach (CombinedMagicData data in GetEffectiveDataList())
+            {
+                if (data.id == id)
+                {
+                    match = data;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>서버가 보낸 원소 문자열을 enum 으로 바꾼다. 모르는 값은 None 이다.</summary>
+        public static ElementType ParseElement(string element)
+        {
+            if (string.IsNullOrWhiteSpace(element))
+            {
+                return ElementType.None;
+            }
+
+            return Enum.TryParse(element, true, out ElementType parsed) ? parsed : ElementType.None;
+        }
+
+        private static List<CombinedMagicData> BuildCombinedMagicData(IReadOnlyList<MagicInfoDto> source)
         {
             var result = new List<CombinedMagicData>(source.Count);
-            foreach (var serverRecipe in source)
+            foreach (MagicInfoDto magic in source)
             {
-                if (!System.Enum.TryParse(serverRecipe.CastType, true, out CardType castType) ||
-                    !IsCastType(castType))
-                {
-                    continue;
-                }
-
-                var recipe = new List<CardType>(serverRecipe.Cards.Count);
-                var valid = true;
-                foreach (var cardName in serverRecipe.Cards)
-                {
-                    if (System.Enum.TryParse(cardName, true, out CardType cardType))
-                    {
-                        recipe.Add(cardType);
-                    }
-                    else
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (!valid)
+                if (magic == null || string.IsNullOrWhiteSpace(magic.name))
                 {
                     continue;
                 }
 
                 result.Add(new CombinedMagicData
                 {
-                    id = serverRecipe.Id,
-                    serverName = serverRecipe.Name,
-                    localizationKey = StringUtils.ToCamelCase(serverRecipe.Name),
-                    textLocalizationKey = string.IsNullOrWhiteSpace(serverRecipe.Text)
-                        ? StringUtils.ToSnakeCase(serverRecipe.Name)
-                        : serverRecipe.Text,
-                    resourceName = StringUtils.ToPascalCase(serverRecipe.Name),
-                    castType = castType,
-                    recipe = recipe,
+                    id = magic.id,
+                    serverName = magic.name,
+                    localizationKey = StringUtils.ToCamelCase(magic.name),
+                    textLocalizationKey = string.IsNullOrWhiteSpace(magic.text)
+                        ? StringUtils.ToSnakeCase(magic.name)
+                        : magic.text,
+                    resourceName = StringUtils.ToPascalCase(magic.name),
+                    element = ParseElement(magic.element),
+                    manaCost = magic.manaCost,
+                    aimShape = magic.aimShape,
                 });
             }
 
             return result;
         }
 
+        private static bool IsSameName(string left, string right)
+        {
+            return !string.IsNullOrEmpty(left) &&
+                   string.Equals(left, right, StringComparison.OrdinalIgnoreCase);
+        }
+
         private static readonly List<CombinedMagicData> emptyDataList = new();
-
-        private static bool IsCastType(CardType cardType)
-        {
-            return cardType == CardType.Spawn ||
-                   cardType == CardType.Drop ||
-                   cardType == CardType.Explode ||
-                   cardType == CardType.Build ||
-                   cardType == CardType.Shoot;
-        }
-
-        private static bool AreSameMultiset(IList<CardType> a, IList<CardType> b)
-        {
-            if (a == null || b == null) return false;
-            if (a.Count != b.Count) return false;
-
-            var counts = new Dictionary<CardType, int>();
-            foreach (var x in a)
-            {
-                counts.TryGetValue(x, out var count);
-                counts[x] = count + 1;
-            }
-
-            foreach (var y in b)
-            {
-                if (!counts.TryGetValue(y, out var count) || count == 0)
-                    return false;
-
-                counts[y] = count - 1;
-            }
-
-            return true;
-        }
     }
 }

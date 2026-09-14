@@ -11,15 +11,11 @@ namespace GameScene
 {
     public class GameSceneUIController : LocalSingletonObject<GameSceneUIController>
     {
-        [SerializeField] private CombinedMagicResolver combinedMagicResolver;
-        
         [SerializeField] private TextMeshProUGUI manaText;
         [SerializeField] private Slider manaSlider;
     
         [SerializeField] private CardUI cardUIPrefab;
         [SerializeField] private GameObject lowerBar;
-
-        [SerializeField] private CardImageMapper cardImageMapper;
 
         [SerializeField] private ExpectedMagicUI expectedMagicUI;
     
@@ -57,11 +53,16 @@ namespace GameScene
             manaCostPreview.Render(currentMana, expectedManaCost);
         }
 
+        /// <summary>
+        /// 손패에 카드를 한 장 붙인다. 카드 앞면은 마법별 아트다.
+        /// TODO(#576): 서버 frame 의 cards.added 가 이름 목록에서 마법 id 목록으로 바뀌면
+        /// 이 인자를 long 으로 옮기고 id 로 마법을 찾는다.
+        /// </summary>
         public void AddCard(string cardname)
         {
-            if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null || cardImageMapper == null) return;
+            if (lowerBar == null || cardUIPrefab == null || magicHelperUI == null) return;
             CardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
-            cardUI.Init(cardname, cardImageMapper.GetCardImage(cardname));
+            cardUI.Init(cardname, DeckScene.DeckCardSpriteResolver.GetMagicSprite(cardname));
             magicHelperUI.RefreshSuggestions();
         }
 
@@ -96,24 +97,17 @@ namespace GameScene
             return cardNames;
         } 
 
-        public void TrySetExpectedMagicUI(IList<CardType> recipe)
+        /// <summary>고른 카드의 마법을 수정구에 그린다. 고른 것이 없으면 비운다.</summary>
+        public void TrySetExpectedMagicUI(CombinedMagicData magic, int selectedCardCount)
         {
             if (expectedMagicUI == null) return;
-            combinedMagicResolver.TryResolve(recipe, out CombinedMagicData data);
-            if (data != null)
+            if (magic != null)
             {
-                expectedMagicUI.SetImage(data.GetSprite());
+                expectedMagicUI.SetImage(magic.GetSprite());
                 return;
             }
 
-            if (recipe.Count == 0)
-            {
-                expectedMagicUI.SetImage(null);
-            }
-            else
-            {
-                expectedMagicUI.SetImage(expectingFailedMagicImage);
-            }
+            expectedMagicUI.SetImage(selectedCardCount == 0 ? null : expectingFailedMagicImage);
         }
     }
 }

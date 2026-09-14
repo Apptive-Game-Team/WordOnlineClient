@@ -6,7 +6,6 @@ using GameScene.Card;
 using GameScene.PopupBook;
 using GameScene.ServedObjectComponent;
 using Global;
-using Global.Util;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace TutorialScene
     {
         private static readonly Vector3 CasterPosition = new Vector3(1f, 0f, 5f);
 
-        public event Action<IReadOnlyList<CardType>> MagicUsed;
+        public event Action<IReadOnlyList<CombinedMagicData>> MagicUsed;
         public event Action SingleCardUsed;
 
         private readonly List<string> _currentCardNameList = new List<string>();
@@ -87,16 +86,15 @@ namespace TutorialScene
             if (!CanSelectField)
                 return;
 
-            var types = GetCurrentRecipeTypes();
-
-            if (!LocalCombinedMagicData.TryGetByRecipe(types, out _))
+            // 카드 한 장이 마법 하나이므로 조합을 맞춰볼 것이 없다.
+            if (GetCurrentMagic() == null)
             {
                 if (_currentCardList.Count == 1)
                 {
                     SingleCardUsed?.Invoke();
                 }
 
-                WDebug.Log("Cannot resolve the current recipe.");
+                WDebug.Log("Selected card has no magic data yet.");
                 TutorialSceneUIController.Instance?.PlayMagicFailEffect();
                 ClearCurrentSelection();
                 return;
@@ -107,13 +105,13 @@ namespace TutorialScene
 
         public string GetMagicName()
         {
-            string result =
-                _currentCardNameList.Find(c => c.Contains("Build")) ??
-                _currentCardNameList.Find(c => c.Contains("Spawn")) ??
-                _currentCardNameList.Find(c => c.Contains("Explode")) ??
-                _currentCardNameList.Find(c => c.Contains("Drop")) ??
-                _currentCardNameList.Find(c => c.Contains("Shoot"));
-            return result;
+            return _currentCardNameList.Count > 0 ? _currentCardNameList[0] : null;
+        }
+
+        /// <summary>지금 고른 카드의 마법. 한 번에 한 장만 고르므로 목록의 첫 장이다.</summary>
+        public CombinedMagicData GetCurrentMagic()
+        {
+            return _currentCardList.Count > 0 ? _currentCardList[0].Magic : null;
         }
 
         public void CancelAll()
@@ -137,18 +135,21 @@ namespace TutorialScene
 
         public void SendInput(Vector3 pos)
         {
-            var types = GetCurrentRecipeTypes();
-            var input = new CardUseInput(new List<string>(_currentCardNameList), pos);
+            var magics = GetCurrentMagics();
 
-            MagicUsed?.Invoke(types);
+            MagicUsed?.Invoke(magics);
 
-            if (_currentCardNameList.Contains("Spawn"))
-            {
-                AttachPopupBookPresenter(Instantiate(mobPrefab, pos, quaternion.identity));
-            }
-            else if (_currentCardNameList.Contains("Shoot"))
+            // TODO(#579): 튜토리얼은 아직 Spawn/Shoot 카드 이름으로 연출을 고른다.
+            // 그 카드가 없어졌으므로 마법의 조준 모양으로 갈라 둔다. 튜토리얼 대본을 새 마법으로
+            // 다시 쓸 때 이 분기 전체를 다시 설계한다.
+            CombinedMagicData magic = magics.Count > 0 ? magics[0] : null;
+            if (magic != null && magic.IsLineAim)
             {
                 AttachPopupBookPresenter(Instantiate(shotPrefab, CasterPosition, quaternion.identity));
+            }
+            else if (magic != null)
+            {
+                AttachPopupBookPresenter(Instantiate(mobPrefab, pos, quaternion.identity));
             }
             
             _currentCardNameList.Clear();
@@ -196,15 +197,15 @@ namespace TutorialScene
             SetExpectedMagicUI();
         }
 
-        private List<CardType> GetCurrentRecipeTypes()
+        private List<CombinedMagicData> GetCurrentMagics()
         {
-            var list = new List<CardType>(_currentCardList.Count);
+            var list = new List<CombinedMagicData>(_currentCardList.Count);
             foreach (var c in _currentCardList)
             {
-                if (CardNameMapper.TryMapToCardType(c.CardName, out var t))
-                    list.Add(t);
+                if (c.Magic != null)
+                    list.Add(c.Magic);
                 else
-                    WDebug.LogWarning($"[CardInputSender] Unknown CardName → CardType map: {c.CardName}");
+                    WDebug.LogWarning($"[TutorialCardSender] Unknown magic name: {c.CardName}");
             }
 
             return list;
@@ -212,9 +213,9 @@ namespace TutorialScene
 
         public void SetExpectedMagicUI()
         {
-            List<CardType> recipe = GetCurrentRecipeTypes();
-            TutorialSceneUIController.Instance.TrySetExpectedMagicUI(recipe);
-            TutorialSceneUIController.Instance.SetExpectedManaCost(CardManaCost.SumOf(recipe));
+            CombinedMagicData magic = GetCurrentMagic();
+            TutorialSceneUIController.Instance.TrySetExpectedMagicUI(magic);
+            TutorialSceneUIController.Instance.SetExpectedManaCost(CardManaCost.Of(magic));
         }
     }
 }

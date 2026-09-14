@@ -164,6 +164,8 @@ namespace DeckScene
                 return new DeckRequirementSummary(0, 0, 0);
             }
 
+            // TODO(#577): 덱 규칙이 "15장, 같은 마법 최대 3장, 서로 다른 원소 2종 이상"으로 바뀐다.
+            // 서버가 card.type 을 더 이상 보내지 않으므로 아래 두 값은 지금 0으로 나온다.
             return new DeckRequirementSummary(
                 CurrentDeck.cards?.Length ?? 0,
                 CountDistinctCardNamesByType("Magic"),
@@ -171,46 +173,35 @@ namespace DeckScene
             );
         }
 
+        /// <summary>
+        /// 이 카드로 쓸 수 있는 마법. 카드 한 장이 곧 마법 하나이므로 그 마법 하나다.
+        /// TODO(#577): 덱 화면이 정리되면 "이 카드로 만들 수 있는 마법" 목록 UI 자체가 없어진다.
+        /// </summary>
         public IReadOnlyList<CombinedMagicData> GetOwnedCardMagicSuggestions(CardDto card)
         {
-            if (!TryGetCardType(card, out CardType cardType))
+            if (!TryGetMagic(card, out CombinedMagicData magic))
             {
                 return Array.Empty<CombinedMagicData>();
             }
 
-            return LocalCombinedMagicData.GetEffectiveDataList()
-                .Where(magic => magic.recipe != null && magic.recipe.Contains(cardType))
-                .OrderByDescending(magic => magic.recipe.Count)
-                .ThenBy(magic => magic.localizationKey)
-                .Take(3)
-                .ToList();
+            return new List<CombinedMagicData> { magic };
         }
 
+        /// <summary>덱에 든 마법 목록. 덱의 카드가 곧 마법이다.</summary>
         public IReadOnlyList<CombinedMagicData> GetCurrentDeckAvailableMagics()
         {
-            var cardCounts = new Dictionary<CardType, int>();
+            var magics = new List<CombinedMagicData>();
             foreach (CardDto card in CurrentDeck?.cards ?? Array.Empty<CardDto>())
             {
-                if (!TryGetCardType(card, out CardType cardType))
+                if (TryGetMagic(card, out CombinedMagicData magic) &&
+                    !magics.Exists(existing => existing.id == magic.id))
                 {
-                    continue;
-                }
-
-                if (!cardCounts.TryAdd(cardType, 1))
-                {
-                    cardCounts[cardType]++;
+                    magics.Add(magic);
                 }
             }
 
-            if (cardCounts.Count == 0)
-            {
-                return Array.Empty<CombinedMagicData>();
-            }
-
-            return LocalCombinedMagicData.GetEffectiveDataList()
-                .Where(magic => CanMake(magic.recipe, cardCounts))
-                .OrderByDescending(magic => magic.recipe.Count)
-                .ThenBy(magic => magic.localizationKey)
+            return magics
+                .OrderBy(magic => magic.localizationKey)
                 .ToList();
         }
 
@@ -359,37 +350,16 @@ namespace DeckScene
                 .Count() ?? 0;
         }
 
-        private static bool TryGetCardType(CardDto card, out CardType cardType)
+        private static bool TryGetMagic(CardDto card, out CombinedMagicData magic)
         {
-            cardType = CardType.Dummy;
-            return card != null && CardNameMapper.TryMapToCardType(card.name, out cardType);
-        }
-
-        private static bool CanMake(IList<CardType> recipe, Dictionary<CardType, int> cardCounts)
-        {
-            if (recipe == null || recipe.Count == 0)
+            magic = null;
+            if (card == null)
             {
                 return false;
             }
 
-            var need = new Dictionary<CardType, int>();
-            foreach (CardType cardType in recipe)
-            {
-                if (!need.TryAdd(cardType, 1))
-                {
-                    need[cardType]++;
-                }
-            }
-
-            foreach (var item in need)
-            {
-                if (!cardCounts.TryGetValue(item.Key, out int have) || have < item.Value)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return LocalCombinedMagicData.TryGetById(card.id, out magic) ||
+                   CardNameMapper.TryMapToMagic(card.name, out magic);
         }
     }
 }

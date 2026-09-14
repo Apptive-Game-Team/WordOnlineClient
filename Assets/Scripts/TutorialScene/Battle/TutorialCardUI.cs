@@ -1,4 +1,3 @@
-using System;
 using Data;
 using Data.Localization;
 using Data.Magic;
@@ -33,17 +32,20 @@ namespace TutorialScene
         private bool isActive = false;
     
         public string CardName;
-        public CardType CardType { get; private set; }
+
+        /// <summary>이 카드가 곧 이 마법이다.</summary>
+        public CombinedMagicData Magic { get; private set; }
+
         public string DisplayName => cardNameText.text;
         public string Mana => cardManaText.text;
 
-        public async void Init(string name)
+        public async void Init(string magicName)
         {
-            CardName = name;
-            MagicData magicData = LocalMagicData.GetMagicData(name);
-            CardType = Enum.Parse<CardType>(name, true);
-            cardManaText.text = magicData.mana.ToString();
-            cardNameText.text = await LocaleUtils.GetStringAsync("Card", name);
+            CardName = magicName;
+            Magic = LocalCombinedMagicData.GetCombinedMagicData(magicName);
+            cardManaText.text = CardManaCost.Of(Magic).ToString();
+            // TODO(#580): 카드 이름 번역표가 Magic 표로 합쳐지면 표 이름을 "Magic" 으로 옮긴다.
+            cardNameText.text = await LocaleUtils.GetStringAsync("Card", Magic?.localizationKey ?? magicName);
         }
 
         public void SetCardActive(bool isActive)

@@ -29,8 +29,6 @@ namespace TutorialScene
         [SerializeField] private TutorialCardUI cardUIPrefab;
         [SerializeField] private GameObject lowerBar;
 
-        [SerializeField] private CardImageMapper cardImageMapper;
-
         [SerializeField] private ExpectedMagicUI expectedMagicUI;
     
         [SerializeField] private MagicFailEffecter leftUserMagicFailEffecter;
@@ -134,9 +132,11 @@ namespace TutorialScene
 
         public void AddCard(string cardname)
         {
-            if (lowerBar == null || cardUIPrefab == null || cardImageMapper == null) return;
+            if (lowerBar == null || cardUIPrefab == null) return;
             TutorialCardUI cardUI = Instantiate(cardUIPrefab, lowerBar.transform);
-            cardUI.transform.GetChild(2).GetComponent<Image>().sprite = cardImageMapper.GetCardImage(cardname);
+            // 카드 앞면은 마법마다 다른 아트다.
+            cardUI.transform.GetChild(2).GetComponent<Image>().sprite =
+                DeckScene.DeckCardSpriteResolver.GetMagicSprite(cardname);
             cardUI.Init(cardname);
         }
 
@@ -146,16 +146,10 @@ namespace TutorialScene
             return CardHotkey.FindCardAt<TutorialCardUI>(lowerBar.transform, index);
         }
 
-        public void TrySetExpectedMagicUI(IList<CardType> recipe)
+        public void TrySetExpectedMagicUI(CombinedMagicData magic)
         {
             if (expectedMagicUI == null) return;
-            LocalCombinedMagicData.TryGetByRecipe(recipe, out CombinedMagicData data);
-            if (data != null)
-            {
-                expectedMagicUI.SetImage(data.GetSprite());
-                return;
-            }
-            expectedMagicUI.SetImage(null);
+            expectedMagicUI.SetImage(magic?.GetSprite());
         }
     
         public void PlayMagicFailEffect()

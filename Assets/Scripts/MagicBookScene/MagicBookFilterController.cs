@@ -14,18 +14,18 @@ namespace MagicBookScene
     public class MagicBookFilterController : MonoBehaviour
     {
         private const string MagicBookTable = "MagicBook";
-        private const string CardTable = "Card";
+        private const string ElementTable = "Card";
 
         [SerializeField] private MagicInfoFactory magicInfoFactory;
         [SerializeField] private TMP_Text sortLabel;
         [SerializeField] private TMP_Dropdown sortDropdown;
         [SerializeField] private TMP_Text attributeLabel;
         [SerializeField] private TMP_Dropdown attributeDropdown;
+        // TODO(#578): 시전 종류 필터는 없어진다. 씬에서 지울 때까지 참조만 남겨 두고 감춘다.
         [SerializeField] private TMP_Text actionTypeLabel;
         [SerializeField] private TMP_Dropdown actionTypeDropdown;
         [SerializeField] private SortButtonBinding[] sortButtons;
         [SerializeField] private FilterButtonBinding[] attributeButtons;
-        [SerializeField] private FilterButtonBinding[] actionTypeButtons;
         [SerializeField] private Color selectedColor = new(0.78f, 0.78f, 0.78f, 1f);
 
         private readonly MagicBookSortMode[] sortOptions =
@@ -35,30 +35,19 @@ namespace MagicBookScene
             MagicBookSortMode.CardCount,
         };
 
-        private readonly CardType?[] attributeOptions =
+        private readonly ElementType?[] attributeOptions =
         {
             null,
-            CardType.Fire,
-            CardType.Water,
-            CardType.Nature,
-            CardType.Lightning,
-            CardType.Rock,
-            CardType.Wind,
-        };
-
-        private readonly CardType?[] actionTypeOptions =
-        {
-            null,
-            CardType.Shoot,
-            CardType.Drop,
-            CardType.Build,
-            CardType.Spawn,
-            CardType.Explode,
+            ElementType.Fire,
+            ElementType.Water,
+            ElementType.Nature,
+            ElementType.Lightning,
+            ElementType.Rock,
+            ElementType.Wind,
         };
 
         private MagicBookSortMode selectedSortMode = MagicBookSortMode.Name;
-        private CardType? selectedAttribute;
-        private CardType? selectedActionType;
+        private ElementType? selectedAttribute;
         private int localizationRefreshVersion;
 
         private void Awake()
@@ -68,6 +57,7 @@ namespace MagicBookScene
                 magicInfoFactory = FindObjectOfType<MagicInfoFactory>();
             }
 
+            HideActionTypeFilter();
             BindDropdowns();
             BindFallbackButtons();
             RefreshLocalizedText();
@@ -106,9 +96,22 @@ namespace MagicBookScene
                 attributeDropdown.onValueChanged.AddListener(OnAttributeChanged);
             }
 
+        }
+
+        /// <summary>
+        /// 시전 종류 축이 없어져 이 필터는 아무것도 거르지 않는다. 화면에서 감춰 둔다.
+        /// TODO(#578): 도감 화면을 정리할 때 MagicBookScene 에서 이 dropdown 과 label 을 지운다.
+        /// </summary>
+        private void HideActionTypeFilter()
+        {
             if (actionTypeDropdown != null)
             {
-                actionTypeDropdown.onValueChanged.AddListener(OnActionTypeChanged);
+                actionTypeDropdown.gameObject.SetActive(false);
+            }
+
+            if (actionTypeLabel != null)
+            {
+                actionTypeLabel.gameObject.SetActive(false);
             }
         }
 
@@ -121,7 +124,6 @@ namespace MagicBookScene
 
             BindSortButtons();
             BindFilterButtons(attributeButtons, SelectAttribute);
-            BindFilterButtons(actionTypeButtons, SelectActionType);
             ApplyFallbackSelectionState();
         }
 
@@ -129,7 +131,6 @@ namespace MagicBookScene
         {
             UnbindSortButtons();
             UnbindFilterButtons(attributeButtons);
-            UnbindFilterButtons(actionTypeButtons);
         }
 
         private void BindSortButtons()
@@ -218,10 +219,6 @@ namespace MagicBookScene
                 attributeDropdown.onValueChanged.RemoveListener(OnAttributeChanged);
             }
 
-            if (actionTypeDropdown != null)
-            {
-                actionTypeDropdown.onValueChanged.RemoveListener(OnActionTypeChanged);
-            }
         }
 
         private async void RefreshLocalizedText()
@@ -248,19 +245,8 @@ namespace MagicBookScene
                 return;
             }
 
-            if (actionTypeLabel != null)
-            {
-                actionTypeLabel.text = await GetMagicBookText("filter.actionType", "타입");
-            }
-
-            if (refreshVersion != localizationRefreshVersion)
-            {
-                return;
-            }
-
             await PopulateSortDropdown(refreshVersion);
-            await PopulateCardDropdown(attributeDropdown, attributeOptions, refreshVersion);
-            await PopulateCardDropdown(actionTypeDropdown, actionTypeOptions, refreshVersion);
+            await PopulateElementDropdown(attributeDropdown, attributeOptions, refreshVersion);
         }
 
         private async System.Threading.Tasks.Task PopulateSortDropdown(int refreshVersion)
@@ -283,7 +269,7 @@ namespace MagicBookScene
             }
         }
 
-        private async System.Threading.Tasks.Task PopulateCardDropdown(TMP_Dropdown dropdown, CardType?[] cardOptions, int refreshVersion)
+        private async System.Threading.Tasks.Task PopulateElementDropdown(TMP_Dropdown dropdown, ElementType?[] elementOptions, int refreshVersion)
         {
             if (dropdown == null)
             {
@@ -291,10 +277,10 @@ namespace MagicBookScene
             }
 
             var options = new List<string> { await GetMagicBookText("filter.all", "전체") };
-            for (int i = 1; i < cardOptions.Length; i++)
+            for (int i = 1; i < elementOptions.Length; i++)
             {
-                CardType cardType = cardOptions[i].Value;
-                options.Add(await GetCardText(cardType));
+                ElementType element = elementOptions[i].Value;
+                options.Add(await GetElementText(element));
             }
 
             if (refreshVersion == localizationRefreshVersion)
@@ -343,26 +329,8 @@ namespace MagicBookScene
 
         private void SelectAttribute(FilterButtonBinding binding)
         {
-            selectedAttribute = binding.isAll ? null : binding.cardType;
+            selectedAttribute = binding.isAll ? null : binding.elementType;
             magicInfoFactory?.SetAttributeFilter(selectedAttribute);
-            ApplyFallbackSelectionState();
-        }
-
-        private void OnActionTypeChanged(int index)
-        {
-            if (index < 0 || index >= actionTypeOptions.Length)
-            {
-                return;
-            }
-
-            selectedActionType = actionTypeOptions[index];
-            magicInfoFactory?.SetActionTypeFilter(selectedActionType);
-        }
-
-        private void SelectActionType(FilterButtonBinding binding)
-        {
-            selectedActionType = binding.isAll ? null : binding.cardType;
-            magicInfoFactory?.SetActionTypeFilter(selectedActionType);
             ApplyFallbackSelectionState();
         }
 
@@ -377,10 +345,9 @@ namespace MagicBookScene
             }
 
             ApplyFilterSelectionState(attributeButtons, selectedAttribute);
-            ApplyFilterSelectionState(actionTypeButtons, selectedActionType);
         }
 
-        private void ApplyFilterSelectionState(FilterButtonBinding[] buttons, CardType? selectedCardType)
+        private void ApplyFilterSelectionState(FilterButtonBinding[] buttons, ElementType? selectedElement)
         {
             if (buttons == null)
             {
@@ -389,7 +356,7 @@ namespace MagicBookScene
 
             foreach (FilterButtonBinding binding in buttons)
             {
-                bool selected = binding.isAll ? !selectedCardType.HasValue : selectedCardType == binding.cardType;
+                bool selected = binding.isAll ? !selectedElement.HasValue : selectedElement == binding.elementType;
                 SetSelected(binding.button, selected);
             }
         }
@@ -416,10 +383,11 @@ namespace MagicBookScene
             return IsMissingLocalization(text, key) ? fallback : text;
         }
 
-        private static async System.Threading.Tasks.Task<string> GetCardText(CardType cardType)
+        private static async System.Threading.Tasks.Task<string> GetElementText(ElementType element)
         {
-            string key = cardType.ToString();
-            string text = await LocaleUtils.GetStringAsync(CardTable, key);
+            string key = element.ToString();
+            // TODO(#580): 원소 이름 키가 Element 표로 옮겨지면 표 이름을 바꾼다.
+            string text = await LocaleUtils.GetStringAsync(ElementTable, key);
             return IsMissingLocalization(text, key) ? key : text;
         }
 
@@ -442,7 +410,7 @@ namespace MagicBookScene
     {
         public Button button;
         public bool isAll;
-        public CardType cardType;
+        public ElementType elementType;
         [NonSerialized] public UnityAction clickAction;
     }
 }

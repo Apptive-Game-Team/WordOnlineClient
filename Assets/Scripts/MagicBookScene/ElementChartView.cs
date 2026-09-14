@@ -11,19 +11,6 @@ namespace MagicBookScene
     // without a new art pass.
     public class ElementChartView : MonoBehaviour
     {
-        // Mirrors com.wordonline.server.game.domain.magic.ElementType on the game server.
-        // The declaration order matters: it is the order the server uses to index its chart.
-        private enum ElementSlot
-        {
-            None,
-            Fire,
-            Water,
-            Nature,
-            Lightning,
-            Rock,
-            Wind,
-        }
-
         // Row is the attacking element, column is the defending element.
         // Mirrors ElementalChart.CHART on the game server.
         private static readonly float[,] Multipliers =
@@ -36,18 +23,6 @@ namespace MagicBookScene
             /* Lightning */ { 1f, 1f, 1f, 1f, 1f, 1f, 1f },
             /* Rock      */ { 1f, 0.5f, 1.5f, 1.5f, 0.5f, 1.5f, 0.5f },
             /* Wind      */ { 1f, 1f, 1f, 1f, 2f, 2f, 1f },
-        };
-
-        // None has no card art; its header cell is left empty.
-        private static readonly CardType[] SlotCardTypes =
-        {
-            CardType.Dummy,
-            CardType.Fire,
-            CardType.Water,
-            CardType.Nature,
-            CardType.Lightning,
-            CardType.Rock,
-            CardType.Wind,
         };
 
         private const int ElementCount = 7;
@@ -89,12 +64,12 @@ namespace MagicBookScene
 
             for (int defender = 0; defender < ElementCount; defender++)
             {
-                CreateIconCell(grid, (ElementSlot)defender);
+                CreateIconCell(grid, (ElementType)defender);
             }
 
             for (int attacker = 0; attacker < ElementCount; attacker++)
             {
-                CreateIconCell(grid, (ElementSlot)attacker);
+                CreateIconCell(grid, (ElementType)attacker);
                 for (int defender = 0; defender < ElementCount; defender++)
                 {
                     CreateMultiplierCell(grid, Multipliers[attacker, defender]);
@@ -140,7 +115,7 @@ namespace MagicBookScene
             attackerLabel.alignment = TextAlignmentOptions.BottomLeft;
         }
 
-        private void CreateIconCell(RectTransform grid, ElementSlot slot)
+        private void CreateIconCell(RectTransform grid, ElementType slot)
         {
             GameObject cell = CreateCell(grid, slot + "Cell");
             Sprite sprite = ResolveIcon(slot);
@@ -211,13 +186,12 @@ namespace MagicBookScene
             return label;
         }
 
-        // Returns null when the slot has no card art, which is the case for None.
-        private Sprite ResolveIcon(ElementSlot slot)
+        // Returns null when the element has no icon, which is the case for None.
+        private Sprite ResolveIcon(ElementType element)
         {
-            CardType cardType = SlotCardTypes[(int)slot];
             return cardImageMapper != null
-                ? cardImageMapper.GetCardImage(cardType)
-                : DeckScene.DeckCardSpriteResolver.GetCardSprite(cardType);
+                ? cardImageMapper.GetElementImage(element)
+                : DeckScene.DeckCardSpriteResolver.GetElementSprite(element);
         }
 
         private static string FormatMultiplier(float multiplier)

@@ -15,14 +15,13 @@ namespace MagicBookScene
     {
         Name,
         Attribute,
+
+        // TODO(#578): 조합이 없어져 카드 수 정렬은 의미가 없다. 도감 화면 정리 때 마나 순으로 바꾼다.
         CardCount,
     }
 
     public class MagicInfoFactory : MonoBehaviour
     {
-        private const string AttributeType = "type";
-        private const string ActionType = "magic";
-
         [SerializeField] private Transform magicInfoParent;
         [SerializeField] private GameObject magicInfoPrefab;
         [SerializeField] private MagicInfo magicInfo;
@@ -33,8 +32,7 @@ namespace MagicBookScene
 
         private readonly List<MagicBookEntry> entries = new();
         private MagicBookSortMode sortMode = MagicBookSortMode.Name;
-        private CardType? selectedAttribute;
-        private CardType? selectedActionType;
+        private ElementType? selectedAttribute;
         private System.Threading.SynchronizationContext unityContext;
         
         private void Awake()
@@ -58,15 +56,9 @@ namespace MagicBookScene
             RenderCurrentView();
         }
 
-        public void SetAttributeFilter(CardType? attribute)
+        public void SetAttributeFilter(ElementType? attribute)
         {
             selectedAttribute = attribute;
-            RenderCurrentView();
-        }
-
-        public void SetActionTypeFilter(CardType? actionType)
-        {
-            selectedActionType = actionType;
             RenderCurrentView();
         }
         
@@ -103,9 +95,7 @@ namespace MagicBookScene
                 loadedEntries.Add(new MagicBookEntry(
                     data,
                     userMagicIds.Contains(data.id),
-                    localizedName,
-                    GetCardsByType(data, AttributeType),
-                    GetCardsByType(data, ActionType)));
+                    localizedName));
             }
 
             return loadedEntries;
@@ -140,42 +130,12 @@ namespace MagicBookScene
 
         private bool PassesFilters(MagicBookEntry entry)
         {
-            if (selectedAttribute.HasValue && !entry.Attributes.Contains(selectedAttribute.Value))
-            {
-                return false;
-            }
-
-            if (selectedActionType.HasValue && !entry.ActionTypes.Contains(selectedActionType.Value))
-            {
-                return false;
-            }
-
-            return true;
+            return !selectedAttribute.HasValue || entry.Data.element == selectedAttribute.Value;
         }
 
         private static int GetPrimaryAttributeSortValue(MagicBookEntry entry)
         {
-            return entry.Attributes.Count > 0 ? (int)entry.Attributes[0] : int.MaxValue;
-        }
-
-        private static List<CardType> GetCardsByType(CombinedMagicData data, string type)
-        {
-            var cards = new List<CardType>();
-            if (data.recipe == null)
-            {
-                return cards;
-            }
-
-            foreach (CardType cardType in data.recipe)
-            {
-                MagicData magicData = LocalMagicData.GetMagicData(cardType.ToString());
-                if (magicData != null && magicData.type == type)
-                {
-                    cards.Add(cardType);
-                }
-            }
-
-            return cards;
+            return (int)entry.Data.element;
         }
 
         private void ClearMagicInfo()
@@ -216,23 +176,19 @@ namespace MagicBookScene
             public MagicBookEntry(
                 CombinedMagicData data,
                 bool isOwned,
-                string localizedName,
-                List<CardType> attributes,
-                List<CardType> actionTypes)
+                string localizedName)
             {
                 Data = data;
                 IsOwned = isOwned;
                 LocalizedName = localizedName ?? string.Empty;
-                Attributes = attributes;
-                ActionTypes = actionTypes;
             }
 
             public CombinedMagicData Data { get; }
             public bool IsOwned { get; }
             public string LocalizedName { get; }
-            public IReadOnlyList<CardType> Attributes { get; }
-            public IReadOnlyList<CardType> ActionTypes { get; }
-            public int CardCount => Data.recipe?.Count ?? 0;
+
+            // TODO(#578): 카드 수 정렬을 마나 순으로 바꿀 때까지 마나 비용으로 대신 정렬한다.
+            public int CardCount => Data.manaCost;
         }
     }
 }
