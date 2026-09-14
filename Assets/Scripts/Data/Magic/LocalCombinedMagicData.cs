@@ -48,6 +48,11 @@ namespace Data.Magic
             return false;
         }
 
+        /// <summary>
+        /// indicator document 는 복사하지 않고 DTO 의 것을 그대로 가리킨다. 이 메서드는 목록을 볼 때마다
+        /// <see cref="CombinedMagicData"/> 를 새로 만들지만 document 는 <see cref="MagicInfoDataSource"/> 가
+        /// 들고 있는 하나뿐이라, document 가 한 번만 해석되고 경고도 한 번만 남는다.
+        /// </summary>
         private static List<CombinedMagicData> BuildCombinedMagicData<T>(IReadOnlyList<T> source)
             where T : IMagicRecipeSource
         {
@@ -91,6 +96,7 @@ namespace Data.Magic
                     resourceName = StringUtils.ToPascalCase(serverRecipe.Name),
                     castType = castType,
                     recipe = recipe,
+                    indicator = serverRecipe.Indicator,
                 });
             }
 
