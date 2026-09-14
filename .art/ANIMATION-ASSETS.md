@@ -109,9 +109,11 @@ Transform 스케일 변형은 적용하지 않는다.
 
 플레이어는 다른 유닛과 두 가지가 다르다.
 
-- pivot 이 Bottom Center 가 아니라 Center 다. 캔버스가 2048x2048 로 고정되어 있고
-  몸통이 그 안 같은 자리에 놓이므로, 두 프레임은 캔버스와 몸통 위치를 함께 맞춘다.
-  몸통 높이 1140px, 발끝 y=1679, 가로 중심 x=1117.
+- pivot 이 Bottom Center 도 Center 도 아닌 custom 이다. 캔버스 981x1245, PPU 566,
+  pivot `(0.3751, 0.0072)`. 발끝이 pivot 위에 서고, 서 있을 때의 가로 중심이
+  pivot x 다. 두 프레임은 같은 캔버스에 같은 배율로, 발끝 행과 그 가로 중심을
+  맞춰 올린다. 몸통 높이는 940px = 1.66 units 로, 그 자리에 있던
+  `Assets/Resources/Game/player.png` 의 166px @ 100 PPU 와 같은 크기다.
 - 오라가 몸 전체를 감싸지 않고 지팡이 끝 한 점에 모인다. 그래서 오라는 본체와 같은
   캔버스에 그리지 않고, 작게 그린 뒤 `StaffAura` 앵커의 localPosition 으로 지팡이
   끝에 놓는다.
@@ -133,7 +135,33 @@ Transform 스케일 변형은 적용하지 않는다.
 지팡이 끝에 남는다.
 
 공격할 때 몸 전체를 뒤로 기울이던 `DOTweenAction.SwingMobAttack` 은 이 프레임
-교체로 대체했다. 다른 오브젝트는 그대로 쓴다.
+교체로 대체했다. 다른 오브젝트는 그대로 쓴다. 카드를 고를 때 몸을 25도 젖히던
+회전도 같이 뺐다. 남은 것은 squash-and-stretch bounce 하나다.
+
+### 인게임 플레이어가 쓰는 sprite 는 `Customize` 폴더에 없었다
+
+`Assets/Resources/Prefabs/Player.prefab` 의 `PlayerImage` SpriteRenderer 가
+가리키던 것은 `Assets/Art/Images/Customize/PlayerCharacterBase.png` 가 아니라
+`Assets/Resources/Game/player.png` 다. 이름만 보고 Customize 쪽 파일을 갈아
+끼우면 화면은 하나도 안 바뀐다. 공격 frame 만 새 그림으로 0.3초 떴다가 사라지고,
+그 frame 이 2048x2048 @ 100 PPU 면 옛 sprite 의 열 배 크기로 뜬다.
+
+sprite 를 갈아 끼울 때는 파일 이름이 아니라 prefab 과 scene 의 `m_Sprite` guid
+로 고른다. `player.png` 는 `InteractiveTutorialScene`, `DOTweenTestScene`,
+`ScriptableObject/Adventures/Stage1.asset` 이 아직 쓰므로 지우면 안 된다. 인게임
+플레이어만 새 그림으로 바꾸면 튜토리얼과 모험 초상화는 옛 캐릭터로 남는다.
+
+### 생성된 두 프레임은 그대로는 안 맞는다
+
+`player-D-base-raised-v3.png` 와 `player-D-attack-thrust-v7.png` 는 같은
+1145x1374 캔버스로 나왔지만 발끝 행이 1317 과 1279 로 38px, 서 있는 가로 중심이
+618.5 와 520.5 로 98px 어긋나 있다. 그대로 올리면 공격할 때 캐릭터가 떠오르면서
+옆으로 미끄러진다. `.art/tools/finalize-player-frames.py` 가 둘을 맞춰 올리고
+PPU·pivot·앵커 좌표를 같이 출력한다.
+
+그 script 는 base frame 의 머리 꼭대기 행을 인자로 받는다. 세운 지팡이가 머리
+위에 있어서 alpha 채널만으로는 찾을 수 없고, 폭 비율 규칙도 폭 급변 규칙도 둘
+다 틀린 행을 고른다. 측정해서 넘긴다.
 
 ## 홈페이지 표시
 

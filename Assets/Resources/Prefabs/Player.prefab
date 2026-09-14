@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: baf25865d1f604ec7ad764b4dc36a5f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3a37400d762fc47368ff61782aa71941, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.46, y: 1.92}
+  m_Size: {x: 1.733, y: 2.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -171,7 +171,7 @@ MonoBehaviour:
   _swingOnAttack: 0
   _teamIndicatorVerticalOffset: 0.1
   _teamIndicatorScale: 0.3
-  _effectScaleReferenceHeight: 1.2
+  _effectScaleReferenceHeight: 1.375
   _effectScaleMultiplier: 1
   _effectScaleMin: 0.8
   _effectScaleMax: 1.8
@@ -250,8 +250,8 @@ MonoBehaviour:
   servedObject: {fileID: 0}
   auraAnchor: {fileID: 2358728696626565719}
   bodyRenderer: {fileID: 1271433976255676604}
-  idleLocalPosition: {x: -1.58, y: 7, z: 0}
-  attackLocalPosition: {x: 6.14, y: 0.6, z: 0}
+  idleLocalPosition: {x: -0.378, y: 2.01, z: 0}
+  attackLocalPosition: {x: 0.957, y: 0.891, z: 0}
   attackDuration: 0.3
 --- !u!1 &3049173013423814833
 GameObject:
@@ -414,7 +414,7 @@ Transform:
   m_GameObject: {fileID: 8895970389294788529}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 3, z: 0}
+  m_LocalPosition: {x: 1.15, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -511,7 +511,7 @@ Transform:
   m_GameObject: {fileID: 6939596180442651345}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.58, y: 7, z: 0}
+  m_LocalPosition: {x: -0.378, y: 2.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
