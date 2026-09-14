@@ -193,16 +193,18 @@ what was being removed. `aura-candidates.png` compares all three at the size the
 actually drawn — radius 4 on a 2-unit grid with the totem in the middle — plus a 64px
 readability chip.
 
-- **`RepairAura-v1-leaf-facets-source.png`** (chosen) — twelve large flat leaf kites
-  laid around the circle, each two facet planes split by one hard crease, alternating
-  light and dark nature greens, with transparent gaps between them. Band measures 10.2%
-  of the diameter, which is what the brief asked for, and it is the quietest of the
-  three behind gameplay.
-- **`RepairAura-v2-grass-blades-source.png`** (alternate, not used) — low grass tufts
-  standing around the circle. A clean real-alpha generation and a good look, but it is
-  built from 12 to 14 tufts of several blades each, so at 8 units the parts get small
-  and the ring starts to read as scatter rather than as one boundary. Kept in case a
-  future pass wants the more organic reading.
+- **`RepairAura-v2-grass-blades-source.png`** (chosen) — low grass tufts standing
+  around the circle, each blade a single flat tapering plane, in the nature greens with
+  transparent gaps between the tufts. Band measures 9.5% of the diameter against the
+  brief's ten percent. It is built from more parts than the leaf-kite candidate, which
+  was the one reservation about it, but at radius 4 the tufts still read as one
+  boundary rather than as scatter, and the growth reading suits a totem that keeps
+  things from decaying better than a row of detached leaves does.
+- **`RepairAura-v1-leaf-facets-source.png`** (alternate, not used) — twelve large flat
+  leaf kites laid around the circle, each two facet planes split by one hard crease,
+  alternating light and dark nature greens. Band 10.2%, the quietest of the three, and
+  the safest against the density rule. Kept in case a future pass wants the plainer
+  reading.
 - **v3, a woven root band** (prompt kept, image not committed) — a closed pale-wood
   rope hoop with four leaf clusters. Its first `image_gen` call came back opaque and the
   generating agent then ran a connected-component script to manufacture an alpha channel,
@@ -217,9 +219,9 @@ readability chip.
 shorter axis to a square before resizing, instead of trimming tight. `AuraRadiusScaler`
 scales each axis by half the sprite rect on that axis, so a square canvas is what makes
 the drawn circle round in world units and keeps the prefab's `localScale` uniform at
-6.25. The chosen source cropped to 1230x1207 (aspect 1.019), so squaring it moved almost
-nothing. The finished sprite is 512x512 RGBA at PPU 400, 83.9% fully transparent, band
-10.3% of the diameter, all four corners alpha 0, no bright-desaturated block and no
+6.25. The chosen source cropped to 1242x1233 (aspect 1.007), so squaring it moved almost
+nothing. The finished sprite is 512x512 RGBA at PPU 400, 85.0% fully transparent, band
+9.5% of the diameter, all four corners alpha 0, no bright-desaturated block and no
 stray saturated pixels.
 
 `preview-aura.py` renders `aura-preview.png` by applying the camera's 45° projection by
