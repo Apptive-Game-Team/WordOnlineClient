@@ -45,6 +45,8 @@
 | `MagmaSpiritSpawn.png` | `concept-art/magma-spirit-spawn.webp` | 소환 자세 |
 | `WaterSlimeSwarm.png` | `concept-art/water-slime.webp` | 물방울 생존자 무리 기본 자세 |
 | `WaterSlimeAttackSpit.png` | `game-assets/water-slime-attack.webp` | 물 뱉기 공격 프레임 |
+| `TidalWarhead.png` | 클라이언트 이슈 #597 재작업 검수 | 공중 표적용, 어두운 눈, 256x256 RGBA |
+| `GroundTidalWarhead.png` | 클라이언트 이슈 #597 재작업 검수 | 지상 표적용, 밝은 눈, 본체와 동일 실루엣 |
 | `cloud.png` | `game-assets/cloud-dragon-water-aura.webp` | 운룡 전용 구형 물 아우라 |
 | `fire_aura.png` | `game-assets/fire-aura.webp` | 지옥불 공용 오라 |
 | `LightningCloud.png` | 웹사이트 PR #29 `game-assets/lightning-cloud-idle.webp` | 번개 구름 대기 프레임 |
