@@ -79,8 +79,8 @@
 | `Bubble.png` | 클라이언트 PR (이슈 #682) | 119x119 RGBA. 물방울 표시, 저폴리 보석형 단일 도형. magenta 키 제거, 네 모서리 alpha 0 |
 | `Snared.png` | 클라이언트 PR (이슈 #682) | 256x191 RGBA. 속박 표시, X자로 교차한 다면체 덩굴, 끝에 가시 악센트. magenta 키 제거, 네 모서리 alpha 0 |
 | `frenzy.png` | 클라이언트 PR (이슈 #682) | 256x256 RGBA. 광폭화 표시, 진홍 발톱/번개 표식 3개, 발광 없이 면 대비로만 표현. magenta 키 제거, 네 모서리 alpha 0 |
-| `magic_fail.png` | 클라이언트 PR (이슈 #682) | 629x559 RGBA. 시전 실패 표시, 얼굴 없는 다면체 연기 뭉치. magenta 키 제거, 네 모서리 alpha 0 |
 | `panic.png` | 클라이언트 PR (이슈 #682) | 250x256 RGBA. 공포 표시, 다면체 느낌표. magenta 키 제거, 네 모서리 alpha 0 |
+| `magic_fail.png` | 클라이언트 PR (이슈 #682) | 629x559 RGBA. 시전 실패 표시, 검은 연기 뭉치. 1차 시도는 베이지색 돌무더기로 나와 revert 후 재시도 — 숯색·짙은 회색 계열, 둥글게 굴린 뭉게구름 로브, 돌처럼 보이지 않게 못박음. magenta 키 제거, 네 모서리 alpha 0 |
 
 ## 다음 교체 후보
 
