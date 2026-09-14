@@ -44,7 +44,7 @@ game 서버의 concrete `*Magic.java`를 기준으로 생성한 아트·동작 �
 | [돌 포탑](pages/rock_turret.md) | `rock_turret` | 돌 골렘 부족 | `RockTurret` |
 | [씨앗 둥지](pages/seed_nest.md) | `seed_nest` | 세계수 풀 정령 | `SeedNest` |
 | [감전 함정](pages/shock_trap.md) | `shock_trap` | 세계수 전기 정령 | `ShockTrap` |
-| [거인의 잔해](pages/titan_remnant.md) | `titan_remnant` | 귀속 미정 | `TitanRemnant` |
+| [거신의 잔해](pages/titan_remnant.md) | `titan_remnant` | 귀속 미정 | `TitanRemnant` |
 | [타워](pages/tower.md) | `tower` | 인간 마법 문명 | `GroundTower` |
 | [포탑등이](pages/towerback.md) | `towerback` | 인간 마법 문명 | `Towerback` |
 | [덩굴 군집](pages/vine_colony.md) | `vine_colony` | 세계수 풀 정령 | `VineColony` |
