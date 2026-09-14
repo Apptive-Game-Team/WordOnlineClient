@@ -4,6 +4,8 @@ using GameScene.Dto.Event;
 using GameScene.Object;
 using GameScene.ServedObjectComponent;
 using GameScene.ServedObjectComponent.Effect;
+using Global;
+using UnityEngine;
 
 namespace GameScene.Handler
 {
@@ -14,6 +16,8 @@ namespace GameScene.Handler
     public class GameEventHandler : IFrameInfoHandler<List<GameEvent>>
     {
         private const float ImpactEdgeBias = 0.6f;
+        private const string ShockBurstEffectName = "ShockBurst";
+        private const string DetectionRangeGizmoCategory = "DetectionRange";
 
         public void Handler(List<GameEvent> events)
         {
@@ -27,6 +31,10 @@ namespace GameScene.Handler
                 if (gameEvent is HitEvent hit)
                 {
                     HandleHit(hit);
+                }
+                else if (gameEvent is ShockEvent shock)
+                {
+                    HandleShock(shock);
                 }
             }
         }
@@ -63,6 +71,55 @@ namespace GameScene.Handler
             }
 
             hitEffect.PlayHitFrom(actor.GetActualTransform().position);
+        }
+
+        private static void HandleShock(ShockEvent shock)
+        {
+            ServedObject trap = ObjectContainer.Instance.FindById(shock.actorId);
+            if (trap == null)
+            {
+                return;
+            }
+
+            GameObject burstPrefab = (GameObject) Resources.Load($"Prefabs/Effects/{ShockBurstEffectName}");
+            if (burstPrefab == null)
+            {
+                WDebug.LogWarning($"Effect prefab '{ShockBurstEffectName}' not found.");
+                return;
+            }
+
+            GameObject burst = UnityEngine.Object.Instantiate(
+                burstPrefab,
+                trap.GetActualTransform().position,
+                Quaternion.identity);
+
+            // If the trap sent no DetectionRange gizmo, leave the prefab's own scale rather than
+            // skip the burst entirely.
+            if (trap.TryGetGizmoRadius(DetectionRangeGizmoCategory, out float radius))
+            {
+                ScaleBurstToDiameter(burst, radius * 2f);
+            }
+        }
+
+        /// <summary>Scales the burst so the sprite's width matches <paramref name="targetDiameter"/>,
+        /// following the same sprite-bounds convention as <c>CircleSkillIndicator.GetScaleForRadius</c>.</summary>
+        private static void ScaleBurstToDiameter(GameObject burst, float targetDiameter)
+        {
+            SpriteRenderer spriteRenderer = burst.GetComponentInChildren<SpriteRenderer>();
+            if (spriteRenderer == null || spriteRenderer.sprite == null)
+            {
+                return;
+            }
+
+            float spriteWidth = spriteRenderer.sprite.bounds.size.x;
+            if (spriteWidth <= 0f)
+            {
+                return;
+            }
+
+            float scale = targetDiameter / spriteWidth;
+            Vector3 currentScale = burst.transform.localScale;
+            burst.transform.localScale = new Vector3(scale, scale, currentScale.z);
         }
     }
 }
