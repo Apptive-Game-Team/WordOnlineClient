@@ -414,6 +414,26 @@ MonoBehaviour:
     m_Localized: Dragon Tower
     m_Metadata:
       m_Items: []
+  - m_Id: 78336500000000000
+    m_Localized: Sea Serpent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336600000000000
+    m_Localized: Spirit Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336700000000000
+    m_Localized: Tidal Warhead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336800000000000
+    m_Localized: Boulder Strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78336900000000000
+    m_Localized: Bomb Sprite
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

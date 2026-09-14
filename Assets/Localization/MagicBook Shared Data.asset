@@ -299,6 +299,34 @@ MonoBehaviour:
     m_Key: dragon_tower
     m_Metadata:
       m_Items: []
+  - m_Id: 1000056
+    m_Key: sea_serpent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000057
+    m_Key: spirit_bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000058
+    m_Key: tidal_warhead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000059
+    m_Key: boulder_strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000060
+    m_Key: bomb_sprite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000061
+    m_Key: vine_world
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000062
+    m_Key: seed_nest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
