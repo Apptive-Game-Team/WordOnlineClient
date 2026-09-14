@@ -13,7 +13,7 @@
 
 ## 컨셉 설명
 
-구름비늘 운룡은 세계수 바람 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 원거리 공격 역할을 맡으며, 지상·공중 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.
+구름비늘 운룡은 세계수 바람 정령의 소환 마법이다. `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. 전투에서는 전투 개체 역할을 맡으며, 지상·공중 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 넓고 읽기 쉬운 곡선 종이 띠로 흐름과 회전을 표현한다.
 
 ## 설명
 
@@ -23,29 +23,29 @@
 
 ## 동작
 
-1. 사거리 안 대상을 향해 투사체를 발사한다.
+1. 목표 지점에 아군 개체를 소환한다.
 
 ## 전투 프로필
 
 | 항목 | 분류 | 코드 근거 |
 |---|---|---|
 | 기동 방식 | 공중 부유형 | `ZPhysics(gameObject, hoverY)`로 고도를 유지한다. |
-| 전투 역할 | 원거리 공격 | 부착 AI·마법 컴포넌트 기준 |
-| 공격 형태 | 단일 표적 | 공격 컴포넌트와 시전 계열 기준 |
+| 전투 역할 | 전투 개체 | 부착 AI·마법 컴포넌트 기준 |
+| 공격 형태 | 직접 공격 없음 또는 별도 효과 | 공격 컴포넌트와 시전 계열 기준 |
 | 표적 | 지상·공중 | `TargetMask` 기준 |
 | 특수 이동·행동 | 추가 특수 이동 없음 | 부착 컴포넌트 기준 |
-| 생명주기 | HP 소진 시 파괴 | 파괴·시간제한 컴포넌트 기준 |
+| 생명주기 | 소스에서 시간 제한을 직접 확인하지 못함 | 파괴·시간제한 컴포넌트 기준 |
 
 ## 서버 구조
 
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `CloudDragonMagic` |
-| 상위 클래스 | `AbstractSingleSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `CloudDragon` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `ProjectileRangeAttackMob`, `CommonEffectReceiver`, `AreaEffectProvider` |
-| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `CloudDragonMob`, `CommonEffectReceiver`, `AreaEffectProvider` |
+| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE`, `CHAIN_LIGHTNING_COOLDOWN` |
 | 오브젝트 파라미터 | `CLOUD_DRAGON` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.

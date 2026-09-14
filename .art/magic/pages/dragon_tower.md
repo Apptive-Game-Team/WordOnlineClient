@@ -1,19 +1,19 @@
-# 대포
+# 드래곤 타워
 
-- 서버 키: `cannon`
-- 현재 이름: 대포
-- 컨셉 이름: 마도 대포
+- 서버 키: `dragon_tower`
+- 현재 이름: 드래곤 타워
+- 컨셉 이름: 화룡 포탑
 - 시전 계열: 설치
 - 진영: 인간 마법 문명
 - 상태: game 서버 구현 확인
 
 ## 컨셉
 
-인간 마법 문명의 전장에 남아 지속적으로 영향력을 만드는 마도 대포.
+인간 마법 문명의 전장에 남아 지속적으로 영향력을 만드는 화룡 포탑.
 
 ## 컨셉 설명
 
-마도 대포은 인간 마법 문명의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 지상 대상을 단일 표적 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.
+화룡 포탑은 인간 마법 문명의 설치 마법이다. 이동 AI 없이 설치 위치에서 행동한다. 전투에서는 원거리 공격 역할을 맡으며, 지상·공중 대상을 범위 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 차가운 석재, 스틸블루 금속, 청동 결합부. 얼굴 없는 조립 구조물로 표현한다.
 
 ## 설명
 
@@ -23,7 +23,7 @@
 
 ## 동작
 
-1. 고정 위치에서 탄환을 발사한다.
+1. 움직이지 않고 탐지 범위 안 적을 공격한다.
 
 ## 전투 프로필
 
@@ -31,8 +31,8 @@
 |---|---|---|
 | 기동 방식 | 고정형 | 이동 AI 없이 설치 위치에서 행동한다. |
 | 전투 역할 | 원거리 공격 | 부착 AI·마법 컴포넌트 기준 |
-| 공격 형태 | 단일 표적 | 공격 컴포넌트와 시전 계열 기준 |
-| 표적 | 지상 | `TargetMask` 기준 |
+| 공격 형태 | 범위 | 공격 컴포넌트와 시전 계열 기준 |
+| 표적 | 지상·공중 | `TargetMask` 기준 |
 | 특수 이동·행동 | 추가 특수 이동 없음 | 부착 컴포넌트 기준 |
 | 생명주기 | 제한시간 후 소멸 | 파괴·시간제한 컴포넌트 기준 |
 
@@ -40,13 +40,13 @@
 
 | 항목 | 값 |
 |---|---|
-| 구현 클래스 | `CannonMagic` |
+| 구현 클래스 | `DragonTowerMagic` |
 | 상위 클래스 | `AbstractSummonMagic` |
-| 주 프리팹 | `GroundCannon` |
+| 주 프리팹 | `DragonTower` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `Cannon`, `TimedSelfDestroyer`, `RockDeathRemnant`, `CommonEffectReceiver` |
-| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
-| 오브젝트 파라미터 | `GROUND_CANNON` |
+| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `DummyMob`, `Tower`, `TimedSelfDestroyer`, `RockDeathRemnant`, `CommonEffectReceiver` |
+| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE`, `DURATION` |
+| 오브젝트 파라미터 | `DRAGON_TOWER` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.
 
@@ -64,5 +64,5 @@
 
 ## 근거
 
-- Magic: `game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/CannonMagic.java`
-- Prefab initializer: `game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/misc/GroundCannonPrefabInitializer.java`
+- Magic: `game/src/main/java/com/wordonline/server/game/domain/magic/implement/build/twocard/DragonTowerMagic.java`
+- Prefab initializer: `game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/build/DragonTowerPrefabInitializer.java`

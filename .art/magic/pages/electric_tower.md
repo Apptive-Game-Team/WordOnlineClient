@@ -44,7 +44,7 @@
 | 상위 클래스 | `AbstractSummonMagic` |
 | 주 프리팹 | `ElectricTower` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `LightningTowerMob`, `TimedSelfDestroyer`, `BuildingEffectReceiver` |
+| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `LightningTowerMob`, `TimedSelfDestroyer`, `RockDeathRemnant`, `BuildingEffectReceiver` |
 | 파라미터 키 | `MASS`, `RADIUS`, `HP`, `DAMAGE`, `CHAIN_DAMAGE`, `CHAIN_COUNT`, `ATTACK_INTERVAL`, `ATTACK_RANGE`, `CHAIN_RADIUS`, `DURATION` |
 | 오브젝트 파라미터 | `ELECTRIC_TOWER` |
 
