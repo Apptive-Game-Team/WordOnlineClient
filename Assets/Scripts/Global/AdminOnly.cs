@@ -68,7 +68,7 @@ namespace Global
             if (!JwksService.IsFetched)
             {
                 WDebug.LogWarning("[AdminOnly] JWKS fetch failed; admin-only UI stays hidden.");
-                return;
+                yield break;
             }
 
             ApplyAdminVisibility();
