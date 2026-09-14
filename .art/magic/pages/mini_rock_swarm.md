@@ -13,7 +13,7 @@
 
 ## 컨셉 설명
 
-꼬마돌 돌격대은 돌 골렘 부족의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 대상 제한을 이 파일에서 직접 확인하지 못함 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.
+꼬마돌 돌격대은 돌 골렘 부족의 소환 마법이다. 소스에서 지속 이동 AI를 확인하지 못했다. 전투에서는 전투 개체 역할을 맡으며, 지상 대상을 직접 공격 없음 또는 별도 효과 방식으로 다룬다. 추가 특수 이동은 없다. 시각적으로는 따뜻한 석재 조각과 이끼. 인간제 회색 기계와 구분한다.
 
 ## 설명
 
@@ -32,7 +32,7 @@
 | 기동 방식 | 이동 없음 | 소스에서 지속 이동 AI를 확인하지 못했다. |
 | 전투 역할 | 전투 개체 | 부착 AI·마법 컴포넌트 기준 |
 | 공격 형태 | 직접 공격 없음 또는 별도 효과 | 공격 컴포넌트와 시전 계열 기준 |
-| 표적 | 대상 제한을 이 파일에서 직접 확인하지 못함 | `TargetMask` 기준 |
+| 표적 | 지상 | `TargetMask` 기준 |
 | 특수 이동·행동 | 추가 특수 이동 없음 | 부착 컴포넌트 기준 |
 | 생명주기 | 소스에서 시간 제한을 직접 확인하지 못함 | 파괴·시간제한 컴포넌트 기준 |
 
@@ -41,11 +41,11 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `MiniRockSwarmMagic` |
-| 상위 클래스 | `AbstractSwarmSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `MiniRock` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 파라미터 키 | 없음 또는 소스에서 직접 확인되지 않음 |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `Slime`, `RockDeathRemnant`, `CommonEffectReceiver` |
+| 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL` |
 | 오브젝트 파라미터 | `MINI_ROCK` |
 
 수치 자체는 런타임 DB 데이터다. 이 문서는 키만 기록하며 값을 추정하지 않는다.
@@ -60,9 +60,9 @@
 
 ## 미결 사항
 
-- 상속 또는 다단 생성 경로를 수동 검토해야 함
+- 현재 확인된 세계관 충돌 없음
 
 ## 근거
 
 - Magic: `game/src/main/java/com/wordonline/server/game/domain/magic/implement/spawn/MiniRockSwarmMagic.java`
-- Prefab initializer: 직접 연결되는 initializer를 정적 분석으로 찾지 못함
+- Prefab initializer: `game/src/main/java/com/wordonline/server/game/domain/object/prefab/implement/rock/MiniRockPrefabInitializer.java`

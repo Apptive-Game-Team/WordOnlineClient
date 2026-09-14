@@ -43,7 +43,7 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `TreeGolemMagic` |
-| 상위 클래스 | `AbstractSingleSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `TreeGolem` |
 | 부가 프리팹 | `LeafField` |
 | 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `MeleeAttackMob`, `SelfHealer`, `PathSpawner`, `CommonEffectReceiver` |

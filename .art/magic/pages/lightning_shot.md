@@ -44,7 +44,7 @@
 | 상위 클래스 | `AbstractShotMagic` |
 | 주 프리팹 | `ElectricShot` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `CircleCollider`, `EffectProvider`, `Shot` |
+| 부착 컴포넌트 | `CircleCollider`, `EffectProvider`, `AllyOverchargeProvider`, `Shot` |
 | 파라미터 키 | `RADIUS`, `DAMAGE`, `SPEED` |
 | 오브젝트 파라미터 | `ELECTRIC_SHOT` |
 
