@@ -1,0 +1,22 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no water surface, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Game effect sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build every shape from flat polygonal facet planes, like cut and folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradient across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no rock texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush, no glow, no bloom.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of each form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line and no ink outline anywhere. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and composition, required exactly:
+- Single subject, centered on a square canvas, travelling toward the right edge. Compose it as an in-flight projectile, not a still-life rock sitting on a surface.
+- Low part count. The rock plus at most three wind shapes. Nothing else on the canvas.
+- Absolutely no motion lines, no speed streaks, no motion blur, no dust cloud, no smoke, no flying gravel, no small debris chips, no sparks, no scattered fragments. Every wind shape is one large solid flat plane with a hard edge, drawn as a piece of cut paper, never as a wisp or a swirl of vapour.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+- No text, no frame, no card border, no watermark, no logo, no creature, no face, no eyes, no hands.
+
+Subject identity, shared across all variants: `boulder_strike`, a ROCK plus WIND magic projectile the player casts. One boulder is picked up by a gust and driven forward fast enough that the enemy it hits is knocked backwards into whatever is behind it. The rock's material is the rock golem tribe's living stone, not human masonry: warm tan stone #CDC8B8, #A3A29D, #8A857A, with a few small restrained patches of moss #55572D and #374725 on its upper planes. The wind is the wind spirits' pale material: #E5EBE7, #B3CCCA, #9BB3B3. The rock is the dominant mass and reads first; the wind is what is carrying it and reads second.
+
+It must read unmistakably as one solid boulder being thrown forward through the air. Never a meteor, never a fireball, never a cannonball of forged metal, never a tornado, never a cloud, never a crater or an impact on the ground.

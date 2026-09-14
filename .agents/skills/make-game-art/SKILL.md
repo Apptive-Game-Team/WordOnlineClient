@@ -97,12 +97,15 @@ unless it is explicitly the selected master-style key.
 8. Compare all candidates at thumbnail size through the project Site and
    `./.art/make-sheets.sh`.
 9. Use the `magick` skill for resize, trim, alpha, format, and dimension checks.
-10. Move an asset into `Assets/` only after approval.
+10. Remove the key colour and finalize, as described under "Ask for a key colour,
+    not for transparency".
+11. Move an asset into `Assets/` only after approval.
 
 ## Production sprite rules
 
 - Single subject; centered; right-facing unless gameplay needs otherwise.
-- Transparent background.
+- Transparent background in the shipped file. Generate it on a flat key colour
+  and remove that colour; do not ask the generator for transparency.
 - No text, frame, card mockup, scene, or watermark.
 - Preserve aspect ratio and trim transparent padding.
 - Maximum size: small `128x128`, middle `192x192`, big `256x256`.
@@ -164,14 +167,67 @@ through. Both have shipped that way. Check three things instead:
   near-grey, so a big share of such pixels is a background that was drawn rather
   than cut. Over about 5% of the opaque pixels is a reject.
 
-Then look at it. Composite the sprite over magenta and view it — a painted
-background is instantly obvious and no numeric test replaces the glance.
+Then look at it. Composite the sprite over a flat colour and view it — a painted
+background is instantly obvious and no numeric test replaces the glance. Use a
+colour the sprite was not keyed against, and look at it over two: a magenta key
+hides its own fringe against a magenta backdrop, so pair it with a light grey.
 
-When the check fails, regenerate with the transparent-background option. Do not
-chroma-key the background away: keying leaves a pale fringe, and it hides the
-fact that the generator is ignoring the instruction. Post-processing is a
-last resort when regeneration is genuinely unavailable, and it must be called out
-in the pull request as art to be redone.
+### Ask for a key colour, not for transparency
+
+`image_gen` on this machine does not return alpha. Asked for a transparent
+background it paints a grey-and-white checkerboard into the pixels, and no
+number of retries fixes it: 2026-09-14, the magic book icons ran 13 generations
+across three subjects with the transparency demand leading the prompt and a
+square canvas, and got real alpha zero times.
+
+So do not ask for transparency. Ask for one flat opaque key colour and remove it
+afterwards. Put the demand in the first sentence, the same place the
+transparency demand used to go, and name the colour three ways so it cannot
+drift:
+
+> Fill the entire background with one flat, uniform, fully opaque pure magenta,
+> RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact
+> single colour and nothing else: no grey-and-white checkerboard pattern, no
+> white, no grey, no gradient, no texture, no vignette, no ground plane, no cast
+> shadow, no glow or halo bleeding into it. Magenta appears nowhere on the
+> subject itself. Use a square canvas.
+
+This is not the chroma key the section above used to forbid. Keying a background
+the generator chose leaves a pale fringe and hides the fact that it ignored the
+instruction. Keying a colour it was *told* to paint is exact: the colour is
+known, it is flat, and it appears nowhere on the subject, so every boundary pixel
+can have the key divided back out of it. The same method already shipped the
+player restyle in #590.
+
+`.art/tools/key-out-background.py` does the removal, then
+`.art/tools/finalize-candidate.py --max-size <box>` trims and scales:
+
+```bash
+.art/tools/key-out-background.py raw.png cut.png --key magenta
+.art/tools/finalize-candidate.py cut.png Assets/Resources/Game/sprites/Name.png --max-size 256
+```
+
+Pick the key colour against the subject's palette, not by habit:
+
+- `--key green` and `--key blue` read one channel overshooting the other two.
+  Green is wrong for anything with foliage, moss or leaves; blue is wrong for
+  anything pale and cool.
+- `--key magenta` reads red and blue *together* overshooting green. Nothing in
+  `STYLE.md` is magenta, so it is the safe default for a mixed palette. The magic
+  book icons needed it: green would have eaten `boulder_strike`'s moss and
+  `spirit_bomb`'s leaves, and blue would have bitten into `boulder_strike`'s pale
+  crescents.
+
+The run prints `enclosed_pixels`. That counts key-coloured pixels the border
+cannot reach, which is key tint that landed on the subject. Anything but `0` means
+the key colour collides with the palette — change the key colour, do not widen
+the tolerance.
+
+With this method the bright-desaturated test above no longer applies: the
+background is gone by construction, and a pale belly or a near-white motion
+crescent is subject, not background. Check instead that no pixel of the key
+colour survived — red and blue both high with green far below — among the opaque
+pixels.
 
 ## Boundaries
 
