@@ -49,6 +49,44 @@ point through screen space at the start point's depth, which is exact for both
 projection and perspective, and is consistent with `ProjectileUtil.GetRotation`
 by construction because both consume the same two `WorldToScreenPoint` results.
 
+### A ring sprite and a ground circle project to the same ellipse
+
+"Billboarded" above means a sprite never turns with its object — facing is
+`SpriteRenderer.flipX`, not rotation. It does not mean the sprite plane is tilted
+to meet the camera. A `ServedObject`'s transform carries no rotation at all:
+`ObjectSpawner` instantiates with `prefab.transform.rotation`, no runtime prefab
+under `Assets/Resources/Prefabs` holds a rotation (`grep -rn 0.38268343` finds
+none), and `PositionUpdater` only moves and flips. So a sprite, and any child
+sprite added to one, stands in the world XY plane at 45° to the camera plane.
+Two kinds of thing do face the camera: what billboards itself every frame, in
+`ServedObjectGaugeBar.NormalizeTransform` and `PopupBookVisualPresenter`, and the
+scene decoration baked into `GameScene.unity`, where `tree_1` and `grass_1` carry
+a 45° X rotation. Do not copy a tree's transform into a runtime prefab.
+
+That makes an area-of-effect ring cheap to draw. At this camera's 45° tilt sine
+and cosine are equal, so a circle of radius r standing in the world XY plane and
+a circle of radius r lying flat on the ground XZ plane both project to an ellipse
+of horizontal radius r and vertical radius r·cos45 — the same ellipse, up to a
+few percent of perspective between the standing ring's top and the ground
+circle's far edge. An aura ring can therefore be a plain child sprite with no
+rotation and no mesh: `RepairTotem.prefab` draws its repair aura that way and
+`AuraRadiusScaler` sizes it from the `radius` parameter the server reads.
+
+This equality holds only at 45°. If the camera's X rotation ever changes, a
+standing ring stops matching the ground circle it stands for, and the visual has
+to move to `SkillIndicatorShapeRenderer`, which builds a real mesh in the XZ
+plane and already clips it to the field bounds.
+
+### Server radii reach the client twice, and only one of them is drawn in a build
+
+`GameObject.drawCircle` sends a component's radius to the client in the spawn
+payload, but `ServedObjectGizmoRenderer` is wrapped in `#if UNITY_EDITOR`, so
+those circles exist only in the Editor. A radius that has to be visible to
+players comes instead from the parameter table `ParametersDataSource` caches,
+which holds the same numbers the server reads. Use `AuraRadiusScaler` or read the
+table the way it does; do not assume the gizmo is on screen because it is on the
+wire.
+
 ## There is no Animator in this project
 
 There are no `.controller` or `.anim` assets and no `Animator` reference in

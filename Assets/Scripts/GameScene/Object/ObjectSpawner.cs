@@ -24,6 +24,11 @@ namespace GameScene.Object
 
             GameObject spawnedObject = InstantiateGameObject(createdObjectDto);
 
+            if (createdObjectDto.type == "TitanFist")
+            {
+                TitanFistPresenter.Attach(spawnedObject);
+            }
+
             ServedObject servedObject = spawnedObject.GetOrAddComponent<ServedObject>();
             PopupBookVisualPresenter popupBookPresenter = PopupBookVisualPresenter.Attach(servedObject);
 

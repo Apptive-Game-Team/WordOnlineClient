@@ -1,0 +1,21 @@
+Game creature sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+- Simple oval-eye grammar: a dark oval with one tiny highlight dot. No other facial features.
+- Chunky proportions, about three heads tall. Heavy, grounded, wide stance.
+
+Canvas and background, required exactly:
+- Single subject, centered, three-quarter camera, facing right.
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: a "wall golem" from this world's rock golem tribe (돌 골렘 부족) — a top-tier, heavily armored melee tanker built to plant itself in the enemy's path and block ground attackers, the toughest and heaviest golem this tribe fields. It must share the tribe's established material language, visible in the attached RockGolem reference: blocky stacked stone masses with visible seams between the blocks, a small head relative to the body, and moss and vegetation growing directly on the stone — the tribe's signature detail that separates it from human masonry. Stone palette: warm tan #CDC8B8, #A3A29D, #8A857A. Moss palette: #55572D, #374725.
+
+It must read unmistakably as a defensive tanker built like a wall — broader and more heavily plated than an ordinary rock golem — never as a slim fighter, a spellcaster, or a construct without visible stone-block seams.

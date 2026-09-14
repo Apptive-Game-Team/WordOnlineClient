@@ -165,6 +165,10 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: ffa686dfe2b460941ae1852510f8aada, type: 2}
     intentionalSilent: 0
     serverAlias: 0
+  - runtimeType: FireworkTower
+    profile: {fileID: 11400000, guid: ffa686dfe2b460941ae1852510f8aada, type: 2}
+    intentionalSilent: 0
+    serverAlias: 0
   - runtimeType: GroundCannon
     profile: {fileID: 11400000, guid: ffa686dfe2b460941ae1852510f8aada, type: 2}
     intentionalSilent: 0
@@ -263,6 +267,10 @@ MonoBehaviour:
     serverAlias: 0
   - runtimeType: FireShot
     profile: {fileID: 11400000, guid: cbed0e485f9f48ce92cfd23220fc97a4, type: 2}
+    intentionalSilent: 0
+    serverAlias: 0
+  - runtimeType: FireworkShell
+    profile: {fileID: 11400000, guid: 74ef85ae71924592ade4d203a432e56c, type: 2}
     intentionalSilent: 0
     serverAlias: 0
   - runtimeType: LeafExplode
