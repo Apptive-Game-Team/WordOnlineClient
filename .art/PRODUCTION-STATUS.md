@@ -126,6 +126,18 @@
 | `ZapMouse.png` | 클라이언트 PR (이슈 #694) | 256x162 RGBA. 세계수 전기 정령, 금색 가시 등, 눈 오른쪽 +19% |
 | `StormRider.png` | 클라이언트 PR (이슈 #694) | 256x221 RGBA. 구름 소환수와 탑승 기사를 같은 기법으로 그렸다 |
 | `WillOWisp.png` | 클라이언트 PR (이슈 #694) | 256x180 RGBA, 원본 크기 유지. 세계수 풀 정령, 얼굴 없는 떠다니는 불빛. 사용자가 도깨비불에는 얼굴이 없어야 한다고 정해 눈·입을 넣지 않았다 — STYLE.md 의 눈 문법과 facing right 규칙은 이 자산에 적용하지 않는다, `facing.py` 는 "눈 픽셀 못 찾음"을 정상으로 보고한다. 위로 갈수록 가늘어지는 불꽃 혓바닥 서너 개가 캔버스 폭 전체에 넓게 퍼지고, 아래는 둥글게 뭉친 심지, 가장 밝은 면이 몸통 가운데 와서 안에서 타는 것처럼 읽힌다. 1차 생성은 세로로 좁고 긴 불꽃이라 256x180 가로 비율과 맞지 않아 반려하고, 캔버스 폭 전체로 퍼지는 넓은 실루엣을 프롬프트에 못박아 2차 생성으로 통과시켰다. 잎·덩굴·꽃·씨앗 없음, `SeedSpiritSwarm`·`VineSpirit`과 나란히 놓아도 구별됨. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0, 64px 실루엣 검수 완료 |
+| `Cannon.png` | 클라이언트 이슈 #694 재작업 검수 | 256x225 RGBA, 원본 크기 유지. 인간 마법 문명, 차가운 석재+스틸블루+청동 재질. `HumanMagicTower.png` 재질 앵커 사용 |
+| `Tower.png` | 클라이언트 이슈 #694 재작업 검수 | 215x256 RGBA, 원본 크기 유지. 인간 마법 문명, `Cannon.png`과 같은 재질 앵커. 대공포탑 실루엣 유지 |
+| `Towerback.png` | 클라이언트 이슈 #694 재작업 검수 | 191x256 RGBA, 원본 크기 유지. 꼬마돌 몸체(따뜻한 황갈+이끼, `RockGolem.png` 재질 앵커)와 인간제 포탑(차가운 석재+스틸블루+청동, 재작업한 `Tower.png` 결과물을 추가 참조로 사용)을 명확히 분리해 그렸다. 골렘 얼굴은 원본에 있던 단순 타원 눈을 유지, facing.py 측정 +4% 정면 |
+| `BubbleGenerator.png` | 클라이언트 이슈 #694 재작업 검수 | 175x256 RGBA, 원본 크기 유지. 물 슬라임, 틀 재질은 중립 사암색으로 두고 거품 구체에만 `WaterSlime.png` 젤 재질 적용해 세계수 정령과 구분 |
+| `Crater.png` | 클라이언트 이슈 #694 재작업 검수 | 256x169 RGBA, 원본 크기 유지. 지옥불 군단, 기존 분화구+용암 균열 개념은 유지하고 `HellfireDemon.png` 재질로 렌더링 기법만 통일 |
+| `RallyingTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 109x256 RGBA, 원본 크기 유지. 지옥불 설치물 셰이프 랭귀지 적용 — 좌우 비대칭 뿔과 불꽃 왕관, `HellfireDemon.png` 재질 |
+| `HealingTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 188x256 RGBA, 원본 크기 유지. 세계수 풀 정령, 잎 꽃받침에 감싸인 치유광 |
+| `LifeTree.png` | 클라이언트 이슈 #694 재작업 검수 | 256x207 RGBA, 원본 크기 유지. 세계수 풀 정령, 축소판 세계수 형태에 마나 옹이 유지 |
+| `SeedNest.png` | 클라이언트 이슈 #694 재작업 검수 | 256x179 RGBA, 원본 크기 유지. 세계수 풀 정령, 잎·씨앗·덩굴 둥지. 안쪽 그릇은 비워 소환된 개체가 읽히게 함 |
+| `ManaWell.png` | 클라이언트 이슈 #694 재작업 검수 | 256x179 RGBA, 원본 크기 유지. **진영 정정**: 이슈에서 물 계열로 추정했으나 `.art/magic/pages/mana_well.md`의 진영이 세계수 풀 정령이고 기존 아트도 이끼 녹색이라 물이 아니었다. 나뭇잎·덩굴 테두리와 마나빛 웅덩이로 재작업 |
+| `ElectricTower.png` | 클라이언트 이슈 #694 재작업 검수 | 200x256 RGBA, 원본 크기 유지. **진영 정정**: `STYLE.md`의 Humans 절 Anchors 목록에 `ElectricTower`가 있어 인간 진영으로 보이지만, `.art/magic/pages/electric_tower.md`와 `.art/magic/README.md`의 진영별 표는 세계수 전기 정령으로 못박았고 `wind_totem`·`healing_totem` 등 나머지 11장 전부가 자기 매직 페이지 진영과 일치했다. 차가운 석재를 버리고 세계수 나무 밑동+황금 번개 결정으로 다시 그렸다. `STYLE.md`의 해당 줄은 갱신이 필요하다 |
+| `WindTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 256x137 RGBA, 원본 크기 유지. 세계수 바람 정령, 박쥐막 날개를 넓은 곡선 리본으로 교체 |
 
 ## 다음 교체 후보
 
@@ -139,6 +151,7 @@
 | `MeteorShower.png` | 이슈 #694. 지옥불 군단 유성, 어두운 재 갑각 + 갈라진 틈으로 비치는 용암광. 프롬프트는 써 두었다(`.art/concept/object-prompts/meteor-shower.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 같은 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혀 원본을 그대로 두었다 |
 | `Crater.png` | 현재 개념을 유지하고 마스터 렌더링 기법으로 통일 |
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
+| `FireShot.png` | 지옥불 군단의 뿔·갑각 모티프로 통일 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
 | `RazorGale.png`, `SandStorm.png`, `TornadoStrike.png`, `WindBlade.png`, `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 10장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었으나 생성을 시작하기 전에 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혔다 |
 | 정령 계열 live sprite 2개 | `CloudDragon`, `Leafair` 이 아직 legacy 채색 그림체다. 나머지 여덟(`WillOWisp` 포함)은 이슈 #694 에서 교체했다 |
