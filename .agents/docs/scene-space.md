@@ -61,6 +61,42 @@ point through screen space at the start point's depth, which is exact for both
 projection and perspective, and is consistent with `ProjectileUtil.GetRotation`
 by construction because both consume the same two `WorldToScreenPoint` results.
 
+### A beam drawn from a runtime sprite has to ask for FullRect
+
+The sprite way to draw something spanning two points is the one
+`StretchProjectile` and `SpiritBombBeamProjectile` use: a base piece, a middle
+`SpriteRenderer` with `drawMode = SpriteDrawMode.Tiled`, and a tip piece parented
+to a root placed at the start point and rotated by `ProjectileUtil.GetRotation`.
+`size.x` on the middle piece is the length from `GetCameraPlaneLength` and
+`size.y` is the thickness, so the pattern repeats instead of smearing as the
+length changes. The middle piece must stay at `localScale` 1, because `size` is
+applied before scale.
+
+Two traps appear when that sprite is built at runtime rather than imported, which
+is what a projectile with no prefab has to do here —
+`ProjectileSpawner.SpawnSpiritBombBeam` assembles its object in code, and the
+Editor cannot run in this environment to author an asset.
+
+- `Sprite.Create` defaults to `SpriteMeshType.Tight`, which trims the transparent
+  border away, and a trimmed mesh makes `SpriteRenderer.size` do nothing. Pass
+  `SpriteMeshType.FullRect` explicitly. Nothing throws; the piece simply keeps its
+  natural size and the beam never reaches its target. An imported sprite can hide
+  this — `evil_ent_arm_segment.png` is imported with `spriteMeshType: 0` and still
+  tiles, because it is an opaque rectangle whose tight mesh is already the full
+  rect.
+- `pixelsPerUnit` fixes the tile's world size, and the tiles are laid in both axes.
+  If the thickness does not equal the sprite's natural height, the row is clipped
+  or repeated. Derive `pixelsPerUnit` from the thickness — `textureHeight /
+  thickness` — so exactly one row is laid; the tile's length then scales with the
+  thickness too, which is what a beam wants. That makes the sprite depend on the
+  thickness, so cache the `Texture2D` in a `static` field and create one `Sprite`
+  per instance, destroying only the sprite in `OnDestroy`.
+
+A `SpriteRenderer` created in code already carries the default sprite material, so
+there is no reason to build one from `Shader.Find("Sprites/Default")`; the
+built-in default cannot be stripped from a WebGL build, and a `Shader.Find` result
+can be.
+
 ### A ring sprite and a ground circle project to the same ellipse
 
 "Billboarded" above means a sprite never turns with its object — facing is
