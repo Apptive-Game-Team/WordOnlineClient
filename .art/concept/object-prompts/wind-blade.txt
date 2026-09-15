@@ -1,0 +1,11 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a crescent-shaped blade of wind magic flying fast through the air, like a scimitar-shaped slice of compressed wind. It is a weather phenomenon, not a creature — no face, no eyes. It has a thin, narrow, trailing wisp tail at the lower-left of the frame that widens and curves up and over into a broad crescent blade shape, ending in a sharp curved point at the right side of the frame. Compose it as a wide, short horizontal crescent across the middle of the square canvas, filling close to the full canvas width but only a narrow band of canvas height (roughly 1.57:1 wide, short aspect once trimmed), with empty magenta above, below, and around it.
+
+Build the blade from two or three broad overlapping curved paper ribbons, each ribbon a chain of flat trapezoid facets that twist along the crescent's curve. Render it in the Wind palette hex #E5EBE7, #B3CCCA, #9BB3B3, #5EA191, #2A6D64, with pale #E5EBE7 reserved for upper-left highlight facets and deep #2A6D64 reserved for lower-right shadow facets.
+
+Render in the 2.5D cut-paper master style: one flat solid color per facet, hard sharp creases between facets, no smooth 3D shading, no gloss, no specular highlights, no texture, no glow, no bloom, no outer contour line, no ink outline. Light from a single soft source at upper-left applied consistently across all ribbons. Restrained saturation, mid-to-high value, nothing neon.
+
+Direction is critical: the thin trailing wisp tail must stay at the lower-left, and the blade must widen and curl up and over ending in its sharp point at the right side of the frame, matching a blade flying toward the right. Do not mirror this — do not put the sharp point on the left.
+
+Exclude: no text, no frame, no card border, no watermark, no logo, no ground plane, no cast shadow, no scene, no face, no eyes, no perfectly symmetric shape. Single subject only, nothing else in frame.
