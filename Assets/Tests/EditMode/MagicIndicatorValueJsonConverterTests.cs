@@ -59,6 +59,44 @@ namespace WordOnline.Tests
             Assert.AreEqual(0f, value.FallbackNumber, 1e-6f);
         }
 
+        [Test]
+        public void ReadsParameterWithObject()
+        {
+            MagicIndicatorValue value = JsonCodec
+                .Deserialize<Holder>(@"{""value"":{""object"":""electric_shot"",""parameter"":""radius""}}").value;
+
+            Assert.IsTrue(value.IsPresent);
+            Assert.IsTrue(value.IsParameter);
+            Assert.IsTrue(value.HasObject);
+            Assert.AreEqual("electric_shot", value.ObjectName);
+            Assert.AreEqual("radius", value.ParameterName);
+            Assert.IsFalse(value.HasFallback);
+        }
+
+        [Test]
+        public void ReadsParameterWithObjectAndFallback()
+        {
+            MagicIndicatorValue value = JsonCodec
+                .Deserialize<Holder>(
+                    @"{""value"":{""object"":""dragon_flame"",""parameter"":""radius"",""fallback"":0.5}}").value;
+
+            Assert.IsTrue(value.HasObject);
+            Assert.AreEqual("dragon_flame", value.ObjectName);
+            Assert.AreEqual("radius", value.ParameterName);
+            Assert.IsTrue(value.HasFallback);
+            Assert.AreEqual(0.5f, value.FallbackNumber, 1e-6f);
+        }
+
+        /// <summary>object 가 계약대로 문자열이 아니면 parameter 가 문자열이 아닐 때와 같이 "없음" 이 된다.</summary>
+        [Test]
+        public void ObjectNotStringIsNotPresent()
+        {
+            MagicIndicatorValue value = JsonCodec
+                .Deserialize<Holder>(@"{""value"":{""object"":3,""parameter"":""radius""}}").value;
+
+            Assert.IsFalse(value.IsPresent);
+        }
+
         /// <summary>필드가 없는 것과 0 이 온 것은 달라야 한다. forwardOffset 의 기본값이 여기에 걸린다.</summary>
         [Test]
         public void OmittedValueIsNotPresent()
@@ -133,6 +171,31 @@ namespace WordOnline.Tests
             Assert.IsTrue(restored.IsParameter);
             Assert.AreEqual("radius", restored.ParameterName);
             Assert.IsFalse(restored.HasFallback);
+        }
+
+        [Test]
+        public void RoundTripsParameterWithObject()
+        {
+            MagicIndicatorValue restored = RoundTrip(MagicIndicatorValue.FromParameter("electric_shot", "radius"));
+
+            Assert.IsTrue(restored.IsParameter);
+            Assert.IsTrue(restored.HasObject);
+            Assert.AreEqual("electric_shot", restored.ObjectName);
+            Assert.AreEqual("radius", restored.ParameterName);
+            Assert.IsFalse(restored.HasFallback);
+        }
+
+        [Test]
+        public void RoundTripsParameterWithObjectAndFallback()
+        {
+            MagicIndicatorValue restored =
+                RoundTrip(MagicIndicatorValue.FromParameter("dragon_flame", "radius", 0.5f));
+
+            Assert.IsTrue(restored.HasObject);
+            Assert.AreEqual("dragon_flame", restored.ObjectName);
+            Assert.AreEqual("radius", restored.ParameterName);
+            Assert.IsTrue(restored.HasFallback);
+            Assert.AreEqual(0.5f, restored.FallbackNumber, 1e-6f);
         }
 
         /// <summary>PlayerPrefs cache 로 나갔다 와도 "없음" 이 0 으로 바뀌면 안 된다.</summary>

@@ -29,11 +29,14 @@ namespace Data.Magic
     {
         Unknown,
 
-        /// <summary>조준점까지. 길이는 마법의 cast range 다.</summary>
+        /// <summary>조준점 쪽으로. 길이는 <c>length</c> 가 있으면 그 값, 없으면 마법의 cast range 다.</summary>
         Target,
 
         /// <summary>시전자가 보는 방향으로 <c>length</c> 만큼.</summary>
-        Forward
+        Forward,
+
+        /// <summary>조준점까지. 길이가 origin 과 조준점 사이 거리 그대로다.</summary>
+        Aim
     }
 
     /// <summary>
@@ -54,13 +57,14 @@ namespace Data.Magic
         private const string OriginTarget = "target";
         private const string LaneEndTarget = "target";
         private const string LaneEndForward = "forward";
+        private const string LaneEndAim = "aim";
 
         public string shape;
 
         /// <summary>비어 있으면 <see cref="MagicIndicatorOrigin.Target"/> 이다.</summary>
         public string origin;
 
-        /// <summary>lane 전용. <c>"target"</c> 이거나 <c>"forward"</c>.</summary>
+        /// <summary>lane 전용. <c>"target"</c>, <c>"forward"</c>, <c>"aim"</c> 중 하나.</summary>
         public string end;
 
         public MagicIndicatorValue radius;
@@ -174,6 +178,11 @@ namespace Data.Magic
             if (IsSame(value, LaneEndTarget))
             {
                 return MagicIndicatorLaneEnd.Target;
+            }
+
+            if (IsSame(value, LaneEndAim))
+            {
+                return MagicIndicatorLaneEnd.Aim;
             }
 
             return IsSame(value, LaneEndForward) ? MagicIndicatorLaneEnd.Forward : MagicIndicatorLaneEnd.Unknown;
