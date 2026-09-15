@@ -125,6 +125,7 @@
 | `WindSpirit.png` | 클라이언트 PR (이슈 #694) | 206x256 RGBA. 세계수 바람 정령, 회청록 팔레트, 눈 오른쪽 +22% |
 | `ZapMouse.png` | 클라이언트 PR (이슈 #694) | 256x162 RGBA. 세계수 전기 정령, 금색 가시 등, 눈 오른쪽 +19% |
 | `StormRider.png` | 클라이언트 PR (이슈 #694) | 256x221 RGBA. 구름 소환수와 탑승 기사를 같은 기법으로 그렸다 |
+| `WillOWisp.png` | 클라이언트 PR (이슈 #694) | 256x180 RGBA, 원본 크기 유지. 세계수 풀 정령, 얼굴 없는 떠다니는 불빛. 사용자가 도깨비불에는 얼굴이 없어야 한다고 정해 눈·입을 넣지 않았다 — STYLE.md 의 눈 문법과 facing right 규칙은 이 자산에 적용하지 않는다, `facing.py` 는 "눈 픽셀 못 찾음"을 정상으로 보고한다. 위로 갈수록 가늘어지는 불꽃 혓바닥 서너 개가 캔버스 폭 전체에 넓게 퍼지고, 아래는 둥글게 뭉친 심지, 가장 밝은 면이 몸통 가운데 와서 안에서 타는 것처럼 읽힌다. 1차 생성은 세로로 좁고 긴 불꽃이라 256x180 가로 비율과 맞지 않아 반려하고, 캔버스 폭 전체로 퍼지는 넓은 실루엣을 프롬프트에 못박아 2차 생성으로 통과시켰다. 잎·덩굴·꽃·씨앗 없음, `SeedSpiritSwarm`·`VineSpirit`과 나란히 놓아도 구별됨. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0, 64px 실루엣 검수 완료 |
 
 ## 다음 교체 후보
 
@@ -140,7 +141,7 @@
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
 | `RazorGale.png`, `SandStorm.png`, `TornadoStrike.png`, `WindBlade.png`, `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 10장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었으나 생성을 시작하기 전에 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혔다 |
-| 정령 계열 live sprite 3개 | `CloudDragon`, `Leafair`, `WillOWisp` 이 아직 legacy 채색 그림체다. 나머지 일곱은 이슈 #694 에서 교체했고 `WillOWisp` 은 얼굴 없는 불꽃으로 다시 그리는 중이다 |
+| 정령 계열 live sprite 2개 | `CloudDragon`, `Leafair` 이 아직 legacy 채색 그림체다. 나머지 여덟(`WillOWisp` 포함)은 이슈 #694 에서 교체했다 |
 | `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
 ## 크기 검증
