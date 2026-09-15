@@ -127,6 +127,9 @@
 | `TideCall.png` | 클라이언트 PR (이슈 #694) | 256x193 RGBA, 원본 크기 유지. 밀려드는 해일 투사체, Water 팔레트 겹친 반투명 종이층. 원본의 커브 방향을 그대로 유지(투사체 4종 방향 고정 지시 대상은 아니었음). magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
 | `WaterExplosion.png` | 클라이언트 PR (이슈 #694) | 198x256 RGBA, 원본 크기 유지. 간헐천 폭발, 물기둥 받침의 돌 테두리를 찬 회색에서 따뜻한 황갈+이끼로 이동 — STYLE.md의 바위 진영 규칙을 물 마법의 부속 오브젝트에도 적용. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
 | `RockDrop.png` | 클라이언트 PR (이슈 #694) | 125x256 RGBA, 원본 크기 유지. 거석 낙하 투사체, 찬 회색-청색에서 따뜻한 황갈+이끼로 이동. 원본과 같은 방향(넓은 상단, 뾰족한 끝 하단)으로 고정. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
+| `Leafair.png` | 클라이언트 PR (이슈 #694) | 178x256 RGBA, 원본 크기 유지. 잎바람 요정, 개별 잎 다면체 수십 장이 겹쳐 쌓인 테두리가 톱니처럼 보이는 눈물방울형 더미, 위쪽에 흩날리는 낱장 잎 유지. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
+| `Overgrowth.png` | 클라이언트 PR (이슈 #694) | 256x245 RGBA, 원본 크기 유지. 세계수의 과생장, 잎 다면체와 짧은 덩굴 마디가 뒤섞여 둥근 덩어리를 이루고 가장자리로 잎·덩굴손이 삐져나온다. 부드러운 뭉게구름형 원본에서 다면체로 교체. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
+| `RainCloud.png` | 클라이언트 PR (이슈 #694) | 127x256 RGBA, 원본 크기 유지. 비 구름 설치물, 상단의 작은 뭉게구름 + 빗줄기 리본 + 하단의 옅은 지면 타원으로 원본 구도 유지, 페인트 질감 구름에서 다면체로 교체. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
 | `BubbleSpirit.png` | 클라이언트 PR (이슈 #694) | 250x256 RGBA. 물 슬라임 계열, 눈 오른쪽 +35% |
 | `SeedSpiritSwarm.png` | 클라이언트 PR (이슈 #694) | 256x224 RGBA. 세계수 풀 정령, 씨앗 몸통에 잎과 꽃 |
 | `ThunderSpirit.png` | 클라이언트 PR (이슈 #694) | 256x226 RGBA. 세계수 전기 정령, 금색 팔레트, 눈 오른쪽 +25% |
@@ -161,8 +164,7 @@
 | `Crater.png` | 현재 개념을 유지하고 마스터 렌더링 기법으로 통일 |
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
-| `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 3장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었다. `image_gen` 사용량 한도가 2026-09-15 세션 도중 풀려 이어서 생성 중이다 |
-| 정령 계열 live sprite 2개 | `CloudDragon`, `Leafair` 이 아직 legacy 채색 그림체다. 나머지 여덟(`WillOWisp` 포함)은 이슈 #694 에서 교체했다 |
+| 정령 계열 live sprite 1개 | `CloudDragon` 이 아직 legacy 채색 그림체다. 나머지 아홉(`WillOWisp`, `Leafair` 포함)은 이슈 #694 에서 교체했다 |
 | `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
 ## 크기 검증
