@@ -72,10 +72,13 @@ to a root placed at the start point and rotated by `ProjectileUtil.GetRotation`.
 length changes. The middle piece must stay at `localScale` 1, because `size` is
 applied before scale.
 
-Two traps appear when that sprite is built at runtime rather than imported, which
-is what a projectile with no prefab has to do here —
+Two traps appear when the `Sprite` is built at runtime rather than taken from the
+import, which is what a projectile with no prefab has to do here.
 `ProjectileSpawner.SpawnSpiritBombBeam` assembles its object in code, and the
-Editor cannot run in this environment to author an asset.
+`Sprite` an imported texture already carries is fixed at `pixelsPerUnit` 100,
+which the second trap below rules out. The pixels themselves are still imported
+assets — `Game/shoot/spirit_bomb_beam_segment` and `..._cap` — and only
+`Sprite.Create` runs at runtime.
 
 - `Sprite.Create` defaults to `SpriteMeshType.Tight`, which trims the transparent
   border away, and a trimmed mesh makes `SpriteRenderer.size` do nothing. Pass
@@ -89,8 +92,10 @@ Editor cannot run in this environment to author an asset.
   or repeated. Derive `pixelsPerUnit` from the thickness — `textureHeight /
   thickness` — so exactly one row is laid; the tile's length then scales with the
   thickness too, which is what a beam wants. That makes the sprite depend on the
-  thickness, so cache the `Texture2D` in a `static` field and create one `Sprite`
-  per instance, destroying only the sprite in `OnDestroy`.
+  thickness, so hold the `Texture2D` in a `static` field and create one `Sprite`
+  per instance. `OnDestroy` destroys that sprite and nothing else: the texture is
+  a `Resources` asset shared by every beam, and destroying it takes the art away
+  from the next cast.
 
 A `SpriteRenderer` created in code already carries the default sprite material, so
 there is no reason to build one from `Shader.Find("Sprites/Default")`; the
