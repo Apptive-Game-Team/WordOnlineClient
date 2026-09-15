@@ -128,7 +128,6 @@
 | `WillOWisp.png` | 클라이언트 PR (이슈 #694) | 256x180 RGBA, 원본 크기 유지. 세계수 풀 정령, 얼굴 없는 떠다니는 불빛. 사용자가 도깨비불에는 얼굴이 없어야 한다고 정해 눈·입을 넣지 않았다 — STYLE.md 의 눈 문법과 facing right 규칙은 이 자산에 적용하지 않는다, `facing.py` 는 "눈 픽셀 못 찾음"을 정상으로 보고한다. 위로 갈수록 가늘어지는 불꽃 혓바닥 서너 개가 캔버스 폭 전체에 넓게 퍼지고, 아래는 둥글게 뭉친 심지, 가장 밝은 면이 몸통 가운데 와서 안에서 타는 것처럼 읽힌다. 1차 생성은 세로로 좁고 긴 불꽃이라 256x180 가로 비율과 맞지 않아 반려하고, 캔버스 폭 전체로 퍼지는 넓은 실루엣을 프롬프트에 못박아 2차 생성으로 통과시켰다. 잎·덩굴·꽃·씨앗 없음, `SeedSpiritSwarm`·`VineSpirit`과 나란히 놓아도 구별됨. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0, 64px 실루엣 검수 완료 |
 | `Cannon.png` | 클라이언트 이슈 #694 재작업 검수 | 256x225 RGBA, 원본 크기 유지. 인간 마법 문명, 차가운 석재+스틸블루+청동 재질. `HumanMagicTower.png` 재질 앵커 사용 |
 | `Tower.png` | 클라이언트 이슈 #694 재작업 검수 | 215x256 RGBA, 원본 크기 유지. 인간 마법 문명, `Cannon.png`과 같은 재질 앵커. 대공포탑 실루엣 유지 |
-| `Towerback.png` | 클라이언트 이슈 #694 재작업 검수 | 191x256 RGBA, 원본 크기 유지. 꼬마돌 몸체(따뜻한 황갈+이끼, `RockGolem.png` 재질 앵커)와 인간제 포탑(차가운 석재+스틸블루+청동, 재작업한 `Tower.png` 결과물을 추가 참조로 사용)을 명확히 분리해 그렸다. 골렘 얼굴은 원본에 있던 단순 타원 눈을 유지, facing.py 측정 +4% 정면 |
 | `BubbleGenerator.png` | 클라이언트 이슈 #694 재작업 검수 | 175x256 RGBA, 원본 크기 유지. 물 슬라임, 틀 재질은 중립 사암색으로 두고 거품 구체에만 `WaterSlime.png` 젤 재질 적용해 세계수 정령과 구분 |
 | `Crater.png` | 클라이언트 이슈 #694 재작업 검수 | 256x169 RGBA, 원본 크기 유지. 지옥불 군단, 기존 분화구+용암 균열 개념은 유지하고 `HellfireDemon.png` 재질로 렌더링 기법만 통일 |
 | `RallyingTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 109x256 RGBA, 원본 크기 유지. 지옥불 설치물 셰이프 랭귀지 적용 — 좌우 비대칭 뿔과 불꽃 왕관, `HellfireDemon.png` 재질 |
@@ -146,6 +145,7 @@
 
 | 리소스 | 필요한 작업 |
 |---|---|
+| `Towerback.png` | 컨셉이 어긋나 반려했다. 등에 진 것이 `Tower` 가 아니라 일반 대포로, 업은 쪽도 `MiniRockSwarm`(꼬마돌)이 아니라 이끼 낀 다른 골렘으로 나왔다. 컨셉 페이지는 "인간 마법 문명이 납치한 꼬마돌의 등에 지대공 타워를 결속한 병기" 로 적고 서버도 `Tower` 컴포넌트를 그대로 단다. 프롬프트는 `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 쓰도록 고쳐 뒀다 |
 | `MagmaExplosion.png` | 지옥불 갑각 파편과 내부 용암광 중심으로 재설계 |
 | `FireShot.png` | 이슈 #694. 프롬프트는 써 두었다(`.art/concept/object-prompts/fire-shot.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정, `resets_in_seconds=364132`)에 막혀 원본을 그대로 두었다 |
 | `MeteorShower.png` | 이슈 #694. 지옥불 군단 유성, 어두운 재 갑각 + 갈라진 틈으로 비치는 용암광. 프롬프트는 써 두었다(`.art/concept/object-prompts/meteor-shower.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 같은 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혀 원본을 그대로 두었다 |
