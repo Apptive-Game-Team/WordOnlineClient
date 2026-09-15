@@ -1,0 +1,7 @@
+Piece identity — "beam cap", the burst that sits at the muzzle end and again at the point of impact of the beam. Use a square canvas.
+
+A single compact faceted starburst, centred, with a clear margin of background on all four sides. It is symmetrical enough to read the same whichever way it is turned; it has no direction, no beam attached, no tail and no trailing streak.
+
+At its centre is one pale yellow #FCFBD5 faceted diamond core, built from four or five large flat planes with hard creases between them. Around it, eight chunky faceted shards radiate outward like the attached ArcaneImpact reference — each shard a narrow tapering wedge of two or three flat planes, blunt at the centre and pointed at its far end, all eight the same length and evenly spaced around the core. The four shards on the diagonals are lightning yellow #F6DB5F with a #D7A313 shadow plane on their lower-right side; the four shards on the vertical and horizontal axes are nature green #B8CE59 with a #768738 shadow plane on their lower-right side.
+
+The shards do not touch each other; flat magenta background shows between them. Nothing else is on the canvas.
