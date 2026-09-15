@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself.
+
+Game effect sprite for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build every shape from flat polygonal facet planes, like cut and folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradient across a plane, no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush, no glow, no bloom, no light rays, no lens flare.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look built from cut and folded matte paper facets. Energy is drawn here as folded paper shapes, not as light.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of each form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line and no ink outline anywhere. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+- Very low part count. Large facets, few of them. No scattered particles, no small fragments, no dust motes, no sparks, no embers, no branching lightning bolts, no smoke, no ring of debris.
+- No text, no frame, no card border, no watermark, no logo, no creature, no character, no hands, no face, no eyes.
+
+Subject identity: this is one piece of the `spirit_bomb` beam, a LIGHTNING plus NATURE magic. The caster drains life out of its own allied summons, packs it into one mass, and discharges it as a single straight beam. Both elements are visible in every piece: lightning yellow #FCFBD5, #F6DB5F, #D7A313, #996B07 for the hot core, World Tree nature green #B8CE59, #9DA74D, #768738 for the drained life wrapped around it. Yellow is always the inner core, green is always the outer sheath.
