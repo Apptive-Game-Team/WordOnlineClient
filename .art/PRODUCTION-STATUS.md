@@ -138,6 +138,9 @@
 | `ElectricTower.png` | 클라이언트 이슈 #694 재작업 검수 | 200x256 RGBA, 원본 크기 유지. **진영 확인**: `.art/magic/pages/electric_tower.md`와 `.art/magic/README.md`의 진영별 표는 세계수 전기 정령이라고 적지만, 그 표는 `generate-magic-pages.py`의 `faction_for()`가 이름의 부분 문자열로 찍는 값이라 부정확하다고 이미 PR #690에서 확인됐다("electric"이 전기 정령 규칙에 걸림). `STYLE.md:144`의 Humans 절이 "Anchors: `Cannon`, `ElectricTower`"로 이 자산을 인간 진영의 정의 기준으로 못박고 있고 원본 아트도 리벳 박힌 금속+석재였으므로, 자동 생성 표 대신 STYLE.md를 따라 인간 진영 찬 회색 석재+스틸블루+청동으로 그렸다(1차 시도는 세계수 나무+황금 결정으로 잘못 그려 반려). `Cannon.png`·`Tower.png`와 같은 재질, 꼭대기의 전기 구슬과 번개 파편만 Lightning 금색 팔레트로 남겨 원소를 표시한다 |
 | `WindTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 256x137 RGBA, 원본 크기 유지. 세계수 바람 정령, 박쥐막 날개를 넓은 곡선 리본으로 교체 |
 | `Towerback.png` | 클라이언트 PR (이슈 #694) | 191x256 RGBA. 꼬마돌이 `Tower` 를 등에 결속당한 컨셉으로 다시 그렸다. `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 넣어 업은 쪽과 실린 쪽이 각각 알아보이게 했다 |
+| `RockTurret.png`, `RockTurretAttacking.png` | 클라이언트 PR (이슈 #694) | 169x256 RGBA 두 장. twin-panel 로 한 번에 그려 접지선 y 차이 1px. 인간 진영 찬 석재 |
+| `CloudDragon.png`, `CloudDragonAttacking.png` | 클라이언트 PR (이슈 #694) | 256x182 RGBA 두 장. 머리 상단 y 완전 일치. 구형 물 아우라 `cloud.png` 는 별도 자산 |
+| `TreeGolem.png`, `TreeGolem2.png` | 클라이언트 PR (이슈 #694) | 240x256 / 256x215 RGBA. 공유 crop 과 배율로 몸 크기를 맞췄고, 서로 달랐던 spritePixelsToUnits 를 85 로 통일했다 |
 
 ## 다음 교체 후보
 
