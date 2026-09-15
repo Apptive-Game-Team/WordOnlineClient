@@ -112,6 +112,12 @@
 | `drop/fire_drop.png` | 클라이언트 PR (이슈 #683) | 104x192 RGBA, 원본 크기 유지. Hellfire 팔레트로 이동한 낙하 불꽃, 위가 넓고 아래가 뾰족한 형태 유지. 밝은 주황-노랑 불꽃 아이콘에서 어두운 재 + 갈라진 틈으로 비치는 주황으로 교체. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `drop/leaf_drop.png` | 클라이언트 PR (이슈 #683) | 103x192 RGBA, 원본 크기 유지. 위가 넓고 아래가 뾰족한 잎사귀, 중앙맥을 면 경계로 표현(밝은 왼쪽 절반 + 어두운 오른쪽 절반)하고 보조 잎맥을 대각선 크리스로 뻗었다. 1차 생성은 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려 — 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써서(v2) 재생성해 통과시켰다. `fire_drop`(용암 덩어리)·`wind_drop`(소용돌이)과 나란히 놓아도 셋 다 정체가 분명하다. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `drop/wind_drop.png` | 클라이언트 PR (이슈 #683) | 106x192 RGBA, 원본 크기 유지. Wind 팔레트 소용돌이 낙하 이펙트, 위쪽 고리가 넓고 아래로 갈수록 좁아지는 형태 유지. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `GiantVine.png` | 클라이언트 PR (이슈 #694) | 135x256 RGBA, 원본 크기 유지. 덩굴 세계 마법의 필드 오브젝트, 바닥에서 솟은 굵은 마디형 덩굴 줄기. `VineColony`/`VineToss`/`VineWorld`와 같은 덩굴 문장(마디 링·낱장 잎·말린 덩굴손)을 프롬프트 문장 단위로 공유. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, magenta 잔색 0px, 64px 실루엣 검수 완료 |
+| `VineToss.png` | 클라이언트 PR (이슈 #694) | 135x256 RGBA, 원본 크기 유지. 덩굴 투척 투사체, 원본과 같은 방향(바닥 좌측에서 상단 우측으로 기울어 솟구침)으로 고정. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, magenta 잔색 0px, 64px 실루엣 검수 완료 |
+| `VineColony.png` | 클라이언트 PR (이슈 #694) | 256x220 RGBA, 원본 크기 유지. 덩굴 군락 설치물, 같은 덩굴 줄기 여러 가닥을 엮은 공 모양 둥지. 엮인 틈으로 magenta 배경이 다수 보여 enclosed_pixels=17018로 나왔으나 잔색 검사(불투명 픽셀 중 magenta 성분 0px)와 눈으로 본 결과 모두 실제 구멍이지 키 오염이 아님을 확인했다. 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `VineWorld.png` | 클라이언트 PR (이슈 #694) | 256x256 RGBA, 원본 크기 유지. 덩굴 세계 마법책 아이콘, 중앙의 큰 덩굴과 그 둘레를 감싼 작은 덩굴 8개로 구성된 기존 다중 피사체 구도를 유지했다(책 아이콘 예외). magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `LightningExplosion.png` | 클라이언트 PR (이슈 #694) | 256x155 RGBA, 원본 크기 유지. 번개 폭발, 기존 파란 계열에서 STYLE.md 의 금색 Lightning 팔레트로 이동. 중심에서 방사형으로 뻗는 갈래 다발, 가장자리는 낱개 가지 끝이 열려 있어 닫힌 원판이 아니다. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, 64px 실루엣 검수 완료 |
+| `ShockOverload.png` | 클라이언트 PR (이슈 #694) | 256x193 RGBA, 원본 크기 유지. 전격 과부하, 원래도 금색이었으나 촘촘한 뭉게구름형 텍스처에서 다면체 갈래 다발로 다시 그렸다. 트림 후 원본 비율(가로세로 1.96)과 목표 비율(1.33)의 차이로 가로 방향 압축이 더 크게 들어갔으나 눈으로 본 실루엣은 자연스럽다. enclosed_pixels=11145는 갈래 사이 트인 틈으로 확인, 불투명 픽셀 magenta 잔색 0px. 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 
 ## 다음 교체 후보
 
@@ -121,12 +127,30 @@
 | 리소스 | 필요한 작업 |
 |---|---|
 | `MagmaExplosion.png` | 지옥불 갑각 파편과 내부 용암광 중심으로 재설계 |
-| `FireShot.png` | 지옥불 군단의 뿔·갑각 모티프로 통일 |
+| `FireShot.png` | 이슈 #694. 프롬프트는 써 두었다(`.art/concept/object-prompts/fire-shot.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정, `resets_in_seconds=364132`)에 막혀 원본을 그대로 두었다 |
+| `MeteorShower.png` | 이슈 #694. 지옥불 군단 유성, 어두운 재 갑각 + 갈라진 틈으로 비치는 용암광. 프롬프트는 써 두었다(`.art/concept/object-prompts/meteor-shower.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 같은 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혀 원본을 그대로 두었다 |
 | `Crater.png` | 현재 개념을 유지하고 마스터 렌더링 기법으로 통일 |
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
 | 정령 계열 live sprite 10개 | `WindSpirit`, `ThunderSpirit`, `ZapMouse`, `SeedSpiritSwarm`, `VineSpirit`, `CloudDragon`, `WillOWisp`, `Leafair`, `StormRider`, `BubbleSpirit` 이 아직 legacy 채색 그림체다. #679 에서 `BombSprite` 를 고치다 확인했다 |
+| `RazorGale.png`, `SandStorm.png`, `TornadoStrike.png`, `WindBlade.png`, `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 10장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었으나 생성을 시작하기 전에 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혔다 |
 | `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
+
+## 크기 검증
+
+캔버스 크기가 원본과 같아도 트림·리사이즈 과정에서 실제 그림이 캔버스 안에
+작게 들어갈 수 있다. `image_gen` 사용량 한도로 세션이 끊겼다 이어받을 때도
+확인 없이 놓치기 쉽다. commit 전에 항상 돌린다.
+
+바뀐 PNG마다 alpha가 10을 넘는 픽셀의 바운딩 박스를 `origin/main` 판과
+대조해서, 원본 박스를 새 박스 안에 비율 유지로 넣을 때 필요한 배율
+(`min(원본가로/새가로, 원본세로/새세로)`)이 1.08 이상이면(=8% 이상 작게
+그려졌으면) 반려 대상이다. 이 계산을 스크립트로 짜서 (세션 scratchpad는
+휴면 세션 사이에 남지 않으므로 매번 새로 짜야 할 수 있다)
+`git diff --name-only origin/main..HEAD -- '*.png'`로 바뀐 파일을 모으고
+각각 `git show <rev>:<path>`로 두 버전을 읽어 대조한다. 0장이어야 통과다.
+2026-09-15 세션에서 적용한 6장(`GiantVine`, `VineToss`, `VineColony`,
+`VineWorld`, `LightningExplosion`, `ShockOverload`)은 이 검사를 통과했다.
 
 ## 갱신 규칙
 
