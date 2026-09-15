@@ -137,6 +137,7 @@
 | `ManaWell.png` | 클라이언트 이슈 #694 재작업 검수 | 256x179 RGBA, 원본 크기 유지. **진영 정정**: 이슈에서 물 계열로 추정했으나 `.art/magic/pages/mana_well.md`의 진영이 세계수 풀 정령이고 기존 아트도 이끼 녹색이라 물이 아니었다. 나뭇잎·덩굴 테두리와 마나빛 웅덩이로 재작업 |
 | `ElectricTower.png` | 클라이언트 이슈 #694 재작업 검수 | 200x256 RGBA, 원본 크기 유지. **진영 확인**: `.art/magic/pages/electric_tower.md`와 `.art/magic/README.md`의 진영별 표는 세계수 전기 정령이라고 적지만, 그 표는 `generate-magic-pages.py`의 `faction_for()`가 이름의 부분 문자열로 찍는 값이라 부정확하다고 이미 PR #690에서 확인됐다("electric"이 전기 정령 규칙에 걸림). `STYLE.md:144`의 Humans 절이 "Anchors: `Cannon`, `ElectricTower`"로 이 자산을 인간 진영의 정의 기준으로 못박고 있고 원본 아트도 리벳 박힌 금속+석재였으므로, 자동 생성 표 대신 STYLE.md를 따라 인간 진영 찬 회색 석재+스틸블루+청동으로 그렸다(1차 시도는 세계수 나무+황금 결정으로 잘못 그려 반려). `Cannon.png`·`Tower.png`와 같은 재질, 꼭대기의 전기 구슬과 번개 파편만 Lightning 금색 팔레트로 남겨 원소를 표시한다 |
 | `WindTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 256x137 RGBA, 원본 크기 유지. 세계수 바람 정령, 박쥐막 날개를 넓은 곡선 리본으로 교체 |
+| `Towerback.png` | 클라이언트 PR (이슈 #694) | 191x256 RGBA. 꼬마돌이 `Tower` 를 등에 결속당한 컨셉으로 다시 그렸다. `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 넣어 업은 쪽과 실린 쪽이 각각 알아보이게 했다 |
 
 ## 다음 교체 후보
 
@@ -145,7 +146,6 @@
 
 | 리소스 | 필요한 작업 |
 |---|---|
-| `Towerback.png` | 컨셉이 어긋나 반려했다. 등에 진 것이 `Tower` 가 아니라 일반 대포로, 업은 쪽도 `MiniRockSwarm`(꼬마돌)이 아니라 이끼 낀 다른 골렘으로 나왔다. 컨셉 페이지는 "인간 마법 문명이 납치한 꼬마돌의 등에 지대공 타워를 결속한 병기" 로 적고 서버도 `Tower` 컴포넌트를 그대로 단다. 프롬프트는 `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 쓰도록 고쳐 뒀다 |
 | `MagmaExplosion.png` | 지옥불 갑각 파편과 내부 용암광 중심으로 재설계 |
 | `FireShot.png` | 이슈 #694. 프롬프트는 써 두었다(`.art/concept/object-prompts/fire-shot.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정, `resets_in_seconds=364132`)에 막혀 원본을 그대로 두었다 |
 | `MeteorShower.png` | 이슈 #694. 지옥불 군단 유성, 어두운 재 갑각 + 갈라진 틈으로 비치는 용암광. 프롬프트는 써 두었다(`.art/concept/object-prompts/meteor-shower.txt`, HellfireDemon.png 재질 참조 포함). 재생성 요청이 같은 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혀 원본을 그대로 두었다 |
