@@ -94,6 +94,23 @@
 | `crater_ember.png` | 클라이언트 이슈 #681 재작업 검수 | 64x58 RGBA. 분화구에서 튄 불씨 하나, 둥근 물방울 실루엣에 면 3~4개, 가장 밝은 면이 중앙 |
 | `Shock.png`, `Shock2.png` | 클라이언트 PR (이슈 #682) | 247x256 / 244x256 RGBA. 감전 표시, 다면체 번개 조각 다섯 개, 크기를 다르게 흩뿌리고 가운데를 비웠다. 이전 세 차례 시도는 개별 생성이라 프레임 2의 구도·크기가 10% 어긋나 실패했다. 이번은 한 이미지에 좌우 두 패널로 같은 배율·같은 기준선으로 나란히 생성한 뒤 반으로 잘라 각각 마무리했다 — 원본 패널(887x887) 기준 두 프레임의 alpha content bbox 크기 차이 2.0%/2.4%, 위치 차이 16~17px(패널 대비 약 2%). magenta 키 제거, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0 |
 | `Wet.png`, `Wet2.png` | 클라이언트 PR (이슈 #682) | 245x256 / 225x256 RGBA. 젖음 표시, 다면체 물 튀김 덩어리 세 개와 물방울 두 개. Shock 과 같은 좌우 쌍둥이 패널 생성으로 처음부터 시도해 한 번에 통과했다 — 원본 패널(887x887) 기준 두 프레임의 alpha content bbox 크기 차이 1.6%/1.3%, 위치 차이 0~3px. magenta 키 제거, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0 |
+| `rune/fire_rune.png` | 클라이언트 PR (이슈 #683) | 192x109 RGBA, 원본 크기 유지. 어두운 숯색 돌 원반 + Hellfire 팔레트 불꽃 문양. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `rune/lightning_rune.png` | 클라이언트 PR (이슈 #683) | 192x106 RGBA, 원본 크기 유지. 어두운 숯색 돌 원반 + 금색 번개 문양. 기존 파란 계열에서 STYLE.md 의 금색 Lightning 팔레트로 이동. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `rune/nature_rune.png` | 클라이언트 PR (이슈 #683) | 192x105 RGBA, 원본 크기 유지. 어두운 숯색 돌 원반 + Nature 팔레트 잎 문양. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `rune/rock_rune.png` | 클라이언트 PR (이슈 #683) | 192x98 RGBA, 원본 크기 유지. 이끼바위 골렘의 따뜻한 황갈+이끼 팔레트 바위 문양. 1차 생성이 베이지 원반에 원반과 명도가 비슷한 문양으로 나와 세트에서만 튀어 반려, 어두운 숯색 원반(나머지 다섯과 동일) + 황갈+이끼 고리 + 밝게 읽히는 문양으로 재생성해 통과시켰다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `rune/water_rune.png` | 클라이언트 PR (이슈 #683) | 192x105 RGBA, 원본 크기 유지. 어두운 숯색 돌 원반 + Water 팔레트 물방울 문양. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `rune/wind_rune.png` | 클라이언트 PR (이슈 #683) | 192x106 RGBA, 원본 크기 유지. 어두운 숯색 돌 원반 + Wind 팔레트 소용돌이 문양. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `spawn/fire_slime.png` | 클라이언트 PR (이슈 #683) | 128x108 RGBA, 원본 크기 유지. 소환 시 표시되는 살아있는 mob(HP·speed·상태 기계 보유). 밝고 명랑한 주황 젤 몸통에서 Hellfire 팔레트의 어두운 재 몸통 + 갈라진 틈으로 비치는 주황으로 이동. 1차 생성은 얼굴 없는 다면체 언덕으로 나와 반려 — 이 자산은 효과가 아니라 소환수라 STYLE.md 의 단순 타원 눈 문법이 적용된다는 지적을 받고, `WaterSlime.png` 를 눈 문법 레퍼런스로 추가해 어두운 타원 눈 두 개와 작은 입을 얹어 재생성했다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `spawn/leaf_slime.png` | 재작업 필요 (이슈 #683) | 128x108 RGBA, 원본 크기 유지. Nature 팔레트 몸통, 두 잎 새싹 장식 유지. fire_slime 과 같은 이유로 1차 생성(눈·입 없음)을 반려하고 `WaterSlime.png` 눈 문법 레퍼런스로 재생성했다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 — 그러나 이 눈·입 추가 과정에서 방향이 회귀했다. `facing.py` 로 재니 눈 픽셀 가로 평균이 몸통 중심 대비 -18%(왼쪽), main 의 원본은 +26%(오른쪽)였다. STYLE.md 가 정한 오른쪽 응시를 어긴 채 PR #696 에 올라가 있다. 프롬프트에 `facing right`·`head turned to the right side of the canvas`·`eyes placed in the right half of the body` 를 못박아 수정해 두었으나(codex 한도로 재생성은 다음 창) 아직 이미지는 왼쪽을 본다 |
+| `spawn/lightning_slime.png` | 재작업 필요 (이슈 #683) | 128x111 RGBA, 원본 크기 유지. 금색 Lightning 팔레트 몸통, 번개 스파크 장식 유지. fire_slime 과 같은 이유로 1차 생성(눈·입 없음)을 반려하고 `WaterSlime.png` 눈 문법 레퍼런스로 재생성했다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 — 방향 회귀는 leaf_slime 과 동일. `facing.py` 측정 -18%(왼쪽), main 원본 +26%(오른쪽). 프롬프트 수정 완료, 재생성은 다음 창 |
+| `spawn/rock_slime.png` | 재작업 필요 (이슈 #683) | 128x105 RGBA, 원본 크기 유지. 이끼바위 골렘의 따뜻한 황갈+이끼 팔레트 몸통. fire_slime 과 같은 이유로 1차 생성(눈·입 없음)을 반려. 눈·입을 추가한 재생성 요청이 output moderation 에 두 번 걸려(요청 ID 는 로그 참고) 레퍼런스를 `MasterStyleKey.png` + `ArcaneImpact.png` 조합으로 바꾼 세 번째 시도로 통과시켰다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 — 방향 회귀는 leaf_slime 과 동일. `facing.py` 측정 -14%(왼쪽), main 원본 +24%(오른쪽). 프롬프트 수정 완료, 재생성은 다음 창 |
+| `spawn/wind_slime.png` | 재작업 필요 (이슈 #683) | 128x65 RGBA, 원본 크기 유지. Wind 팔레트 몸통, 원본대로 다른 넷보다 낮고 평평한 실루엣 유지. fire_slime 과 같은 이유로 1차 생성(눈·입 없음)을 반려하고 `WaterSlime.png` 눈 문법 레퍼런스로 재생성했다. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 — 방향 회귀는 leaf_slime 과 동일. `facing.py` 측정 -16%(왼쪽), main 원본 +1%(오른쪽, 거의 정면). 프롬프트 수정 완료, 재생성은 다음 창 |
+| `shoot/leaf_shoot.png` | 클라이언트 PR (이슈 #683) | 192x74 RGBA, 원본 크기 유지. 오른쪽으로 날아가는 나뭇잎 투사체, 넓고 밝은 잎날이 오른쪽, 가늘어지는 잎맥 꼬리가 왼쪽. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `shoot/lightning_shoot.png` | 클라이언트 PR (이슈 #683) | 192x51 RGBA, 원본 크기 유지. 금색 지그재그 번개 투사체, 오른쪽 뭉툭한 화살촉에서 왼쪽으로 갈수록 가늘어짐. 기존 청록/흰색 조합에서 STYLE.md 의 금색 Lightning 팔레트로 이동. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `shoot/sprayed_flame.png` | 클라이언트 PR (이슈 #683) | 192x95 RGBA, 원본 크기 유지. Hellfire 팔레트로 이동 — 갑각 먼저, 불꽃은 갈라진 틈으로만. 밝은 주황-노랑 그라데이션 화염구에서 어두운 재 덩어리 + 주황 균열 갈라짐으로 교체, 균열이 갈라지는 결로 오른쪽이 뭉치고 왼쪽이 가늘어짐. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료. `fire_drop.png` 과 재질이 비슷해 보인다는 지적이 있어 둘을 나란히 놓고 보는 후속 판단이 남아 있다 |
+| `shoot/water_shoot.png` | 클라이언트 PR (이슈 #683) | 192x61 RGBA, 원본 크기 유지. Water 팔레트 물방울/파도머리 투사체, 넓고 밝은 머리가 오른쪽, 잔물결 꼬리가 왼쪽. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `drop/fire_drop.png` | 클라이언트 PR (이슈 #683) | 104x192 RGBA, 원본 크기 유지. Hellfire 팔레트로 이동한 낙하 불꽃, 위가 넓고 아래가 뾰족한 형태 유지. 밝은 주황-노랑 불꽃 아이콘에서 어두운 재 + 갈라진 틈으로 비치는 주황으로 교체. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `drop/wind_drop.png` | 클라이언트 PR (이슈 #683) | 106x192 RGBA, 원본 크기 유지. Wind 팔레트 소용돌이 낙하 이펙트, 위쪽 고리가 넓고 아래로 갈수록 좁아지는 형태 유지. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 
 ## 다음 교체 후보
 
@@ -108,6 +125,7 @@
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
 | 정령 계열 live sprite 10개 | `WindSpirit`, `ThunderSpirit`, `ZapMouse`, `SeedSpiritSwarm`, `VineSpirit`, `CloudDragon`, `WillOWisp`, `Leafair`, `StormRider`, `BubbleSpirit` 이 아직 legacy 채색 그림체다. #679 에서 `BombSprite` 를 고치다 확인했다 |
+| `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
 ## 갱신 규칙
 
