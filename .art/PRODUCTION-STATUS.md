@@ -136,6 +136,22 @@
 | `RazorGale.png`, `SandStorm.png`, `TornadoStrike.png`, `WindBlade.png`, `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 10장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었으나 생성을 시작하기 전에 `image_gen` 사용량 한도(2026-09-20 02:00 KST 재설정)에 막혔다 |
 | `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
+## 크기 검증
+
+캔버스 크기가 원본과 같아도 트림·리사이즈 과정에서 실제 그림이 캔버스 안에
+작게 들어갈 수 있다. `image_gen` 사용량 한도로 세션이 끊겼다 이어받을 때도
+확인 없이 놓치기 쉽다. commit 전에 항상 돌린다.
+
+바뀐 PNG마다 alpha가 10을 넘는 픽셀의 바운딩 박스를 `origin/main` 판과
+대조해서, 원본 박스를 새 박스 안에 비율 유지로 넣을 때 필요한 배율
+(`min(원본가로/새가로, 원본세로/새세로)`)이 1.08 이상이면(=8% 이상 작게
+그려졌으면) 반려 대상이다. 이 계산을 스크립트로 짜서 (세션 scratchpad는
+휴면 세션 사이에 남지 않으므로 매번 새로 짜야 할 수 있다)
+`git diff --name-only origin/main..HEAD -- '*.png'`로 바뀐 파일을 모으고
+각각 `git show <rev>:<path>`로 두 버전을 읽어 대조한다. 0장이어야 통과다.
+2026-09-15 세션에서 적용한 6장(`GiantVine`, `VineToss`, `VineColony`,
+`VineWorld`, `LightningExplosion`, `ShockOverload`)은 이 검사를 통과했다.
+
 ## 갱신 규칙
 
 1. 웹사이트에 새 이미지가 추가돼 있으면 대응하는 Unity 리소스명을 찾아 `완료`에
