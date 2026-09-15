@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a stationary water-slime bubble-brewing installation. A low round plinth base of pale warm sandstone supports a vertical open ring frame, also pale sandstone, standing upright. At the ring's compass points sit four small teal-blue metal clasp fittings holding the ring together. Suspended at the exact center of the ring is one large glowing round bubble sphere made of translucent water-gel. Above the ring, two smaller bubbles of the same gel float, one higher and to the left, one lower and to the right, showing this device is actively brewing and releasing bubbles. No face, no eyes, no text.
+
+Faction and material: this is the water slime faction. The ring and base are a plain pale warm sandstone/coral color, not grey stone and not cool steel blue, so the water identity reads through the glowing bubble core rather than the frame. The bubble sphere itself uses the translucent water-gel material: deep-to-pale teal-blue banded facets with one bright flat highlight facet near the top, exactly like a jellied, glassy water body. Bubble/water palette: #E8F7EE, #98DEEB, #6FCCF4, #53B2EB, #2D92E4. Do not use nature green or leaf shapes anywhere; this device is built, not grown.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation, not a creature: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The base must read as wide and stable, planted on the ground. Single subject, centered, filling most of the frame. Compose the subject as a tall vertical arrangement — the ring standing upright on its base — so the trimmed silhouette naturally comes out portrait-oriented, roughly 175:256 (taller than wide), with the two extra floating bubbles kept close enough to the ring that they do not stretch the composition much wider than the ring itself.
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no scene, no ground plane props, no ember or spark scatter, no motion blur.

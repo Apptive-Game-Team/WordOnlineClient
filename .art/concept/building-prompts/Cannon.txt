@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a human battlefield siege cannon. A thick cylindrical cannon barrel with a wide bronze muzzle ring rests in a diamond-braced cradle, angled slightly upward toward the upper right so it clearly reads as a ranged weapon aimed to fire. The cradle sits on a low, wide stone plinth base with a short wood beam brace at the rear for recoil support. No face, no eyes, no text — this is a faceless assembled machine.
+
+Faction and material: this is the human magic civilization faction — cut stone blocks, riveted steel-blue metal bands, bronze/wood joints, faceless construction. Use cool grey stone #C4CCC8 / #A09C92 / #616662 for the plinth blocks, steel blue #6191A3 for the barrel bands and cradle panels, and bronze/wood #5D4032 for rivets, the rear support beam, and joint fittings. Add a few small gold-diamond accent gems set into the plinth blocks, echoing riveted magda-tower fittings. Do not use warm tan stone or moss anywhere — that belongs to a different faction.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation, not a creature: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The base must read as wide and stable, planted on the ground. Single subject, centered, filling most of the frame. Compose the subject so the barrel and base together read as a wide horizontal mass — the trimmed silhouette should naturally come out landscape-oriented, roughly 256:225 (a little wider than tall).
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no scene, no ground plane props, no ember or spark scatter, no motion blur.

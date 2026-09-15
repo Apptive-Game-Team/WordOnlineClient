@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a small World Tree sapling — a miniature support tree, not the ancient World Tree itself. A stout trunk with visible bark ridges rises from a spread of root feet and opens into one broad, rounded leafy canopy on top. Embedded in a hollow of the trunk, at roughly chest height, is one glowing warm mana-light knot. No face, no eyes, no text.
+
+Faction and material: this is the World Tree grass spirit faction — life force and mana circulating through layered wood, leaf, and light, exactly like the World Tree itself but smaller and simpler, with a single canopy instead of three. Use nature palette #B8CE59, #9DA74D, #768738, #384823 for the leaf canopy, and warm wood-brown tones for the trunk and roots, matching a World Tree's bark. The glowing knot in the trunk is a soft warm light, rendered as a flat bright plane, not a glow effect.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation, not a creature: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The root base must read as wide and stable, planted on the ground. Single subject, centered, filling most of the frame. Compose the subject with a canopy noticeably wider than the trunk: the trimmed silhouette should naturally come out landscape-oriented, roughly 256:207 (a little wider than tall), because the leaf canopy spreads outward at the top.
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no scene, no ground plane props, no ember or spark scatter, no motion blur.

@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a hellfire legion crater installation — a low, wide ring-shaped mound of jagged dark volcanic rock chunks surrounding a sunken bowl. Inside the bowl, molten lava glows in a cracked, branching pattern spreading from the center toward the rim, like a star-shaped network of glowing fissures. A little ash and a few small embers sit scattered near the rim. This is a spawner that periodically produces small ember creatures from the glowing center, so keep the lava glow readable and roughly centered. No face, no eyes, no text.
+
+Faction and material: this is the hellfire legion, not a fire spirit — mass first, flame second. Build the rock mound from the same dark angular crust material as a hellfire demon: dark base tones #2A1512 and #5A291E, with molten glow showing through the cracks in #E65E08 and #9B3014, and ash-grey-brown #6D4A39 dusting the outer rim. The rock chunks should be angular and jagged-edged facets, not rounded pebbles. Keep the crater's overall shape roughly the same as before — a wide flat ring around a glowing bowl — and only change the rendering technique to the faceted flat-plane method, not the concept.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow or bloom haze (the lava reads as a flat bright-orange plane, not a glow effect), no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The whole mound must read as wide and stable, sitting flat on the ground — it is the ground formation itself. Single subject, centered, filling most of the frame. Compose the subject as a low, wide mound: the trimmed silhouette should naturally come out landscape-oriented, roughly 256:169 (noticeably wider than tall, flat and squat).
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no other scene elements, no scattered spark trails, no motion blur. Do not turn this into a rock pile without lava, and do not turn it into an orange box — it must stay a wide crater ring with a glowing molten center.
