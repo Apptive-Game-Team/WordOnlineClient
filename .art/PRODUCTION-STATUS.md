@@ -73,6 +73,12 @@
 | `BombSprite.png`, `BombSpriteBomb.png` | 클라이언트 PR (이슈 #679) | 222x256 / 231x256 RGBA. 채색 그림체에서 master-v2 로 재작업. 도화선 불꽃을 양쪽 다 금색으로 맞췄다 |
 | `explode.png` | 클라이언트 PR (이슈 #682) | 841x769 RGBA. 마법 폭발/실패 표시. 남색-보라 결정 파편 다발, 가운데 비움, 원본의 분홍·보라 정체성은 파편 두 개에 악센트로 남김. green 키 제거, 네 모서리 alpha 0 |
 | `hit_effect.png` | 클라이언트 PR (이슈 #682) | 771x700 RGBA. 피격 표시, 8방향 쐐기 방사형 파편, 가운데 비움. magenta 키 제거, 네 모서리 alpha 0 |
+| `explode/fire_explode.png` | 클라이언트 PR (이슈 #683) | 192x168 RGBA, 원본 크기 유지. 화염탄 계열 공용 폭발. Hellfire legion 팔레트(어두운 갑각+주황-빨강 갈라진 빛)로 교체, 기존의 밝은 주황-노랑 그라데이션에서 이동. magenta 키 제거, enclosed_pixels=3, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `explode/leaf_explode.png` | 클라이언트 PR (이슈 #683) | 192x132 RGBA, 원본 크기 유지. 나뭇잎 파편 부채꼴, ArcaneImpact.png 결정 파편 기법 적용. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `explode/rock_explode.png` | 클라이언트 PR (이슈 #683) | 192x124 RGBA, 원본 크기 유지. 돌 파편 폭발. STYLE.md 규칙대로 찬 회색에서 이끼바위 골렘의 따뜻한 황갈+이끼 팔레트로 교체, 중심 섬광도 시안에서 미색으로 바꿔 물 계열과 겹치지 않게 했다. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `explode/water_explode.png` | 클라이언트 PR (이슈 #683) | 192x134 RGBA, 원본 크기 유지. 물보라 파편, 물결 밑동에서 물방울 결정이 솟는 구도 유지. magenta 키 제거, enclosed_pixels=1, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `explode/wind_explode.png` | 클라이언트 PR (이슈 #683) | 192x144 RGBA, 원본 크기 유지. 첫 생성이 4방향 완전 대칭 바람개비로 나와 "아이템처럼 보인다"는 기준으로 탈락시키고, 길이·각도·간격이 제각각인 낱개 파편으로 다시 생성해 통과시켰다. magenta 키 제거, enclosed_pixels=2, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `explode/lava_fist.png` | 클라이언트 PR (이슈 #683) | 130x192 RGBA, 원본 크기 유지. 용암 주먹, HellfireDemon.png 재질(어두운 갑각+주황 갈라진 빛)로 교체. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `electric_field.png` | 클라이언트 이슈 #681 재작업 검수 | 192x84 RGBA. 번개 정령 팔레트, 굵은 아크 서너 줄기가 타원 바깥쪽 1/3에 몰리고 가운데 1/3은 거의 맨 그을린 땅. 소환수 스프라이트를 얹어 실루엣이 읽히는지 확인했다 |
 | `fire_field.png` | 클라이언트 이슈 #681 재작업 검수 | 192x68 RGBA. 지옥불 팔레트, 그을린 땅에서 솟은 불꽃이 타원 전체를 덮는다. 테두리가 가장 높고 중앙으로 갈수록 낮아져 소환수 자리가 남는다 |
 | `leaf_field.png` | 클라이언트 이슈 #681 재작업 검수 | 192x79 RGBA. 자연 정령 팔레트, 땅에서 자란 풀잎이 타원 전체를 덮는다. 테두리가 가장 높고 중앙으로 갈수록 낮아져 소환수 자리가 남는다 |
