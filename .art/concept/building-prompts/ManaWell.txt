@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a World Tree grass-spirit mana well — a low, round basin ring woven from overlapping leaves and mossy vines, sitting directly on the ground. The hollow at the center of the ring is filled flush to the rim with a glowing pool of soft mana light. No face, no eyes, no text.
+
+Faction and material: this is the World Tree grass spirit faction, not water. Use nature palette #B8CE59, #9DA74D, #768738, #384823 for the woven leaf-and-vine ring, with a little warm wood-brown showing at the base where roots anchor it to the ground. The pooled mana at the center is a soft pale warm yellow-green light, rendered as one flat bright plane with at most one subtle inner facet — not blue water, no glassy water-gel material, no water ripple highlights.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation, not a creature: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The ring must read as wide and stable, sitting flat on the ground. Single subject, centered, filling most of the frame. Compose the subject as a low, wide ring viewed at a slight downward angle so the glowing center pool is visible: the trimmed silhouette should naturally come out landscape-oriented, roughly 256:179 (noticeably wider than tall, flat and low).
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no other scene elements, no ember or spark scatter, no motion blur.
