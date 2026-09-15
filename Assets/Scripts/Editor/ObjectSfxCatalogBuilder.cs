@@ -34,7 +34,7 @@ public static class ObjectSfxCatalogBuilder
         new("FireCreature",
             "EmberSpirit", "FireChildSpirit", "FireLordSpirit", "FireSlime",
             "FireSpirit", "FireTadpole", "MagmaSpirit"),
-        new("WaterCreature", "AquaArcher", "BubbleSpirit", "WaterSlime"),
+        new("WaterCreature", "AquaArcher", "BubbleSpirit", "SeaSerpent", "WaterSlime"),
         new("NatureCreature",
             "LeafSlime", "PveVineWitch", "SeedSpirit", "TreeGolem", "VineSpirit",
             "WillOWisp"),
