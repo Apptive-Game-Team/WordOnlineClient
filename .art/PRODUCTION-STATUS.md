@@ -120,6 +120,10 @@
 | `ShockOverload.png` | 클라이언트 PR (이슈 #694) | 256x193 RGBA, 원본 크기 유지. 전격 과부하, 원래도 금색이었으나 촘촘한 뭉게구름형 텍스처에서 다면체 갈래 다발로 다시 그렸다. 트림 후 원본 비율(가로세로 1.96)과 목표 비율(1.33)의 차이로 가로 방향 압축이 더 크게 들어갔으나 눈으로 본 실루엣은 자연스럽다. enclosed_pixels=11145는 갈래 사이 트인 틈으로 확인, 불투명 픽셀 magenta 잔색 0px. 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `FireShot.png` | 클라이언트 PR (이슈 #694) | 256x88 RGBA, 원본 크기 유지. 화염탄 투사체, Hellfire 재 갑각 + 갈라진 틈으로 비치는 용암광으로 이동. 원본과 같은 방향(넓은 톱니머리 우측, 가는 꼬리 좌측)으로 고정. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과(바닥여백 0→0) |
 | `MeteorShower.png` | 클라이언트 PR (이슈 #694) | 207x256 RGBA, 원본 크기 유지. 지옥불 군단 유성, 갈라진 재 갑각 사이로 비치는 비대칭 용암 균열. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과(바닥여백 13→0, 하락 방향이라 미해당) |
+| `RazorGale.png` | 클라이언트 PR (이슈 #694) | 256x207 RGBA, 원본 크기 유지. 칼바람 회오리, 두세 겹 겹친 다면체 곡선 리본이 감아 도는 소용돌이. 리본 사이 트인 틈으로 enclosed_pixels=16368가 나왔으나 불투명 픽셀 magenta 잔색은 0px. magenta 키 제거, 네 모서리 alpha 0, `shrink.py`/`bottom.py` 검수 통과 |
+| `SandStorm.png` | 클라이언트 PR (이슈 #694) | 159x256 RGBA, 원본 크기 유지. 모래 폭풍, Wind 진영 소속이지만 모래라는 재질 때문에 따뜻한 황토색(`#D8B978`~`#6E4E22`)을 그대로 유지 — 바위 골렘의 이끼 낀 황갈과는 톤을 다르게 잡아 구분된다. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
+| `TornadoStrike.png` | 클라이언트 PR (이슈 #694) | 224x256 RGBA, 원본 크기 유지. 회오리 정령, 위가 넓고 아래로 갈수록 좁아지는 깔때기. enclosed_pixels=26453는 리본 사이 트인 중심부, 불투명 픽셀 magenta 잔색 0px. magenta 키 제거, 네 모서리 alpha 0, `shrink.py`/`bottom.py` 검수 통과 |
+| `WindBlade.png` | 클라이언트 PR (이슈 #694) | 256x163 RGBA, 원본 크기 유지. 바람 칼날 투사체, 원본과 같은 방향(가는 꼬리 좌하단, 날카로운 끝 우측)으로 고정. 트림 경계에 걸린 파편 조각 끝 픽셀이 alpha 8~80 사이를 오가며 한동안 모서리 alpha 0을 못 맞춰, 리사이즈 후 alpha 임계값을 8에서 26(`key-out-background.py`의 BACKGROUND_ALPHA 0.10과 동일 기준)으로 올려 해결했다. magenta 키 제거, 네 모서리 alpha 0, magenta 잔색 0px, `shrink.py`/`bottom.py` 검수 통과 |
 | `BubbleSpirit.png` | 클라이언트 PR (이슈 #694) | 250x256 RGBA. 물 슬라임 계열, 눈 오른쪽 +35% |
 | `SeedSpiritSwarm.png` | 클라이언트 PR (이슈 #694) | 256x224 RGBA. 세계수 풀 정령, 씨앗 몸통에 잎과 꽃 |
 | `ThunderSpirit.png` | 클라이언트 PR (이슈 #694) | 256x226 RGBA. 세계수 전기 정령, 금색 팔레트, 눈 오른쪽 +25% |
@@ -154,7 +158,7 @@
 | `Crater.png` | 현재 개념을 유지하고 마스터 렌더링 기법으로 통일 |
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
-| `RazorGale.png`, `SandStorm.png`, `TornadoStrike.png`, `WindBlade.png`, `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 10장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었다. `image_gen` 사용량 한도가 2026-09-15 세션 도중 풀려 이어서 생성 중이다 |
+| `TideCall.png`, `WaterExplosion.png`, `RockDrop.png`, `Leafair.png`, `Overgrowth.png`, `RainCloud.png` | 이슈 #694. 나머지 6장. 프롬프트는 전부 `.art/concept/object-prompts/`에 써서 commit해 두었다. `image_gen` 사용량 한도가 2026-09-15 세션 도중 풀려 이어서 생성 중이다 |
 | 정령 계열 live sprite 2개 | `CloudDragon`, `Leafair` 이 아직 legacy 채색 그림체다. 나머지 여덟(`WillOWisp` 포함)은 이슈 #694 에서 교체했다 |
 | `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
