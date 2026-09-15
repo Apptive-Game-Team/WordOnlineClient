@@ -136,7 +136,7 @@
 | `LifeTree.png` | 클라이언트 이슈 #694 재작업 검수 | 256x207 RGBA, 원본 크기 유지. 세계수 풀 정령, 축소판 세계수 형태에 마나 옹이 유지 |
 | `SeedNest.png` | 클라이언트 이슈 #694 재작업 검수 | 256x179 RGBA, 원본 크기 유지. 세계수 풀 정령, 잎·씨앗·덩굴 둥지. 안쪽 그릇은 비워 소환된 개체가 읽히게 함 |
 | `ManaWell.png` | 클라이언트 이슈 #694 재작업 검수 | 256x179 RGBA, 원본 크기 유지. **진영 정정**: 이슈에서 물 계열로 추정했으나 `.art/magic/pages/mana_well.md`의 진영이 세계수 풀 정령이고 기존 아트도 이끼 녹색이라 물이 아니었다. 나뭇잎·덩굴 테두리와 마나빛 웅덩이로 재작업 |
-| `ElectricTower.png` | 클라이언트 이슈 #694 재작업 검수 | 200x256 RGBA, 원본 크기 유지. **진영 정정**: `STYLE.md`의 Humans 절 Anchors 목록에 `ElectricTower`가 있어 인간 진영으로 보이지만, `.art/magic/pages/electric_tower.md`와 `.art/magic/README.md`의 진영별 표는 세계수 전기 정령으로 못박았고 `wind_totem`·`healing_totem` 등 나머지 11장 전부가 자기 매직 페이지 진영과 일치했다. 차가운 석재를 버리고 세계수 나무 밑동+황금 번개 결정으로 다시 그렸다. `STYLE.md`의 해당 줄은 갱신이 필요하다 |
+| `ElectricTower.png` | 클라이언트 이슈 #694 재작업 검수 | 200x256 RGBA, 원본 크기 유지. **진영 확인**: `.art/magic/pages/electric_tower.md`와 `.art/magic/README.md`의 진영별 표는 세계수 전기 정령이라고 적지만, 그 표는 `generate-magic-pages.py`의 `faction_for()`가 이름의 부분 문자열로 찍는 값이라 부정확하다고 이미 PR #690에서 확인됐다("electric"이 전기 정령 규칙에 걸림). `STYLE.md:144`의 Humans 절이 "Anchors: `Cannon`, `ElectricTower`"로 이 자산을 인간 진영의 정의 기준으로 못박고 있고 원본 아트도 리벳 박힌 금속+석재였으므로, 자동 생성 표 대신 STYLE.md를 따라 인간 진영 찬 회색 석재+스틸블루+청동으로 그렸다(1차 시도는 세계수 나무+황금 결정으로 잘못 그려 반려). `Cannon.png`·`Tower.png`와 같은 재질, 꼭대기의 전기 구슬과 번개 파편만 Lightning 금색 팔레트로 남겨 원소를 표시한다 |
 | `WindTotem.png` | 클라이언트 이슈 #694 재작업 검수 | 256x137 RGBA, 원본 크기 유지. 세계수 바람 정령, 박쥐막 날개를 넓은 곡선 리본으로 교체 |
 
 ## 다음 교체 후보
