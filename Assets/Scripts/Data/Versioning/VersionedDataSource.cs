@@ -32,19 +32,54 @@ namespace Data.Versioning
                 Version = null;
             }
 
-            yield return Client.Get(response =>
-            {
-                if (response != null)
-                {
-                    if (response.RequiresRefresh)
-                    {
-                        ProcessResponse(response);
-                    }
+            yield return Client.Get(HandleFetchResult, Version);
+        }
 
-                    ApplyFetchedMetadata(response);
-                    SaveToPlayerPrefs();
-                }
-            }, Version);
+        private void HandleFetchResult(VersionedFetchResult<TResponse> result)
+        {
+            switch (result.Outcome)
+            {
+                case VersionedFetchOutcome.Success:
+                    Adopt(result.Response);
+                    return;
+
+                case VersionedFetchOutcome.Timeout:
+                case VersionedFetchOutcome.ConnectionFailed:
+                    // Nothing reached the server, so the cache is still exactly as good as it was
+                    // and the version token still matches what the server last sent. The next
+                    // refresh retries with both in place.
+                    WDebug.LogWarning(
+                        $"[{GetType().Name}] {result.Outcome}, keeping cached data: {result.Error}");
+                    return;
+
+                case VersionedFetchOutcome.HttpError:
+                case VersionedFetchOutcome.ParseFailed:
+                    // The server answered and the answer is unusable, so the stored token may be
+                    // one it no longer accepts. Drop it and let the next refresh ask for the whole
+                    // payload, the same escape this class already takes when the source URL moves.
+                    Version = null;
+                    WDebug.LogError(
+                        $"[{GetType().Name}] {result.Outcome} (status {result.StatusCode}), "
+                        + $"refetching in full next time: {result.Error}");
+                    return;
+            }
+        }
+
+        private void Adopt(TResponse response)
+        {
+            if (response == null)
+            {
+                WDebug.LogWarning($"[{GetType().Name}] Fetch succeeded with no payload; keeping cached data");
+                return;
+            }
+
+            if (response.RequiresRefresh)
+            {
+                ProcessResponse(response);
+            }
+
+            ApplyFetchedMetadata(response);
+            SaveToPlayerPrefs();
         }
 
         protected void LoadFromPlayerPrefs()
