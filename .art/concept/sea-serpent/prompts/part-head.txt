@@ -1,0 +1,9 @@
+Piece identity — "Head": the head and the raised neck only, and nothing else.
+
+- The head is at the top of the canvas, facing right, with the blunt rounded snout closed or barely parted. Below it the neck rises as one thick, straight, slightly S-leaning column of body, the same thickness all the way down.
+- The bottom of the neck is a clean straight horizontal cut, flat across, exactly as wide as the neck is thick. Nothing hangs below that line. Do not draw shoulders, coils, loops, a chest, a body, a tail or any part of the serpent below the cut.
+- Proportion, required: call the thickness of the neck one unit. The whole piece is about 2.9 units tall from the top of the head to the flat bottom cut, and about 2.2 units wide. The head itself is roughly 1.4 units across.
+- The row of short angular triangular fin plates runs up the back of the neck, along its left rear edge, and stops just behind the head.
+- One eye, on the near side of the head: a dark oval with one tiny white highlight. The far eye is hidden by the head.
+- The pale belly colour runs down the front of the throat as one broad flat plane.
+- This is the leading piece of a snake that a game assembles at runtime, so it must look like a head that a body continues from, not like a complete creature.

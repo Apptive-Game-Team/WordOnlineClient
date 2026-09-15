@@ -1,0 +1,10 @@
+Piece identity — "Body segment": one single repeating hump of the serpent's back, and nothing else.
+
+- The piece is one arch: the body tube enters flat at the left edge of the canvas, rises into a rounded hump in the middle, and leaves flat at the right edge. There is open empty background under the arch, between its two legs.
+- Both ends are clean straight vertical cuts, flat top to bottom, and both are exactly the same thickness. The left cut and the right cut sit at the same height and are the same size, so that copies of this piece placed end to end line up.
+- The piece is mirror-symmetric left to right. The hump peaks in the exact middle. The left half and the right half are the same shape, so a rotated copy of this piece still reads correctly. Do not lean the arch, do not taper one end.
+- Proportion, required: call the thickness of the body tube one unit. The piece is about 1.8 units wide and about 1.8 units tall, measured from the bottom of the two flat end cuts to the tip of the tallest fin plate.
+- Three or four short angular triangular fin plates stand along the top of the arch, the tallest at the peak, shorter ones to each side, arranged symmetrically.
+- The pale belly colour shows as a flat band along the underside of the arch. The mid and deep blues band the upper surface, with a broad flat highlight facet on the upper left of the hump.
+- No head, no face, no eye, no snout, no tail, no fins on the sides, no limbs. Just the one arched length of back.
+- Many copies of this exact piece will be drawn overlapping along a curve, so it has to still read as one continuous snake body when copies overlap each other.
