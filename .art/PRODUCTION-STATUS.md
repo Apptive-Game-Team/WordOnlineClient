@@ -110,6 +110,7 @@
 | `shoot/sprayed_flame.png` | 클라이언트 PR (이슈 #683) | 192x95 RGBA, 원본 크기 유지. Hellfire 팔레트로 이동 — 갑각 먼저, 불꽃은 갈라진 틈으로만. 밝은 주황-노랑 그라데이션 화염구에서 어두운 재 덩어리 + 주황 균열 갈라짐으로 교체, 균열이 갈라지는 결로 오른쪽이 뭉치고 왼쪽이 가늘어짐. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료. `fire_drop.png` 과 재질이 비슷해 보인다는 지적이 있어 둘을 나란히 놓고 보는 후속 판단이 남아 있다 |
 | `shoot/water_shoot.png` | 클라이언트 PR (이슈 #683) | 192x61 RGBA, 원본 크기 유지. Water 팔레트 물방울/파도머리 투사체, 넓고 밝은 머리가 오른쪽, 잔물결 꼬리가 왼쪽. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `drop/fire_drop.png` | 클라이언트 PR (이슈 #683) | 104x192 RGBA, 원본 크기 유지. Hellfire 팔레트로 이동한 낙하 불꽃, 위가 넓고 아래가 뾰족한 형태 유지. 밝은 주황-노랑 불꽃 아이콘에서 어두운 재 + 갈라진 틈으로 비치는 주황으로 교체. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
+| `drop/leaf_drop.png` | 클라이언트 PR (이슈 #683) | 103x192 RGBA, 원본 크기 유지. 위가 넓고 아래가 뾰족한 잎사귀, 중앙맥을 면 경계로 표현(밝은 왼쪽 절반 + 어두운 오른쪽 절반)하고 보조 잎맥을 대각선 크리스로 뻗었다. 1차 생성은 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려 — 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써서(v2) 재생성해 통과시켰다. `fire_drop`(용암 덩어리)·`wind_drop`(소용돌이)과 나란히 놓아도 셋 다 정체가 분명하다. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 | `drop/wind_drop.png` | 클라이언트 PR (이슈 #683) | 106x192 RGBA, 원본 크기 유지. Wind 팔레트 소용돌이 낙하 이펙트, 위쪽 고리가 넓고 아래로 갈수록 좁아지는 형태 유지. magenta 키 제거, 네 모서리 alpha 0, 64px 실루엣 검수 완료 |
 
 ## 다음 교체 후보
@@ -125,7 +126,6 @@
 | `RallyingTotem.png` | 지옥불 설치물 셰이프 랭귀지 적용 |
 | `TreeGolem.png`, `TreeGolem2.png` | 공유 크롭·배율·지면 접점과 PPU를 일치시켜 프레임 재작업 |
 | 정령 계열 live sprite 10개 | `WindSpirit`, `ThunderSpirit`, `ZapMouse`, `SeedSpiritSwarm`, `VineSpirit`, `CloudDragon`, `WillOWisp`, `Leafair`, `StormRider`, `BubbleSpirit` 이 아직 legacy 채색 그림체다. #679 에서 `BombSprite` 를 고치다 확인했다 |
-| `drop/leaf_drop.png` | 이슈 #683. 1차 생성이 잎맥 없는 밋밋한 초록 물방울로 나와 주제를 잃었다는 이유로 반려됐다. 프롬프트를 중앙맥이 면 경계로 드러나는 잎사귀로 다시 써 두었으나(`​.art/concept/vfx-prompts/drop-leaf.txt`) 재생성 요청이 `image_gen` 사용량 한도(2026-09-15 14:15 KST 재설정)에 막혀 원본을 그대로 두었다 |
 
 ## 갱신 규칙
 
