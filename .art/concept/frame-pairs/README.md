@@ -39,7 +39,7 @@ Landed at scale 1.00 — the candidate's own proportions already matched the old
 file's fill almost exactly. `check-replacement.py origin/main` reports 0
 problems.
 
-## Attack pose — `CloudDragon-attack-v1-*` (rejected) and `-v2-*` (shipped)
+## Attack pose — `CloudDragon-attack-v1-*` and `-v2-*` (both rejected), `-v3-*` (shipped)
 
 `CloudDragon-attack-v1-*` is the parallel worktree's matching attack
 generation, also read-only reused at first. Its water-spray moment itself was
@@ -83,25 +83,94 @@ then pasted flush against it. This keeps the body pixel-for-pixel at the
 correct scale and position and keeps both droplets visible, at the cost of a
 smaller-looking water burst than the raw generation intended.
 
-Finalized file is `Assets/Resources/Game/sprites/CloudDragonAttacking.png`
-directly (the composite already targets the 256x182 production canvas; no
-`fit-to-original.py` pass needed on top of it).
+`CloudDragon-attack-v2-composited-final.png` shipped first (PR #731's initial
+commit), keeping body scale exact but shrinking the whole water effect by
+~0.40 to fit the 256px canvas. Review feedback on that PR: the water read as
+"a small blue bump next to the mouth," not a spray — at the 0.1s the attack
+frame is shown, a jet that isn't instantly readable is the same as no jet at
+all. Manually shrinking the water was also the wrong move in principle, since
+it fights the generator's own proportions instead of giving them room.
+
+The fix, per review direction and the precedent set by `TreeGolem2` (widened
+256x215 to 312x256 for the same reason): keep height, PPU, and the body's
+scale/baseline/vertical position exactly as they are, and widen the canvas —
+the extra width is entirely the water's, not the body's.
+
+`CloudDragon-attack-v3-raw.png` was regenerated with the same finalized base
+attached as reference, this time explicitly asking for a wide landscape
+canvas with a bold stream "roughly half the body's nose-to-tail length" and
+"a third of the head's height" thick — see
+`.art/concept/frame-pair-prompts/cloud-dragon-attack-v3.txt` for the prompt as
+written. `codex exec`'s own agentic loop hit an output-moderation block on its
+first internal attempt (flagged under the generic `"other"` category, most
+likely triggered by the word "attack") and retried on its own with an
+edit-only framing instead of an attack framing; the prompt that actually
+produced the successful generation is saved separately as
+`cloud-dragon-attack-v3-actual-used.txt`, since it differs from what was
+asked. The agent also ran its own post-processing (a uniform vertical
+stretch to remove magenta margins, then a horizontal squeeze of everything
+right of an arbitrary split point) before proposing a "final" file — that
+output was **not** used, since the horizontal squeeze is exactly the kind of
+manual water-shrinking to avoid. Instead, `CloudDragon-attack-v3-cut.png` (the
+untouched raw generation run through `key-out-background.py --key magenta`,
+nothing else) was reprocessed from scratch:
+
+- Dragon-only content (everything left of the mouth, found by scanning each
+  row's rightmost opaque pixel and taking the width where it stabilizes
+  before the jet begins) measured 893x785px raw, matching the base
+  candidate's own proportions closely (207x182 final vs the base's own
+  207x182 — this generation's body, unlike `-v2-*`, came back at consistent
+  scale with the base on the first try).
+- Scale to production: `182/785 = 0.23185`, applied to the *entire* crop
+  (body and water together, cropped to the body's own top/bottom so the water
+  cannot introduce a vertical mismatch) — one uniform scale, no separate
+  squeeze for the water.
+- Placement accounts for `BottomCenter` sprite alignment (`alignment: 7` in
+  both files' `.meta`): the pivot Unity actually uses at runtime is the
+  horizontal *center of whatever the canvas width is*, not a fixed pixel
+  count, so simply padding the extra canvas width onto the right (keeping the
+  body's own pixel offset unchanged) would shift the body's rendered world
+  position left by half the added width. The fix is to shift the body
+  rightward by exactly half of the width increase, which cancels the pivot
+  move: `body_left_new = new_canvas_width/2 - 104`, where `104` is
+  `base_pivot(128) - base_body_left(24)`, the base frame's own fixed
+  body-to-pivot offset. Canvas width `540` was chosen as the smallest width
+  (rounded up a little) that fits the entire generated water region with zero
+  clipping at that placement.
+- This is a straight crop+scale+paste of the untouched generation — no manual
+  resizing of the water region at all, per the "use the generated jet at its
+  generated size" instruction. `CloudDragon-attack-v3-wide-final.png` is this
+  finalized 540x182 result, copied directly to
+  `Assets/Resources/Game/sprites/CloudDragonAttacking.png`.
 
 ## Validation
 
-- `python3 .art/tools/check-replacement.py origin/main` — 2 checked, 0
-  problems (canvas size, size vs old, bottom gap, facing all hold for both
-  files).
+- `python3 .art/tools/check-replacement.py origin/main` — reports one line for
+  `CloudDragonAttacking.png`: the canvas changed from `256x182` to `540x182`.
+  This is the intended change (see above), not a defect; content-vs-canvas
+  fill and bottom gap are otherwise unaffected since the body itself is
+  untouched.
 - `python3 .art/tools/check-frame-pair.py Assets/Resources/Game/sprites/CloudDragon.png Assets/Resources/Game/sprites/CloudDragonAttacking.png`
-  — vertical difference `+0.000` unit, horizontal difference `+0.013` unit,
-  both inside the 0.03 / 0.05 unit limits. Pass.
+  — vertical difference `+0.000` unit (passes, limit 0.03). Horizontal
+  difference comes back as `+0.958` unit against a 0.05 limit — a large
+  number, but a false positive from the script's own method, not body drift.
+  The script takes the horizontal center of the bottom 10% of rows as the
+  "foot" position; with a thick water stream passing through that band, the
+  band's pixel count is dominated by water, not by the dragon's own (much
+  narrower) paw silhouette at the same height. Confirmed by overlaying the
+  two finalized frames aligned on their actual runtime pivot (each canvas's
+  own horizontal center, per `BottomCenter` alignment, `overlay-v3-final-
+  pivot-aligned.png` — produced in the session scratchpad, not committed):
+  wing, horn, tail, and spine spikes land on the same pixels in both frames.
+  A naive pixel-for-pixel overlay (ignoring the pivot shift) makes the body
+  look offset by half the width difference; that comparison is wrong for a
+  pair whose canvases differ in width under `BottomCenter` alignment, and is
+  not what Unity renders. `.art/ANIMATION-ASSETS.md`'s Cloud Dragon section
+  documents this false-positive mode for future replacements that also need a
+  wider canvas.
 - Corner alpha, transparent share, and magenta-residue checks (per the
   make-game-art skill's cutout section) pass on both finalized files: all four
   corners alpha 0, 0 magenta-toned opaque pixels on either file.
-- A 50%-alpha overlay of the two finalized frames (kept only in the session
-  scratchpad, not committed) confirmed the body — wing, horn, tail, spine
-  spikes — sits in the same place in both frames; only the mouth/water region
-  differs.
 
 ## Not used
 
@@ -113,6 +182,14 @@ directly (the composite already targets the 256x182 production canvas; no
 - `.art/concept/frame-pairs/CloudDragon-attack-v1-raw.png` /
   `-cut.png` — see rejection above (body-scale mismatch against the base
   frame).
+- `.art/concept/frame-pairs/CloudDragon-attack-v2-*` — shipped in this PR's
+  first commit, replaced after review: the manually-shrunk water read as too
+  small to register as "spraying water" in the 0.1s the attack frame is shown.
+- `cloud-dragon-attack-v3.txt` describes what was asked for; the generation
+  agent's own moderation-retry rewrote it before the successful call (see
+  `cloud-dragon-attack-v3-actual-used.txt`), and its own follow-up manual
+  crop/stretch/squeeze of that output was discarded in favor of reprocessing
+  the untouched raw generation directly (above).
 
 `cloud.png` (the dedicated spherical water aura) is unrelated to this pair and
 was not touched.
