@@ -152,6 +152,8 @@
 | `Towerback.png` | 클라이언트 PR (이슈 #694) | 191x256 RGBA. 꼬마돌이 `Tower` 를 등에 결속당한 컨셉으로 다시 그렸다. `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 넣어 업은 쪽과 실린 쪽이 각각 알아보이게 했다 |
 | `shoot/spirit_bomb_beam_segment.png` | 클라이언트 PR (이슈 #714) | 256x139 RGBA, 전부 불투명. spirit bomb 빔의 가운데에서 가로로 반복되는 띠. 새 자산이라 대조할 원본이 없다. 위아래 가장자리가 직선이고 좌우 끝의 단면이 같아 이어 붙여도 이음매가 없다 — 생성 원본에서 셰브런 주기 543px 를 재고 547px 창을 잘랐다. 반복되는 띠는 좌우로 흘러 나가므로 alpha 트림 대상이 아니고, 네 모서리 alpha 0 규칙도 적용하지 않는다. magenta 키 제거, enclosed_pixels=0, 불투명 픽셀에 magenta 잔색 0 |
 | `shoot/spirit_bomb_beam_cap.png` | 클라이언트 PR (이슈 #714) | 227x226 RGBA. spirit bomb 빔의 밑동과 끝이 배수만 달리해 함께 쓰는 여덟 갈래 별. 새 자산이라 대조할 원본이 없다. `master-v2/ArcaneImpact.png` 의 결정 배치를 그대로 따르고 색만 금색·풀색으로 바꿨다. 방향이 없어 회전해도 같게 읽힌다. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0, 투명 71.3% |
+| `RockTurret.png` | 클라이언트 PR (이슈 #694) | 169x256 RGBA, 원본 크기 유지. 인간 마법 문명, `Cannon.png`·`Tower.png`와 같은 재질 앵커(찬 회색 석재, 스틸블루 금속, 청동 이음쇠, 금색 마름모). 장전 자세, 팔은 넓은 M 자로 벌려 캔버스 폭을 채운다. 이전 시도들은 twin-panel 로 두 자세를 한 캔버스에 같이 뽑다가 공격 프레임의 날아가는 돌이 공유 crop 을 넓혀 본체가 계속 줄었다 — 이번엔 장전 자세를 먼저 단독으로 확정하고, 확정한 이미지를 레퍼런스로 넣어 공격 자세를 별도로 생성했다 |
+| `RockTurretAttacking.png` | 클라이언트 PR (이슈 #694) | 169x256 RGBA, 원본 크기 유지. 발사 직후 자세, 탑 자체는 `RockTurret.png`와 픽셀 단위로 동일한 위치·크기다 — 두 프레임을 하나의 공유 crop box(두 alpha bounding box의 합집합)와 하나의 공유 배율로 함께 내보내 지면 접점이 사후 대조가 아니라 제작 방식으로 이미 동일하다. 팔 각도만 낮추고 슬링을 비운 채 돌 하나를 캔버스 안에서 날아가는 중으로 추가했다. `check-frame-pair.py` 통과: 세로 차이 0.000 unit, 가로 차이 -0.001 unit |
 
 ## 다음 교체 후보
 
