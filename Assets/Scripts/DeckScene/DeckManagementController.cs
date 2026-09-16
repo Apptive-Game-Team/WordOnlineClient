@@ -39,6 +39,8 @@ namespace DeckScene
         public LocalizedString deckUpdateFailed;
         public LocalizedString deckUpdateSuccess;
 
+        public LocalizedString errorCardCount;
+
         [Header("Delete")]
         public LocalizedString deckDeletionConfirmMessage;
         public LocalizedString deckDeletionFailedMessage;
@@ -177,6 +179,12 @@ namespace DeckScene
         private void OnDeckSubmit()
         {
             WDebug.Log("OnDeckSubmit");
+            if (!viewModel.CanSubmitCurrentDeck)
+            {
+                SystemMessageUI.Instance.ShowMessage(errorCardCount);
+                return;
+            }
+
             StartCoroutine(viewModel.SubmitCurrentDeck(view.DeckName, OnDeckSubmitted));
         }
 

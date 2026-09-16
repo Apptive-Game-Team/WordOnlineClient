@@ -18,7 +18,7 @@ namespace DeckScene
         {
             if (statusText != null)
             {
-                statusText.text = $"카드 : {summary.CardCount}";
+                statusText.text = $"카드 : {summary.CardCount} / {DeckManagementViewModel.DeckCardCount}";
             }
 
             if (submitButton != null)
