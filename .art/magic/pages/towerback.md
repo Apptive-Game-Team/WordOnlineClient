@@ -45,7 +45,7 @@
 | 상위 클래스 | `AbstractSummonMagic` |
 | 주 프리팹 | `Towerback` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `AttackMob`, `Tower`, `CommonEffectReceiver` |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `AttackMob`, `Tower`, `RockDeathRemnant`, `CommonEffectReceiver` |
 | 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SUB_SPEED`, `SUB_DAMAGE`, `ATTACK_INTERVAL`, `SUB_ATTACK_RANGE`, `DAMAGE`, `ATTACK_RANGE` |
 | 오브젝트 파라미터 | `TOWERBACK` |
 

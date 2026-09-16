@@ -66,3 +66,20 @@ zero.
 `Assets/Tests/EditMode/MagicIndicatorValueJsonConverterTests.cs` is the shape to
 copy. That assembly references `WordOnline.Serialization` and nothing else, so it
 can test converters and wire shapes but not anything in Assembly-CSharp.
+
+## A hand-written converter's fields do not ride the cache for free
+
+The section above is about a plain DTO field: Json.NET serializes it
+automatically, so it rides the cache with no extra code. A type with its own
+`JsonConverter` — `MagicIndicatorValue` is one — gets none of that. `ReadJson`
+and `WriteJson` are two separate hand-written methods, and adding a field to
+one does not add it to the other.
+
+Adding `object` to `MagicIndicatorValue` for issue #676 is the concrete case:
+`ReadJson` reading the new field but `WriteJson` not writing it would still
+pass a plain round-trip against the server payload, because that payload never
+goes through `WriteJson` at all. The value only breaks after
+`VersionedDataSource` writes it back to `PlayerPrefs` and reads it again on the
+next launch — the field silently disappears then. Add the `RoundTrip` test for
+every new field on a hand-written converter, not just a read test, and check
+that the change touches `WriteJson` too.

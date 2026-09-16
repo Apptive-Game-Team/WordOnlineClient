@@ -156,6 +156,26 @@ MiniRock carries a human anti-air tower. Keep the warm living stone and moss of
 the captive body visibly separate from the cool masonry, steel-blue metal, and
 bronze restraints of the mounted tower.
 
+### 플레이어 캐릭터 — 수습 마법생
+
+인간 마법 문명의 무기와 달리 플레이어는 사람이다. 얼굴 없는 장치 규칙은 인간
+진영의 구조물에만 적용하고, 플레이어는 `ApprenticeMage` 앵커의 피부·천·나무
+재질과 눈 문법을 그대로 쓴다.
+
+- 선택: **D — 긴 머리 수습생**, 2026-09-09 승인.
+- 선택한 파일: `.art/concept/player-restyle/player-D-longhair.png`
+- 이유: 지금 인게임 캐릭터의 갈색 긴 머리를 잇는 유일한 안이라, 스프라이트 교체가
+  캐릭터 교체로 보이지 않는다. 나머지 네 갈래(A 지팡이·B 카드 시전자·C 후드·E
+  그리모어)는 모두 앵커의 소년으로 돌아가야 했다.
+- 탈락한 갈래와 생성 시도는 `.art/concept/player-restyle/` 에 남겨 두었다.
+
+구성 고정값: 갈색 긴 머리를 각진 plane 대여섯 개로 자른다. 파란 후드 클록은
+후드를 내린 채로 두르고, 회색 로브, 다이아몬드 버클이 달린 갈색 벨트, 허리의
+카드 가방, 파란 결정이 달린 나무 지팡이를 든다. 3등신, 3/4 각도, 오른쪽 방향.
+
+머리 plane 은 크게 자르되 하나의 덩어리로 뭉치지 않게 한다. 생성 시도 일곱 장 중
+넷이 머리를 바위처럼 만들었다. 이것이 이 캐릭터의 유일한 반복 실패다.
+
 ### Dimensional wanderers — moving world fragments
 
 Independent species carrying fragments of collapsed worlds. They are not

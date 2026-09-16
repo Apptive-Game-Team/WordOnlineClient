@@ -1,0 +1,19 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: `towerback`. Per the concept page, the human magic civilisation captured a `MiniRock` — the small rock-golem creature in the second attached reference — and strapped one of their anti-air towers onto its back. Draw exactly those two things, recognisably.
+
+The carrier is that MiniRock and nothing else: the same stubby round-headed warm ochre stone body, the same short thick limbs and wide planted stance, the same two dark oval eyes with one tiny highlight each, the same small green sprig at the shoulder. Do not give it heavy moss patches, do not pale it toward beige, do not change its proportions. It faces slightly to the right and its expression is blank, a little resigned, never menacing.
+
+What it carries is the `Tower` building in the third attached reference, shrunk onto its back and lashed down with two leather straps across the chest: the same cool grey-white stone drum with the blue skirt plates and the gold diamond plaques, and the same blue-grey barrel angled up over the creature's head. Someone who knows the Tower must recognise it here. A bare cannon, a crate, a backpack or a generic turret is wrong — it is that tower, carried.
+
+Faction and material: the golem creature's body uses the rock golem tribe's own material — warm tan stone #CDC8B8 / #A3A29D / #8A857A with patches of moss #55572D / #374725 growing on its shoulders and back, matching a living, warm stone creature. The mounted turret uses the human magic civilization's material instead — cool grey stone #C4CCC8 / #A09C92 / #616662 blocks, steel blue #6191A3 metal bands, and bronze/wood #5D4032 rivets and the binding belt buckle. Keep these two materials visually distinct and never blend the warm golem stone into the turret or the cool turret metal into the golem's body — the whole point of this asset is that a warm living creature is carrying a cold foreign weapon.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke. Keep the eyes as simple flat dark oval shapes with one small flat highlight facet, matching the standard simple eye style, not detailed or realistic.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a chunky, grounded creature-and-installation combination: equally chunky, blocky modular forms, never thin, spiky, or needle-like. Wide stable stance, both feet planted on the ground. Single subject, centered, filling most of the frame, facing slightly to the right. Compose the subject as a tall, roughly upright figure with the turret rising a little above the head on its back: the trimmed silhouette should naturally come out portrait-oriented, roughly 191:256 (clearly taller than wide).
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no scene, no ground plane props, no ember or spark scatter, no motion blur.

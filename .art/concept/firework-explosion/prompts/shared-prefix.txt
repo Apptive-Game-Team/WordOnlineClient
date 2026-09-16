@@ -1,0 +1,22 @@
+Fully transparent background game effect sprite — the entire canvas outside the subject must be true alpha transparency, never a painted checkerboard, white, grey, or color fill. This is a 2.5D faceted low-poly papercraft game asset, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered, symmetric-ish composition — this is a burst effect with no direction of travel, unlike a flying projectile.
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- This is a single static frame of an explosion at the instant of impact, not a projectile in flight and not an animation — the game has no Animator for this effect, so this one frame must read completely on its own.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: the impact burst of a fire-element artillery shell — a "firework shell" — from the Hellfire legion, at the instant it detonates on the ground. This is the same shell shown in the attached FireworkShell reference: a dark charred bomb shell with horn-like spikes and a glowing crack. The explosion is charred shell fragments and chunks thrown outward from a hot glowing core, not a smooth fireball and not a painterly flame lick — mass first, flame second, exactly like the attached HellfireDemon reference's material: dark charred basalt-like crust with glowing orange-hot cracks and seams running through it. Fire palette: dark charred base #2A1512 and #5A291E, hot crack/core glow #9B3014 and #E65E08, ash accents #6D4A39.
+
+It must read unmistakably as a discrete explosion made of dark broken shell debris around a hot core — never as a tall flame plume, a campfire, or a smooth painterly fireball. It must not be confusable with a vertical bonfire-flame shape or a thin flame-lick silhouette.

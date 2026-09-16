@@ -1,0 +1,22 @@
+Game building sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered.
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- A stationary building/structure viewed straight-on to slightly three-quarter, the same camera as the references. Not a character, not a creature, not in motion.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: `repair_totem`, a small NATURE-element building planted by the World Tree grass spirits (세계수 풀 정령). It is a totem that stops nearby allied buildings from decaying — it does not attack and it does not heal creatures, it keeps *structures* from aging and collapsing. It must share the World Tree spirit faction's material language from the attached WorldTreeSpirit reference: warm pale wood/seed-pod tan, layered leaf-green facets, and gnarled curled wood-grain shapes, using the nature palette #B8CE59, #9DA74D, #768738, #384823 for foliage and warm bark tones close to the WorldTreeSpirit reference for wood. It is a squat totem roughly as wide as it is tall, standing on the ground with no legs or feet of its own, in the same family as this game's other totem buildings (a carved post or mound topped with a glowing focus, not a humanoid, not a creature with a face).
+
+It must read unmistakably as a small stationary nature shrine/totem, never as a character, never as a tree, never as a slime or spirit creature.

@@ -1,0 +1,9 @@
+Subject: `bomb_sprite_bomb`, the bomb the wind spirit drops. It falls to the ground and explodes in a radius. It is an object, not a creature: no face, no eyes, no limbs.
+
+Variant identity — "Dropped bomb": a single chunky round bomb built from large flat facet planes.
+
+The body must be VERY DARK — near-black charcoal, values around #1E2224 to #3A4246, never light grey and never mid grey. It has to read as a black iron bomb at a glance and must never be mistakable for a rock or a boulder. The upper-left planes are only one small step lighter than the rest and the lower-right planes one small step darker; keep the whole mass dark even on its lit side.
+
+On top, a short thick collar in the same dark charcoal, and a stubby fuse leaning to the right. The fuse is a dark cord, and its tip carries a small faceted spark made of three or four flat angular shards in warm amber and gold, values around #FFD34A and #E8912A — warm, not pale, and clearly the brightest thing in the image. No white sprout, no leaf shape, nothing that could read as a plant.
+
+Matte throughout — no shine, no highlight dot, no reflection, no glow or halo around the spark. Centered, filling most of the square canvas.

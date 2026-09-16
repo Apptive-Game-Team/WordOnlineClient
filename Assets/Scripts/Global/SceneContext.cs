@@ -32,6 +32,9 @@ namespace Global
         {
             get
             {
+                // Debug-panel default. A missing user or match should fall back to
+                // "None" instead of throwing, same as "not one of the two players".
+                if (User == null || MatchInfo == null) return "None";
                 if (UserID == MatchInfo.leftUser.id)
                     return "LeftPlayer";
                 else if (UserID == MatchInfo.rightUser.id)

@@ -61,6 +61,85 @@ point through screen space at the start point's depth, which is exact for both
 projection and perspective, and is consistent with `ProjectileUtil.GetRotation`
 by construction because both consume the same two `WorldToScreenPoint` results.
 
+### A beam drawn from a runtime sprite has to ask for FullRect
+
+The sprite way to draw something spanning two points is the one
+`StretchProjectile` and `SpiritBombBeamProjectile` use: a base piece, a middle
+`SpriteRenderer` with `drawMode = SpriteDrawMode.Tiled`, and a tip piece parented
+to a root placed at the start point and rotated by `ProjectileUtil.GetRotation`.
+`size.x` on the middle piece is the length from `GetCameraPlaneLength` and
+`size.y` is the thickness, so the pattern repeats instead of smearing as the
+length changes. The middle piece must stay at `localScale` 1, because `size` is
+applied before scale.
+
+Two traps appear when the `Sprite` is built at runtime rather than taken from the
+import, which is what a projectile with no prefab has to do here.
+`ProjectileSpawner.SpawnSpiritBombBeam` assembles its object in code, and the
+`Sprite` an imported texture already carries is fixed at `pixelsPerUnit` 100,
+which the second trap below rules out. The pixels themselves are still imported
+assets — `Game/shoot/spirit_bomb_beam_segment` and `..._cap` — and only
+`Sprite.Create` runs at runtime.
+
+- `Sprite.Create` defaults to `SpriteMeshType.Tight`, which trims the transparent
+  border away, and a trimmed mesh makes `SpriteRenderer.size` do nothing. Pass
+  `SpriteMeshType.FullRect` explicitly. Nothing throws; the piece simply keeps its
+  natural size and the beam never reaches its target. An imported sprite can hide
+  this — `evil_ent_arm_segment.png` is imported with `spriteMeshType: 0` and still
+  tiles, because it is an opaque rectangle whose tight mesh is already the full
+  rect.
+- `pixelsPerUnit` fixes the tile's world size, and the tiles are laid in both axes.
+  If the thickness does not equal the sprite's natural height, the row is clipped
+  or repeated. Derive `pixelsPerUnit` from the thickness — `textureHeight /
+  thickness` — so exactly one row is laid; the tile's length then scales with the
+  thickness too, which is what a beam wants. That makes the sprite depend on the
+  thickness, so hold the `Texture2D` in a `static` field and create one `Sprite`
+  per instance. `OnDestroy` destroys that sprite and nothing else: the texture is
+  a `Resources` asset shared by every beam, and destroying it takes the art away
+  from the next cast.
+
+A `SpriteRenderer` created in code already carries the default sprite material, so
+there is no reason to build one from `Shader.Find("Sprites/Default")`; the
+built-in default cannot be stripped from a WebGL build, and a `Shader.Find` result
+can be.
+
+### A ring sprite and a ground circle project to the same ellipse
+
+"Billboarded" above means a sprite never turns with its object — facing is
+`SpriteRenderer.flipX`, not rotation. It does not mean the sprite plane is tilted
+to meet the camera. A `ServedObject`'s transform carries no rotation at all:
+`ObjectSpawner` instantiates with `prefab.transform.rotation`, no runtime prefab
+under `Assets/Resources/Prefabs` holds a rotation (`grep -rn 0.38268343` finds
+none), and `PositionUpdater` only moves and flips. So a sprite, and any child
+sprite added to one, stands in the world XY plane at 45° to the camera plane.
+Two kinds of thing do face the camera: what billboards itself every frame, in
+`ServedObjectGaugeBar.NormalizeTransform` and `PopupBookVisualPresenter`, and the
+scene decoration baked into `GameScene.unity`, where `tree_1` and `grass_1` carry
+a 45° X rotation. Do not copy a tree's transform into a runtime prefab.
+
+That makes an area-of-effect ring cheap to draw. At this camera's 45° tilt sine
+and cosine are equal, so a circle of radius r standing in the world XY plane and
+a circle of radius r lying flat on the ground XZ plane both project to an ellipse
+of horizontal radius r and vertical radius r·cos45 — the same ellipse, up to a
+few percent of perspective between the standing ring's top and the ground
+circle's far edge. An aura ring can therefore be a plain child sprite with no
+rotation and no mesh: `RepairTotem.prefab` draws its repair aura that way and
+`AuraRadiusScaler` sizes it from the `radius` parameter the server reads.
+
+This equality holds only at 45°. If the camera's X rotation ever changes, a
+standing ring stops matching the ground circle it stands for, and the visual has
+to move to `SkillIndicatorShapeRenderer`, which builds a real mesh in the XZ
+plane and already clips it to the field bounds.
+
+### Server radii reach the client twice, and only one of them is drawn in a build
+
+`GameObject.drawCircle` sends a component's radius to the client in the spawn
+payload, but `ServedObjectGizmoRenderer` is wrapped in `#if UNITY_EDITOR`, so
+those circles exist only in the Editor. A radius that has to be visible to
+players comes instead from the parameter table `ParametersDataSource` caches,
+which holds the same numbers the server reads. Use `AuraRadiusScaler` or read the
+table the way it does; do not assume the gizmo is on screen because it is on the
+wire.
+
 ## There is no Animator in this project
 
 There are no `.controller` or `.anim` assets and no `Animator` reference in

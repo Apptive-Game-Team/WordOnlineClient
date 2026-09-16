@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Data;
 using Global;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace LobbyScene
     {
         [SerializeField] private MatchQueueApiService _matchQueueApi;
         private MatchmakingCoordinator coordinator;
+        private bool enteringGameScene;
 
         public enum LobbyState
         {
@@ -69,7 +71,25 @@ namespace LobbyScene
             SceneContext.MatchInfo = matchedInfoDto;
             const string targetSceneName = "GameScene";
             if (SceneManager.GetActiveScene().name.Contains(targetSceneName)) return;
-            StartCoroutine(GameDataRefresh.Refresh(() => SceneManager.LoadScene(targetSceneName)));
+
+            // Matched can fire more than once for the same reconnect (snapshot poll and
+            // event stream both feed it), so only the first call may start the transition.
+            if (enteringGameScene) return;
+            enteringGameScene = true;
+            StartCoroutine(EnterGameScene(targetSceneName));
+        }
+
+        private IEnumerator EnterGameScene(string targetSceneName)
+        {
+            if (SceneContext.User == null)
+            {
+                yield return UserInfoGetter.GetUserInfo();
+
+                // GetUserInfo already redirected to LoginScene and left User null on failure.
+                if (SceneContext.User == null) yield break;
+            }
+
+            yield return GameDataRefresh.Refresh(() => SceneManager.LoadScene(targetSceneName));
         }
 
         public void RemoveFromQueue()

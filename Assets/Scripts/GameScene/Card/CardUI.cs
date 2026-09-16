@@ -69,7 +69,6 @@ namespace GameScene.Card
             if (isActive)
             {
                 cardSound.PlayOneShot(SoundAssets.CardDeselect);
-                PlayerFeedbackController.Instance.CancelCardSelectFeedback();
                 cardInputSender.CancelUseCard(this);
                 SetCardActive(false);
             }

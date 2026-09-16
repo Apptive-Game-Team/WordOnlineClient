@@ -8,7 +8,8 @@ namespace GameScene.Dto.Event
     {
         private static readonly IReadOnlyDictionary<string, Type> Subtypes = new Dictionary<string, Type>
         {
-            { "hit", typeof(HitEvent) }
+            { "hit", typeof(HitEvent) },
+            { "shock", typeof(ShockEvent) }
         };
 
         public GameEventConverter() : base("type", Subtypes)

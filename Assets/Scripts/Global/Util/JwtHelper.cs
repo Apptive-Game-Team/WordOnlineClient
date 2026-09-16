@@ -9,10 +9,11 @@ namespace Global.Util
     /// <summary>
     /// Utility class for reading and verifying JWT token claims on the client side.
     ///
-    /// When JWKS has been fetched via <see cref="JwksService"/>, IsAdmin() verifies
-    /// the JWT signature using the RS256 public key from the account server before
-    /// inspecting the scope claim. All privileged operations must still be enforced
-    /// server-side.
+    /// IsAdmin() verifies the JWT signature using the RS256 public key from the account
+    /// server (via <see cref="JwksService"/>) before inspecting the scope claim. When JWKS
+    /// has not been fetched yet, the signature cannot be checked, so IsAdmin() returns
+    /// false rather than trusting an unverified scope claim. All privileged operations
+    /// must still be enforced server-side.
     /// </summary>
     public static class JwtHelper
     {
@@ -227,12 +228,20 @@ namespace Global.Util
 
         /// <summary>
         /// Returns true when the JWT token's scope contains "WORDONLINE_ADMIN"
-        /// or "SUPER_ADMIN" (case-insensitive) AND the signature is valid when
-        /// JWKS keys are available.
+        /// or "SUPER_ADMIN" (case-insensitive) AND the signature verifies against
+        /// the cached JWKS keys. When JWKS has not been fetched, the signature
+        /// cannot be verified, so this returns false instead of trusting the
+        /// scope claim alone.
         /// </summary>
         public static bool IsAdmin(string jwtToken)
         {
-            if (JwksService.IsFetched && !VerifySignature(jwtToken))
+            if (!JwksService.IsFetched)
+            {
+                WDebug.LogWarning("[JwtHelper] JWKS not fetched; cannot verify JWT signature, so admin status is denied.");
+                return false;
+            }
+
+            if (!VerifySignature(jwtToken))
                 return false;
 
             string[] roles = ExtractRoles(jwtToken);

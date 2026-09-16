@@ -46,8 +46,8 @@
 | 구현 클래스 | `VineTossMagic` |
 | 상위 클래스 | `Magic` |
 | 주 프리팹 | `Vine` |
-| 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `CircleCollider`, `EffectProvider`, `TimedSelfDestroyer`, `OnStartAttacker`, `VineHitTracker`, `SequentialLineSpawner` |
+| 부가 프리팹 | `VineSpirit` |
+| 부착 컴포넌트 | `CircleCollider`, `EffectProvider`, `TimedSelfDestroyer`, `OnStartSeedSpiritEvolver`, `OnStartAttacker`, `VineHitTracker`, `SequentialLineSpawner` |
 | 파라미터 키 | `RADIUS`, `DURATION`, `DAMAGE` |
 | 오브젝트 파라미터 | `VINE` |
 

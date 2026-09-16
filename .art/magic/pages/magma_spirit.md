@@ -41,7 +41,7 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `MagmaSpiritMagic` |
-| 상위 클래스 | `AbstractSingleSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `MagmaSpirit` |
 | 부가 프리팹 | `MagmaFist` |
 | 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `SummonerMob`, `CommonEffectReceiver`, `AreaEffectProvider` |

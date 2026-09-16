@@ -21,6 +21,8 @@ For visual styling, layout, colors, shapes, and typography guidelines, follow th
 
 Follow [scene-space.md](.agents/docs/scene-space.md) before writing gameplay code that positions anything in the world or animates a `ServedObject`. The camera is tilted and sprites are billboarded to it, so `Vector3.up` and `Vector3.Distance` are the wrong tools for offsets and lengths measured off a sprite. That file also records that this project has no `Animator`.
 
+Follow [json-payloads.md](.agents/docs/json-payloads.md) before adding a field to a server DTO, writing a `JsonConverter`, or typing a DTO field as an enum. `JsonCodec` registers `StringEnumConverter` for the whole client, so one unknown enum name from the server throws and the caller discards the entire response; Json.NET also serializes getter-only properties, so a cached property lands in the `PlayerPrefs` cache unless it is `[JsonIgnore]`.
+
 Follow [localization.md](.agents/docs/localization.md) before adding or editing anything under `Assets/Localization`. The same magic is keyed by three different spellings of its server name, so adding one of them and stopping leaves another screen showing a raw key. The string tables are hand-edited YAML here because the Editor cannot run in this environment.
 
 Follow [json-payloads.md](.agents/docs/json-payloads.md) before adding a field to a server DTO, writing a `JsonConverter`, or typing a DTO field as an enum. `JsonCodec` registers `StringEnumConverter` for the whole client, so one unknown enum name from the server throws and the caller discards the entire response; Json.NET also serializes getter-only properties, so a cached property lands in the `PlayerPrefs` cache unless it is `[JsonIgnore]`.

@@ -21,6 +21,14 @@ def main():
 
     image = image.crop(bounds)
     image.thumbnail((args.max_size, args.max_size), Image.Resampling.LANCZOS)
+
+    # LANCZOS resamples alpha, so a transparent pixel beside a soft edge can come
+    # back as a 1 and the corner check then fails on a pixel nobody can see. Floor
+    # it and re-crop, or a clean cutout reads as a dirty one.
+    image.putalpha(image.getchannel("A").point(lambda value: 0 if value < 8 else value))
+    bounds = image.getchannel("A").getbbox()
+    if bounds is not None:
+        image = image.crop(bounds)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     image.save(args.output, optimize=True)
 

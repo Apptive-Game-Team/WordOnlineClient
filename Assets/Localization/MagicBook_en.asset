@@ -275,6 +275,69 @@ MonoBehaviour:
     m_Localized: Summons a thunder stag that charges and attacks enemies.
     m_Metadata:
       m_Items: []
+  - m_Id: 1864750230507530
+    m_Localized: Summons a titan remnant that remains on the battlefield for a time,
+      periodically erupting a giant stone fist beneath nearby enemies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000050
+    m_Localized: Summons a large, sturdy rock golem that fights only ground enemies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000051
+    m_Localized: Places a trap that arms when an enemy steps in, then stuns the area.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000052
+    m_Localized: Places a totem that stops nearby allied buildings from decaying.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000053
+    m_Localized: Builds a tower that lobs shells and blows up where they land.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000054
+    m_Localized: Builds a structure that keeps spreading leaf fields around it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000055
+    m_Localized: Builds a tower that fires flame shots at both ground and air targets.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000056
+    m_Localized: Summons a serpent that leaves water fields where it moves and fires
+      a water beam through every enemy in a line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000057
+    m_Localized: Drains your own units down to half health and fires a beam that
+      deals 70% of what it took, split over four hits.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000058
+    m_Localized: Fires a warhead that homes in on the nearest air target, or the
+      nearest ground target when there is none.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000059
+    m_Localized: Hurls a boulder that knocks its target back and deals extra damage
+      when the target slams into a wall or another enemy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000060
+    m_Localized: Summons a flying sprite that drops bombs on ground targets and blows
+      them up where they land.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000061
+    m_Localized: Plants a giant vine, then grows two rings of vines around it a moment
+      later.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000062
+    m_Localized: Builds a nest that keeps sending out seed spirits until it expires.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

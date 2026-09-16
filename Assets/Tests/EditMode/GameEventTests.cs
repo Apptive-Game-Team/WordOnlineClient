@@ -24,6 +24,22 @@ namespace WordOnline.Tests
             Assert.AreEqual("hit", hit.type);
         }
 
+        [Test]
+        public void FrameCarriesShockEvents()
+        {
+            const string json = @"{""type"":""frame"",""remainingTime"":50,""updatedMana"":2,
+                ""leftPlayerHp"":100,""rightPlayerHp"":100,""cards"":{},""objects"":{},
+                ""events"":[{""type"":""shock"",""actorId"":7,""targetId"":0}]}";
+
+            FrameInfoDto frame = (FrameInfoDto)JsonCodec.Deserialize<ServerMessage>(json);
+
+            Assert.AreEqual(1, frame.events.Count);
+            Assert.IsInstanceOf<ShockEvent>(frame.events[0]);
+            ShockEvent shock = (ShockEvent)frame.events[0];
+            Assert.AreEqual(7, shock.actorId);
+            Assert.AreEqual("shock", shock.type);
+        }
+
         /// <summary>
         /// 싱크 프레임이 10프레임마다 frame 메시지를 대체하므로 여기에도 이벤트가 실려야 한다.
         /// </summary>

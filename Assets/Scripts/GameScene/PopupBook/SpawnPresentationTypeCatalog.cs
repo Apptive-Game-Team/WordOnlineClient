@@ -21,6 +21,7 @@ namespace GameScene.PopupBook
             "RallyingTotem",
             "RockTurret",
             "SeedNest",
+            "TitanRemnant",
             "Vine",
             "VineColony",
             "WindTotem"

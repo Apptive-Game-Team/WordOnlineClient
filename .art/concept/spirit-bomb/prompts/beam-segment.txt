@@ -1,0 +1,11 @@
+Piece identity — "beam segment", the repeating middle of the beam. Use a wide landscape canvas, roughly three times as wide as it is tall.
+
+One straight horizontal energy band runs across the whole canvas, entering at the left edge and leaving at the right edge, centred vertically. The band is cut off by both side edges; it does not start or end inside the canvas, and it has no tip, no point, no rounded end, no muzzle and no burst anywhere.
+
+The band's top edge and bottom edge are perfectly straight, perfectly horizontal and exactly parallel to each other along the entire width. The band is exactly the same thickness where it touches the left edge as where it touches the right edge, and the colour bands stack in the same order and at the same heights at both edges, so that two copies of this image placed side by side join into one continuous band with no visible seam. The band is about one third of the canvas height.
+
+Across the band, from top to bottom, the colours stack as parallel horizontal strips: a thin green strip #9DA74D at the very top, a yellow strip #F6DB5F under it, a wide pale yellow core strip #FCFBD5 through the middle, a deeper yellow strip #D7A313 under the core, and a thin darker green strip #768738 along the very bottom. The core is brightest and widest.
+
+Along its length, hard creases cut the band into large flat chevron facets that point to the right — about four of them, evenly spaced, each a single flat plane. The chevrons are creases inside the band only; they never break, notch, bulge or wander the band's straight outer edges.
+
+Above the band and below the band there is nothing but the flat magenta background.

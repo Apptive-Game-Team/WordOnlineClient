@@ -21,6 +21,20 @@ namespace GameScene.ServedObjectComponent
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _actualTransform = null;
+        /// <summary>
+        /// Where aura and status effects are parented. Leave empty and they sit on the
+        /// object itself, which is what every mob wants. The player points it at the staff
+        /// tip anchor so the element auras gather there and follow the attack frame.
+        /// </summary>
+        [SerializeField] private Transform _effectAnchor = null;
+        /// <summary>
+        /// Names the effects that hang on <see cref="_effectAnchor"/>; every other effect stays on
+        /// the object. This is why the player's <c>Burn</c>, <c>Panic</c>, <c>Snared</c> and other
+        /// status effects do not fly up to the staff tip along with the element auras. An empty or
+        /// null list means nothing is anchored, so an object that never set this behaves exactly as
+        /// if <see cref="_effectAnchor"/> did not exist.
+        /// </summary>
+        [SerializeField] private string[] _effectAnchorEffects = null;
 
         /// <summary>
         /// Whether the attack event swings the object. Turn it off for objects whose sprite is a
@@ -38,14 +52,22 @@ namespace GameScene.ServedObjectComponent
         
         public List<Gauge> gauges = new List<Gauge>();
         private readonly HashSet<string> activeEffects = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> pendingEffects = new HashSet<string>(StringComparer.Ordinal);
 
         public IReadOnlyCollection<string> ActiveEffects => activeEffects;
+
+        /// <summary>서버가 이번 frame에 보낸 effect 목록에 주어진 이름이 있는지 본다.</summary>
+        public bool HasEffect(string effect)
+        {
+            return !string.IsNullOrEmpty(effect) && activeEffects.Contains(effect);
+        }
         
         private string master;
         private Transform _teamIndicatorTransform;
         private SpriteRenderer _teamIndicatorRenderer;
         private ServedObjectEffectRenderer _effectRenderer;
         private ServedObjectGaugeBar _teamColorGaugeBar;
+        private readonly List<Gizmo> _gizmos = new List<Gizmo>();
 #if UNITY_EDITOR
         private ServedObjectGizmoRenderer _gizmoRenderer;
 #endif
@@ -58,6 +80,13 @@ namespace GameScene.ServedObjectComponent
         public event Action OnDestroyed;
         public event Action OnMoved;
         public event Action<Gauge> OnGaugeChanged;
+
+        /// <summary>
+        /// Raised after <see cref="UpdateActiveEffects"/> rebuilds <see cref="ActiveEffects"/> and
+        /// the resulting set differs from the previous frame's. Not raised on every frame, since
+        /// this update runs for every object every frame and most frames carry no effect change.
+        /// </summary>
+        public event Action OnEffectsChanged;
         
         public event Action OnHpIncreased;
         public event Action OnHpDecreased;
@@ -150,29 +179,53 @@ namespace GameScene.ServedObjectComponent
 
         private void UpdateActiveEffects(List<string> effects)
         {
-            activeEffects.Clear();
-            if (effects == null)
+            pendingEffects.Clear();
+            if (effects != null)
+            {
+                foreach (string effect in effects)
+                {
+                    if (string.IsNullOrWhiteSpace(effect))
+                    {
+                        continue;
+                    }
+
+                    string normalizedEffect = effect.Trim();
+                    if (!string.Equals(normalizedEffect, "None", StringComparison.Ordinal))
+                    {
+                        pendingEffects.Add(normalizedEffect);
+                    }
+                }
+            }
+
+            // Compare before writing: this runs for every object every frame, and most frames
+            // carry no effect change, so activeEffects must not be torn down and rebuilt (and
+            // OnEffectsChanged must not fire) unless the set actually differs.
+            if (activeEffects.SetEquals(pendingEffects))
             {
                 return;
             }
 
-            foreach (string effect in effects)
+            activeEffects.Clear();
+            foreach (string effect in pendingEffects)
             {
-                if (string.IsNullOrWhiteSpace(effect))
-                {
-                    continue;
-                }
-
-                string normalizedEffect = effect.Trim();
-                if (!string.Equals(normalizedEffect, "None", StringComparison.Ordinal))
-                {
-                    activeEffects.Add(normalizedEffect);
-                }
+                activeEffects.Add(effect);
             }
+
+            OnEffectsChanged?.Invoke();
         }
 
+        /// <summary>
+        /// 서버가 생성 시점에 보낸 gizmo 목록을 보관한다. Editor에서는 debug 선까지 그리지만,
+        /// 값 자체는 build에서도 쓴다 — <see cref="TryGetGizmoRadius"/>를 보라.
+        /// </summary>
         public void SetGizmos(List<Gizmo> gizmos)
         {
+            _gizmos.Clear();
+            if (gizmos != null)
+            {
+                _gizmos.AddRange(gizmos);
+            }
+
 #if UNITY_EDITOR
             if (_gizmoRenderer == null)
             {
@@ -185,6 +238,37 @@ namespace GameScene.ServedObjectComponent
 
             _gizmoRenderer.SetGizmos(gizmos);
 #endif
+        }
+
+        /// <summary>
+        /// 서버가 보낸 gizmo 중 주어진 category의 원 반경을 찾는다. 같은 category가 여러 개면 첫 번째를 쓴다.
+        /// category 문자열은 서버 <c>GizmoCategory</c>의 이름 그대로다 (예: <c>DetectionRange</c>).
+        /// </summary>
+        public bool TryGetGizmoRadius(string category, out float radius)
+        {
+            radius = 0f;
+            if (string.IsNullOrEmpty(category))
+            {
+                return false;
+            }
+
+            foreach (Gizmo gizmo in _gizmos)
+            {
+                if (gizmo == null || gizmo.radius <= 0f)
+                {
+                    continue;
+                }
+
+                if (!string.Equals(gizmo.category, category, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                radius = gizmo.radius;
+                return true;
+            }
+
+            return false;
         }
 
         private void HandleStatus(string status)
@@ -218,6 +302,40 @@ namespace GameScene.ServedObjectComponent
             }
         }
         
+        /// <summary>
+        /// Parent for a spawned effect instance named <paramref name="effectName"/>. Only the
+        /// names listed in <see cref="_effectAnchorEffects"/> go to <see cref="_effectAnchor"/>;
+        /// every other effect, including player status effects such as <c>Burn</c>, stays on the
+        /// object itself.
+        /// </summary>
+        private Transform GetEffectParent(string effectName)
+        {
+            if (_effectAnchor != null && IsEffectAnchorEffect(effectName))
+            {
+                return _effectAnchor;
+            }
+
+            return GetActualTransform();
+        }
+
+        private bool IsEffectAnchorEffect(string effectName)
+        {
+            if (_effectAnchorEffects == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < _effectAnchorEffects.Length; i++)
+            {
+                if (string.Equals(_effectAnchorEffects[i], effectName, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public Transform GetActualTransform()
         {
             if (_actualTransform != null)
@@ -322,7 +440,7 @@ namespace GameScene.ServedObjectComponent
             }
 
             _effectRenderer = new ServedObjectEffectRenderer(
-                GetActualTransform,
+                GetEffectParent,
                 GetSpriteWorldHeight,
                 _effectScaleReferenceHeight,
                 _effectScaleMultiplier,
