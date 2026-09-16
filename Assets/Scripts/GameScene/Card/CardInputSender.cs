@@ -157,7 +157,7 @@ namespace GameScene.Card
             }
             _currentCardList.Clear();
             _currentCardNameList.Clear();
-            PlayerFeedbackController.Instance.UseMagicFeedback();
+
             SetExpectedMagicUI();
             isFieldSelectMode = false;
         }
