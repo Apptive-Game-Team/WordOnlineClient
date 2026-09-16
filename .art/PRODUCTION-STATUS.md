@@ -152,6 +152,9 @@
 | `Towerback.png` | 클라이언트 PR (이슈 #694) | 191x256 RGBA. 꼬마돌이 `Tower` 를 등에 결속당한 컨셉으로 다시 그렸다. `MiniRockSwarm.png` 와 `Tower.png` 를 레퍼런스로 넣어 업은 쪽과 실린 쪽이 각각 알아보이게 했다 |
 | `shoot/spirit_bomb_beam_segment.png` | 클라이언트 PR (이슈 #714) | 256x139 RGBA, 전부 불투명. spirit bomb 빔의 가운데에서 가로로 반복되는 띠. 새 자산이라 대조할 원본이 없다. 위아래 가장자리가 직선이고 좌우 끝의 단면이 같아 이어 붙여도 이음매가 없다 — 생성 원본에서 셰브런 주기 543px 를 재고 547px 창을 잘랐다. 반복되는 띠는 좌우로 흘러 나가므로 alpha 트림 대상이 아니고, 네 모서리 alpha 0 규칙도 적용하지 않는다. magenta 키 제거, enclosed_pixels=0, 불투명 픽셀에 magenta 잔색 0 |
 | `shoot/spirit_bomb_beam_cap.png` | 클라이언트 PR (이슈 #714) | 227x226 RGBA. spirit bomb 빔의 밑동과 끝이 배수만 달리해 함께 쓰는 여덟 갈래 별. 새 자산이라 대조할 원본이 없다. `master-v2/ArcaneImpact.png` 의 결정 배치를 그대로 따르고 색만 금색·풀색으로 바꿨다. 방향이 없어 회전해도 같게 읽힌다. magenta 키 제거, enclosed_pixels=0, 네 모서리 alpha 0, 불투명 픽셀에 magenta 잔색 0, 투명 71.3% |
+| `RockTurret.png`, `RockTurretAttacking.png` | 클라이언트 PR (이슈 #694) | 169x256 RGBA 두 장. **크기·튐 재작업 중** — twin-panel 생성이 본체를 계속 줄이고 옆으로 밀어 방식을 바꾸는 중이다(단독 생성 후 레퍼런스로 공격 프레임 생성) |
+| `CloudDragon.png`, `CloudDragonAttacking.png` | 클라이언트 PR (이슈 #694) | 256x182 RGBA 두 장. 머리 상단 y 완전 일치. 구형 물 아우라 `cloud.png` 는 별도 자산. **크기·튐 재작업 중** |
+| `TreeGolem.png`, `TreeGolem2.png` | 클라이언트 PR (이슈 #694) | 240x256 / 256x215 RGBA. 공유 crop 과 배율로 몸 크기를 맞췄고, 서로 달랐던 spritePixelsToUnits 를 85 로 통일했다. **크기·튐 재작업 중** |
 
 ## 다음 교체 후보
 
