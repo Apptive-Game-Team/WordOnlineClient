@@ -38,11 +38,9 @@ namespace DeckScene
         public LocalizedString deckCreationSuccess;
         public LocalizedString deckUpdateFailed;
         public LocalizedString deckUpdateSuccess;
-        public LocalizedString errorCardCount;
-        public LocalizedString errorAttributeCount;
-        public LocalizedString errorMagicCount;
 
         [Header("Delete")]
+        public LocalizedString errorCardCount;
         public LocalizedString deckDeletionConfirmMessage;
         public LocalizedString deckDeletionFailedMessage;
         public LocalizedString deckDeletionSuccessMessage;
@@ -180,10 +178,9 @@ namespace DeckScene
         private void OnDeckSubmit()
         {
             WDebug.Log("OnDeckSubmit");
-            DeckValidationError validationError = viewModel.ValidateCurrentDeck();
-            if (validationError != DeckValidationError.None)
+            if (!viewModel.CanSubmitCurrentDeck)
             {
-                ShowValidationError(validationError);
+                SystemMessageUI.Instance.ShowMessage(errorCardCount);
                 return;
             }
 
@@ -242,22 +239,6 @@ namespace DeckScene
                 }
 
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
-
-        private void ShowValidationError(DeckValidationError validationError)
-        {
-            switch (validationError)
-            {
-                case DeckValidationError.AttributeCount:
-                    SystemMessageUI.Instance.ShowMessage(errorAttributeCount);
-                    break;
-                case DeckValidationError.MagicCount:
-                    SystemMessageUI.Instance.ShowMessage(errorMagicCount);
-                    break;
-                default:
-                    SystemMessageUI.Instance.ShowMessage(errorCardCount);
-                    break;
             }
         }
 
