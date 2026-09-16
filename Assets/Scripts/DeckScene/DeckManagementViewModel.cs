@@ -29,6 +29,9 @@ namespace DeckScene
 
     public class DeckManagementViewModel
     {
+        /// <summary>덱 한 벌의 카드 수. lobby 의 DeckValidator 가 쓰는 값과 같아야 한다.</summary>
+        public const int DeckCardCount = 15;
+
         private static DeckResponseDto[] cachedUserDecks;
         private static CardDto[] cachedOwnedCards;
 
@@ -49,7 +52,7 @@ namespace DeckScene
         public DeckEditMode CurrentMode { get; private set; } = DeckEditMode.None;
         public bool HasCachedData => UserDecks.Length > 0 && OwnedCards.Length > 0;
         public bool CanDeleteCurrentDeck => CurrentMode == DeckEditMode.Update && CurrentDeck != null;
-        public bool CanSubmitCurrentDeck => CurrentDeck != null;
+        public bool CanSubmitCurrentDeck => (CurrentDeck?.cards?.Length ?? 0) == DeckCardCount;
 
         public void SelectDeck(DeckResponseDto deck)
         {
@@ -77,10 +80,10 @@ namespace DeckScene
                 return false;
             }
 
-            // 덱 구성에는 제한이 없다. 가진 장수보다 많이 넣는 것만 막는다.
+            // 덱은 15장이다. 같은 마법 장수와 원소 종류에는 제한이 없고, 가진 장수만 본다.
             int ownedCount = card.count;
             int inDeckCount = CurrentDeck.cards.Count(c => c.id == card.id);
-            if (inDeckCount >= ownedCount)
+            if (CurrentDeck.cards.Length >= DeckCardCount || inDeckCount >= ownedCount)
             {
                 return false;
             }
