@@ -69,7 +69,7 @@ Transform 스케일 변형은 적용하지 않는다.
 - 캔버스가 달라도 기준점에서 몸통 핵심점까지의 거리는 동일
 
 검증할 때 두 PNG를 같은 PPU로 겹쳐 발점, 골반, 머리 중심을 대조한다.
-`RockGolem`과 `RockGolem2`는 256x244, PPU 100, Bottom Center로 교정했다. 현재
+`RockGolem`과 `RockGolem2`는 256x244, PPU 100, Bottom Center로 교정했다.
 `TreeGolem`과 `TreeGolem2`는 PPU가 서로 달라 재작업 전에 교정이 필요하다.
 `TreeGolem`은 240x256에 PPU 100, `TreeGolem2`는 256x215에 PPU 80이다.
 
