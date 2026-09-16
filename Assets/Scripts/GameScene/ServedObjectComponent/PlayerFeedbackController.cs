@@ -41,31 +41,7 @@ namespace GameScene.ServedObjectComponent
                 return;
             }
 
-            DOTweenAction.RotatePlayerUseCard(spriteTr);
-        }
-
-        public void CancelCardSelectFeedback()
-        {
-            Transform spriteTr = GetPlayerVisualTransform();
-            if (spriteTr == null)
-            {
-                Debug.LogWarning("[PlayerFeedbackController] Could not find player visual for cancel feedback.");
-                return;
-            }
-
-            DOTweenAction.RotatePlayerCancelCard(spriteTr);
-        }
-
-        public void UseMagicFeedback()
-        {
-            Transform spriteTr = GetPlayerVisualTransform();
-            if (spriteTr == null)
-            {
-                Debug.LogWarning("[PlayerFeedbackController] Could not find player visual for magic feedback.");
-                return;
-            }
-
-            DOTweenAction.RotatePlayerUseMagic(spriteTr);
+            DOTweenAction.BouncePlayerUseCard(spriteTr);
         }
 
         private Transform GetPlayerVisualTransform()

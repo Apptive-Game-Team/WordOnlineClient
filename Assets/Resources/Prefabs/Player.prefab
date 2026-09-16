@@ -32,6 +32,7 @@ Transform:
   m_Children:
   - {fileID: 6613297471785333864}
   - {fileID: 6150351881868759454}
+  - {fileID: 2358728696626565719}
   m_Father: {fileID: 9126272066664850839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1271433976255676604
@@ -75,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: baf25865d1f604ec7ad764b4dc36a5f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3a37400d762fc47368ff61782aa71941, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.46, y: 1.92}
+  m_Size: {x: 1.733, y: 2.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -101,6 +102,8 @@ GameObject:
   - component: {fileID: 6820982494534357445}
   - component: {fileID: 1591033409329525037}
   - component: {fileID: 9113209922203907885}
+  - component: {fileID: 1126847926404610461}
+  - component: {fileID: 5546332115853614978}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -164,9 +167,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1271433976255676604}
   _actualTransform: {fileID: 720095057222124764}
+  _effectAnchor: {fileID: 2358728696626565719}
+  _effectAnchorEffects:
+  - FireIdleAura
+  - FireAttackAura
+  - WaterIdleAura
+  - WaterAttackAura
+  - WindIdleAura
+  - WindAttackAura
+  - LightningIdleAura
+  - LightningAttackAura
+  - NatureIdleAura
+  - NatureAttackAura
+  - RockIdleAura
+  - RockAttackAura
+  _swingOnAttack: 0
   _teamIndicatorVerticalOffset: 0.1
   _teamIndicatorScale: 0.3
-  _effectScaleReferenceHeight: 1.2
+  _effectScaleReferenceHeight: 1.375
   _effectScaleMultiplier: 1
   _effectScaleMin: 0.8
   _effectScaleMax: 1.8
@@ -214,6 +232,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 5891126817168686592}
   servedObject: {fileID: 1328882802136935567}
+--- !u!114 &1126847926404610461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600271713453120150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b9a93c19590462b8ec55bbc3f52520d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 0}
+  targetRenderer: {fileID: 1271433976255676604}
+  staffLoweredSprite: {fileID: 21300000, guid: 3a37400d762fc47368ff61782aa71941, type: 3}
+  staffRaisedSprite: {fileID: 21300000, guid: 006b29725c4f4217a1ce014d2dbcb491, type: 3}
+  staffThrustSprite: {fileID: 21300000, guid: a691e9e5e6e841d7a4e74603b302c52d, type: 3}
+  thrustDuration: 0.3
+  raisingEffects:
+  - CardSelected
+  - FireIdleAura
+  - WaterIdleAura
+  - WindIdleAura
+  - LightningIdleAura
+  - NatureIdleAura
+  - RockIdleAura
+--- !u!114 &5546332115853614978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600271713453120150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6027bdd9b11a4b1692d89a193b8f4a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  servedObject: {fileID: 0}
+  auraAnchor: {fileID: 2358728696626565719}
+  bodyRenderer: {fileID: 1271433976255676604}
+  idleLocalPosition: {x: -0.378, y: 2.01, z: 0}
+  attackLocalPosition: {x: 0.957, y: 0.891, z: 0}
+  attackDuration: 0.3
 --- !u!1 &3049173013423814833
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +509,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _referRenderer: {fileID: 1271433976255676604}
   initialPosition: {x: 0, y: 0, z: 0}
+--- !u!1 &6939596180442651345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2358728696626565719}
+  m_Layer: 0
+  m_Name: StaffAura
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2358728696626565719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939596180442651345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.378, y: 2.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 720095057222124764}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+
+
+
 --- !u!1001 &8450433571933280607
 PrefabInstance:
   m_ObjectHideFlags: 0

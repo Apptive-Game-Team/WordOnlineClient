@@ -44,7 +44,7 @@
 | 상위 클래스 | `AbstractSummonMagic` |
 | 주 프리팹 | `GroundCannon` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `Cannon`, `TimedSelfDestroyer`, `CommonEffectReceiver` |
+| 부착 컴포넌트 | `RigidBody`, `CircleCollider`, `Cannon`, `TimedSelfDestroyer`, `RockDeathRemnant`, `CommonEffectReceiver` |
 | 파라미터 키 | `MASS`, `RADIUS`, `HP`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
 | 오브젝트 파라미터 | `GROUND_CANNON` |
 

@@ -25,11 +25,16 @@ namespace GameScene
             }
         }
 
-        public void SetIndicator(Vector3 position, float radius)
+        /// <param name="edgeWidth">
+        /// 테두리 선 굵기. 기본값 0f는 테두리 없이 채우기만 그리던 기존 동작 그대로다.
+        /// 0보다 큰 값을 주면 <see cref="SkillIndicatorShapeRenderer.SetCircle"/>이 테두리를 그려서,
+        /// 같은 채우기색을 쓰는 다른 원형 indicator와 선 굵기로 구분할 수 있다.
+        /// </param>
+        public void SetIndicator(Vector3 position, float radius, float edgeWidth = 0f)
         {
             if (shapeRenderer != null)
             {
-                shapeRenderer.SetCircle(position, radius, true, SkillIndicatorSortingOrder, 0f);
+                shapeRenderer.SetCircle(position, radius, true, SkillIndicatorSortingOrder, edgeWidth);
                 return;
             }
 

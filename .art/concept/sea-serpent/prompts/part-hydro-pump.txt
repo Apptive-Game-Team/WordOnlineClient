@@ -1,0 +1,26 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no water surface, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+A game attack effect sprite for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like cut and folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradient across a plane, no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush, no glow, no bloom, no motion blur, no speed lines.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet along the upper edge of the jet, a broad flat shadow facet along its lower edge. Nothing else.
+- No outer contour line and no ink outline anywhere. Shapes separate from each other only by flat color value.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Subject: a hydro pump — one straight horizontal jet of pressurised water, fired to the right, in the water palette of the attached serpent sprite: pale #E8F7EE, light #98DEEB, mid #6FCCF4, deep #53B2EB, darkest #2D92E4.
+
+Composition, required exactly. The jet runs left to right straight across the middle of the square canvas, horizontal and level, and the canvas is divided into three zones side by side:
+- Left zone, the leftmost quarter of the width: the nozzle burst, where the jet leaves the serpent's mouth. A short cone of chunky angular water shards flaring outward and backward, all of them touching the jet. No free-floating droplets, no bubbles, no mist, no spray dots.
+- Middle zone, the middle half of the width: a straight run of the jet at one single constant thickness. Perfectly level, perfectly even top and bottom edges, no swelling, no narrowing, no taper, no wave, no twist. It is banded lengthwise into long flat stripes of colour: a pale core stripe, a mid blue stripe above it and a deeper blue stripe below it, each stripe running the entire length of this zone at the same height and the same thickness from end to end.
+- This middle zone must tile seamlessly against copies of itself. The game repeats exactly this middle strip side by side to make beams of different lengths, so its left edge and its right edge have to match each other pixel for pixel: the same total thickness, the same silhouette, and every colour stripe at exactly the same height and thickness at both ends. Do not put any feature in the middle zone that would show a seam when the strip is repeated — no chevrons, no arrow shapes, no crease crossing the jet, no varying facet along its length.
+- Right zone, the rightmost quarter of the width: the impact end. The jet gathers into one blunt angular spear tip and a small flat splash crown of three or four chunky angular shards spreading out from it, all of them touching the tip. No free-floating droplets, no bubbles, no ring, no starburst.
+
+Also required:
+- Above and below the jet the canvas is pure magenta, edge to edge. The jet occupies only a horizontal band across the middle of the square, roughly a fifth of the canvas height.
+- The nozzle burst starts a little in from the left edge of the canvas and the splash ends a little in from the right edge, so both ends of the effect sit fully inside the canvas and neither is cut off.
+- No serpent, no head, no mouth, no creature, no face, no hands, no character of any kind. Only the water jet.
+- No text, no frame, no card border, no watermark, no logo, no arrow, no label, no grid, no second copy of the jet.
+- The jet must stay clearly readable when the whole image is shrunk down to 64 pixels wide.

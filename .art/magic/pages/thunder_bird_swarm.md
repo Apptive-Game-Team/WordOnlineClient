@@ -41,10 +41,10 @@
 | 항목 | 값 |
 |---|---|
 | 구현 클래스 | `thunderBirdSwarmMagic` |
-| 상위 클래스 | `AbstractSwarmSpawnMagic` |
+| 상위 클래스 | `AbstractSpawnMagic` |
 | 주 프리팹 | `ThunderBird` |
 | 부가 프리팹 | 없음 또는 소스에서 직접 확인되지 않음 |
-| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `ThunderBirdMob`, `CommonEffectReceiver` |
+| 부착 컴포넌트 | `RigidBody`, `ZPhysics`, `CircleCollider`, `ThunderBirdMob`, `ElectricDeathEnergy`, `LightningSummonEffectReceiver` |
 | 파라미터 키 | `MASS`, `RADIUS`, `HP`, `SPEED`, `DAMAGE`, `ATTACK_INTERVAL`, `ATTACK_RANGE` |
 | 오브젝트 파라미터 | `THUNDER_BIRD` |
 

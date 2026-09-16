@@ -1,0 +1,22 @@
+Game building sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered, upright, facing forward/three-quarter like a building icon (not in motion).
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- A stationary siege building, planted on the ground, chunky modular tower proportions (not a creature, not a character).
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: `firework_tower`, a Hellfire legion siege structure that lobs a fire-element artillery shell (the attached `FireworkShell` reference) on an arc at enemies. It must share the Hellfire legion's material language visible in the attached `HellfireDemon` and `RallyingTotem` references: dark charred basalt-like crust, angular and spiked details, glowing orange-hot cracks and seams running through the dark shell, mass-first and flame-second (the tower reads as a dark hard structure with fire glowing through gaps and a mouth, not as a bonfire or a flame pillar). Fire palette: dark charred base #2A1512 and #5A291E, hot crack glow #9B3014 and #E65E08, ash accents #6D4A39.
+
+It must read unmistakably as a squat mortar/launcher tower with a wide bowl-shaped mouth at the top that a shell launches from, never as a campfire, a torch, a furnace, or a decorative totem that only burns in place. The mouth should look like it is about to fire or has just fired — a shell or a bright ember glow sitting inside the bowl, not a tall continuous flame jet filling the frame.

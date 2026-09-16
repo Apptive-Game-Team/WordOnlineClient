@@ -46,7 +46,8 @@ namespace GameScene.Object.Projectile
                     }
                     transform.position = Vector3.Lerp(startPos, endPos, v);
                 }, 1f, duration)
-                .SetEase(Ease.Linear);
+                .SetEase(Ease.Linear)
+                .SetLink(gameObject);
         }
     }
 }

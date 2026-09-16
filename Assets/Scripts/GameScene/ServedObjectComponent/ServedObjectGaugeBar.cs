@@ -12,6 +12,10 @@ namespace GameScene.ServedObjectComponent
     /// with different settings. Everything else here — the 2.5D anchor, camera billboarding and
     /// the size fit to the sprite — is gauge-agnostic and shared by both.
     /// </para>
+    /// <para>
+    /// A prefab may carry a bar the server sends no gauge for, so a bar stays hidden until its
+    /// category arrives. See <see cref="ApplyDataVisibility"/>.
+    /// </para>
     /// </summary>
     public class ServedObjectGaugeBar : MonoBehaviour
     {
@@ -46,15 +50,19 @@ namespace GameScene.ServedObjectComponent
         private bool colorsApplied;
         private string appliedMaster;
         private bool subscribedToGaugeChanges;
-    
+        private Canvas canvas;
+        private bool gaugeReceived;
+
         private void Awake()
         {
             slider = GetComponentInChildren<Slider>();
-            Canvas canvas = GetComponentInChildren<Canvas>();
+            canvas = GetComponentInChildren<Canvas>();
             if (canvas != null)
             {
                 canvasRectTransform = canvas.GetComponent<RectTransform>();
             }
+
+            ApplyDataVisibility();
 
             if (slider == null)
             {
@@ -85,6 +93,7 @@ namespace GameScene.ServedObjectComponent
             ResolveServedObject();
             SubscribeToGaugeChanges();
             ApplyExistingGauge();
+            ApplyDataVisibility();
             NormalizeTransform();
         }
     
@@ -154,6 +163,28 @@ namespace GameScene.ServedObjectComponent
 
             slider.maxValue = gauge.maxValue;
             slider.value = gauge.value;
+            gaugeReceived = true;
+            ApplyDataVisibility();
+        }
+
+        /// <summary>
+        /// Keeps a bar hidden until the server has sent a gauge of its category at least once.
+        /// A category the object has no component for never arrives — TTL on an object with no
+        /// lifetime, for instance — and the slider would otherwise show the value the prefab was
+        /// authored with, a bar that is filled to some fraction and never moves.
+        /// <para>
+        /// The bar that carries the team indicator is exempt. It is the HP bar, and hiding it
+        /// would take the team colour with it, which costs more than a stale bar.
+        /// </para>
+        /// </summary>
+        private void ApplyDataVisibility()
+        {
+            if (canvas == null || slider == null || useTeamColors)
+            {
+                return;
+            }
+
+            canvas.enabled = gaugeReceived;
         }
 
         private void ApplyExistingGauge()

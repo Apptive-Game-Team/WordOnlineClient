@@ -6,11 +6,13 @@ namespace Global.Serialization
 {
     /// <summary>
     /// <see cref="MagicIndicatorValue"/> 를 JSON number 나 <c>{"parameter":...}</c> object 둘 다에서 읽는다.
+    /// object 안에는 <c>object</c> 자리로 다른 game object 이름을 더 적을 수 있다.
     /// 읽을 수 없는 모양은 throw 하지 않고 "필드 없음" 으로 돌려준다. indicator document 하나가
     /// 이상해도 조준 화면 전체가 죽으면 안 되기 때문이다.
     /// </summary>
     public sealed class MagicIndicatorValueJsonConverter : JsonConverter<MagicIndicatorValue>
     {
+        private const string ObjectProperty = "object";
         private const string ParameterProperty = "parameter";
         private const string FallbackProperty = "fallback";
 
@@ -52,6 +54,12 @@ namespace Global.Serialization
             }
 
             writer.WriteStartObject();
+            if (value.HasObject)
+            {
+                writer.WritePropertyName(ObjectProperty);
+                writer.WriteValue(value.ObjectName);
+            }
+
             writer.WritePropertyName(ParameterProperty);
             writer.WriteValue(value.ParameterName);
             if (value.HasFallback)
@@ -77,13 +85,39 @@ namespace Global.Serialization
                 return default;
             }
 
-            if (!json.TryGetValue(FallbackProperty, StringComparison.OrdinalIgnoreCase, out JToken fallbackToken) ||
-                (fallbackToken.Type != JTokenType.Integer && fallbackToken.Type != JTokenType.Float))
+            // object 는 선택 항목이지만, 있는데 문자열이 아니면 parameter 가 계약을 어긴 것과 같은 취급이다.
+            string objectName = null;
+            if (json.TryGetValue(ObjectProperty, StringComparison.OrdinalIgnoreCase, out JToken objectToken))
             {
-                return MagicIndicatorValue.FromParameter(parameterName);
+                if (objectToken.Type != JTokenType.String)
+                {
+                    return default;
+                }
+
+                objectName = objectToken.Value<string>();
+                if (string.IsNullOrWhiteSpace(objectName))
+                {
+                    return default;
+                }
             }
 
-            return MagicIndicatorValue.FromParameter(parameterName, fallbackToken.Value<float>());
+            float? fallback = null;
+            if (json.TryGetValue(FallbackProperty, StringComparison.OrdinalIgnoreCase, out JToken fallbackToken) &&
+                (fallbackToken.Type == JTokenType.Integer || fallbackToken.Type == JTokenType.Float))
+            {
+                fallback = fallbackToken.Value<float>();
+            }
+
+            if (objectName == null)
+            {
+                return fallback.HasValue
+                    ? MagicIndicatorValue.FromParameter(parameterName, fallback.Value)
+                    : MagicIndicatorValue.FromParameter(parameterName);
+            }
+
+            return fallback.HasValue
+                ? MagicIndicatorValue.FromParameter(objectName, parameterName, fallback.Value)
+                : MagicIndicatorValue.FromParameter(objectName, parameterName);
         }
     }
 }

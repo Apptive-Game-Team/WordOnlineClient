@@ -253,6 +253,118 @@ canvas invariant in `ANIMATION-ASSETS.md`.
 
 ---
 
+## 플레이어 캐릭터 리스타일 — issue #586
+
+인게임 플레이어 `Assets/Art/Images/Customize/PlayerCharacterBase.png` 는 굵은
+검은 외곽선과 흰 스티커 테두리를 두른 정면 스티커 일러스트다. master-v2 의
+외곽선 없음, faceted low-poly papercraft, 3/4 각도, 3등신, 인간 진영 팔레트를
+전부 어긴다.
+
+같은 인물을 규칙대로 그린 앵커가 이미 있다. `.art/anchors/master-v2/ApprenticeMage.png`
+가 그 인물이고, `.art/WORLD.md` 의 플레이어 설정과도 맞는다. 마법사의 탑에서
+내려온 수습 마법생이고, 워드가 남긴 마법 카드를 좇는다.
+
+시안은 앵커의 rendering technique 을 고정하고 실루엣과 정체성만 바꾼다.
+
+### 생성 방법
+
+`codex exec` 의 `image_gen` 을 쓰고 앵커를 `-i` 로 붙인다. 참조 이미지는
+`master-v2/MasterStyleKey.png` 와 `master-v2/ApprenticeMage.png` 두 장이다.
+concept 파일은 배경과 여러 뷰를 담고 있어 참조로 붙이지 않는다.
+
+출력은 mode `RGBA` 에 alpha 최소값 0 이어야 한다. codex 가 파일마다 아래를
+직접 확인한 뒤 보고하게 한다. 시스템 `python3` 에는 Pillow 가 없으므로
+scratchpad 의 venv 를 준다.
+
+```
+python -c "from PIL import Image; im=Image.open(P); print(im.mode, im.convert('RGBA').getchannel('A').getextrema())"
+```
+
+### 공통 prefix
+
+> Faceted low-poly papercraft game character, single subject centered on a fully
+> transparent background. Build the entire figure from flat polygonal planes, one
+> flat color per plane, hard creases between planes — a whole forearm is five or
+> six planes. No texture, no grain, no noise, no gradients, no gloss, no
+> painterly brushwork. No outer contour line: forms separate by value only. One
+> soft light from the upper left. Three-quarter camera, facing right. Chunky
+> proportions, about three heads tall. Eyes are dark ovals with one tiny
+> highlight. Restrained saturation, mid to high value, nothing muddy or neon. No
+> background, no ground plane, no contact shadow, no frame, no text. Silhouette
+> readable at 64 pixels. If it could be mistaken for a rendered 3D model or a
+> digital painting, it is wrong.
+
+공통 주체와 색:
+
+> The subject is the player character: an apprentice mage who came down from the
+> mage tower, chasing the magic cards Word left behind. Human magic civilization
+> palette — cool grey robe `#C4CCC8` `#A09C92` `#616662`, steel blue cloak
+> `#6191A3`, bronze and wood `#5D4032`, arcane crystal `#2D92E4`.
+
+### 시안 A — 지팡이 수습생
+
+앵커를 그대로 플레이어로 승격시키는 가장 안전한 안.
+
+> Brown spiky hair cut into large angular planes, blue hooded cloak clasped at
+> the throat, grey robe, brown belt with a diamond buckle, wooden staff with a
+> blue crystal in the left hand, a satchel of cards on the hip. Standing at rest,
+> weight on both feet.
+
+### 시안 B — 카드 시전자
+
+이 게임의 행동은 카드를 던지는 것이다. 실루엣에서 가장 밝은 덩어리가 카드가
+되게 해서 한눈에 시전자로 읽히게 한다.
+
+> The staff is slung across the back. The right hand holds three glowing arcane
+> cards fanned out, the left hand is thrown forward in a casting gesture. The
+> fanned cards are the brightest mass in the silhouette. Same cloak, robe, belt
+> and satchel.
+
+### 시안 C — 후드 수습생
+
+64px 에서 가장 강한 실루엣을 노리는 안. 얼굴 윗부분은 후드 그림자 plane 하나로
+덮고 눈만 남긴다.
+
+> The hood is up and deep, covering the upper face with a single dark plane, only
+> the two oval eyes catching light inside it. Cloak falls in four or five large
+> creased planes to a wide triangular base. Wooden staff in the right hand, cards
+> at the hip.
+
+### 시안 D — 긴 머리 수습생
+
+현재 인게임 캐릭터의 정체성을 잇는 안. 갈색 긴 머리를 유지하되 각진 plane 으로
+자른다.
+
+> A girl apprentice with long brown hair cut into five or six large angular
+> planes falling past the shoulders, no strands and no hair texture. Same blue
+> hooded cloak worn back off the head, grey robe, brown belt, wooden staff with a
+> blue crystal, card satchel. Standing at rest.
+
+### 시안 E — 그리모어 학생
+
+지팡이 대신 펼친 마법서를 든 안. 탑에서 막 내려온 학생으로 읽힌다.
+
+> No staff. A thick open grimoire rests on the left forearm, its pages two flat
+> planes with a faint blue glow, the right hand gestures over the page. A leather
+> shoulder bag with cards sticking out. Grey robe shorter at the knee, blue cloak
+> narrower.
+
+### 마감 조건
+
+고른 시안은 `PlayerCharacterBase.png` 를 그대로 대체해야 하므로 화면 크기와
+접지점이 바뀌면 안 된다. 현재 값은 캔버스 2048x2048, PPU 100, pivot Center,
+몸통 bbox `(404, 539, 1831, 1679)` 다.
+
+- 같은 2048x2048 캔버스에 합성한다.
+- 몸통 높이 1140px, 발끝 y=1679, 가로 중심 x=1117.
+- 상대편은 `ServedObject` 가 같은 스프라이트를 `flipX` 로 뒤집는다. 좌우 반전에도
+  읽혀야 하고 한쪽으로 치우친 소품은 반전에서 어색해진다.
+- 머리 위에 `MagicFailEffect` 가 뜬다. 머리 위 공간을 소품으로 채우지 않는다.
+- 공격은 `DOTweenAction.SwingMobAttack`, 사망은 `DOTweenAction.FallForward` 라
+  스프라이트 하나를 통째로 돌린다. 별도 공격 frame 은 필요 없다.
+
+---
+
 ## Recording the outcome
 
 After picking, write down in `STYLE.md` which variant won and why. A chosen

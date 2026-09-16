@@ -31,6 +31,10 @@ namespace Data.GameConfig
         // parameters 전체를 몇 번씩 훑는 LINQ 파이프라인이라 프레임마다 돌리면 비용이 크므로
         // (magic, paramName)별 결과를 메모이즈한다. null 값은 "찾지 못함"을 뜻한다.
         private static readonly Dictionary<MagicParameterKey, float?> MagicParameterCache = new();
+
+        // TryGetObjectParameter도 조준 중 매 프레임 불리는 경로라 같은 이유로 메모이즈한다.
+        // (gameObjectName, paramName)별 결과라 MagicParameterCache와는 키가 다르지만 무효화 규칙은 같다.
+        private static readonly Dictionary<ObjectParameterKey, float?> ObjectParameterCache = new();
         private static IReadOnlyList<GameParameterData> cachedParameterSource;
 
         public static string GetMagicDisplayStats(CombinedMagicData magic)
@@ -123,6 +127,53 @@ namespace Data.GameConfig
 
             cachedParameterSource = parameters;
             MagicParameterCache.Clear();
+            ObjectParameterCache.Clear();
+        }
+
+        /// <summary>
+        /// game object 이름을 직접 적어 그 parameter 를 읽는다. indicator document 의
+        /// <c>{"object":...,"parameter":...}</c> 값이 마법 자신이 아닌 다른 game object 를 가리킬 때 쓴다.
+        /// </summary>
+        public static bool TryGetObjectParameter(string gameObjectName, string paramName, out float value)
+        {
+            value = 0f;
+            if (string.IsNullOrWhiteSpace(gameObjectName) || string.IsNullOrWhiteSpace(paramName))
+            {
+                return false;
+            }
+
+            var parameters = ParametersDataSource.GetCachedParameters();
+            if (parameters == null || parameters.Count == 0)
+            {
+                return false;
+            }
+
+            InvalidateCacheIfSourceChanged(parameters);
+
+            var key = new ObjectParameterKey(gameObjectName, paramName);
+            if (ObjectParameterCache.TryGetValue(key, out float? cached))
+            {
+                if (!cached.HasValue)
+                {
+                    return false;
+                }
+
+                value = cached.Value;
+                return true;
+            }
+
+            var parameter = parameters.FirstOrDefault(p =>
+                IsSameName(p.gameObjectName, gameObjectName) &&
+                IsSameName(p.paramName, paramName));
+
+            bool resolved = parameter != null;
+            if (resolved)
+            {
+                value = parameter.value;
+            }
+
+            ObjectParameterCache[key] = resolved ? value : (float?)null;
+            return resolved;
         }
 
         private static bool ResolveMagicParameter(
@@ -285,6 +336,44 @@ namespace Data.GameConfig
                     hash = hash * 397 ^ (resourceName?.GetHashCode() ?? 0);
                     hash = hash * 397 ^ (localizationKey?.GetHashCode() ?? 0);
                     hash = hash * 397 ^ (paramName?.GetHashCode() ?? 0);
+                    return hash;
+                }
+            }
+        }
+
+        /// <summary>
+        /// <see cref="TryGetObjectParameter"/>가 읽는 입력만 담는 캐시 키.
+        /// 이름 비교가 <see cref="IsSameName"/> 처럼 대소문자를 구분하지 않으므로 키도 그렇게 비교한다.
+        /// </summary>
+        private readonly struct ObjectParameterKey : IEquatable<ObjectParameterKey>
+        {
+            private readonly string gameObjectName;
+            private readonly string paramName;
+
+            public ObjectParameterKey(string gameObjectName, string paramName)
+            {
+                this.gameObjectName = gameObjectName;
+                this.paramName = paramName;
+            }
+
+            public bool Equals(ObjectParameterKey other)
+            {
+                return string.Equals(gameObjectName, other.gameObjectName, StringComparison.OrdinalIgnoreCase) &&
+                       string.Equals(paramName, other.paramName, StringComparison.OrdinalIgnoreCase);
+            }
+
+            public override bool Equals(object obj) => obj is ObjectParameterKey other && Equals(other);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = gameObjectName != null
+                        ? StringComparer.OrdinalIgnoreCase.GetHashCode(gameObjectName)
+                        : 0;
+                    hash = hash * 397 ^ (paramName != null
+                        ? StringComparer.OrdinalIgnoreCase.GetHashCode(paramName)
+                        : 0);
                     return hash;
                 }
             }

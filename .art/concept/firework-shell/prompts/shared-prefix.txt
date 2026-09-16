@@ -1,0 +1,22 @@
+Game prop sprite icon for a 2.5D faceted low-poly papercraft game, matching the exact rendering technique of the two attached reference images.
+
+Rendering technique, required exactly as in the references:
+- Build the entire form from flat polygonal facet planes, like folded paper. One flat, completely solid color per plane. Hard, sharp creases between adjacent planes.
+- No smooth 3D shading, no soft gradients across a plane (only a very small two-tone split inside the largest plane is allowed), no gloss, no specular highlight, no texture, no surface grain, no photographic noise, no painterly brushwork, no airbrush.
+- If the result could be mistaken for a rendered 3D model, a photo, or a digital painting, it is wrong. It must look like it is built from cut and folded matte paper facets.
+- One soft, broad light source from the upper left: a broad flat highlight facet on the upper-left side of the form, a broad flat shadow facet on the lower-right side. Nothing else.
+- No outer contour line or ink outline. Shapes separate from each other only by flat color value, exactly like the references.
+- Restrained saturation, mid-to-high value. Nothing muddy, nothing neon.
+
+Canvas and background, required exactly:
+- Single subject, centered.
+- Fully transparent background. Do not paint a background of any kind: no checkerboard pattern, no white, no grey, no color fill, no ground plane, no shadow on a surface, no vignette. Every pixel that is not the subject itself must be true alpha transparency, not a painted substitute.
+- No text, no frame, no card border, no watermark, no logo.
+
+Composition:
+- The object is flying through the air, facing and traveling toward the right edge of the canvas. Compose it as an in-flight game projectile icon, not a still-life object sitting on a surface.
+- Silhouette must stay clearly readable when the whole image is shrunk down to 64 pixels wide.
+
+Subject identity, shared across all variants: a small fire-element artillery shell — a "firework shell" — freshly launched from a siege tower, arcing through the air toward its target before it explodes on landing. This is the Hellfire legion's ammunition: it must share that faction's material language from the attached HellfireDemon reference — dark charred basalt-like crust, angular and spiked details, glowing orange-hot cracks and seams running through the dark shell, mass-first and flame-second (the shell reads as a dark hard object with fire glowing through gaps in it, not as a flame or a fireball). Fire palette: dark charred base #2A1512 and #5A291E, hot crack glow #9B3014 and #E65E08, ash accents #6D4A39.
+
+It must read unmistakably as a discrete launched shell / bomb / mortar round, never as a flame, a fire bolt, a fireball, or a lit torch. It must not resemble a smooth teardrop-shaped flame lick.

@@ -1,0 +1,15 @@
+Fill the entire background with one flat, uniform, fully opaque pure magenta, RGB 255 0 255, hex #FF00FF, edge to edge. The background must be that exact single colour and nothing else: no grey-and-white checkerboard pattern, no white, no grey, no gradient, no texture, no vignette, no ground plane, no cast shadow, no glow or halo bleeding into it. Magenta appears nowhere on the subject itself. Use a square canvas.
+
+Subject: a World Tree grass-spirit healing totem. A short wooden stalk rises from a flared, root-like base and opens at the top into a blossom of several large overlapping leaf-petals, like a flower cupping its center. Nestled inside the petals, at the very top, sits one glowing pale-green healing orb of soft light. No face, no eyes, no text.
+
+Faction and material: this is the World Tree grass spirit faction — life force and mana circulating through layered wood, leaf, and light. Use nature palette #B8CE59, #9DA74D, #768738, #384823 for the leaf-petals, and warm wood-brown tones (matching a World Tree trunk) for the stalk and root base. The glowing orb at the center is a soft pale warm-green light, rendered as a flat bright plane, not a glow effect.
+
+Render in a 2.5D cut-paper faceted style: build every form from large flat polygonal facet planes, one flat solid color per plane, with hard sharp creases between planes. No smooth 3D shading, no gloss, no specular highlight streaks, no texture, no grain, no glow, no bloom, no outer contour line, no ink outline. Forms separate by flat value contrast alone, never by an outline stroke.
+
+Single soft light source from the upper-left: every form's upper-left-facing planes are the brightest flat highlight tone, its lower-right-facing planes are the darkest flat shadow tone, with one mid-tone base plane in between. Three value bands per material, no more.
+
+This is a stationary ground installation, not a creature: equally chunky, blocky modular forms, never thin, spiky, or needle-like. The root base must read as wide and stable, planted on the ground. Single subject, centered, filling most of the frame. Compose the subject as a tall vertical totem: the trimmed silhouette should naturally come out portrait-oriented, roughly 188:256 (clearly taller than wide), with the petal-blossom kept roughly as wide as the base so it does not widen the silhouette much beyond the stalk's footprint.
+
+Restrained, mid-to-high value saturation. Nothing neon, nothing muddy.
+
+No text, no letters, no frame, no card border, no watermark, no logo, no scene, no ground plane props, no ember or spark scatter, no motion blur.
